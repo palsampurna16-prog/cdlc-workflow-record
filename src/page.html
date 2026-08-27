@@ -1,0 +1,1298 @@
+<title>CDLC Workflow Record</title>
+<style>
+/* Atlassian / Jira design language.
+   Neutral + blue palette, 3px radii, status lozenges, underline tabs, system font stack. */
+
+:root {
+  color-scheme: light;
+
+  --paper:      #F7F8F9;   /* Jira page background   */
+  --surface:    #FFFFFF;   /* cards, rows            */
+  --surface-2:  #F1F2F4;   /* subtle fill            */
+  --surface-3:  #EBECF0;   /* hover                  */
+  --ink:        #172B4D;   /* primary text           */
+  --ink-2:      #44546F;   /* secondary text         */
+  --muted:      #626F86;   /* subtlest text          */
+  --line:       #DFE1E6;   /* borders                */
+  --line-soft:  #EBECF0;   /* row rules              */
+
+  --accent:      #0052CC;  /* Jira blue: links, primary */
+  --accent-hover:#0065FF;
+  --accent-soft: #E9F2FF;  /* selected background    */
+  --accent-ink:  #FFFFFF;
+
+  /* status-category lozenges — these are Jira's own */
+  --cat-new-fg:#44546F;  --cat-new-bg:#DFE1E6;  --cat-new-line:transparent;   /* To Do       */
+  --cat-ind-fg:#0052CC;  --cat-ind-bg:#DEEBFF;  --cat-ind-line:transparent;   /* In Progress */
+  --cat-done-fg:#006644; --cat-done-bg:#E3FCEF; --cat-done-line:transparent;  /* Done        */
+  --dead-fg:#626F86;     --dead-bg:#EBECF0;     --dead-line:transparent;      /* dropped     */
+  --warn-fg:#974F0C;     --warn-bg:#FFF0B3;                                   /* dormant     */
+  --err-fg:#BF2600;      --err-bg:#FFEBE6;                                    /* never used  */
+
+  --shadow: 0 1px 1px rgba(9,30,66,.25), 0 0 1px 1px rgba(9,30,66,.13);
+
+  --font: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu,
+          "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif;
+  --mono: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas,
+          "Liberation Mono", monospace;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    color-scheme: dark;
+    --paper:#1D2125; --surface:#22272B; --surface-2:#282E33; --surface-3:#2C333A;
+    --ink:#B6C2CF; --ink-2:#9FADBC; --muted:#8C9BAB;
+    --line:#38414A; --line-soft:#2C333A;
+    --accent:#579DFF; --accent-hover:#85B8FF; --accent-soft:#1C2B41; --accent-ink:#1D2125;
+    --cat-new-fg:#9FADBC;  --cat-new-bg:#2C333A;  --cat-new-line:transparent;
+    --cat-ind-fg:#85B8FF;  --cat-ind-bg:#09326C;  --cat-ind-line:transparent;
+    --cat-done-fg:#7EE2B8; --cat-done-bg:#164B35; --cat-done-line:transparent;
+    --dead-fg:#8C9BAB;     --dead-bg:#303940;     --dead-line:transparent;
+    --warn-fg:#F5CD47;     --warn-bg:#533F04;
+    --err-fg:#FD9891;      --err-bg:#5D1F1A;
+    --shadow: 0 1px 1px rgba(3,4,4,.5), 0 0 1px 1px rgba(3,4,4,.35);
+  }
+}
+
+:root[data-theme="dark"] {
+  color-scheme: dark;
+  --paper:#1D2125; --surface:#22272B; --surface-2:#282E33; --surface-3:#2C333A;
+  --ink:#B6C2CF; --ink-2:#9FADBC; --muted:#8C9BAB;
+  --line:#38414A; --line-soft:#2C333A;
+  --accent:#579DFF; --accent-hover:#85B8FF; --accent-soft:#1C2B41; --accent-ink:#1D2125;
+  --cat-new-fg:#9FADBC;  --cat-new-bg:#2C333A;  --cat-new-line:transparent;
+  --cat-ind-fg:#85B8FF;  --cat-ind-bg:#09326C;  --cat-ind-line:transparent;
+  --cat-done-fg:#7EE2B8; --cat-done-bg:#164B35; --cat-done-line:transparent;
+  --dead-fg:#8C9BAB;     --dead-bg:#303940;     --dead-line:transparent;
+  --warn-fg:#F5CD47;     --warn-bg:#533F04;
+  --err-fg:#FD9891;      --err-bg:#5D1F1A;
+  --shadow: 0 1px 1px rgba(3,4,4,.5), 0 0 1px 1px rgba(3,4,4,.35);
+}
+
+* { box-sizing: border-box; }
+
+body {
+  margin: 0; background: var(--paper); color: var(--ink);
+  font-family: var(--font); font-size: 14px; line-height: 1.4286;
+  -webkit-font-smoothing: antialiased;
+}
+
+a { color: var(--accent); }
+a:hover { color: var(--accent-hover); }
+
+.wrap {
+  max-width: 1120px; margin: 0 auto;
+  padding: 32px clamp(16px, 2vw, 40px) 80px;
+  display: flex; flex-direction: column; gap: 32px;
+}
+
+/* ---------- masthead ---------- */
+
+.masthead { display: flex; flex-direction: column; gap: 12px; }
+
+.eyebrow {
+  font-size: 11px; font-weight: 600; letter-spacing: .08em;
+  text-transform: uppercase; color: var(--muted); margin: 0;
+}
+
+h1 {
+  font-size: 24px; font-weight: 600; line-height: 1.16;
+  letter-spacing: -.008em; margin: 0; color: var(--ink); text-wrap: balance;
+}
+
+.standfirst { margin: 0; max-width: 70ch; color: var(--ink-2); font-size: 14px; }
+
+.counts {
+  display: flex; flex-wrap: wrap;
+  border: 1px solid var(--line); border-radius: 3px;
+  background: var(--surface); overflow: hidden; box-shadow: var(--shadow);
+}
+.count {
+  flex: 1 1 120px; padding: 12px 16px;
+  border-right: 1px solid var(--line-soft);
+  display: flex; flex-direction: column; gap: 2px;
+}
+.count:last-child { border-right: 0; }
+.count b {
+  font-size: 24px; font-weight: 600; line-height: 1.1;
+  color: var(--ink); font-variant-numeric: tabular-nums;
+}
+.count span {
+  font-size: 11px; font-weight: 600; letter-spacing: .06em;
+  text-transform: uppercase; color: var(--muted);
+}
+
+/* ---------- headings + panels ---------- */
+
+h2 { font-size: 20px; font-weight: 600; letter-spacing: -.004em; margin: 0; color: var(--ink); }
+
+.section-head { display: flex; flex-direction: column; gap: 4px; margin-bottom: 16px; }
+.section-head p { margin: 0; color: var(--muted); max-width: 72ch; font-size: 13px; }
+
+/* provenance notes — collapsed by default, open on demand */
+.caveat { margin: -8px 0 -16px; }
+
+.caveat > summary {
+  display: inline-flex; align-items: center; gap: 6px;
+  list-style: none; cursor: pointer; width: fit-content;
+  font-size: 12px; font-weight: 600; color: var(--muted);
+  padding: 4px 6px; margin-left: -6px; border-radius: 3px;
+}
+.caveat > summary::-webkit-details-marker { display: none; }
+.caveat > summary::before {
+  content: ""; width: 0; height: 0;
+  border-left: 5px solid currentColor;
+  border-top: 4px solid transparent; border-bottom: 4px solid transparent;
+}
+.caveat[open] > summary::before { transform: rotate(90deg); }
+.caveat > summary:hover { color: var(--accent); background: var(--surface-2); }
+.caveat > summary:focus-visible { outline: 2px solid var(--accent); outline-offset: 1px; }
+
+.caveat-body {
+  margin-top: 8px; padding: 16px;
+  background: var(--surface); border: 1px solid var(--line);
+  border-radius: 3px; color: var(--ink-2); font-size: 13px; box-shadow: var(--shadow);
+}
+.caveat-body p { margin: 0 0 8px; }
+.caveat-body p:last-child { margin-bottom: 0; }
+.caveat-body strong { color: var(--ink); font-weight: 600; }
+.caveat-body a { color: var(--accent); }
+
+/* ---------- tabs (Jira underline style) ---------- */
+
+.tabbar {
+  position: sticky; top: 0; z-index: 8;
+  display: flex; gap: 0; flex-wrap: wrap; align-items: stretch;
+  border-bottom: 2px solid var(--line);
+  background: var(--paper);
+}
+
+.tabbtn {
+  font-family: var(--font); font-size: 14px; font-weight: 500;
+  padding: 10px 14px; border: 0; background: none; color: var(--ink-2);
+  cursor: pointer; display: flex; align-items: center; gap: 8px;
+  border-bottom: 2px solid transparent; margin-bottom: -2px;
+}
+.tabbtn:hover { color: var(--accent); background: var(--surface-2); }
+.tabbtn:focus-visible { outline: 2px solid var(--accent); outline-offset: -2px; }
+.tabbtn em {
+  font-style: normal; font-size: 11px; font-weight: 600;
+  background: var(--surface-3); color: var(--ink-2);
+  padding: 1px 6px; border-radius: 10px; font-variant-numeric: tabular-nums;
+}
+.tabbtn[aria-selected="true"] {
+  color: var(--accent); font-weight: 600; border-bottom-color: var(--accent);
+}
+.tabbtn[aria-selected="true"] em { background: var(--accent-soft); color: var(--accent); }
+
+.panel[hidden] { display: none; }
+.panel { display: flex; flex-direction: column; gap: 32px; }
+
+/* ---------- controls ---------- */
+
+.controls {
+  display: flex; flex-wrap: wrap; gap: 8px; align-items: center;
+  position: sticky; top: 43px; z-index: 6; padding: 12px 0;
+  background: var(--paper);
+}
+
+.controls input[type="search"] {
+  flex: 1 1 240px; min-width: 0; font-family: var(--font); font-size: 14px;
+  color: var(--ink); background: var(--surface-2);
+  border: 2px solid var(--line); border-radius: 3px; padding: 6px 8px;
+}
+.controls input[type="search"]::placeholder { color: var(--muted); }
+.controls input[type="search"]:focus {
+  background: var(--surface); border-color: var(--accent); outline: none;
+}
+
+.btnrow { display: flex; gap: 4px; flex-wrap: wrap; }
+
+.fl {
+  font-family: var(--font); font-size: 13px; font-weight: 500;
+  padding: 5px 10px; border-radius: 3px; border: 0;
+  background: var(--surface-2); color: var(--ink-2); cursor: pointer;
+}
+.fl:hover { background: var(--surface-3); }
+.fl:focus-visible { outline: 2px solid var(--accent); outline-offset: 1px; }
+.fl[aria-pressed="true"] { background: var(--accent-soft); color: var(--accent); font-weight: 600; }
+
+.lg {
+  font-size: 11px; font-weight: 700; letter-spacing: .06em; text-transform: uppercase;
+  padding: 4px 8px; border-radius: 3px; border: 1px solid; cursor: pointer;
+  font-family: var(--font);
+}
+.lg:focus-visible { outline: 2px solid var(--accent); outline-offset: 1px; }
+.lg[aria-pressed="false"] { opacity: .35; }
+.lg.new  { color: var(--cat-new-fg);  background: var(--cat-new-bg);  border-color: var(--cat-new-line); }
+.lg.ind  { color: var(--cat-ind-fg);  background: var(--cat-ind-bg);  border-color: var(--cat-ind-line); }
+.lg.done { color: var(--cat-done-fg); background: var(--cat-done-bg); border-color: var(--cat-done-line); }
+
+.hitcount {
+  font-size: 12px; color: var(--muted); margin-left: auto;
+  font-variant-numeric: tabular-nums;
+}
+
+/* ---------- grouped tables ---------- */
+
+.fam { display: flex; flex-direction: column; }
+
+.fam-head, .stage-head {
+  display: flex; align-items: baseline; gap: 8px;
+  padding: 0 0 8px; border-bottom: 2px solid var(--line);
+}
+.fam-head h3, .stage-head h3 {
+  font-size: 16px; font-weight: 600; letter-spacing: -.003em; margin: 0; color: var(--ink);
+}
+.fam-head em, .stage-head em {
+  font-style: normal; font-size: 12px; color: var(--muted);
+  font-variant-numeric: tabular-nums;
+}
+.stage-head { flex-wrap: wrap; gap: 10px; }
+.stage-head em { margin-left: auto; }
+.stage-n {
+  font-family: var(--mono); font-size: 12px; font-weight: 700;
+  color: var(--accent); background: var(--accent-soft);
+  padding: 2px 6px; border-radius: 3px; font-variant-numeric: tabular-nums;
+}
+
+.row {
+  display: grid; grid-template-columns: minmax(190px, 300px) 1fr;
+  gap: 4px 24px; padding: 12px 8px; margin: 0 -8px;
+  border-bottom: 1px solid var(--line-soft); align-items: start;
+}
+.row:hover { background: var(--surface-2); }
+@media (max-width: 700px) { .row { grid-template-columns: 1fr; gap: 8px; } }
+
+.row-name { display: flex; flex-direction: column; gap: 4px; }
+.row-name b { font-weight: 600; font-size: 14px; line-height: 1.3; color: var(--ink); }
+.row-name .pill { align-self: flex-start; }
+.row-name .lvl a { color: var(--accent); text-decoration: none; }
+.row-name .lvl a:hover { text-decoration: underline; }
+
+.lvl { font-size: 12px; color: var(--muted); }
+
+.xrefs { display: flex; flex-wrap: wrap; gap: 4px; }
+.xref {
+  font-family: var(--mono); font-size: 11px; font-weight: 600;
+  color: var(--accent); background: var(--accent-soft);
+  border: 0; border-radius: 3px; padding: 2px 6px; cursor: pointer;
+}
+.xref:hover { background: var(--accent); color: var(--accent-ink); }
+.xref:focus-visible { outline: 2px solid var(--accent); outline-offset: 1px; }
+
+/* ---------- lozenges + labels ---------- */
+
+.chips { display: flex; flex-wrap: wrap; gap: 4px; }
+
+/* base = Jira label (normal case) */
+.chip {
+  display: inline-block; font-family: var(--font); font-size: 12px;
+  line-height: 1.34; padding: 2px 6px; border-radius: 3px;
+  border: 1px solid; white-space: nowrap;
+}
+
+/* status categories = Jira lozenge (uppercase, bold) */
+.chip.new, .chip.ind, .chip.done {
+  font-size: 11px; font-weight: 700; letter-spacing: .06em; text-transform: uppercase;
+}
+.chip.new  { color: var(--cat-new-fg);  background: var(--cat-new-bg);  border-color: var(--cat-new-line); }
+.chip.ind  { color: var(--cat-ind-fg);  background: var(--cat-ind-bg);  border-color: var(--cat-ind-line); }
+.chip.done { color: var(--cat-done-fg); background: var(--cat-done-bg); border-color: var(--cat-done-line); }
+.chip.dim  { opacity: .2; }
+
+/* work-type labels, tinted by change state */
+.chip.s-ok   { color: var(--cat-done-fg); background: var(--cat-done-bg); border-color: var(--cat-done-line); }
+.chip.s-open { color: var(--cat-ind-fg);  background: var(--cat-ind-bg);  border-color: var(--cat-ind-line); }
+.chip.s-dead { color: var(--dead-fg);     background: var(--dead-bg);     border-color: var(--dead-line); }
+.chip.s-none { color: var(--ink-2);       background: var(--surface-2);   border-color: var(--line); }
+
+button.chip { cursor: pointer; text-align: left; font-family: var(--font); }
+button.chip:hover { box-shadow: inset 0 0 0 1px var(--accent); }
+button.chip:focus-visible { outline: 2px solid var(--accent); outline-offset: 1px; }
+
+.pill {
+  font-size: 11px; font-weight: 700; letter-spacing: .06em; text-transform: uppercase;
+  padding: 2px 6px; border-radius: 3px; border: 1px solid; white-space: nowrap;
+}
+.pill.ok   { color: var(--cat-done-fg); background: var(--cat-done-bg); border-color: var(--cat-done-line); }
+.pill.open { color: var(--cat-ind-fg);  background: var(--cat-ind-bg);  border-color: var(--cat-ind-line); }
+.pill.dead { color: var(--dead-fg);     background: var(--dead-bg);     border-color: var(--dead-line); }
+
+.badge {
+  align-self: flex-start;
+  font-size: 11px; font-weight: 700; letter-spacing: .06em; text-transform: uppercase;
+  padding: 2px 6px; border-radius: 3px; white-space: nowrap;
+}
+.badge.b-active  { color: var(--cat-done-fg); background: var(--cat-done-bg); }
+.badge.b-dormant { color: var(--warn-fg);     background: var(--warn-bg); }
+.badge.b-never   { color: var(--err-fg);      background: var(--err-bg); }
+
+/* ---------- entry bodies ---------- */
+
+.ebody { display: flex; flex-direction: column; gap: 8px; min-width: 0; }
+
+.what { margin: 0; color: var(--ink-2); font-size: 13px; }
+.what code, .trig code {
+  font-family: var(--mono); font-size: 12px;
+  background: var(--surface-2); border: 1px solid var(--line-soft);
+  padding: 1px 4px; border-radius: 3px; color: var(--ink);
+}
+
+.ba {
+  display: flex; flex-direction: column; gap: 4px;
+  background: var(--surface-2); border: 1px solid var(--line);
+  border-radius: 3px; padding: 8px 10px; font-size: 12px;
+}
+.ba div { display: flex; gap: 8px; align-items: baseline; }
+.ba b {
+  font-size: 11px; font-weight: 700; letter-spacing: .06em; text-transform: uppercase;
+  color: var(--muted); flex: 0 0 52px;
+}
+.ba span { font-family: var(--mono); font-size: 12px; color: var(--ink-2); min-width: 0; overflow-wrap: anywhere; }
+.ba .now span { color: var(--ink); }
+
+.subs, .trig, .mism { margin: 0; padding: 0; list-style: none; display: flex; flex-direction: column; gap: 4px; }
+.subs li { font-size: 13px; color: var(--muted); display: flex; gap: 8px; }
+.subs a { font-family: var(--mono); font-size: 12px; color: var(--accent); text-decoration: none; flex: 0 0 auto; }
+.subs a:hover { text-decoration: underline; }
+.subs s { color: var(--dead-fg); text-decoration-thickness: 1px; }
+
+.trig li { display: flex; gap: 6px; align-items: baseline; flex-wrap: wrap; font-size: 13px; color: var(--ink-2); }
+.trig .arrow { color: var(--accent); font-weight: 700; }
+
+.mism li { font-size: 13px; color: var(--ink-2); }
+.mism .doc {
+  font-family: var(--mono); font-size: 12px; color: var(--cat-ind-fg);
+  background: var(--cat-ind-bg); padding: 1px 4px; border-radius: 3px;
+}
+.mism .jira {
+  font-family: var(--mono); font-size: 12px; color: var(--cat-done-fg);
+  background: var(--cat-done-bg); padding: 1px 4px; border-radius: 3px;
+}
+
+.tags { display: flex; flex-wrap: wrap; gap: 4px; }
+.tag-c {
+  font-size: 11px; color: var(--muted); border: 1px solid var(--line);
+  background: var(--surface-2); padding: 1px 6px; border-radius: 3px;
+}
+
+/* ---------- roles ---------- */
+
+.roles { display: grid; grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)); gap: 8px; }
+.role {
+  background: var(--surface); border: 1px solid var(--line); border-radius: 3px;
+  padding: 12px 14px; display: flex; flex-direction: column; gap: 4px;
+  box-shadow: var(--shadow);
+}
+.role b { font-size: 14px; font-weight: 600; color: var(--ink); }
+.role span { font-size: 13px; color: var(--ink-2); }
+.role em { font-style: normal; font-size: 12px; color: var(--muted); margin-top: 2px; }
+
+/* ---------- misc ---------- */
+
+mark { background: #FFF0B3; color: #172B4D; padding: 0 1px; border-radius: 2px; }
+:root[data-theme="dark"] mark { background: #533F04; color: #F8E6A0; }
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) mark { background: #533F04; color: #F8E6A0; }
+}
+
+.empty { padding: 32px 0; color: var(--muted); font-style: italic; }
+
+footer { border-top: 1px solid var(--line); padding-top: 16px; color: var(--muted); font-size: 12px; }
+
+@media (prefers-reduced-motion: reduce) { * { transition: none !important; animation: none !important; } }
+</style>
+
+<div class="wrap">
+
+  <header class="masthead">
+    <p class="eyebrow">Jira · Content Development Life Cycle</p>
+    <h1>The CDLC workflows, as they stand and as they got here</h1>
+    <p class="standfirst">
+      The seven stages of the content lifecycle and who owns each one, every work type with
+      the statuses its workflow can hold, and the full trail of change tickets that produced
+      them. The three views cross-link, so any work type leads to its process stage and its
+      change history.
+    </p>
+    <div class="counts">
+      <div class="count"><b>69</b><span>Work types</span></div>
+      <div class="count"><b>76</b><span>Unique statuses</span></div>
+      <div class="count"><b>90</b><span>Change tickets</span></div>
+      <div class="count"><b>15</b><span>Still open</span></div>
+      <div class="count"><b>15</b><span>Dormant types</span></div>
+    </div>
+  </header>
+
+  <div class="tabbar" role="tablist" aria-label="Sections">
+    <button class="tabbtn" id="tab-now" role="tab" aria-selected="true" aria-controls="panel-now">
+      Current state <em>69</em>
+    </button>
+    <button class="tabbtn" id="tab-log" role="tab" aria-selected="false" aria-controls="panel-log">
+      Change history <em>40</em>
+    </button>
+    <button class="tabbtn" id="tab-proc" role="tab" aria-selected="false" aria-controls="panel-proc">
+      The process <em>7</em>
+    </button>
+  </div>
+
+  <!-- ======================= CURRENT STATE ======================= -->
+  <div class="panel" id="panel-now" role="tabpanel" aria-labelledby="tab-now">
+
+    <details class="caveat">
+      <summary>Scope of this data</summary>
+      <div class="caveat-body">
+      <p><strong>What this is, and what it isn't.</strong> This comes from Jira's
+        <code>/project/CDLC/statuses</code> endpoint, which any user with Browse Projects
+        permission can read. It returns, for every work type, the full set of statuses in that
+        work type's workflow.</p>
+      <p><strong>Usage is measured, not assumed.</strong> Each row carries how many tickets that
+        work type has ever had and how many in the last twelve months. Anything with no ticket in
+        a year reads Dormant; one type has never been used at all. Counts were taken against all
+        7,951 CDLC issues on 27 August 2026 and are a snapshot, not a live feed.</p>
+      <p><strong>It does not return transitions or order.</strong> The arrows Jira draws in the
+        issue-view workflow diagram come from workflow configuration, which only a Jira
+        administrator can export. So the chips below are the complete status set for each work
+        type, but the sequence they appear in is not meaningful.</p>
+      </div>
+    </details>
+
+    <section>
+      <div class="section-head">
+        <h2>The inventory</h2>
+        <p>Search by work type or status. Every row carries its ticket count and whether it is
+          still in use. Click a category to dim it, or a ticket key to jump to that change.</p>
+      </div>
+      <div class="controls">
+        <input id="q-now" type="search" placeholder="Search work types or statuses…" autocomplete="off" aria-label="Search work types or statuses">
+        <div class="btnrow" role="group" aria-label="Filter by status category">
+          <button class="lg new"  data-cat="new"  aria-pressed="true">To Do</button>
+          <button class="lg ind"  data-cat="ind"  aria-pressed="true">In Progress</button>
+          <button class="lg done" data-cat="done" aria-pressed="true">Done</button>
+        </div>
+        <div class="btnrow">
+          <button class="fl" id="hide-dormant" aria-pressed="false">Hide dormant</button>
+        </div>
+        <span class="hitcount" id="hits-now"></span>
+      </div>
+      <div id="out-now"></div>
+    </section>
+  </div>
+
+  <!-- ======================= CHANGE HISTORY ======================= -->
+  <div class="panel" id="panel-log" role="tabpanel" aria-labelledby="tab-log" hidden>
+
+    <details class="caveat">
+      <summary>Where this comes from</summary>
+      <div class="caveat-body">
+      <p><strong>Jira does not keep a readable history of workflow configuration.</strong>
+        There is no changelog for "this status was added on this date". What exists is the trail
+        of tickets that <em>asked</em> for each change, and almost all of them live under one
+        epic: <a href="https://skillcatapp.atlassian.net/browse/SGP-9551">SGP-9551 "CDLC
+        Changes"</a>, opened 13 April 2026 and described as "Changes for existing CDLC
+        workflows, automations, fields, etc." Its tree holds 83 tickets. Seven more sit outside it.</p>
+      <p><strong>So this is a log of intent, verified against current state where possible.</strong>
+        Shipped means the ticket was closed, and where the live status data confirms the change
+        landed, the before and after are shown. Anything before November 2025 was not recorded
+        in a way that survives.</p>
+      </div>
+    </details>
+
+    <section>
+      <div class="section-head">
+        <h2>The log</h2>
+        <p>Grouped by month, newest first. Chips are the work types each change touched — click one to see it in the inventory.</p>
+      </div>
+      <div class="controls">
+        <input id="q-log" type="search" placeholder="Search changes…" autocomplete="off" aria-label="Search changes">
+        <div class="btnrow" id="filters" role="group" aria-label="Filter by area"></div>
+        <span class="hitcount" id="hits-log"></span>
+      </div>
+      <div id="out-log"></div>
+    </section>
+  </div>
+
+  <!-- ======================= THE PROCESS ======================= -->
+  <div class="panel" id="panel-proc" role="tabpanel" aria-labelledby="tab-proc" hidden>
+
+    <details class="caveat">
+      <summary>Where this comes from</summary>
+      <div class="caveat-body">
+      <p><strong>This half is not from Jira.</strong> It comes from the CDLC Process
+        Documentation, the Content Team's SOP — version 1.0, effective 30 May 2026, owned by
+        the QA Specialist. Jira holds the statuses; the SOP holds the sequence, the ownership
+        and the automation chain, which is why the two are shown side by side.</p>
+      <p><strong>Six names in the SOP do not match Jira</strong>, and they are marked on the
+        stages below. The SOP's own workflow diagrams did not survive its export to Markdown —
+        all 34 came through as empty images — so the transitions still have to come from Jira
+        admin access.</p>
+      </div>
+    </details>
+
+    <section>
+      <div class="section-head">
+        <h2>Who does what</h2>
+        <p>The five contributor roles named in the SOP.</p>
+      </div>
+      <div class="roles" id="roles"></div>
+    </section>
+
+    <section>
+      <div class="section-head">
+        <h2>The seven stages</h2>
+        <p>In order. Work type chips link through to the inventory.</p>
+      </div>
+      <div id="out-proc"></div>
+    </section>
+  </div>
+
+  <footer>
+    <p>Compiled 26 August 2026. Status sets are live config from
+      <strong>skillcatapp.atlassian.net</strong>; the history is reconstructed from change
+      tickets; the process is from the Content Team SOP v1.0. Ticket keys link to Jira.</p>
+  </footer>
+
+</div>
+
+<script>
+/* ============================ STATUS CATEGORIES ============================ */
+const CAT = {
+  "Done":"done","On Hold":"new","To Do":"new","Suspended":"done","In Progress":"ind",
+  "Digitization":"ind","In Review":"ind","Ready for Graphics":"ind","Uploading to AWS":"done",
+  "Spanish Translations":"ind","Final Slides":"ind","Graphics Creation":"ind",
+  "Graphics definition":"ind","Internal SME review":"ind","Complete checklist":"ind",
+  "Quality review":"ind","Send to Instructional Designer":"ind","Assigned":"new",
+  "Rejected":"done","SME Review":"ind","Upload to AWS":"ind","Update Keywords":"ind",
+  "Update Question Bank on Planning":"ind","Create Course on Planning":"ind","Reproduced":"done",
+  "Discard":"done","Create Deep Links":"ind","QA Review":"ind","Restore on SkillCat":"ind",
+  "Update Learning Plan":"ind","update spreadsheet":"ind","Checklist":"ind",
+  "External Review":"ind","In Translation":"ind","Course Catalog":"done",
+  "Question Bank on Planning":"ind","Request Badge Creation":"ind","SME Validation":"ind",
+  "Scope Rearrange":"ind","Enhancement":"ind","Editorial review":"ind","Dependency":"ind",
+  "Run AI AGENT":"ind","Approved":"ind","CHECK REFERENCES":"ind",
+  "Business Specs in Progress":"ind","Learning Objectives in Progress":"ind",
+  "Business Specs in Review":"ind","Learning Objective in Review":"ind",
+  "Course QA on SkillCat":"ind","SkillCat: Backup / Restore":"ind",
+  "Slide chunks in course sheet":"ind","Assessment on Guroo":"ind","Course on Guroo":"ind",
+  "Course QA on Guroo":"ind","Staging: Backup / Restore":"ind","Create course outline":"ind",
+  "Scripting":"new","Inline Image Check":"ind","Manual Review":"ind","Paraphrasing":"ind",
+  "Review & Revise Definition":"ind","Review & Revise Visuals":"ind",
+  "Generate Graphic Definition":"ind","Review Final GD":"ind","Generate AI Visuals":"ind",
+  "ID Review":"ind","Generate Articulate":"ind","Corrections":"ind",
+  "Finalize as per SME Requirements":"new","Referencing":"done","Video Recording":"new",
+  "Video Review":"done","Manual Edit":"ind","Storyboard":"ind","Video Creation":"ind"
+};
+
+const E = "Epic", S = "Standard", T = "Sub-task";
+
+/* [name, level, statuses[], relatedChangeKeys[]] */
+const DATA = [
+["Course & epic level", [
+  ["Epic", E, ["To Do","In Progress","Digitization","In Review","On Hold","Suspended","Done"], ["SGP-10349","SGP-9553","SGP-10441","SGP-10442","SGP-10815"]],
+  ["Course: Specs", S, ["To Do","In Progress","Complete checklist","Run AI AGENT","CHECK REFERENCES","In Review","Approved","Dependency","Suspended","Done"], ["SGP-11280"]],
+  ["Course: Content Creation", S, ["To Do","Slide chunks in course sheet","Scope Rearrange","Course on Guroo","Assessment on Guroo","Course QA on Guroo","Uploading to AWS","Staging: Backup / Restore","SkillCat: Backup / Restore","Course QA on SkillCat","In Review","Suspended","Done"], []],
+  ["CDLC: Course Brief", S, ["To Do","Assigned","In Progress","Done"], ["SGP-9672"]],
+  ["CDLC: Course outline", S, ["To Do","Create course outline","Checklist","SME Validation","Suspended","Done"], ["SGP-10442"]],
+  ["CDLC: Research notes", S, ["To Do","In Progress","Suspended","Done"], []],
+  ["CDLC: Final Slides", S, ["To Do","In Progress","Complete checklist","Graphics definition","Internal SME review","Quality review","On Hold","Suspended","Done"], ["SGP-9762","SGP-10334"]],
+  ["CDLC: Corrections", S, ["To Do","Assigned","In Progress","In Review","Rejected","On Hold","Done"], ["SGP-10334"]],
+  ["CDLC: Content Review", T, ["In Progress","In Review","On Hold","Suspended","Done"], []],
+  ["CDLC: Content Upkeep", S, ["To Do","Assigned","In Progress","In Review","Reproduced","Discard","On Hold","Done"], ["SGP-10335"]],
+  ["CDLC: Content Upkeep (sub-task)", T, ["To Do","Assigned","In Progress","In Review","Reproduced","Discard","On Hold","Done"], ["SGP-10335"]],
+  ["CDLC: PPT generation", S, ["To Do","In Progress","In Review","Suspended","Done"], ["SGP-9695","SGP-9940"]],
+  ["CDLC: Stock image downloading", S, ["To Do","In Progress","In Review","Suspended","Done"], []],
+  ["CDLC: Translations", S, ["To Do","Assigned","In Translation","Complete checklist","In Review","Upload to AWS","On Hold","Suspended","Done"], ["SGP-10243","SGP-10411","SGP-9340"]],
+  ["CDLC: Badge and Course Image", T, ["To Do","In Progress","In Review","Suspended","Done"], []],
+  ["CDLC: Recording", T, ["Assigned","Scripting","In Progress","In Review","Done"], ["SGP-10978"]],
+  ["CDLC: Base Articulate file creation", T, ["To Do","Checklist","In Progress","Assigned","In Review","Rejected","On Hold","Done"], ["SGP-10334","SGP-9552"]],
+  ["CDLC: Articulate Review", T, ["To Do","In Progress","Internal SME review","Quality review","Suspended","Done"], ["SGP-10834","SGP-9762"]],
+  ["CDLC: Vyond video", T, ["To Do","In Progress","Complete checklist","Send to Instructional Designer","Internal SME review","External Review","In Review","Quality review","Suspended","Done"], []],
+  ["Graphics", S, ["To Do","In Progress","Complete checklist","Send to Instructional Designer","Internal SME review","External Review","In Review","Quality review","Suspended","Done"], ["SGP-9946"]],
+  ["Assessment", S, ["To Do","In Progress","Complete checklist","Internal SME review","Quality review","On Hold","Suspended","Done"], ["SGP-9946"]],
+  ["Instructional Design", S, ["To Do","In Progress","In Review","Suspended","Done"], []]
+]],
+
+["Topic level", [
+  ["CDLC: Topic", S, ["To Do","Graphics Creation","Ready for Graphics","Final Slides","Spanish Translations","Uploading to AWS","In Review","On Hold","Suspended","Done"], ["SGP-10343","SGP-10411","SGP-10361"]],
+  ["CDLC: Topic Final Slides", T, ["To Do","In Progress","Complete checklist","Graphics definition","Internal SME review","Quality review","On Hold","Suspended","Done"], ["SGP-9762","SGP-10334"]],
+  ["CDLC: Topic Graphics", T, ["To Do","In Progress","Complete checklist","Send to Instructional Designer","In Review","Suspended","Done"], ["SGP-9999","SGP-10334"]],
+  ["CDLC: Topic Assessment", T, ["To Do","In Progress","Complete checklist","In Review","On Hold","Suspended","Done"], ["SGP-9946","SGP-10334"]],
+  ["CDLC: Topic Corrections", T, ["To Do","Assigned","In Progress","In Review","Rejected","On Hold","Done"], ["SGP-10334"]],
+  ["CDLC: Topic PPT Generation", T, ["To Do","In Progress","In Review","Suspended","Done"], ["SGP-10284","SGP-10334"]],
+  ["CDLC: Topic Stock image downloading", T, ["To Do","In Progress","In Review","Suspended","Done"], []],
+  ["CDLC: Topic Translations", T, ["To Do","Assigned","In Translation","Complete checklist","In Review","Upload to AWS","On Hold","Suspended","Done"], ["SGP-10243","SGP-10334"]]
+]],
+
+["Digitization", [
+  ["Content: Digitization (Instructional)", S, ["To Do","Upload to AWS","Create Course on Planning","Update Keywords","Question Bank on Planning","update spreadsheet","Create Deep Links","Restore on SkillCat","Update Learning Plan","Request Badge Creation","Course Catalog","SME Review","In Review","On Hold","Suspended"], ["SGP-10335"]],
+  ["Content: Digitization (Informational)", S, ["To Do","Upload to AWS","Create Course on Planning","Update Keywords","Question Bank on Planning","update spreadsheet","Create Deep Links","Restore on SkillCat","Update Learning Plan","Request Badge Creation","Course Catalog","SME Review","In Review","On Hold","Suspended"], ["SGP-10335","SGP-10284"]],
+  ["Digitization - Upload to AWS + Planning", S, ["To Do","Assigned","Upload to AWS","Create Course on Planning","Update Keywords","Update Question Bank on Planning","In Review","Suspended","Done"], ["SGP-10335","SGP-9553"]],
+  ["Digitization - Upload to AWS + Planning (sub-task)", T, ["To Do","Assigned","Upload to AWS","Create Course on Planning","Update Keywords","Update Question Bank on Planning","In Review","Suspended","Done"], ["SGP-10335","SGP-9553"]],
+  ["Digitization - Restore on SkillCat", S, ["To Do","Restore on SkillCat","Create Deep Links","update spreadsheet","Update Learning Plan","QA Review","Suspended","Done"], ["SGP-9555","SGP-10418","SGP-7303","SGP-9553","SGP-9762"]],
+  ["Digitization - Restore on SkillCat (sub-task)", T, ["To Do","Restore on SkillCat","Create Deep Links","update spreadsheet","Update Learning Plan","QA Review","Suspended","Done"], ["SGP-9555","SGP-10418","SGP-7303","SGP-10335"]],
+  ["Digitization - Review", S, ["To Do","SME Review","Quality review","Suspended","Done"], ["SGP-9762"]],
+  ["Digitization - Review (sub-task)", T, ["To Do","SME Review","Quality review","Suspended","Done"], ["SGP-9762","SGP-10335"]],
+  ["Digitization - Badge Creation", S, ["To Do","In Progress","In Review","Suspended","Done"], []],
+  ["Digitization - Badge Creation (Sub-task)", T, ["To Do","In Progress","In Review","Suspended","Done"], ["SGP-10335"]],
+  ["Digitization - Data Sheet Creation", S, ["To Do","Assigned","In Progress","In Review","Suspended","Done"], ["SGP-10380"]],
+  ["Digitization - Data Sheet Creation (sub-task)", T, ["To Do","Assigned","In Progress","In Review","Suspended","Done"], ["SGP-10380","SGP-10335"]],
+  ["Digitization - Course Catalog Updating", S, ["To Do","Assigned","In Progress","In Review","Suspended","Done"], []],
+  ["Digitization - Course Catalog Updating (sub-task)", T, ["To Do","Assigned","In Progress","In Review","Suspended","Done"], ["SGP-10335"]]
+]],
+
+["Course operations", [
+  ["CDLC: Generate Performance Report", S, ["To Do","In Progress","Suspended","Done"], []],
+  ["CDLC: Generate Performance Report (sub-task)", T, ["To Do","In Progress","Suspended","Done"], ["SGP-10335"]],
+  ["CDLC: Move Source Files", S, ["To Do","In Progress","In Review","Done"], ["SGP-7310"]],
+  ["CDLC: Move Source Files (sub-task)", T, ["To Do","In Progress","In Review","Done"], ["SGP-7310","SGP-10335"]],
+  ["CDLC: Restrict Course Folder", S, ["To Do","In Progress","Suspended","Done"], []],
+  ["CDLC: Restrict Course Folder (sub-task)", T, ["To Do","In Progress","Suspended","Done"], ["SGP-10335"]],
+  ["CDLC: Run Image Archiving Automation", S, ["To Do","In Progress","In Review","Suspended","Done"], ["SGP-7310"]],
+  ["CDLC: Run Image Archiving Automation (sub-task)", T, ["To Do","In Progress","In Review","Suspended","Done"], ["SGP-7310","SGP-10335"]]
+]],
+
+["Certification", [
+  ["Certification: Template Generation", S, ["To Do","On Hold","Suspended","Done"], ["SGP-9940","SGP-10674"]],
+  ["Certification: Research Note", T, ["To Do","Inline Image Check","Manual Review","On Hold","Suspended","Done"], ["SGP-9940"]],
+  ["Certification: Slide Chunks", T, ["To Do","In Progress","Paraphrasing","In Review","On Hold","Suspended","Done"], ["SGP-9940"]],
+  ["Certification: Graphic Definitions", T, ["To Do","Generate Graphic Definition","Review & Revise Definition","Generate AI Visuals","Review & Revise Visuals","Review Final GD","On Hold","Suspended","Done"], ["SGP-9940"]],
+  ["Certification: Articulate Creation", T, ["To Do","Generate Articulate","ID Review","SME Review","Corrections","Quality review","On Hold","Suspended","Done"], ["SGP-9940","SGP-10355","SGP-10834"]]
+]],
+
+["Applied Layers", [
+  ["Applied Layers: Toolkit", S, ["To Do","Assigned","In Progress","In Review","Suspended","Done"], ["SGP-10766"]],
+  ["Applied Layers: Instructions", S, ["To Do","Assigned","In Progress","In Review","Suspended","Done"], ["SGP-10766"]],
+  ["Applied Layers: Content Finalization", S, ["Finalize as per SME Requirements","Generate Graphic Definition","Referencing"], ["SGP-10766"]],
+  ["Applied Layers: Video Recording", S, ["Video Recording","Manual Edit","Video Review"], ["SGP-10766"]],
+  ["Applied Layers: Video Creation", S, ["Storyboard","Video Creation","SME Review","In Review","On Hold","Suspended","Done"], ["SGP-10766","SGP-10978"]]
+]],
+
+["Simulation & generic", [
+  ["Simulation: Specs", S, ["To Do","Business Specs in Progress","Business Specs in Review","Learning Objectives in Progress","Learning Objective in Review","Suspended","Done"], []],
+  ["Simulation: Content Creation", S, ["To Do","In Progress","Scope Rearrange","Enhancement","Editorial review","SME Validation","In Review","Suspended","Done"], []],
+  ["Task", S, ["To Do","In Progress","In Review","Suspended","Done"], []],
+  ["Sub-task", T, ["To Do","In Progress","In Review","Suspended","Done"], []],
+  ["Bug", S, ["To Do","In Progress","In Review","Suspended","Done"], []],
+  ["Improvement", S, ["To Do","In Progress","In Review","Suspended","Done"], []],
+  ["Feedback", S, ["To Do","In Progress","Suspended","Done"], []]
+]]
+];
+
+
+/* ============================ CHANGE LOG ============================ */
+const OK = "ok", OPEN = "open", DEAD = "dead";
+
+const LOG = [
+["SGP-11280","2026-08-24",OPEN,"Assigned","Simplify the Course: Specs workflow",
+ "Asks for <code>Complete checklist</code>, <code>Run AI AGENT</code>, <code>CHECK REFERENCES</code>, <code>Approved</code> and <code>Dependency</code> to be removed from the work type that creates Business Specs &amp; Outline, possibly by swapping in an existing basic workflow. Still live as of today.",
+ ["Course: Specs"],
+ "To Do · In Progress · Complete checklist · Run AI AGENT · CHECK REFERENCES · In Review · Approved · Dependency · Suspended · Done",
+ "Not yet changed — all ten statuses still in place",[]],
+
+["SGP-10978","2026-08-03",OPEN,"In Review","New work item type for video creation and recording",
+ "Specifies a full workflow with two review gates and loop-backs on failure. Also meant to replace the video creation task inside the Applied Layers workflow.",
+ ["Applied Layers","Video"],null,
+ "To Do → Storyboard → SME Review → (fail: Storyboard | pass: Video Creation) → SME Review → (fail: Video Creation | pass: In Review) → (fail: Video Creation | pass: Done). On Hold and Suspended reachable from any status.",[]],
+
+["CDLC-9503","2026-07-27",OK,"Shipped","Add an SME to the SME group and field",
+ "New subject matter expert added to Jira, to the SME group, and to the SME dropdown field.",
+ ["Fields"],null,null,[]],
+
+["SGP-10834","2026-07-15",OK,"Shipped","Require a Final Storyline Link before Articulate work can close",
+ "Visual Designers were not updating the Storyline file after Articulate review. A new field was created and a validator now blocks the move to Done until it is filled.",
+ ["Articulate","Validators","Certification","Fields"],
+ "Articulate work types could move to Done with no record of the final Storyline file",
+ "Final Storyline Link required before Done on CDLC: Articulate Review and Certification: Articulate Creation",
+ [["SGP-10835",OK,"Create the field, add it to screen, screen scheme and layout"],
+  ["SGP-10836",OK,"Add the validator to both Articulate workflows"]]],
+
+["SGP-10825","2026-07-15",OK,"Shipped","Add a plumbing SME to the SME dropdown",
+ "a plumbing SME added to the list of SMEs available in the Jira field.",["Fields"],null,null,[]],
+
+["SGP-10815","2026-07-13",OK,"Shipped","Fix courses stuck at 5% completion on the project dashboard",
+ "Epic percentage complete was not advancing past 5% for a set of courses.",
+ ["Epic","Automations"],null,null,[]],
+
+["SGP-10785","2026-07-10",OK,"Shipped","Backfill Planning and Production Link on earlier tickets",
+ "Tickets created before those links existed were never populated. The automation now fills them in retrospectively.",
+ ["Digitization","Automations","Fields"],null,null,
+ [["SGP-10882",OK,"Update Planning Link"],["SGP-10883",OK,"Update Production Link"]]],
+
+["SGP-10766","2026-07-08",OK,"Shipped","Build the Applied Layers workflows from scratch",
+ "Five new work types for hands-on task courses, each at course level but not itself a course. Toolkit and Instructions share one workflow; the other three got bespoke ones.",
+ ["Applied Layers","Video"],
+ "No Applied Layers work types existed",
+ "Toolkit and Instructions: To Do · Assigned · In Progress · In Review · Done. Content Finalization: Finalize as per SME Requirements · Generate Graphic Definition · Referencing. Video Recording: Video Recording · Manual Edit · Video Review. Video Creation: Storyboard · Video Creation · SME Review · In Review · Done",
+ [["SGP-10777",OK,"Create the five Applied Layers work types"],
+  ["SGP-10778",OK,"Finalize workflows for Toolkit, Instructions and Video Creation"],
+  ["SGP-10843",OK,"Create workflows for Content Finalization, Video Recording and Video Creation"],
+  ["SGP-10844",OK,"Add Course Type"],
+  ["SGP-10845",OK,"Auto-create all five when an epic is opened with Course Type = Hands-on Task"],
+  ["SGP-10854",OK,"Write the process doc"],
+  ["SGP-10779",DEAD,"Set up Excel sheets for import"]]],
+
+["SGP-10674","2026-07-02",OPEN,"To Do","Certification work types are being created multiple times",
+ "The automation fires more than once when the trigger item moves to Done, producing duplicate tickets. Open since early July.",
+ ["Certification","Automations"],null,null,[]],
+
+["SGP-10442","2026-06-16",OPEN,"To Do","Show outline readiness in the epic progress bar",
+ "Request: if epic percentage is above 0% but no topic has progressed, that should read as \"outline ready\".",
+ ["Epic"],null,null,[]],
+
+["SGP-10441","2026-06-16",OK,"Shipped","Exclude Translation from Certification course progress",
+ "Certification courses have no translation step, so counting it was holding their completion percentage down.",
+ ["Certification","Epic","Automations"],null,null,[]],
+
+["SGP-10411","2026-06-11",OK,"Shipped","Let users skip Spanish Translations",
+ "Workflow changed so the Spanish Translations status is no longer mandatory on the way through.",
+ ["Translations"],null,null,[]],
+
+["SGP-10355","2026-06-03",OK,"Shipped","Rebuild the Certification: Articulate Creation workflow",
+ "The workflow shipped a month earlier was too thin. Corrections, SME Review and Quality Review were added, In Review was renamed, and loop-backs were defined so a failed review returns to ID Review.",
+ ["Certification","Articulate"],
+ "To Do → Generate Articulate → In Review → Done",
+ "To Do → Generate Articulate → ID Review ⇄ Corrections → SME Review → Quality review → Done, with SME Review and Quality review able to send it back to ID Review",[]],
+
+["SGP-10335","2026-06-02",OK,"Shipped","Restructure digitization into sub-tasks",
+ "The single Digitization Process ticket was broken into eleven sub-task work types, each with its own workflow, and every digitization automation was rewritten to point at them.",
+ ["Digitization"],
+ "One flat Digitization Process work type",
+ "Eleven sub-task work types: Badge Creation, Upload to AWS + Planning, Review, Restore on SkillCat, Data Sheet Creation, Content Upkeep, Run Image Archiving, Course Catalog Updating, Generate Performance Report, Move Source Files, Restrict Course Folder",
+ [["SGP-10336",OK,"Create Course Introduction, assigned to the ID named in Contributors"],
+  ["SGP-10342",OK,"Create the eleven sub-task work types"],
+  ["SGP-10343",OK,"Auto-create CDLC: Topic as soon as the epic moves to Digitization"],
+  ["SGP-10344",OK,"Associate a workflow with each of the eleven new work types"],
+  ["SGP-10345",OK,"Repoint every digitization automation at the new work types"],
+  ["SGP-10372",OK,"Switch all copied fields to {{triggerIssue.…}} syntax"],
+  ["SGP-10380",OK,"Retire the Digitization Process work type in favour of Digitization - Data Sheet Creation"],
+  ["SGP-10418",OK,"Remove the backwards transitions out of QA Review on Restore on SkillCat"]]],
+
+["SGP-10243","2026-05-18",OK,"Shipped","Make translations drive the parent topic",
+ "Two automations so the Topic follows its Translation sub-task instead of being moved by hand.",
+ ["Translations","Automations"],null,
+ "Translation → Upload to AWS also moves the Topic to Upload to AWS. Translation → Done also moves the Topic to Done.",[]],
+
+["SGP-10021","2026-05-11",OPEN,"To Do","A field for translations?",
+ "Open question, never specified further.",["Translations","Fields"],null,null,[]],
+
+["SGP-10001","2026-05-07",OK,"Shipped","Fix how Visual Designer is copied",
+ "Automations using \"Copy from Parent\" were replaced with an explicit <code>{{issue.parent.Visual Designer(s)}}</code> reference across at least five automations, including Topic creation, Certification PPTX and the digitization chain.",
+ ["Automations","Fields"],null,null,[]],
+
+["SGP-9998","2026-05-07",OK,"Shipped","Add validators across CDLC",
+ "An umbrella for gating transitions on required fields. Three shipped, six were discarded and two are still parked. The pattern that survived was: block the transition, not the ticket creation.",
+ ["Validators"],null,null,
+ [["SGP-9999",OK,"Graphics can't leave In Review without Articulate Review Link and VD filled"],
+  ["SGP-10334",OK,"Sub-tasks need Target End Date and Checklist to leave To Do, across eight work types"],
+  ["SGP-10349",OK,"Epic can't move to Digitization until ID, VD and QA Specialist are filled"],
+  ["SGP-10028",OPEN,"Spanish file required before a translation can move on"],
+  ["SGP-10361",OPEN,"Topic name required before To Do → In Progress — blocked, because Topic is moved entirely by automation"],
+  ["SGP-10000",DEAD,"Seven fields required before Epic leaves To Do"],
+  ["SGP-10029",DEAD,"Checklist added to epic or topic"],
+  ["SGP-10060",DEAD,"Epic can't be created without Course Type and Contributors"],
+  ["SGP-10173",DEAD,"Topic can't reach Final Slides without Checklist and Contributors"],
+  ["SGP-10244",DEAD,"Topic can only close once every sub-task is Done"]]],
+
+["SGP-9946","2026-05-04",OPEN,"To Do","Delete duplicate work types",
+ "Names the exact problem still visible in the config today: CDLC: Assessment and CDLC: Topic Assessment both exist, and the same doubling runs across many work types. The plan was to filter for tickets of the dead type, migrate them, then delete it.",
+ ["Cleanup"],null,null,[]],
+
+["SGP-9940","2026-05-04",OK,"Shipped","Build the Certification course track",
+ "Five new work types with their own workflows and automations, triggered when an epic is created with Course Type set to Certification.",
+ ["Certification"],
+ "No certification-specific work types existed",
+ "Template Generation: To Do · Done. Research Note: To Do → Manual Review → Inline Image Check → Done. Slide Chunks: To Do → In Progress → Paraphrasing → In Review → Done. Graphic Definitions: To Do → Generate Graphic Definition → Review &amp; Revise Definition → Review &amp; Revise Visuals → Generate AI Visuals → Review Final GD → Done. Articulate Creation: To Do → Generate Articulate → In Review → Done",
+ [["SGP-9941",OK,"Create the five Certification work types"],
+  ["SGP-9942",OK,"Define all five workflows, and remove \"Add Video Links\" from PPT Generation"],
+  ["SGP-9943",OK,"Automations: create Template Generation on Certification epics, populate Course Type on every topic"]]],
+
+["SGP-9818","2026-04-23",OK,"Shipped","Fix fields not copying from epic to child items",
+ "ID, VD and QA were not reaching newly created topics. Eleven automations were edited, including Topic Created, Create Base Articulate File, Final Slides complete, Move Source Files and Restrict Course Folder.",
+ ["Automations","Fields"],null,null,
+ [["SGP-9819",OK,"Edit the eleven affected automations"]]],
+
+["SGP-9762","2026-04-22",OK,"Shipped","Standardize the review status name",
+ "Three work types each called the same stage something different. The decision was to settle on Quality review.",
+ ["Naming","Articulate","Digitization"],
+ "Final Slides said In Review, Articulate said Quality Review, Digitization: Review said QA Review",
+ "All three set to Quality review — though QA Review is still live today on both Restore on SkillCat work types",[]],
+
+["SGP-9745","2026-04-21",OPEN,"To Do","Automate start and end dates",
+ "Never specified further.",["Automations"],null,null,[]],
+
+["SGP-9700","2026-04-17",OPEN,"In Progress","Fill Contributors automatically from Assignee",
+ "The idea was to derive Contributors from whoever is assigned and which group they belong to. Scope was cut back in July to Visual Designer and Digitization Resource only. Digitization Resource is the hard case, because it is a dropdown of people who are not Jira users.",
+ ["Automations","Fields"],null,null,
+ [["SGP-10673",OK,"Check the members of each group"],
+  ["SGP-10675",OK,"Set up the global automation"],
+  ["SGP-10823",OK,"Narrow scope to VD and Digitization Resource"],
+  ["SGP-10679",OPEN,"Automation for Digitization Resource"],
+  ["SGP-10677",DEAD,"Automation for SGP"],
+  ["SGP-10678",DEAD,"Automation for QFT"]]],
+
+["SGP-9695","2026-04-16",OK,"Shipped","Make the automations leaner",
+ "Every automation was separately checking which work type it was looking at, which was burning through the automation budget. Redundant condition checks were stripped and overlapping rules merged.",
+ ["Automations"],null,null,
+ [["SGP-10284",OK,"Merge the two competing PPT Generation automations, which disagreed about whether Informational courses were included"]]],
+
+["SGP-9672","2026-04-16",OK,"Shipped","Create the Course Briefing work type",
+ "For the briefing between Instructional Designer and SME, with Visual Designer and QA Specialist present. Wired into the epic creation automation.",
+ ["Work types"],null,"CDLC: Course Brief — To Do · Assigned · In Progress · Done",
+ [["SGP-9733",OK,"Add it to the epic creation automation"]]],
+
+["SGP-9591","2026-04-14",OK,"Shipped","Add a Contributors tab beside Key Details",
+ "Applied to every screen scheme in CDLC.",["Fields"],null,null,[]],
+
+["SGP-9590","2026-04-14",OK,"Shipped","Rename Data Entry Resource to Digitization Resource",
+ "Data migrated across, two new people added to the dropdown, and the old custom field deleted.",
+ ["Fields","Digitization"],"Data Entry Resource","Digitization Resource — old field deleted",
+ [["SGP-9616",OK,"Add email addresses for two Digitization team members"],
+  ["SGP-9617",OK,"Migrate the data across"],
+  ["SGP-9618",OK,"Delete the old field"]]],
+
+["SGP-9558","2026-04-13",OPEN,"To Do","Add timelines for Digitization tasks",
+ "Never specified further.",["Digitization"],null,null,[]],
+
+["SGP-9555","2026-04-13",OK,"Shipped","Add a QA Review step after a course reaches production",
+ "A quality gate inserted into the Restore on SkillCat workflow, after In Review. The change was announced by email.",
+ ["Digitization"],"Restore on SkillCat ended at In Review","QA Review inserted after In Review",
+ [["SGP-9606",OK,"Send out an email about the change"]]],
+
+["SGP-9554","2026-04-13",OPEN,"On Hold","Give different work types different layouts",
+ "Every CDLC work type except Epic shares one layout, so Production Link shows up on tickets that have no use for it — including early-stage Final Slides and Articulate Review work.",
+ ["Fields"],null,null,[]],
+
+["SGP-9553","2026-04-13",OK,"Shipped","Cascade the course links from epic to children",
+ "Course Folder Link, Planning Link and Production Link now flow down from the epic instead of being typed in repeatedly. Two validators were added so the links can't be skipped.",
+ ["Fields","Digitization","Validators","Automations"],null,null,
+ [["SGP-10446",OK,"Automations for Course Folder Link"],
+  ["SGP-10449",OK,"Copy Planning Link onto the Digitization Process ticket and everything after it"],
+  ["SGP-10451",OK,"Copy Production Link onto the Digitization Process ticket and everything after it"],
+  ["SGP-10452",OK,"Planning Link required to move Upload to AWS + Planning into In Review"],
+  ["SGP-10453",OK,"Production Link required to move Restore on SkillCat into In Review"]]],
+
+["SGP-9552","2026-04-13",DEAD,"Discarded","Stop pulling the Articulate link from the epic",
+ "Automations were copying Articulate Review Link from the parent epic, but the epic has no such field — every topic has its own link. The fix was to read from CDLC: Topic instead. Dropped after a follow-up review.",
+ ["Articulate","Automations"],null,null,[]],
+
+["SGP-9342","2026-04-07",OPEN,"On Hold","List automations costing more time than they save",
+ "An audit that was never completed.",["Automations"],null,null,[]],
+
+["SGP-9340","2026-04-07",OPEN,"On Hold","Plan the Jira workflow for translations after corrections",
+ "Parked.",["Translations"],null,null,[]],
+
+["SGP-9075","2026-03-31",OK,"Shipped","Document the workflows and automations",
+ "Paired with SGP-9078, which documented the Jira work types.",["Docs"],null,null,[]],
+
+["SGP-8311","2026-03-04",OK,"Shipped","JIRA Workflow",
+ "Closed with no description recorded, so what changed here is not recoverable from Jira.",
+ ["Unknown"],null,null,[]],
+
+["SGP-7310","2026-01-27",OK,"Shipped","Add the image archiving ticket to the digitization chain",
+ "Every course needs its images extracted and tagged. A new ticket now appears automatically once Restore to SkillCat closes, and closing it in turn creates the Move Source Files ticket.",
+ ["Digitization","Automations"],null,
+ "Run Image Archiving Automation — To Do · In Progress · In Review · Done, auto-created after Restore to SkillCat and itself creating Move Source Files",[]],
+
+["SGP-7303","2026-01-27",OK,"Shipped","Add a course folder move step to digitization",
+ "Once a course is released its folder has to move out of \"Ongoing courses in progress\" into Course Specific Documents. Added to the Restore on SkillCat workflow after Update Spreadsheet.",
+ ["Digitization"],"No folder move step existed","Step added to Restore on SkillCat, after update spreadsheet",[]],
+
+["CIP-52","2025-11-13",OK,"Shipped","Implement updated review workflows",
+ "Recorded only as \"apply the approved changes to the review workflows, update documentation and communicate the new process\". The approved changes themselves were not written down in the ticket.",
+ ["Review","Unknown"],null,null,[]]
+];
+
+/* ============================ SHARED ============================ */
+const esc = s => String(s).replace(/[&<>"]/g, c => ({ "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;" }[c]));
+
+function hl(text, term) {
+  if (!term) return text;
+  const i = text.toLowerCase().indexOf(term);
+  if (i < 0) return text;
+  return text.slice(0, i) + "<mark>" + text.slice(i, i + term.length) + "</mark>" + text.slice(i + term.length);
+}
+
+/* Ticket counts per work type, measured against all 7,951 CDLC issues on 27 August 2026.
+   [total ever, created in the last 365 days]. A type with no ticket in a year reads Dormant. */
+const USAGE = {
+"Epic":[418,100],"CDLC: Topic":[561,290],"CDLC: Topic Final Slides":[524,247],
+"CDLC: Restrict Course Folder (sub-task)":[15,15],"CDLC: Move Source Files (sub-task)":[13,13],
+"CDLC: Generate Performance Report (sub-task)":[15,15],"CDLC: Topic Graphics":[446,245],
+"CDLC: Topic Assessment":[469,312],"CDLC: Topic Corrections":[284,226],
+"Digitization - Badge Creation (Sub-task)":[21,21],"Digitization - Review (sub-task)":[20,20],
+"Digitization - Upload to AWS + Planning (sub-task)":[20,20],"CDLC: Content Upkeep (sub-task)":[40,40],
+"Digitization - Data Sheet Creation (sub-task)":[20,20],"Digitization - Restore on SkillCat (sub-task)":[20,20],
+"CDLC: Topic PPT Generation":[458,272],"CDLC: Content Review":[518,518],
+"CDLC: Base Articulate file creation":[388,194],"CDLC: Vyond video":[0,0],
+"CDLC: Topic Stock image downloading":[15,0],"CDLC: Articulate Review":[413,229],
+"CDLC: Topic Translations":[389,266],"Digitization - Review":[36,36],"Graphics":[216,0],
+"Content: Digitization (Informational)":[158,3],"Content: Digitization (Instructional)":[50,8],
+"Digitization - Restore on SkillCat":[36,36],"Digitization - Upload to AWS + Planning":[36,36],
+"Simulation: Content Creation":[57,0],"Course: Specs":[314,84],"CDLC: Corrections":[60,0],
+"CDLC: Final Slides":[118,2],"Simulation: Specs":[56,0],"Improvement":[160,0],"Bug":[1,0],
+"Assessment":[150,0],"Instructional Design":[57,0],"CDLC: PPT generation":[91,0],
+"CDLC: Stock image downloading":[50,0],"Feedback":[1,0],"Course: Content Creation":[83,0],
+"CDLC: Content Upkeep":[102,86],"CDLC: Course outline":[94,2],"CDLC: Research notes":[85,0],
+"CDLC: Translations":[90,7],"Sub-task":[163,155],"CDLC: Badge and Course Image":[31,9],
+"Task":[99,90],"Digitization - Badge Creation":[34,34],"Digitization - Data Sheet Creation":[55,55],
+"Digitization - Course Catalog Updating":[32,32],"CDLC: Generate Performance Report":[19,19],
+"CDLC: Recording":[20,20],"CDLC: Run Image Archiving Automation":[13,13],
+"CDLC: Move Source Files":[13,13],"CDLC: Restrict Course Folder":[3,3],"CDLC: Course Brief":[66,66],
+"Certification: Template Generation":[27,27],"Certification: Research Note":[47,47],
+"Certification: Slide Chunks":[43,43],"Certification: Graphic Definitions":[41,41],
+"Certification: Articulate Creation":[41,41],"Digitization - Course Catalog Updating (sub-task)":[13,13],
+"CDLC: Run Image Archiving Automation (sub-task)":[13,13],"Applied Layers: Toolkit":[2,2],
+"Applied Layers: Instructions":[2,2],"Applied Layers: Content Finalization":[2,2],
+"Applied Layers: Video Recording":[2,2],"Applied Layers: Video Creation":[2,2]
+};
+
+function usageOf(name) {
+  const u = USAGE[name.trim()] || [0, 0];
+  const state = u[0] === 0 ? "never" : (u[1] === 0 ? "dormant" : "active");
+  const label = state === "never" ? "Never used" : state === "dormant" ? "Dormant" : "Active";
+  const meta  = state === "never" ? "no tickets ever"
+              : state === "dormant" ? `${u[0]} tickets · none in 12 months`
+              : `${u[0]} tickets · ${u[1]} in 12 months`;
+  return { state, label, meta };
+}
+
+let hideDormant = false;
+
+const LOG_KEYS = new Set(LOG.map(e => e[0]));
+
+const CHANGE_TO_TYPES = {};
+for (const [, types] of DATA)
+  for (const [name, , , refs] of types)
+    for (const k of (refs || []))
+      if (LOG_KEYS.has(k)) (CHANGE_TO_TYPES[k] = CHANGE_TO_TYPES[k] || []).push(name);
+
+/* ============================ TABS ============================ */
+const tabs = {
+  now: { btn: document.getElementById("tab-now"), panel: document.getElementById("panel-now") },
+  log: { btn: document.getElementById("tab-log"), panel: document.getElementById("panel-log") },
+  proc: { btn: document.getElementById("tab-proc"), panel: document.getElementById("panel-proc") }
+};
+
+function showTab(which) {
+  for (const k of Object.keys(tabs)) {
+    const on = k === which;
+    tabs[k].btn.setAttribute("aria-selected", on ? "true" : "false");
+    tabs[k].panel.hidden = !on;
+  }
+}
+tabs.now.btn.addEventListener("click", () => showTab("now"));
+tabs.log.btn.addEventListener("click", () => showTab("log"));
+tabs.proc.btn.addEventListener("click", () => showTab("proc"));
+
+/* ============================ INVENTORY ============================ */
+const outNow = document.getElementById("out-now");
+const hitsNow = document.getElementById("hits-now");
+const qNow = document.getElementById("q-now");
+const dimmed = new Set();
+
+
+function renderNow() {
+  const term = qNow.value.trim().toLowerCase();
+  let shown = 0, html = "";
+
+  for (const [family, types] of DATA) {
+    const rows = types.filter(([name, , sts]) => {
+      if (hideDormant && usageOf(name).state !== "active") return false;
+      return !term || name.toLowerCase().includes(term) || sts.some(s => s.toLowerCase().includes(term));
+    });
+    if (!rows.length) continue;
+    shown += rows.length;
+
+    html += `<div class="fam"><div class="fam-head"><h3>${esc(family)}</h3><em>${rows.length} of ${types.length}</em></div>`;
+    for (const [name, lvl, sts, refs] of rows) {
+      const known = (refs || []).filter(k => LOG_KEYS.has(k));
+      const u = usageOf(name);
+      html += `<div class="row"><div class="row-name"><b>${hl(esc(name), term)}</b>` +
+              `<span class="lvl">${lvl} · ${sts.length} statuses · ${u.meta}</span>` +
+              `<span class="badge b-${u.state}">${u.label}</span>`;
+      if (known.length) {
+        html += `<div class="xrefs">` + known.map(k =>
+          `<button class="xref" data-jump="${k}" title="Show this change">${k}</button>`).join("") + `</div>`;
+      }
+      html += `</div><div class="chips">`;
+      for (const s of sts) {
+        const c = CAT[s] || "ind";
+        html += `<span class="chip ${c}${dimmed.has(c) ? " dim" : ""}">${hl(esc(s), term)}</span>`;
+      }
+      html += `</div></div>`;
+    }
+    html += `</div>`;
+  }
+
+  outNow.innerHTML = html || `<p class="empty">No work type or status matches “${esc(qNow.value.trim())}”.</p>`;
+  hitsNow.textContent = shown + " of 69 work types" + (hideDormant ? " · dormant hidden" : "");
+
+  for (const b of outNow.querySelectorAll(".xref")) {
+    b.addEventListener("click", () => {
+      qLog.value = b.dataset.jump;
+      renderLog();
+      showTab("log");
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    });
+  }
+}
+
+qNow.addEventListener("input", renderNow);
+
+const hideBtn = document.getElementById("hide-dormant");
+hideBtn.addEventListener("click", () => {
+  hideDormant = !hideDormant;
+  hideBtn.setAttribute("aria-pressed", hideDormant ? "true" : "false");
+  hideBtn.textContent = hideDormant ? "Show dormant" : "Hide dormant";
+  renderNow();
+});
+for (const b of document.querySelectorAll(".lg")) {
+  b.addEventListener("click", () => {
+    const c = b.dataset.cat;
+    if (dimmed.has(c)) { dimmed.delete(c); b.setAttribute("aria-pressed", "true"); }
+    else { dimmed.add(c); b.setAttribute("aria-pressed", "false"); }
+    renderNow();
+  });
+}
+
+/* ============================ CHANGELOG ============================ */
+const outLog = document.getElementById("out-log");
+const hitsLog = document.getElementById("hits-log");
+const qLog = document.getElementById("q-log");
+const active = new Set();
+
+const ALL_TAGS = [...new Set(LOG.flatMap(e => e[6]))].sort();
+document.getElementById("filters").innerHTML =
+  ALL_TAGS.map(t => `<button class="fl" data-tag="${esc(t)}" aria-pressed="false">${esc(t)}</button>`).join("");
+
+const MONTHS = ["January","February","March","April","May","June","July","August","September","October","November","December"];
+const monthKey = d => { const [y, m] = d.split("-"); return MONTHS[+m - 1] + " " + y; };
+const dayLabel = d => { const [, m, dd] = d.split("-"); return dd + " " + MONTHS[+m - 1].slice(0, 3); };
+
+function renderLog() {
+  const term = qLog.value.trim().toLowerCase();
+  const rows = LOG.filter(e => {
+    if (active.size && !e[6].some(t => active.has(t))) return false;
+    if (!term) return true;
+    const hay = [e[0], e[4], e[5], e[7] || "", e[8] || "", e[6].join(" "),
+                 ...e[9].flatMap(s => [s[0], s[2]])].join(" ").toLowerCase();
+    return hay.includes(term);
+  });
+
+  let html = "", current = null;
+
+  for (const [key, date, state, label, title, what, tags, before, after, subs] of rows) {
+    const mk = monthKey(date);
+    if (mk !== current) {
+      if (current !== null) html += "</div>";
+      const n = rows.filter(r => monthKey(r[1]) === mk).length;
+      html += `<div class="fam"><div class="fam-head"><h3>${mk}</h3><em>${n} change${n === 1 ? "" : "s"}</em></div>`;
+      current = mk;
+    }
+
+    const wts = CHANGE_TO_TYPES[key] || [];
+    const chips = wts.length
+      ? wts.map(n => `<button class="chip s-${state}" data-wt="${esc(n)}" title="Show this work type in the inventory">${hl(esc(n), term)}</button>`).join("")
+      : tags.map(t => `<span class="chip s-none">${esc(t)}</span>`).join("");
+
+    html += `<div class="row">
+      <div class="row-name">
+        <b>${hl(esc(title), term)}</b>
+        <span class="lvl">${dayLabel(date)} · <a href="https://skillcatapp.atlassian.net/browse/${key}" target="_blank" rel="noopener">${hl(esc(key), term)}</a></span>
+        <span class="pill ${state}">${label}</span>
+      </div>
+      <div class="ebody">
+        <div class="chips">${chips}</div>
+        <p class="what">${what}</p>`;
+
+    if (before || after) {
+      html += `<div class="ba">`;
+      if (before) html += `<div><b>Was</b><span>${before}</span></div>`;
+      if (after)  html += `<div class="now"><b>Became</b><span>${after}</span></div>`;
+      html += `</div>`;
+    }
+
+    if (subs.length) {
+      html += `<ul class="subs">` + subs.map(([sk, ss, st]) =>
+        `<li><a href="https://skillcatapp.atlassian.net/browse/${sk}" target="_blank" rel="noopener">${sk}</a>` +
+        (ss === DEAD ? `<s>${st}</s>` : `<span>${st}</span>`) + `</li>`).join("") + `</ul>`;
+    }
+
+    html += `<div class="tags">${tags.map(t => `<span class="tag-c">${esc(t)}</span>`).join("")}</div>
+      </div></div>`;
+  }
+
+  if (current !== null) html += "</div>";
+
+  outLog.innerHTML = html || `<p class="empty">Nothing matches that.</p>`;
+  hitsLog.textContent = rows.length + " of " + LOG.length + " changes";
+
+  for (const b of outLog.querySelectorAll(".chip[data-wt]")) {
+    b.addEventListener("click", () => {
+      qNow.value = b.dataset.wt;
+      renderNow();
+      showTab("now");
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    });
+  }
+}
+
+qLog.addEventListener("input", renderLog);
+for (const b of document.querySelectorAll(".fl")) {
+  b.addEventListener("click", () => {
+    const t = b.dataset.tag;
+    if (active.has(t)) { active.delete(t); b.setAttribute("aria-pressed", "false"); }
+    else { active.add(t); b.setAttribute("aria-pressed", "true"); }
+    renderLog();
+  });
+}
+
+renderNow();
+renderLog();
+
+/* ============================ THE PROCESS ============================ */
+/* Source: CDLC Process Documentation v1.0, Content Team SOP, 30 May 2026. */
+
+const ROLES = [
+  ["Instructional Designer", "Drafting, editing and iterating content in line with the brief", "The ID Team Manager"],
+  ["Visual Designer", "Creating visuals and graphics aligning with the Instructional Designer's brief", "The VD Team Manager"],
+  ["QA Specialist", "Reviewing content for accuracy, tone, grammar and brand alignment", "The QA Specialist"],
+  ["Digitization Resource", "Creating translations and ensuring the course and all its assets upload correctly to the app", "The Digitization Manager"],
+  ["Subject Matter Expert", "Providing specialist input and validating factual accuracy. Can be internal or external", "Usually the Internal SME"]
+];
+
+/* n, title, owner, summary, who[], workTypes[], triggers[[from, to]], mismatches[[docSays, jiraHas]] */
+const PROCESS = [
+[1, "Epic Creation", "Instructional Designers' Team Manager",
+ "The ID Team Manager creates an epic for a course in the pipeline. What gets created underneath depends on the Course Type field: Instructional, Informational and Practical courses produce Business Specs and a Course Brief, while Certification courses produce Template Generation instead. The ID Team Manager then moves the epic from To Do to In Progress and assigns it to an Instructional Designer.",
+ ["Reporter: ID Team Manager", "Assignee: Instructional Designer"],
+ ["Epic", "Course: Specs", "CDLC: Course Brief", "Certification: Template Generation"],
+ [["Epic created, Course Type = Instructional / Informational / Practical", "Business Specs & Course Brief"],
+  ["Epic created, Course Type = Certification", "Certification: Template Generation"]],
+ [["CDLC: Epic", "Epic"], ["CDLC: Business Specs", "Course: Specs"]]],
+
+[2, "Topic Creation", "Instructional Designer",
+ "The Instructional Designer creates and names the topic, the primary child item under an epic. Every field except Topic is copied down from the epic, which is why the epic has to be filled in properly first. Final Slides and Articulate Review Link get added later, and must be added on the CDLC: Topic so they cascade to everything created after it.",
+ ["Reporter and Assignee: Instructional Designer"],
+ ["CDLC: Topic"],
+ [["Topic created, Course Type = Certification", "Certification: Research Note"],
+  ["Topic created, Course Type = Informational / Instructional / Practical", "CDLC: Topic Final Slides"],
+  ["ID starts work on Final Slides", "CDLC: Topic moves To Do → Final Slides"]],
+ [["Certification: Research Notes", "Certification: Research Note"]]],
+
+[3, "Final Slides / Research Note Creation", "Instructional Designer, then QA and SME",
+ "The Instructional Designer develops the content against the approved learning objectives, then passes it for review. The reviewer is identified by the status: Quality review means it sits with the QA Specialist, Internal SME review means it sits with the Internal SME. Output is an Excel or Google Sheet.",
+ ["Instructional Designer", "QA Specialist", "Internal SME"],
+ ["CDLC: Topic Final Slides", "Certification: Research Note"],
+ [["CDLC: Topic Final Slides marked Done", "CDLC: Topic Graphics and CDLC: Topic PPT Generation"],
+  ["Certification: Research Note marked Done", "Certification: Slide Chunks"]],
+ []],
+
+[4, "Base Articulate / Slide Chunks Creation", "Instructional Designer and Digitization",
+ "For Instructional, Practical and Informational courses the ID generates a PPT, which Digitization turns into a Base Articulate file — the template for the final Storyline file, carrying voiceover, captions and slide titles. Its Description field arrives pre-filled with instructions for the Digitization team. The Digitization Manager assigns it onward to Data Entry, then back to the ID, who closes it. For Certification courses the ID works on Slide Chunks instead. This runs alongside Stage 5.",
+ ["Instructional Designer", "Digitization Resource"],
+ ["CDLC: Topic PPT Generation", "CDLC: Base Articulate file creation", "Certification: Slide Chunks"],
+ [["CDLC: Topic PPT Generation marked Done", "CDLC: Base Articulate file creation, assigned to the Digitization Manager"],
+  ["Certification: Slide Chunks marked Done", "Certification: Graphic Definitions, assigned to the ID"]],
+ [["CDLC: Base Articulate File Creation", "CDLC: Base Articulate file creation"]]],
+
+[5, "Graphics / Graphic Definition Creation", "Visual Designer, or ID for Certification",
+ "For Informational, Instructional and Practical courses the Visual Designer works the graphics into the Articulate Storyline file built in Stage 4, following the Graphic Definition the ID wrote in the Final Slides sheet. The VD adds the Articulate Review Link, completes the checklist, sends it to the VD Team Manager, who passes it to the ID with the status Send to Instructional Designer. Anything the ID wants changed goes through CDLC: Topic Corrections, which bounces between ID and VD. For Certification courses the ID prepares the Graphic Definition instead.",
+ ["Visual Designer", "The VD Team Manager", "Instructional Designer"],
+ ["CDLC: Topic Graphics", "CDLC: Topic Corrections", "Certification: Graphic Definitions"],
+ [["CDLC: Topic Graphics created", "parent CDLC: Topic moves to Ready for Graphics"],
+  ["CDLC: Topic Graphics marked Done", "CDLC: Articulate Review and CDLC: Topic Corrections; parent Topic moves to In Review and its Articulate Review Link is filled from the Graphics field"],
+  ["Certification: Graphic Definitions marked Done", "CDLC: Topic PPT Generation"]],
+ [["Certification: Graphic Definition", "Certification: Graphic Definitions"]]],
+
+[6, "Articulate Review", "QA Specialist and SMEs",
+ "The ID and VD have both finished with the Storyline file and share it for review. Status moves In Progress → In Review, and back again for corrections, with the Assignee changing hands each time a concern is raised or resolved. CDLC: Topic Assessment is the last step that needs the Instructional Designer, who is both Assignee and Reporter on it.",
+ ["Instructional Designer", "QA Specialist", "Internal SME (the Internal SME)", "External SME"],
+ ["CDLC: Articulate Review", "CDLC: Topic Assessment", "Certification: Articulate Creation"],
+ [["CDLC: Articulate Review marked Done", "CDLC: Topic Translations and CDLC: Topic Assessment"],
+  ["Certification: Articulate Creation marked Done", "CDLC: Topic Assessment"]],
+ [["Creates work types SME Review and External Review", "Both are statuses, not work types — no such work types exist"]]],
+
+[7, "Translation & Digitization", "Digitization and Data Entry",
+ "Two things run here. Translation: once the ID uploads the finalised Storyline file, the Digitization Resource translates it to Spanish, the Digitization Manager routes it to the course's QA Specialist, and after QA it goes to Upload to AWS and then Done — each of which drags the parent Topic along with it. Digitization: the moment the epic moves to Digitization, a fan of tickets is created, each setting off further automations as it closes. Outputs are the Planning Link on guroo.com and the Production Link on skillcat.app.",
+ ["Digitization Resource", "The Digitization Manager", "QA Specialist"],
+ ["CDLC: Topic Translations", "Digitization - Upload to AWS + Planning", "Digitization - Review",
+  "Digitization - Restore on SkillCat", "Digitization - Data Sheet Creation", "Digitization - Badge Creation",
+  "Digitization - Course Catalog Updating", "CDLC: Content Upkeep", "CDLC: Run Image Archiving Automation",
+  "CDLC: Generate Performance Report", "CDLC: Restrict Course Folder", "CDLC: Move Source Files"],
+ [["Epic moves to Digitization", "Badge and Course Image Creation, Upload to AWS + Planning, Review, Restore on SkillCat, Data Sheet Creation, Course Metadata and Create Course Introduction"],
+  ["Digitization - Review marked Done", "CDLC: Generate Performance Report"],
+  ["CDLC: Generate Performance Report marked Done", "CDLC: Restrict Course Folder"],
+  ["Digitization - Restore on SkillCat marked Done", "Digitization - Course Catalog Updating and CDLC: Run Image Archiving Automation"],
+  ["CDLC: Run Image Archiving Automation marked Done", "CDLC: Move Source Files"],
+  ["CDLC: Topic Translations moves to Upload to AWS", "parent CDLC: Topic moves to Uploading to AWS"],
+  ["CDLC: Topic Translations marked Done", "parent CDLC: Topic moves to Done"]],
+ [["CDLC: Run Image Archiving", "CDLC: Run Image Archiving Automation"],
+  ["Translation path To Do → In Progress → In Review → Upload to AWS → Done", "CDLC: Topic Translations has no In Progress status. Its set includes Assigned, In Translation and Complete checklist, none of which the SOP mentions"]]]
+];
+
+const LIVE_TYPES = new Set();
+for (const [, types] of DATA) for (const [name] of types) LIVE_TYPES.add(name);
+
+document.getElementById("roles").innerHTML = ROLES.map(([r, d, m]) =>
+  `<div class="role"><b>${esc(r)}</b><span>${esc(d)}</span><em>${esc(m)}</em></div>`).join("");
+
+const outProc = document.getElementById("out-proc");
+
+function renderProc() {
+  let html = "";
+  for (const [n, title, owner, summary, who, types, triggers, mismatches] of PROCESS) {
+    html += `<div class="fam" style="margin-bottom:1.6rem">
+      <div class="stage-head">
+        <span class="stage-n">${String(n).padStart(2, "0")}</span>
+        <h3>${esc(title)}</h3>
+        <em>${esc(owner)}</em>
+      </div>`;
+
+    html += `<div class="row"><div class="row-name"><b>What happens</b></div>
+      <div class="ebody"><p class="what">${esc(summary)}</p></div></div>`;
+
+    html += `<div class="row"><div class="row-name"><b>Who</b></div>
+      <div class="ebody"><div class="chips">` +
+      who.map(w => `<span class="chip s-none">${esc(w)}</span>`).join("") +
+      `</div></div></div>`;
+
+    html += `<div class="row"><div class="row-name"><b>Work types</b>` +
+      `<span class="lvl">${types.length} in this stage</span></div>
+      <div class="ebody"><div class="chips">` +
+      types.map(t => LIVE_TYPES.has(t)
+        ? `<button class="chip s-ok" data-wt="${esc(t)}" title="Show this work type in the inventory">${esc(t)}</button>`
+        : `<span class="chip s-none">${esc(t)}</span>`).join("") +
+      `</div></div></div>`;
+
+    html += `<div class="row"><div class="row-name"><b>Triggers next</b></div>
+      <div class="ebody"><ul class="trig">` +
+      triggers.map(([from, to]) =>
+        `<li><code>${esc(from)}</code><span class="arrow">→</span><span>${esc(to)}</span></li>`).join("") +
+      `</ul></div></div>`;
+
+    if (mismatches.length) {
+      html += `<div class="row"><div class="row-name"><b>SOP does not match Jira</b></div>
+        <div class="ebody"><ul class="mism">` +
+        mismatches.map(([d, j]) =>
+          `<li>SOP says <span class="doc">${esc(d)}</span> · Jira has <span class="jira">${esc(j)}</span></li>`).join("") +
+        `</ul></div></div>`;
+    }
+
+    html += `</div>`;
+  }
+  outProc.innerHTML = html;
+
+  for (const b of outProc.querySelectorAll(".chip[data-wt]")) {
+    b.addEventListener("click", () => {
+      qNow.value = b.dataset.wt;
+      renderNow();
+      showTab("now");
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    });
+  }
+}
+
+renderProc();
+
+</script>
