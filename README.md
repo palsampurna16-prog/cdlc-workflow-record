@@ -59,8 +59,10 @@ JIRA_API_TOKEN=... \
 node scripts/refresh-usage.mjs && node build.mjs
 ```
 
-In CI it runs every Monday at 06:00 UTC and commits any change. It needs three repository
-secrets under **Settings → Secrets and variables → Actions**:
+The GitHub workflow is **manual only** — there is no schedule, so nothing runs and nothing
+fails until you ask it to. Trigger it from the **Actions** tab when the Jira config changes.
+It needs three repository secrets under **Settings → Secrets and variables → Actions**
+before it will work:
 
 | Secret | Value |
 | --- | --- |
@@ -70,6 +72,11 @@ secrets under **Settings → Secrets and variables → Actions**:
 
 The token inherits that account's permissions, so use one with read access and nothing
 more. It is never written into the page — only the resulting counts are.
+
+Until those secrets exist the workflow will fail if run, which is why it is not scheduled.
+The site is unaffected either way: the counts are baked into `index.html` and keep serving
+whatever was last committed. To go back to a weekly refresh, add the secrets and uncomment
+the `schedule` block in `.github/workflows/refresh.yml`.
 
 ## Names, and what is public
 

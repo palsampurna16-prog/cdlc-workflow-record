@@ -1,10 +1,16 @@
 name: Refresh usage counts
 
 # Re-measures work type usage against Jira and commits the result.
-# Runs Mondays at 06:00 UTC, or on demand from the Actions tab.
+#
+# Manual only — run it from the Actions tab when the Jira config changes.
+# There is deliberately no schedule: without the three JIRA_* repository
+# secrets this job fails, and a weekly failing job just sends weekly email.
+# To run it automatically instead, add the secrets and uncomment the schedule.
+#
+# on:
+#   schedule:
+#     - cron: "0 6 * * 1"
 on:
-  schedule:
-    - cron: "0 6 * * 1"
   workflow_dispatch:
 
 permissions:
