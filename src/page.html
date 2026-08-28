@@ -285,11 +285,8 @@
 
   /* fields by owner */
   .fgroup { margin-top:var(--space-400); }
-  .fgroup h3 { margin:0 0 var(--space-050); font-size:15px; font-weight:600; }
-  .fgroup .blurb { margin:0 0 var(--space-150); max-width:70ch; font-size:13px;
-                   color:var(--c-text-subtle); }
+  .fgroup h3 { margin:0 0 var(--space-150); font-size:15px; font-weight:600; }
   .fgroup.orphan h3 { color:#974F0C; }
-  .fgroup.orphan .blurb { color:#974F0C; }
   .frow { display:flex; align-items:baseline; gap:var(--space-150);
           padding:var(--space-100) var(--space-200); border-bottom:1px solid var(--c-border); }
   .frow:last-child { border-bottom:0; }
@@ -434,12 +431,13 @@ function facts(o, extra) {
 /* ---------- fields, grouped by who fills them ---------- */
 const FIELDS = /*__FIELDS__*/[]/*__ENDF__*/;
 
-/* Jira records that a field exists, not who is responsible for filling it. That is
-   process knowledge, so these groupings come from the SOP rather than from Jira, and
-   the last group is the fields the SOP never assigns to anyone. */
+/* Jira records that a field exists, not who is responsible for filling it. Who fills
+   what comes from the team's own process document, so these groupings are maintained
+   by hand rather than read from Jira. The last group is the fields nobody has been
+   assigned to yet. */
 function viewFields() {
   const total = FIELDS.reduce((n,g) => n + g[2].length, 0);
-  const owned = FIELDS.filter(g => !/^No documented owner/i.test(g[0]))
+  const owned = FIELDS.filter(g => !/^Nobody assigned/i.test(g[0]))
                       .reduce((n,g) => n + g[2].length, 0);
 
   view.innerHTML =
@@ -453,11 +451,10 @@ function viewFields() {
          <div class="fact"><dt>With an owner</dt><dd>${owned}</dd></div>
          <div class="fact"><dt>Unassigned</dt><dd>${total-owned}</dd></div>
        </dl>` +
-    FIELDS.map(([title, blurb, rows]) => {
-      const orphan = /^No documented owner/i.test(title);
+    FIELDS.map(([title, , rows]) => {
+      const orphan = /^Nobody assigned/i.test(title);
       return `<section class="fgroup${orphan?" orphan":""}">
          <h3>${esc(title)}</h3>
-         <p class="blurb">${esc(blurb)}</p>
          <div class="rows">` +
            rows.map(([name, type, coverage, how]) =>
              `<div class="frow">
