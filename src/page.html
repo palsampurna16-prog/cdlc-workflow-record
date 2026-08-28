@@ -247,6 +247,33 @@
   .aside-k { font-size:11px; font-weight:700; letter-spacing:0.06em; text-transform:uppercase;
              color:var(--c-text-subtlest); }
 
+
+  /* section tabs */
+  .tabs { display:flex; gap:var(--space-300); margin:var(--space-150) 0 var(--space-300);
+          border-bottom:2px solid var(--c-border); }
+  .tabs button { position:relative; padding:var(--space-100) 0 var(--space-150);
+                 background:none; border:0; font:inherit; font-weight:600; font-size:14px;
+                 color:var(--c-text-subtle); cursor:pointer;
+                 transition:color var(--duration) var(--ease); }
+  .tabs button:hover { color:var(--c-text); }
+  .tabs button[aria-current="page"] { color:var(--c-brand); }
+  .tabs button[aria-current="page"]::after { content:""; position:absolute; left:0; right:0;
+      bottom:-2px; height:2px; background:var(--c-brand); border-radius:2px; }
+
+  /* history filter toggles */
+  .filters { display:flex; flex-wrap:wrap; gap:var(--space-100); margin-bottom:var(--space-200); }
+  .filters button { display:inline-flex; align-items:center; gap:var(--space-050);
+      padding:var(--space-050) var(--space-150); font:inherit; font-size:13px; font-weight:600;
+      color:var(--c-text-subtle); background:var(--c-surface); cursor:pointer;
+      border:1px solid var(--c-border-strong); border-radius:999px;
+      transition:background-color var(--duration) var(--ease), color var(--duration) var(--ease),
+                 border-color var(--duration) var(--ease); }
+  .filters button:hover { background:var(--c-surface-hover); }
+  .filters button[aria-pressed="true"] { background:var(--c-brand); border-color:var(--c-brand);
+      color:var(--c-text-inverse); }
+  .filters .n { font-weight:400; opacity:.75; font-variant-numeric:tabular-nums; }
+  .empty-filter { padding:var(--space-400); text-align:center; color:var(--c-text-subtle); }
+
   @media (max-width:640px) {
     .page { padding:var(--space-300) var(--space-200) var(--space-400); }
     .search { display:none; }
@@ -379,6 +406,17 @@ function facts(o, extra) {
    `</dl>`;
 }
 
+/* ---------- CDLC section tabs ---------- */
+function tabs(active) {
+  const items = [["epic","The Epic",""],["history","Change history","history"]];
+  return `<div class="tabs">` + items.map(([id,label,to]) =>
+    `<button data-to="CDLC/${to}"${id===active?' aria-current="page"':""}>${label}</button>`).join("") + `</div>`;
+}
+function wireTabs() {
+  view.querySelectorAll(".tabs button").forEach(el =>
+    el.addEventListener("click", () => go(el.dataset.to.replace(/\/$/, ""))));
+}
+
 /* ---------- change history ---------- */
 const CHANGES = /*__CHANGES__*/[]/*__ENDC__*/;
 const MONTHS=["January","February","March","April","May","June","July","August",
@@ -390,31 +428,54 @@ const richText = t => esc(t)
   .replace(/&lt;(\/?code)&gt;/g, "<$1>")      /* the one tag the source uses */
   .replace(/&amp;(\w+|#\d+);/g, "&$1;");     /* source is already escaped — undo the double escape */
 
+let histFilter = new Set();
+
 function viewHistory() {
-  const rows = [...CHANGES].sort((a,b)=>b.date.localeCompare(a.date));
-  let out = "", month = "";
+  const tags = {};
+  CHANGES.forEach(c => (c.affected||[]).forEach(a => tags[a] = (tags[a]||0)+1));
+  const order = Object.entries(tags).sort((a,b) => b[1]-a[1] || a[0].localeCompare(b[0]));
+
+  const match = c => !histFilter.size || (c.affected||[]).some(a => histFilter.has(a));
+  const rows = CHANGES.filter(match).sort((a,b) => b.date.localeCompare(a.date));
+
+  let list = "", month = "";
   rows.forEach(c => {
     const m = monthOf(c.date);
-    if (m !== month) { if (month) out += `</div>`; out += `<p class="hist-month">${esc(m)}</p><div class="hist">`; month = m; }
-    out += `<button data-k="${esc(c.key)}">
+    if (m !== month) { if (month) list += `</div>`; list += `<p class="hist-month">${esc(m)}</p><div class="hist">`; month = m; }
+    list += `<button data-k="${esc(c.key)}">
        <span class="hist-day">${c.date.slice(8,10)}</span>
        <span class="hist-title">${esc(c.title)}</span>
        <span class="hist-key">${esc(c.key)}</span>
        <span class="hist-out"><span class="status ${OUTCLS[c.outcome]||"prog"}">${esc(c.outcome)}</span></span>
      </button>`;
   });
-  if (month) out += `</div>`;
+  if (month) list += `</div>`;
 
   view.innerHTML =
     crumbs([{label:"Projects", to:""},{label:"CDLC", to:"CDLC"},{label:"Change history"}]) +
-    `<div class="col"><div class="page-head"><h1>Change history</h1></div>
-       <div class="facts" style="margin-bottom:var(--space-200)">
-         <div class="fact"><dt>Changes</dt><dd>${CHANGES.length}</dd></div>
-         <div class="fact"><dt>Shipped</dt><dd>${CHANGES.filter(c=>c.outcome==="Shipped").length}</dd></div>
-         <div class="fact"><dt>Still open</dt><dd>${CHANGES.filter(c=>c.state==="open").length}</dd></div>
-         <div class="fact"><dt>Period</dt><dd style="font-weight:400">${esc(monthOf(rows[rows.length-1].date))} &ndash; ${esc(monthOf(rows[0].date))}</dd></div>
-       </div>` + out + `</div>`;
-  wireCrumbs();
+    `<div class="col">
+       <div class="page-head"><h1>CDLC Epic</h1></div>
+       ${tabs("history")}
+       <div class="filters">
+         <button data-t="" aria-pressed="${histFilter.size?"false":"true"}">All
+           <span class="n">${CHANGES.length}</span></button>` +
+         order.map(([t,n]) =>
+           `<button data-t="${esc(t)}" aria-pressed="${histFilter.has(t)}">${esc(t)}
+              <span class="n">${n}</span></button>`).join("") +
+    `  </div>` +
+       (rows.length ? list
+         : `<p class="empty-filter">No change touched that.</p>`) +
+     `</div>`;
+
+  wireCrumbs(); wireTabs();
+  view.querySelectorAll(".filters button").forEach(el =>
+    el.addEventListener("click", () => {
+      const t = el.dataset.t;
+      if (!t) histFilter.clear();
+      else histFilter.has(t) ? histFilter.delete(t) : histFilter.add(t);
+      viewHistory();
+      window.scrollTo({ top: 0 });
+    }));
   view.querySelectorAll(".hist button").forEach(el =>
     el.addEventListener("click", () => go("CDLC/history/"+el.dataset.k)));
 }
@@ -504,8 +565,9 @@ function viewEpic(key) {
     `<div class="col">
        <div class="page-head">
          <h1>CDLC Epic</h1>
-         <p class="lede">One Epic is one course.</p>
        </div>
+       ${tabs("epic")}
+       <p class="lede">One Epic is one course.</p>
 
        <h2>Its workflow</h2>
        ${workflowGraph(CDLC.epic.transitions)}
@@ -541,16 +603,11 @@ function viewEpic(key) {
               </span>
             </button>`; }).join("") +
     `  </div>
-       <p class="caption"><button class="crumb-like" id="to-history"
-            style="background:none;border:0;padding:0;font:inherit;color:var(--c-link);cursor:pointer">
-            View the change history &rarr;</button></p>
        <p class="caption">Drawn for Instructional, Informational and Practical courses.
           Certification courses replace the first two steps with Template Generation.</p>
      </div>`;
 
-  wireCrumbs();
-  const th=document.getElementById("to-history");
-  if (th) th.addEventListener("click", () => go("CDLC/history"));
+  wireCrumbs(); wireTabs();
   view.querySelectorAll(".stage").forEach(el =>
     el.addEventListener("click", () => go("CDLC/"+el.dataset.stage)));
 }
