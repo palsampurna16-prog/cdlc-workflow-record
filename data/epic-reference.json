@@ -1,0 +1,50 @@
+{
+  "source": "CDLC-8592",
+  "capturedAt": "2026-08-28",
+  "note": "Canonical CDLC Epic shape, taken from the live reference epic nominated as current.",
+  "epic": {
+    "key": "CDLC-8592",
+    "summary": "Course: Plumbing Material & Pipe Identification",
+    "type": "Epic",
+    "workflow": "CDLC: Epic",
+    "status": "In Progress",
+    "created": "2026-06-10",
+    "updated": "2026-08-28"
+  },
+  "stages": [
+    { "key": "CDLC-8593", "summary": "Business Specs & Outline", "type": "Course: Specs",     "workflow": "CDLC: Task/Subtask", "status": "Done",              "subtasks": [] },
+    { "key": "CDLC-8594", "summary": "Course Brief",             "type": "CDLC: Course Brief", "workflow": "CDLC: Course Brief", "status": "To Do",            "subtasks": [] },
+    { "key": "CDLC-9313", "summary": "Topic 1: Common Water Supply Materials", "type": "CDLC: Topic", "workflow": "CDLC: Topic", "status": "Graphics Creation",
+      "subtasks": [
+        { "key": "CDLC-9314", "summary": "Final Slides",        "type": "CDLC: Topic Final Slides",          "status": "Done" },
+        { "key": "CDLC-9594", "summary": "Graphics",            "type": "CDLC: Topic Graphics",              "status": "Suspended" },
+        { "key": "CDLC-9595", "summary": "PPT generation",      "type": "CDLC: Topic PPT Generation",        "status": "Done" },
+        { "key": "CDLC-9596", "summary": "Base Articulate file","type": "CDLC: Base Articulate file creation","status": "Done" },
+        { "key": "CDLC-9708", "summary": "Mentoring",           "type": "CDLC: Topic Final Slides",          "status": "Suspended" },
+        { "key": "CDLC-9709", "summary": "Mentoring",           "type": "Sub-task",                          "status": "Suspended" }
+      ] },
+    { "key": "CDLC-9315", "summary": "Topic 2: Drain and Utility Piping Materials - Plastic", "type": "CDLC: Topic", "workflow": "CDLC: Topic", "status": "Ready for Graphics",
+      "subtasks": [
+        { "key": "CDLC-9316", "summary": "Final Slides",        "type": "CDLC: Topic Final Slides",          "status": "Done" },
+        { "key": "CDLC-9586", "summary": "Graphics",            "type": "CDLC: Topic Graphics",              "status": "To Do" },
+        { "key": "CDLC-9587", "summary": "PPT generation",      "type": "CDLC: Topic PPT Generation",        "status": "Done" },
+        { "key": "CDLC-9741", "summary": "Base Articulate file","type": "CDLC: Base Articulate file creation","status": "In Review" }
+      ] },
+    { "key": "CDLC-9580", "summary": "Topic 3: Drain and Utility Piping Materials - Metal", "type": "CDLC: Topic", "workflow": "CDLC: Topic", "status": "Ready for Graphics",
+      "subtasks": [
+        { "key": "CDLC-9581", "summary": "Final Slides",        "type": "CDLC: Topic Final Slides",          "status": "Done" },
+        { "key": "CDLC-9799", "summary": "PPT generation",      "type": "CDLC: Topic PPT Generation",        "status": "Done" },
+        { "key": "CDLC-9800", "summary": "Base Articulate file","type": "CDLC: Base Articulate file creation","status": "To Do" }
+      ] },
+    { "key": "CDLC-9642", "summary": "Topic 4: ", "type": "CDLC: Topic", "workflow": "CDLC: Topic", "status": "Final Slides",
+      "subtasks": [
+        { "key": "CDLC-9643", "summary": "Final Slides",        "type": "CDLC: Topic Final Slides",          "status": "To Do" }
+      ] }
+  ],
+  "canonicalTopicSubtasks": [
+    "CDLC: Topic Final Slides",
+    "CDLC: Topic Graphics",
+    "CDLC: Topic PPT Generation",
+    "CDLC: Base Articulate file creation"
+  ]
+}

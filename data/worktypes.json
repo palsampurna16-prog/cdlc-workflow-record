@@ -1,0 +1,1490 @@
+[
+  {
+    "name": "Epic",
+    "family": "Course & epic level",
+    "level": "Epic",
+    "statuses": [
+      "Done",
+      "On Hold",
+      "To Do",
+      "Suspended",
+      "In Progress",
+      "Digitization"
+    ],
+    "workflow": "CDLC: Epic",
+    "changeRefs": [
+      "SGP-10349",
+      "SGP-9553",
+      "SGP-10441",
+      "SGP-10442",
+      "SGP-10815"
+    ],
+    "usage": {
+      "ever": 418,
+      "recent": 99
+    }
+  },
+  {
+    "name": "Course: Specs",
+    "family": "Course & epic level",
+    "level": "Standard",
+    "statuses": [
+      "In Review",
+      "Done",
+      "On Hold",
+      "To Do",
+      "Suspended",
+      "In Progress"
+    ],
+    "workflow": "CDLC: Task/Subtask",
+    "changeRefs": [
+      "SGP-11280"
+    ],
+    "usage": {
+      "ever": 314,
+      "recent": 83
+    }
+  },
+  {
+    "name": "Course: Content Creation",
+    "family": "Course & epic level",
+    "level": "Standard",
+    "statuses": [
+      "In Review",
+      "Scope Rearrange",
+      "Course QA on SkillCat",
+      "SkillCat: Backup / Restore",
+      "Slide chunks in course sheet",
+      "Done",
+      "Assessment on Guroo",
+      "Uploading to AWS",
+      "Course on Guroo",
+      "Course QA on Guroo",
+      "Staging: Backup / Restore",
+      "To Do",
+      "Suspended"
+    ],
+    "workflow": "CDLC: Course Content Creation",
+    "changeRefs": [],
+    "usage": {
+      "ever": 83,
+      "recent": 0
+    }
+  },
+  {
+    "name": "CDLC: Course Brief",
+    "family": "Course & epic level",
+    "level": "Standard",
+    "statuses": [
+      "Assigned",
+      "Done",
+      "To Do",
+      "In Progress"
+    ],
+    "workflow": "CDLC: Course Brief",
+    "changeRefs": [
+      "SGP-9672"
+    ],
+    "usage": {
+      "ever": 66,
+      "recent": 66
+    }
+  },
+  {
+    "name": "CDLC: Course outline",
+    "family": "Course & epic level",
+    "level": "Standard",
+    "statuses": [
+      "SME Validation",
+      "Done",
+      "To Do",
+      "Checklist",
+      "Suspended",
+      "Create course outline"
+    ],
+    "workflow": "CDLC: Course Outline",
+    "changeRefs": [
+      "SGP-10442"
+    ],
+    "usage": {
+      "ever": 94,
+      "recent": 2
+    }
+  },
+  {
+    "name": "CDLC: Research notes",
+    "family": "Course & epic level",
+    "level": "Standard",
+    "statuses": [
+      "Done",
+      "To Do",
+      "Suspended",
+      "In Progress"
+    ],
+    "workflow": "CDLC: Content Feedback",
+    "changeRefs": [],
+    "usage": {
+      "ever": 85,
+      "recent": 0
+    }
+  },
+  {
+    "name": "CDLC: Final Slides",
+    "family": "Course & epic level",
+    "level": "Standard",
+    "statuses": [
+      "Graphics definition",
+      "Internal SME review",
+      "Done",
+      "Complete checklist",
+      "On Hold",
+      "To Do",
+      "Suspended",
+      "In Progress",
+      "Quality review"
+    ],
+    "workflow": "CDLC: Final Slides",
+    "changeRefs": [
+      "SGP-9762",
+      "SGP-10334"
+    ],
+    "usage": {
+      "ever": 118,
+      "recent": 2
+    }
+  },
+  {
+    "name": "CDLC: Corrections",
+    "family": "Course & epic level",
+    "level": "Standard",
+    "statuses": [
+      "In Review",
+      "Assigned",
+      "Done",
+      "Rejected",
+      "On Hold",
+      "To Do",
+      "In Progress"
+    ],
+    "workflow": "CDLC: Corrections",
+    "changeRefs": [
+      "SGP-10334"
+    ],
+    "usage": {
+      "ever": 60,
+      "recent": 0
+    }
+  },
+  {
+    "name": "CDLC: Content Review",
+    "family": "Course & epic level",
+    "level": "Sub-task",
+    "statuses": [
+      "In Review",
+      "Done",
+      "On Hold",
+      "Suspended",
+      "In Progress"
+    ],
+    "workflow": "CDLC: Reviews",
+    "changeRefs": [],
+    "usage": {
+      "ever": 518,
+      "recent": 518
+    }
+  },
+  {
+    "name": "CDLC: Content Upkeep",
+    "family": "Course & epic level",
+    "level": "Standard",
+    "statuses": [
+      "Assigned",
+      "In Review",
+      "Reproduced",
+      "Discard",
+      "Done",
+      "On Hold",
+      "To Do",
+      "In Progress"
+    ],
+    "workflow": "SGP: Task",
+    "changeRefs": [
+      "SGP-10335"
+    ],
+    "usage": {
+      "ever": 102,
+      "recent": 84
+    }
+  },
+  {
+    "name": "CDLC: Content Upkeep (sub-task)",
+    "family": "Course & epic level",
+    "level": "Sub-task",
+    "statuses": [
+      "Assigned",
+      "In Review",
+      "Reproduced",
+      "Discard",
+      "Done",
+      "On Hold",
+      "To Do",
+      "In Progress"
+    ],
+    "workflow": "SGP: Task",
+    "changeRefs": [
+      "SGP-10335"
+    ],
+    "usage": {
+      "ever": 40,
+      "recent": 40
+    }
+  },
+  {
+    "name": "CDLC: PPT generation",
+    "family": "Course & epic level",
+    "level": "Standard",
+    "statuses": [
+      "In Review",
+      "Done",
+      "To Do",
+      "Suspended",
+      "In Progress"
+    ],
+    "workflow": "PPT generation",
+    "changeRefs": [
+      "SGP-9695",
+      "SGP-9940"
+    ],
+    "usage": {
+      "ever": 91,
+      "recent": 0
+    }
+  },
+  {
+    "name": "CDLC: Stock image downloading",
+    "family": "Course & epic level",
+    "level": "Standard",
+    "statuses": [
+      "In Review",
+      "Done",
+      "To Do",
+      "Suspended",
+      "In Progress"
+    ],
+    "workflow": "CDLC: Stock image downloading",
+    "changeRefs": [],
+    "usage": {
+      "ever": 50,
+      "recent": 0
+    }
+  },
+  {
+    "name": "CDLC: Translations",
+    "family": "Course & epic level",
+    "level": "Standard",
+    "statuses": [
+      "Assigned",
+      "Upload to AWS",
+      "In Review",
+      "Complete checklist",
+      "Done",
+      "In Translation",
+      "On Hold",
+      "To Do",
+      "Suspended"
+    ],
+    "workflow": "CDLC: Spanish Translations",
+    "changeRefs": [
+      "SGP-10243",
+      "SGP-10411",
+      "SGP-9340"
+    ],
+    "usage": {
+      "ever": 90,
+      "recent": 7
+    }
+  },
+  {
+    "name": "CDLC: Badge and Course Image",
+    "family": "Course & epic level",
+    "level": "Sub-task",
+    "statuses": [
+      "In Review",
+      "Done",
+      "To Do",
+      "Suspended",
+      "In Progress"
+    ],
+    "workflow": "CDLC: Stock image downloading",
+    "changeRefs": [],
+    "usage": {
+      "ever": 31,
+      "recent": 8
+    }
+  },
+  {
+    "name": "CDLC: Recording",
+    "family": "Course & epic level",
+    "level": "Sub-task",
+    "statuses": [
+      "Assigned",
+      "In Review",
+      "Done",
+      "Scripting",
+      "In Progress"
+    ],
+    "workflow": "CDLC: Recording",
+    "changeRefs": [
+      "SGP-10978"
+    ],
+    "usage": {
+      "ever": 20,
+      "recent": 20
+    }
+  },
+  {
+    "name": "CDLC: Base Articulate file creation",
+    "family": "Course & epic level",
+    "level": "Sub-task",
+    "statuses": [
+      "In Review",
+      "Assigned",
+      "Done",
+      "Rejected",
+      "On Hold",
+      "To Do",
+      "Checklist",
+      "In Progress"
+    ],
+    "workflow": "CDLC: Base Articulate file creation",
+    "changeRefs": [
+      "SGP-10334",
+      "SGP-9552"
+    ],
+    "usage": {
+      "ever": 389,
+      "recent": 190
+    }
+  },
+  {
+    "name": "CDLC: Articulate Review",
+    "family": "Course & epic level",
+    "level": "Sub-task",
+    "statuses": [
+      "Internal SME review",
+      "In Review",
+      "Done",
+      "On Hold",
+      "Corrections",
+      "To Do",
+      "Suspended",
+      "Quality review"
+    ],
+    "workflow": "CDLC: Articulate review",
+    "changeRefs": [
+      "SGP-10834",
+      "SGP-9762"
+    ],
+    "usage": {
+      "ever": 413,
+      "recent": 225
+    }
+  },
+  {
+    "name": "CDLC: Vyond video",
+    "family": "Course & epic level",
+    "level": "Sub-task",
+    "statuses": [
+      "In Review",
+      "Send to Instructional Designer",
+      "External Review",
+      "Internal SME review",
+      "Done",
+      "Complete checklist",
+      "To Do",
+      "Suspended",
+      "In Progress",
+      "Quality review"
+    ],
+    "workflow": "CDLC: Graphics",
+    "changeRefs": [],
+    "usage": {
+      "ever": 0,
+      "recent": 0
+    }
+  },
+  {
+    "name": "Graphics",
+    "family": "Course & epic level",
+    "level": "Standard",
+    "statuses": [
+      "In Review",
+      "Send to Instructional Designer",
+      "External Review",
+      "Internal SME review",
+      "Done",
+      "Complete checklist",
+      "To Do",
+      "Suspended",
+      "In Progress",
+      "Quality review"
+    ],
+    "workflow": "CDLC: Graphics",
+    "changeRefs": [
+      "SGP-9946"
+    ],
+    "usage": {
+      "ever": 216,
+      "recent": 0
+    }
+  },
+  {
+    "name": "Assessment",
+    "family": "Course & epic level",
+    "level": "Standard",
+    "statuses": [
+      "Internal SME review",
+      "Done",
+      "Complete checklist",
+      "On Hold",
+      "To Do",
+      "Suspended",
+      "In Progress",
+      "Quality review"
+    ],
+    "workflow": "CDLC: Assessment",
+    "changeRefs": [
+      "SGP-9946"
+    ],
+    "usage": {
+      "ever": 150,
+      "recent": 0
+    }
+  },
+  {
+    "name": "Instructional Design",
+    "family": "Course & epic level",
+    "level": "Standard",
+    "statuses": [
+      "In Review",
+      "Done",
+      "To Do",
+      "Suspended",
+      "In Progress"
+    ],
+    "workflow": "CDLC: Content Instructional Design",
+    "changeRefs": [],
+    "usage": {
+      "ever": 57,
+      "recent": 0
+    }
+  },
+  {
+    "name": "CDLC: Topic",
+    "family": "Topic level",
+    "level": "Standard",
+    "statuses": [
+      "In Review",
+      "Done",
+      "On Hold",
+      "Ready for Graphics",
+      "Uploading to AWS",
+      "Spanish Translations",
+      "To Do",
+      "Suspended",
+      "Final Slides",
+      "Graphics Creation"
+    ],
+    "workflow": "CDLC: Topic",
+    "changeRefs": [
+      "SGP-10343",
+      "SGP-10411",
+      "SGP-10361"
+    ],
+    "usage": {
+      "ever": 561,
+      "recent": 288
+    }
+  },
+  {
+    "name": "CDLC: Topic Final Slides",
+    "family": "Topic level",
+    "level": "Sub-task",
+    "statuses": [
+      "Internal SME review",
+      "Done",
+      "Complete checklist",
+      "On Hold",
+      "To Do",
+      "Suspended",
+      "In Progress",
+      "Quality review"
+    ],
+    "workflow": "CDLC: Topic Final Slides",
+    "changeRefs": [
+      "SGP-9762",
+      "SGP-10334"
+    ],
+    "usage": {
+      "ever": 524,
+      "recent": 245
+    }
+  },
+  {
+    "name": "CDLC: Topic Graphics",
+    "family": "Topic level",
+    "level": "Sub-task",
+    "statuses": [
+      "In Review",
+      "Send to Instructional Designer",
+      "Done",
+      "Complete checklist",
+      "To Do",
+      "Suspended",
+      "In Progress"
+    ],
+    "workflow": "CDLC: Topic Graphics",
+    "changeRefs": [
+      "SGP-9999",
+      "SGP-10334"
+    ],
+    "usage": {
+      "ever": 447,
+      "recent": 242
+    }
+  },
+  {
+    "name": "CDLC: Topic Assessment",
+    "family": "Topic level",
+    "level": "Sub-task",
+    "statuses": [
+      "In Review",
+      "Complete checklist",
+      "Done",
+      "On Hold",
+      "To Do",
+      "Suspended",
+      "In Progress"
+    ],
+    "workflow": "CDLC: Topic Assessment",
+    "changeRefs": [
+      "SGP-9946",
+      "SGP-10334"
+    ],
+    "usage": {
+      "ever": 469,
+      "recent": 312
+    }
+  },
+  {
+    "name": "CDLC: Topic Corrections",
+    "family": "Topic level",
+    "level": "Sub-task",
+    "statuses": [
+      "In Review",
+      "Assigned",
+      "Done",
+      "Rejected",
+      "On Hold",
+      "To Do",
+      "In Progress"
+    ],
+    "workflow": "CDLC: Corrections",
+    "changeRefs": [
+      "SGP-10334"
+    ],
+    "usage": {
+      "ever": 284,
+      "recent": 222
+    }
+  },
+  {
+    "name": "CDLC: Topic PPT Generation",
+    "family": "Topic level",
+    "level": "Sub-task",
+    "statuses": [
+      "In Review",
+      "Done",
+      "To Do",
+      "Suspended",
+      "In Progress"
+    ],
+    "workflow": "PPT generation",
+    "changeRefs": [
+      "SGP-10284",
+      "SGP-10334"
+    ],
+    "usage": {
+      "ever": 459,
+      "recent": 269
+    }
+  },
+  {
+    "name": "CDLC: Topic Stock image downloading",
+    "family": "Topic level",
+    "level": "Sub-task",
+    "statuses": [
+      "In Review",
+      "Done",
+      "To Do",
+      "Suspended",
+      "In Progress"
+    ],
+    "workflow": "CDLC: Stock image downloading",
+    "changeRefs": [],
+    "usage": {
+      "ever": 15,
+      "recent": 0
+    }
+  },
+  {
+    "name": "CDLC: Topic Translations",
+    "family": "Topic level",
+    "level": "Sub-task",
+    "statuses": [
+      "Assigned",
+      "Upload to AWS",
+      "In Review",
+      "Complete checklist",
+      "Done",
+      "In Translation",
+      "On Hold",
+      "To Do",
+      "Suspended"
+    ],
+    "workflow": "CDLC: Spanish Translations",
+    "changeRefs": [
+      "SGP-10243",
+      "SGP-10334"
+    ],
+    "usage": {
+      "ever": 389,
+      "recent": 266
+    }
+  },
+  {
+    "name": "Content: Digitization (Instructional)",
+    "family": "Digitization",
+    "level": "Standard",
+    "statuses": [
+      "Create Deep Links",
+      "In Review",
+      "SME Review",
+      "Update Keywords",
+      "Create Course on Planning",
+      "Update Learning Plan",
+      "Upload to AWS",
+      "On Hold",
+      "Restore on SkillCat",
+      "Course Catalog",
+      "To Do",
+      "Question Bank on Planning",
+      "Suspended",
+      "Request Badge Creation",
+      "update spreadsheet"
+    ],
+    "workflow": "CDLC: Course Digitization",
+    "changeRefs": [
+      "SGP-10335"
+    ],
+    "usage": {
+      "ever": 50,
+      "recent": 7
+    }
+  },
+  {
+    "name": "Content: Digitization (Informational)",
+    "family": "Digitization",
+    "level": "Standard",
+    "statuses": [
+      "Create Deep Links",
+      "In Review",
+      "SME Review",
+      "Update Keywords",
+      "Create Course on Planning",
+      "Update Learning Plan",
+      "Upload to AWS",
+      "On Hold",
+      "Restore on SkillCat",
+      "Course Catalog",
+      "To Do",
+      "Question Bank on Planning",
+      "Suspended",
+      "Request Badge Creation",
+      "update spreadsheet"
+    ],
+    "workflow": "CDLC: Course Digitization",
+    "changeRefs": [
+      "SGP-10335",
+      "SGP-10284"
+    ],
+    "usage": {
+      "ever": 158,
+      "recent": 3
+    }
+  },
+  {
+    "name": "Digitization - Upload to AWS + Planning",
+    "family": "Digitization",
+    "level": "Standard",
+    "statuses": [
+      "Assigned",
+      "Upload to AWS",
+      "In Review",
+      "Update Keywords",
+      "Update Question Bank on Planning",
+      "Done",
+      "Create Course on Planning",
+      "To Do",
+      "Suspended"
+    ],
+    "workflow": "Digitization - Upload to AWS + Planning",
+    "changeRefs": [
+      "SGP-10335",
+      "SGP-9553"
+    ],
+    "usage": {
+      "ever": 36,
+      "recent": 36
+    }
+  },
+  {
+    "name": "Digitization - Upload to AWS + Planning (sub-task)",
+    "family": "Digitization",
+    "level": "Sub-task",
+    "statuses": [
+      "Assigned",
+      "Upload to AWS",
+      "In Review",
+      "Update Keywords",
+      "Update Question Bank on Planning",
+      "Done",
+      "Create Course on Planning",
+      "To Do",
+      "Suspended"
+    ],
+    "workflow": "Digitization - Upload to AWS + Planning",
+    "changeRefs": [
+      "SGP-10335",
+      "SGP-9553"
+    ],
+    "usage": {
+      "ever": 20,
+      "recent": 20
+    }
+  },
+  {
+    "name": "Digitization - Restore on SkillCat",
+    "family": "Digitization",
+    "level": "Standard",
+    "statuses": [
+      "Create Deep Links",
+      "Done",
+      "QA Review",
+      "Restore on SkillCat",
+      "Update Learning Plan",
+      "To Do",
+      "Suspended",
+      "update spreadsheet"
+    ],
+    "workflow": "Digitization - Restore on SkillCat",
+    "changeRefs": [
+      "SGP-9555",
+      "SGP-10418",
+      "SGP-7303",
+      "SGP-9553",
+      "SGP-9762"
+    ],
+    "usage": {
+      "ever": 36,
+      "recent": 36
+    }
+  },
+  {
+    "name": "Digitization - Restore on SkillCat (sub-task)",
+    "family": "Digitization",
+    "level": "Sub-task",
+    "statuses": [
+      "Create Deep Links",
+      "Done",
+      "QA Review",
+      "Restore on SkillCat",
+      "Update Learning Plan",
+      "To Do",
+      "Suspended",
+      "update spreadsheet"
+    ],
+    "workflow": "Digitization - Restore on SkillCat",
+    "changeRefs": [
+      "SGP-9555",
+      "SGP-10418",
+      "SGP-7303",
+      "SGP-10335"
+    ],
+    "usage": {
+      "ever": 20,
+      "recent": 20
+    }
+  },
+  {
+    "name": "Digitization - Review",
+    "family": "Digitization",
+    "level": "Standard",
+    "statuses": [
+      "SME Review",
+      "Done",
+      "To Do",
+      "Suspended",
+      "Quality review"
+    ],
+    "workflow": "Digitization - Review",
+    "changeRefs": [
+      "SGP-9762"
+    ],
+    "usage": {
+      "ever": 36,
+      "recent": 36
+    }
+  },
+  {
+    "name": "Digitization - Review (sub-task)",
+    "family": "Digitization",
+    "level": "Sub-task",
+    "statuses": [
+      "SME Review",
+      "Done",
+      "To Do",
+      "Suspended",
+      "Quality review"
+    ],
+    "workflow": "Digitization - Review",
+    "changeRefs": [
+      "SGP-9762",
+      "SGP-10335"
+    ],
+    "usage": {
+      "ever": 20,
+      "recent": 20
+    }
+  },
+  {
+    "name": "Digitization - Badge Creation",
+    "family": "Digitization",
+    "level": "Standard",
+    "statuses": [
+      "In Review",
+      "Done",
+      "To Do",
+      "Suspended",
+      "In Progress"
+    ],
+    "workflow": "Digitization - Badge Creation",
+    "changeRefs": [],
+    "usage": {
+      "ever": 34,
+      "recent": 34
+    }
+  },
+  {
+    "name": "Digitization - Badge Creation (Sub-task)",
+    "family": "Digitization",
+    "level": "Sub-task",
+    "statuses": [
+      "In Review",
+      "Done",
+      "To Do",
+      "Suspended",
+      "In Progress"
+    ],
+    "workflow": "Digitization - Badge Creation",
+    "changeRefs": [
+      "SGP-10335"
+    ],
+    "usage": {
+      "ever": 21,
+      "recent": 21
+    }
+  },
+  {
+    "name": "Digitization - Data Sheet Creation",
+    "family": "Digitization",
+    "level": "Standard",
+    "statuses": [
+      "Assigned",
+      "In Review",
+      "Done",
+      "To Do",
+      "Suspended",
+      "In Progress"
+    ],
+    "workflow": "Digitization - Data Sheet Creation",
+    "changeRefs": [
+      "SGP-10380"
+    ],
+    "usage": {
+      "ever": 55,
+      "recent": 55
+    }
+  },
+  {
+    "name": "Digitization - Data Sheet Creation (sub-task)",
+    "family": "Digitization",
+    "level": "Sub-task",
+    "statuses": [
+      "Assigned",
+      "In Review",
+      "Done",
+      "To Do",
+      "Suspended",
+      "In Progress"
+    ],
+    "workflow": "Digitization - Data Sheet Creation",
+    "changeRefs": [
+      "SGP-10380",
+      "SGP-10335"
+    ],
+    "usage": {
+      "ever": 20,
+      "recent": 20
+    }
+  },
+  {
+    "name": "Digitization - Course Catalog Updating",
+    "family": "Digitization",
+    "level": "Standard",
+    "statuses": [
+      "Assigned",
+      "In Review",
+      "Done",
+      "To Do",
+      "Suspended",
+      "In Progress"
+    ],
+    "workflow": "Digitization - Course Catalog Updating",
+    "changeRefs": [],
+    "usage": {
+      "ever": 32,
+      "recent": 32
+    }
+  },
+  {
+    "name": "Digitization - Course Catalog Updating (sub-task)",
+    "family": "Digitization",
+    "level": "Sub-task",
+    "statuses": [
+      "Assigned",
+      "In Review",
+      "Done",
+      "To Do",
+      "Suspended",
+      "In Progress"
+    ],
+    "workflow": "Digitization - Course Catalog Updating",
+    "changeRefs": [
+      "SGP-10335"
+    ],
+    "usage": {
+      "ever": 13,
+      "recent": 13
+    }
+  },
+  {
+    "name": "CDLC: Generate Performance Report",
+    "family": "Course operations",
+    "level": "Standard",
+    "statuses": [
+      "Done",
+      "To Do",
+      "Suspended",
+      "In Progress"
+    ],
+    "workflow": "Generate Performance Report",
+    "changeRefs": [],
+    "usage": {
+      "ever": 19,
+      "recent": 19
+    }
+  },
+  {
+    "name": "CDLC: Generate Performance Report (sub-task)",
+    "family": "Course operations",
+    "level": "Sub-task",
+    "statuses": [
+      "Done",
+      "To Do",
+      "Suspended",
+      "In Progress"
+    ],
+    "workflow": "Generate Performance Report",
+    "changeRefs": [
+      "SGP-10335"
+    ],
+    "usage": {
+      "ever": 15,
+      "recent": 15
+    }
+  },
+  {
+    "name": "CDLC: Move Source Files",
+    "family": "Course operations",
+    "level": "Standard",
+    "statuses": [
+      "In Review",
+      "Done",
+      "To Do",
+      "In Progress"
+    ],
+    "workflow": "CDLC: Move Source Files",
+    "changeRefs": [
+      "SGP-7310"
+    ],
+    "usage": {
+      "ever": 13,
+      "recent": 13
+    }
+  },
+  {
+    "name": "CDLC: Move Source Files (sub-task)",
+    "family": "Course operations",
+    "level": "Sub-task",
+    "statuses": [
+      "In Review",
+      "Done",
+      "To Do",
+      "In Progress"
+    ],
+    "workflow": "CDLC: Move Source Files",
+    "changeRefs": [
+      "SGP-7310",
+      "SGP-10335"
+    ],
+    "usage": {
+      "ever": 13,
+      "recent": 13
+    }
+  },
+  {
+    "name": "CDLC: Restrict Course Folder",
+    "family": "Course operations",
+    "level": "Standard",
+    "statuses": [
+      "Done",
+      "To Do",
+      "Suspended",
+      "In Progress"
+    ],
+    "workflow": "CDLC: Restrict Course Folder",
+    "changeRefs": [],
+    "usage": {
+      "ever": 3,
+      "recent": 3
+    }
+  },
+  {
+    "name": "CDLC: Restrict Course Folder (sub-task)",
+    "family": "Course operations",
+    "level": "Sub-task",
+    "statuses": [
+      "Done",
+      "To Do",
+      "Suspended",
+      "In Progress"
+    ],
+    "workflow": "CDLC: Restrict Course Folder",
+    "changeRefs": [
+      "SGP-10335"
+    ],
+    "usage": {
+      "ever": 15,
+      "recent": 15
+    }
+  },
+  {
+    "name": "CDLC: Run Image Archiving Automation",
+    "family": "Course operations",
+    "level": "Standard",
+    "statuses": [
+      "In Review",
+      "Done",
+      "To Do",
+      "Suspended",
+      "In Progress"
+    ],
+    "workflow": "CDLC: Run Image Archiving Automation",
+    "changeRefs": [
+      "SGP-7310"
+    ],
+    "usage": {
+      "ever": 13,
+      "recent": 13
+    }
+  },
+  {
+    "name": "CDLC: Run Image Archiving Automation (sub-task)",
+    "family": "Course operations",
+    "level": "Sub-task",
+    "statuses": [
+      "In Review",
+      "Done",
+      "To Do",
+      "Suspended",
+      "In Progress"
+    ],
+    "workflow": "CDLC: Run Image Archiving Automation",
+    "changeRefs": [
+      "SGP-7310",
+      "SGP-10335"
+    ],
+    "usage": {
+      "ever": 13,
+      "recent": 13
+    }
+  },
+  {
+    "name": "Certification: Template Generation",
+    "family": "Certification",
+    "level": "Standard",
+    "statuses": [
+      "Done",
+      "On Hold",
+      "To Do",
+      "Suspended"
+    ],
+    "workflow": "Certification: Template Generation",
+    "changeRefs": [
+      "SGP-9940",
+      "SGP-10674"
+    ],
+    "usage": {
+      "ever": 27,
+      "recent": 27
+    }
+  },
+  {
+    "name": "Certification: Research Note",
+    "family": "Certification",
+    "level": "Sub-task",
+    "statuses": [
+      "Inline Image Check",
+      "Done",
+      "On Hold",
+      "Manual Review",
+      "To Do",
+      "Suspended"
+    ],
+    "workflow": "Certification: Research Note",
+    "changeRefs": [
+      "SGP-9940"
+    ],
+    "usage": {
+      "ever": 47,
+      "recent": 47
+    }
+  },
+  {
+    "name": "Certification: Slide Chunks",
+    "family": "Certification",
+    "level": "Sub-task",
+    "statuses": [
+      "In Review",
+      "Paraphrasing",
+      "Done",
+      "On Hold",
+      "To Do",
+      "Suspended",
+      "In Progress"
+    ],
+    "workflow": "Certification: Slide Chunks",
+    "changeRefs": [
+      "SGP-9940"
+    ],
+    "usage": {
+      "ever": 43,
+      "recent": 43
+    }
+  },
+  {
+    "name": "Certification: Graphic Definitions",
+    "family": "Certification",
+    "level": "Sub-task",
+    "statuses": [
+      "Review & Revise Definition",
+      "Done",
+      "Review & Revise Visuals",
+      "On Hold",
+      "Generate Graphic Definition",
+      "To Do",
+      "Review Final GD",
+      "Suspended",
+      "Generate AI Visuals"
+    ],
+    "workflow": "Certification: Graphic Definitions",
+    "changeRefs": [
+      "SGP-9940"
+    ],
+    "usage": {
+      "ever": 41,
+      "recent": 41
+    }
+  },
+  {
+    "name": "Certification: Articulate Creation",
+    "family": "Certification",
+    "level": "Sub-task",
+    "statuses": [
+      "ID Review",
+      "SME Review",
+      "Done",
+      "On Hold",
+      "Generate Articulate",
+      "Corrections",
+      "To Do",
+      "Suspended",
+      "Quality review"
+    ],
+    "workflow": "Certification: Articulate Creation",
+    "changeRefs": [
+      "SGP-9940",
+      "SGP-10355",
+      "SGP-10834"
+    ],
+    "usage": {
+      "ever": 41,
+      "recent": 41
+    }
+  },
+  {
+    "name": "Applied Layers: Toolkit",
+    "family": "Applied Layers",
+    "level": "Standard",
+    "statuses": [
+      "Assigned",
+      "In Review",
+      "Done",
+      "To Do",
+      "Suspended",
+      "In Progress"
+    ],
+    "workflow": "Applied Layers: Toolkit/Instructions",
+    "changeRefs": [
+      "SGP-10766"
+    ],
+    "usage": {
+      "ever": 2,
+      "recent": 2
+    }
+  },
+  {
+    "name": "Applied Layers: Instructions",
+    "family": "Applied Layers",
+    "level": "Standard",
+    "statuses": [
+      "Assigned",
+      "In Review",
+      "Done",
+      "To Do",
+      "Suspended",
+      "In Progress"
+    ],
+    "workflow": "Applied Layers: Toolkit/Instructions",
+    "changeRefs": [
+      "SGP-10766"
+    ],
+    "usage": {
+      "ever": 2,
+      "recent": 2
+    }
+  },
+  {
+    "name": "Applied Layers: Content Finalization",
+    "family": "Applied Layers",
+    "level": "Standard",
+    "statuses": [
+      "Finalize as per SME Requirements",
+      "Generate Graphic Definition",
+      "Referencing"
+    ],
+    "workflow": "Applied Layers: Content Finalization",
+    "changeRefs": [
+      "SGP-10766"
+    ],
+    "usage": {
+      "ever": 2,
+      "recent": 2
+    }
+  },
+  {
+    "name": "Applied Layers: Video Recording",
+    "family": "Applied Layers",
+    "level": "Standard",
+    "statuses": [
+      "Video Recording",
+      "Video Review",
+      "Manual Edit"
+    ],
+    "workflow": "Applied Layers: Video Recording",
+    "changeRefs": [
+      "SGP-10766"
+    ],
+    "usage": {
+      "ever": 2,
+      "recent": 2
+    }
+  },
+  {
+    "name": "Applied Layers: Video Creation",
+    "family": "Applied Layers",
+    "level": "Standard",
+    "statuses": [
+      "In Review",
+      "SME Review",
+      "Done",
+      "On Hold",
+      "Suspended",
+      "Storyboard",
+      "Video Creation"
+    ],
+    "workflow": "Applied Layers: Video Creation & Review",
+    "changeRefs": [
+      "SGP-10766",
+      "SGP-10978"
+    ],
+    "usage": {
+      "ever": 2,
+      "recent": 2
+    }
+  },
+  {
+    "name": "Simulation: Specs",
+    "family": "Simulation & generic",
+    "level": "Standard",
+    "statuses": [
+      "Business Specs in Progress",
+      "Learning Objectives in Progress",
+      "Business Specs in Review",
+      "Done",
+      "To Do",
+      "Suspended",
+      "Learning Objective in Review"
+    ],
+    "workflow": "CDLC: Simulation Specs",
+    "changeRefs": [],
+    "usage": {
+      "ever": 56,
+      "recent": 0
+    }
+  },
+  {
+    "name": "Simulation: Content Creation",
+    "family": "Simulation & generic",
+    "level": "Standard",
+    "statuses": [
+      "In Review",
+      "SME Validation",
+      "Scope Rearrange",
+      "Enhancement",
+      "Done",
+      "Editorial review",
+      "To Do",
+      "Suspended",
+      "In Progress"
+    ],
+    "workflow": "CDLC: Content Creation",
+    "changeRefs": [],
+    "usage": {
+      "ever": 57,
+      "recent": 0
+    }
+  },
+  {
+    "name": "Task",
+    "family": "Simulation & generic",
+    "level": "Standard",
+    "statuses": [
+      "In Review",
+      "Done",
+      "On Hold",
+      "To Do",
+      "Suspended",
+      "In Progress"
+    ],
+    "workflow": "CDLC: Task/Subtask",
+    "changeRefs": [],
+    "usage": {
+      "ever": 99,
+      "recent": 90
+    }
+  },
+  {
+    "name": "Sub-task",
+    "family": "Simulation & generic",
+    "level": "Sub-task",
+    "statuses": [
+      "In Review",
+      "Done",
+      "On Hold",
+      "To Do",
+      "Suspended",
+      "In Progress"
+    ],
+    "workflow": "CDLC: Task/Subtask",
+    "changeRefs": [],
+    "usage": {
+      "ever": 169,
+      "recent": 161
+    }
+  },
+  {
+    "name": "Bug",
+    "family": "Simulation & generic",
+    "level": "Standard",
+    "statuses": [
+      "In Review",
+      "Done",
+      "To Do",
+      "Suspended",
+      "In Progress"
+    ],
+    "workflow": "CDLC: Bug",
+    "changeRefs": [],
+    "usage": {
+      "ever": 1,
+      "recent": 0
+    }
+  },
+  {
+    "name": "Improvement",
+    "family": "Simulation & generic",
+    "level": "Standard",
+    "statuses": [
+      "In Review",
+      "Done",
+      "To Do",
+      "Suspended",
+      "In Progress"
+    ],
+    "workflow": "CDLC: Improvement",
+    "changeRefs": [],
+    "usage": {
+      "ever": 160,
+      "recent": 0
+    }
+  },
+  {
+    "name": "Feedback",
+    "family": "Simulation & generic",
+    "level": "Standard",
+    "statuses": [
+      "Done",
+      "To Do",
+      "Suspended",
+      "In Progress"
+    ],
+    "workflow": "CDLC: Content Feedback",
+    "changeRefs": [],
+    "usage": {
+      "ever": 1,
+      "recent": 0
+    }
+  }
+]

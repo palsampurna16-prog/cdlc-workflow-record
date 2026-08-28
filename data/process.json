@@ -1,0 +1,290 @@
+{
+  "stages": [
+    [
+      1,
+      "Epic Creation",
+      "Instructional Designers' Team Manager",
+      "The ID Team Manager creates an epic for a course in the pipeline. What gets created underneath depends on the Course Type field: Instructional, Informational and Practical courses produce Business Specs and a Course Brief, while Certification courses produce Template Generation instead. The ID Team Manager then moves the epic from To Do to In Progress and assigns it to an Instructional Designer.",
+      [
+        "Reporter: ID Team Manager",
+        "Assignee: Instructional Designer"
+      ],
+      [
+        "Epic",
+        "Course: Specs",
+        "CDLC: Course Brief",
+        "Certification: Template Generation"
+      ],
+      [
+        [
+          "Epic created, Course Type = Instructional / Informational / Practical",
+          "Business Specs & Course Brief"
+        ],
+        [
+          "Epic created, Course Type = Certification",
+          "Certification: Template Generation"
+        ]
+      ],
+      [
+        [
+          "CDLC: Epic",
+          "Epic"
+        ],
+        [
+          "CDLC: Business Specs",
+          "Course: Specs"
+        ]
+      ]
+    ],
+    [
+      2,
+      "Topic Creation",
+      "Instructional Designer",
+      "The Instructional Designer creates and names the topic, the primary child item under an epic. Every field except Topic is copied down from the epic, which is why the epic has to be filled in properly first. Final Slides and Articulate Review Link get added later, and must be added on the CDLC: Topic so they cascade to everything created after it.",
+      [
+        "Reporter and Assignee: Instructional Designer"
+      ],
+      [
+        "CDLC: Topic"
+      ],
+      [
+        [
+          "Topic created, Course Type = Certification",
+          "Certification: Research Note"
+        ],
+        [
+          "Topic created, Course Type = Informational / Instructional / Practical",
+          "CDLC: Topic Final Slides"
+        ],
+        [
+          "ID starts work on Final Slides",
+          "CDLC: Topic moves To Do → Final Slides"
+        ]
+      ],
+      [
+        [
+          "Certification: Research Notes",
+          "Certification: Research Note"
+        ]
+      ]
+    ],
+    [
+      3,
+      "Final Slides / Research Note Creation",
+      "Instructional Designer, then QA and SME",
+      "The Instructional Designer develops the content against the approved learning objectives, then passes it for review. The reviewer is identified by the status: Quality review means it sits with the QA Specialist, Internal SME review means it sits with the Internal SME. Output is an Excel or Google Sheet.",
+      [
+        "Instructional Designer",
+        "QA Specialist",
+        "Internal SME"
+      ],
+      [
+        "CDLC: Topic Final Slides",
+        "Certification: Research Note"
+      ],
+      [
+        [
+          "CDLC: Topic Final Slides marked Done",
+          "CDLC: Topic Graphics and CDLC: Topic PPT Generation"
+        ],
+        [
+          "Certification: Research Note marked Done",
+          "Certification: Slide Chunks"
+        ]
+      ],
+      []
+    ],
+    [
+      4,
+      "Base Articulate / Slide Chunks Creation",
+      "Instructional Designer and Digitization",
+      "For Instructional, Practical and Informational courses the ID generates a PPT, which Digitization turns into a Base Articulate file — the template for the final Storyline file, carrying voiceover, captions and slide titles. Its Description field arrives pre-filled with instructions for the Digitization team. The Digitization Manager assigns it onward to Data Entry, then back to the ID, who closes it. For Certification courses the ID works on Slide Chunks instead. This runs alongside Stage 5.",
+      [
+        "Instructional Designer",
+        "Digitization Resource"
+      ],
+      [
+        "CDLC: Topic PPT Generation",
+        "CDLC: Base Articulate file creation",
+        "Certification: Slide Chunks"
+      ],
+      [
+        [
+          "CDLC: Topic PPT Generation marked Done",
+          "CDLC: Base Articulate file creation, assigned to the Digitization Manager"
+        ],
+        [
+          "Certification: Slide Chunks marked Done",
+          "Certification: Graphic Definitions, assigned to the ID"
+        ]
+      ],
+      [
+        [
+          "CDLC: Base Articulate File Creation",
+          "CDLC: Base Articulate file creation"
+        ]
+      ]
+    ],
+    [
+      5,
+      "Graphics / Graphic Definition Creation",
+      "Visual Designer, or ID for Certification",
+      "For Informational, Instructional and Practical courses the Visual Designer works the graphics into the Articulate Storyline file built in Stage 4, following the Graphic Definition the ID wrote in the Final Slides sheet. The VD adds the Articulate Review Link, completes the checklist, sends it to the VD Team Manager, who passes it to the ID with the status Send to Instructional Designer. Anything the ID wants changed goes through CDLC: Topic Corrections, which bounces between ID and VD. For Certification courses the ID prepares the Graphic Definition instead.",
+      [
+        "Visual Designer",
+        "The VD Team Manager",
+        "Instructional Designer"
+      ],
+      [
+        "CDLC: Topic Graphics",
+        "CDLC: Topic Corrections",
+        "Certification: Graphic Definitions"
+      ],
+      [
+        [
+          "CDLC: Topic Graphics created",
+          "parent CDLC: Topic moves to Ready for Graphics"
+        ],
+        [
+          "CDLC: Topic Graphics marked Done",
+          "CDLC: Articulate Review and CDLC: Topic Corrections; parent Topic moves to In Review and its Articulate Review Link is filled from the Graphics field"
+        ],
+        [
+          "Certification: Graphic Definitions marked Done",
+          "CDLC: Topic PPT Generation"
+        ]
+      ],
+      [
+        [
+          "Certification: Graphic Definition",
+          "Certification: Graphic Definitions"
+        ]
+      ]
+    ],
+    [
+      6,
+      "Articulate Review",
+      "QA Specialist and SMEs",
+      "The ID and VD have both finished with the Storyline file and share it for review. Status moves In Progress → In Review, and back again for corrections, with the Assignee changing hands each time a concern is raised or resolved. CDLC: Topic Assessment is the last step that needs the Instructional Designer, who is both Assignee and Reporter on it.",
+      [
+        "Instructional Designer",
+        "QA Specialist",
+        "Internal SME (the Internal SME)",
+        "External SME"
+      ],
+      [
+        "CDLC: Articulate Review",
+        "CDLC: Topic Assessment",
+        "Certification: Articulate Creation"
+      ],
+      [
+        [
+          "CDLC: Articulate Review marked Done",
+          "CDLC: Topic Translations and CDLC: Topic Assessment"
+        ],
+        [
+          "Certification: Articulate Creation marked Done",
+          "CDLC: Topic Assessment"
+        ]
+      ],
+      [
+        [
+          "Creates work types SME Review and External Review",
+          "Both are statuses, not work types — no such work types exist"
+        ]
+      ]
+    ],
+    [
+      7,
+      "Translation & Digitization",
+      "Digitization and Data Entry",
+      "Two things run here. Translation: once the ID uploads the finalised Storyline file, the Digitization Resource translates it to Spanish, the Digitization Manager routes it to the course's QA Specialist, and after QA it goes to Upload to AWS and then Done — each of which drags the parent Topic along with it. Digitization: the moment the epic moves to Digitization, a fan of tickets is created, each setting off further automations as it closes. Outputs are the Planning Link on guroo.com and the Production Link on skillcat.app.",
+      [
+        "Digitization Resource",
+        "The Digitization Manager",
+        "QA Specialist"
+      ],
+      [
+        "CDLC: Topic Translations",
+        "Digitization - Upload to AWS + Planning",
+        "Digitization - Review",
+        "Digitization - Restore on SkillCat",
+        "Digitization - Data Sheet Creation",
+        "Digitization - Badge Creation",
+        "Digitization - Course Catalog Updating",
+        "CDLC: Content Upkeep",
+        "CDLC: Run Image Archiving Automation",
+        "CDLC: Generate Performance Report",
+        "CDLC: Restrict Course Folder",
+        "CDLC: Move Source Files"
+      ],
+      [
+        [
+          "Epic moves to Digitization",
+          "Badge and Course Image Creation, Upload to AWS + Planning, Review, Restore on SkillCat, Data Sheet Creation, Course Metadata and Create Course Introduction"
+        ],
+        [
+          "Digitization - Review marked Done",
+          "CDLC: Generate Performance Report"
+        ],
+        [
+          "CDLC: Generate Performance Report marked Done",
+          "CDLC: Restrict Course Folder"
+        ],
+        [
+          "Digitization - Restore on SkillCat marked Done",
+          "Digitization - Course Catalog Updating and CDLC: Run Image Archiving Automation"
+        ],
+        [
+          "CDLC: Run Image Archiving Automation marked Done",
+          "CDLC: Move Source Files"
+        ],
+        [
+          "CDLC: Topic Translations moves to Upload to AWS",
+          "parent CDLC: Topic moves to Uploading to AWS"
+        ],
+        [
+          "CDLC: Topic Translations marked Done",
+          "parent CDLC: Topic moves to Done"
+        ]
+      ],
+      [
+        [
+          "CDLC: Run Image Archiving",
+          "CDLC: Run Image Archiving Automation"
+        ],
+        [
+          "Translation path To Do → In Progress → In Review → Upload to AWS → Done",
+          "CDLC: Topic Translations has no In Progress status. Its set includes Assigned, In Translation and Complete checklist, none of which the SOP mentions"
+        ]
+      ]
+    ]
+  ],
+  "roles": [
+    [
+      "Instructional Designer",
+      "Drafting, editing and iterating content in line with the brief",
+      "The ID Team Manager"
+    ],
+    [
+      "Visual Designer",
+      "Creating visuals and graphics aligning with the Instructional Designer's brief",
+      "The VD Team Manager"
+    ],
+    [
+      "QA Specialist",
+      "Reviewing content for accuracy, tone, grammar and brand alignment",
+      "The QA Specialist"
+    ],
+    [
+      "Digitization Resource",
+      "Creating translations and ensuring the course and all its assets upload correctly to the app",
+      "The Digitization Manager"
+    ],
+    [
+      "Subject Matter Expert",
+      "Providing specialist input and validating factual accuracy. Can be internal or external",
+      "Usually the Internal SME"
+    ]
+  ]
+}

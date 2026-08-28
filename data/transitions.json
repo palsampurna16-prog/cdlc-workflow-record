@@ -1,0 +1,3063 @@
+{
+  "Applied Layers: Content Finalization": [
+    {
+      "kind": "start",
+      "to": "Finalize as per SME Requirements"
+    },
+    {
+      "kind": "edge",
+      "from": [
+        "Finalize as per SME Requirements"
+      ],
+      "to": "Generate Graphic Definition",
+      "label": "Create Graphic Definition"
+    },
+    {
+      "kind": "edge",
+      "from": [
+        "Generate Graphic Definition"
+      ],
+      "to": "Referencing",
+      "label": "Referencing"
+    }
+  ],
+  "Applied Layers: Toolkit/Instructions": [
+    {
+      "kind": "start",
+      "to": "To Do"
+    },
+    {
+      "kind": "any",
+      "to": "Suspended",
+      "label": "Suspended"
+    },
+    {
+      "kind": "edge",
+      "from": [
+        "To Do"
+      ],
+      "to": "Assigned",
+      "label": "Assigned to team member"
+    },
+    {
+      "kind": "edge",
+      "from": [
+        "Assigned"
+      ],
+      "to": "In Progress",
+      "label": "Progress"
+    },
+    {
+      "kind": "edge",
+      "from": [
+        "In Progress"
+      ],
+      "to": "In Review",
+      "label": "Review"
+    },
+    {
+      "kind": "edge",
+      "from": [
+        "In Review"
+      ],
+      "to": "In Progress",
+      "label": "Review Fail"
+    },
+    {
+      "kind": "edge",
+      "from": [
+        "In Review"
+      ],
+      "to": "Done",
+      "label": "Approved"
+    }
+  ],
+  "Applied Layers: Video Creation & Review": [
+    {
+      "kind": "start",
+      "to": "Storyboard"
+    },
+    {
+      "kind": "any",
+      "to": "On Hold",
+      "label": "On Hold"
+    },
+    {
+      "kind": "any",
+      "to": "Suspended",
+      "label": "Suspended"
+    },
+    {
+      "kind": "edge",
+      "from": [
+        "Storyboard"
+      ],
+      "to": "SME Review",
+      "label": "SME Review"
+    },
+    {
+      "kind": "edge",
+      "from": [
+        "SME Review"
+      ],
+      "to": "Storyboard",
+      "label": "Review Fail"
+    },
+    {
+      "kind": "edge",
+      "from": [
+        "In Review"
+      ],
+      "to": "Video Creation",
+      "label": "Review Fail"
+    },
+    {
+      "kind": "edge",
+      "from": [
+        "Video Creation"
+      ],
+      "to": "In Review",
+      "label": "In Review"
+    },
+    {
+      "kind": "edge",
+      "from": [
+        "SME Review"
+      ],
+      "to": "Video Creation",
+      "label": "Video Creation"
+    },
+    {
+      "kind": "edge",
+      "from": [
+        "In Review"
+      ],
+      "to": "Done",
+      "label": "Completion"
+    }
+  ],
+  "Applied Layers: Video Recording": [
+    {
+      "kind": "start",
+      "to": "Video Recording"
+    },
+    {
+      "kind": "edge",
+      "from": [
+        "Video Recording"
+      ],
+      "to": "Manual Edit",
+      "label": "Manual Edit"
+    },
+    {
+      "kind": "edge",
+      "from": [
+        "Manual Edit"
+      ],
+      "to": "Video Review",
+      "label": "ID/SME Video Review"
+    }
+  ],
+  "CDLC: Articulate review": [
+    {
+      "kind": "start",
+      "to": "To Do"
+    },
+    {
+      "kind": "any",
+      "to": "Suspended",
+      "label": "Suspended"
+    },
+    {
+      "kind": "any",
+      "to": "On Hold",
+      "label": "On Hold"
+    },
+    {
+      "kind": "edge",
+      "from": [
+        "On Hold"
+      ],
+      "to": "Internal SME review",
+      "label": "SME Review"
+    },
+    {
+      "kind": "edge",
+      "from": [
+        "On Hold"
+      ],
+      "to": "In Review",
+      "label": "ID Review"
+    },
+    {
+      "kind": "edge",
+      "from": [
+        "On Hold"
+      ],
+      "to": "Corrections",
+      "label": "VD Corrections"
+    },
+    {
+      "kind": "edge",
+      "from": [
+        "Quality review"
+      ],
+      "to": "Internal SME review",
+      "label": "SME Review"
+    },
+    {
+      "kind": "edge",
+      "from": [
+        "In Review"
+      ],
+      "to": "Corrections",
+      "label": "VD Corrections"
+    },
+    {
+      "kind": "edge",
+      "from": [
+        "Internal SME review"
+      ],
+      "to": "In Review",
+      "label": "ID Review"
+    },
+    {
+      "kind": "edge",
+      "from": [
+        "To Do"
+      ],
+      "to": "Quality review",
+      "label": "QA Review"
+    },
+    {
+      "kind": "edge",
+      "from": [
+        "Corrections"
+      ],
+      "to": "Done",
+      "label": "Completion"
+    },
+    {
+      "kind": "edge",
+      "from": [
+        "Suspended"
+      ],
+      "to": "To Do",
+      "label": "Reopen"
+    },
+    {
+      "kind": "edge",
+      "from": [
+        "In Review"
+      ],
+      "to": "Quality review",
+      "label": "QA Review"
+    },
+    {
+      "kind": "edge",
+      "from": [
+        "On Hold"
+      ],
+      "to": "Quality review",
+      "label": "QA Review"
+    }
+  ],
+  "CDLC: Assessment": [
+    {
+      "kind": "start",
+      "to": "To Do"
+    },
+    {
+      "kind": "any",
+      "to": "Suspended",
+      "label": "Suspended"
+    },
+    {
+      "kind": "any",
+      "to": "On Hold",
+      "label": "On Hold"
+    },
+    {
+      "kind": "edge",
+      "from": [
+        "To Do"
+      ],
+      "to": "In Progress",
+      "label": "Work begun"
+    },
+    {
+      "kind": "edge",
+      "from": [
+        "Complete checklist"
+      ],
+      "to": "Quality review",
+      "label": "Send to Quality for review"
+    },
+    {
+      "kind": "edge",
+      "from": [
+        "Quality review"
+      ],
+      "to": "In Progress",
+      "label": "Review rejected"
+    },
+    {
+      "kind": "edge",
+      "from": [
+        "Quality review"
+      ],
+      "to": "Internal SME review",
+      "label": "SME Review"
+    },
+    {
+      "kind": "edge",
+      "from": [
+        "Internal SME review"
+      ],
+      "to": "In Progress",
+      "label": "Corrections"
+    },
+    {
+      "kind": "edge",
+      "from": [
+        "In Progress"
+      ],
+      "to": "Complete checklist",
+      "label": "Checklist"
+    },
+    {
+      "kind": "edge",
+      "from": [
+        "On Hold"
+      ],
+      "to": "To Do",
+      "label": "Resume"
+    },
+    {
+      "kind": "edge",
+      "from": [
+        "Internal SME review"
+      ],
+      "to": "Done",
+      "label": "Done"
+    }
+  ],
+  "CDLC: Base Articulate file creation": [
+    {
+      "kind": "start",
+      "to": "To Do"
+    },
+    {
+      "kind": "any",
+      "to": "To Do",
+      "label": "To Do"
+    },
+    {
+      "kind": "edge",
+      "from": [
+        "Assigned"
+      ],
+      "to": "In Progress",
+      "label": "Work begun"
+    },
+    {
+      "kind": "edge",
+      "from": [
+        "To Do"
+      ],
+      "to": "Assigned",
+      "label": "Assign to team member"
+    },
+    {
+      "kind": "edge",
+      "from": [
+        "Checklist"
+      ],
+      "to": "Done",
+      "label": "Done"
+    },
+    {
+      "kind": "edge",
+      "from": [
+        "In Review"
+      ],
+      "to": "Checklist",
+      "label": "Check for issues"
+    },
+    {
+      "kind": "edge",
+      "from": [
+        "In Progress"
+      ],
+      "to": "In Review",
+      "label": "Sent for Review"
+    },
+    {
+      "kind": "edge",
+      "from": [
+        "To Do"
+      ],
+      "to": "On Hold",
+      "label": "Need more info"
+    },
+    {
+      "kind": "edge",
+      "from": [
+        "To Do"
+      ],
+      "to": "Rejected",
+      "label": "Rejected"
+    },
+    {
+      "kind": "edge",
+      "from": [
+        "On Hold"
+      ],
+      "to": "Rejected",
+      "label": "Rejected"
+    },
+    {
+      "kind": "edge",
+      "from": [
+        "On Hold"
+      ],
+      "to": "In Progress",
+      "label": "Work begun"
+    },
+    {
+      "kind": "edge",
+      "from": [
+        "Checklist"
+      ],
+      "to": "In Progress",
+      "label": "Review Fail"
+    },
+    {
+      "kind": "edge",
+      "from": [
+        "In Progress"
+      ],
+      "to": "Rejected",
+      "label": "Task archived"
+    }
+  ],
+  "CDLC: Bug": [
+    {
+      "kind": "start",
+      "to": "To Do"
+    },
+    {
+      "kind": "any",
+      "to": "Suspended",
+      "label": "Suspended"
+    },
+    {
+      "kind": "edge",
+      "from": [
+        "To Do"
+      ],
+      "to": "In Progress",
+      "label": "Work begun"
+    },
+    {
+      "kind": "edge",
+      "from": [
+        "In Progress"
+      ],
+      "to": "In Review",
+      "label": "Sent for Review"
+    },
+    {
+      "kind": "edge",
+      "from": [
+        "In Review"
+      ],
+      "to": "Done",
+      "label": "Fixed & Closed"
+    },
+    {
+      "kind": "edge",
+      "from": [
+        "In Review"
+      ],
+      "to": "In Progress",
+      "label": "Review Fail"
+    }
+  ],
+  "CDLC: Content Creation": [
+    {
+      "kind": "start",
+      "to": "To Do"
+    },
+    {
+      "kind": "any",
+      "to": "Suspended",
+      "label": "Closed"
+    },
+    {
+      "kind": "any",
+      "to": "To Do",
+      "label": "To Do"
+    },
+    {
+      "kind": "edge",
+      "from": [
+        "Editorial review"
+      ],
+      "to": "In Progress",
+      "label": "Review Fail"
+    },
+    {
+      "kind": "edge",
+      "from": [
+        "To Do"
+      ],
+      "to": "In Progress",
+      "label": "Work begun"
+    },
+    {
+      "kind": "edge",
+      "from": [
+        "In Review"
+      ],
+      "to": "In Progress",
+      "label": "Final Review failed"
+    },
+    {
+      "kind": "edge",
+      "from": [
+        "Enhancement"
+      ],
+      "to": "In Review",
+      "label": "Final Review"
+    },
+    {
+      "kind": "edge",
+      "from": [
+        "Editorial review"
+      ],
+      "to": "Enhancement",
+      "label": "Editorial review pass"
+    },
+    {
+      "kind": "edge",
+      "from": [
+        "In Progress"
+      ],
+      "to": "SME Validation",
+      "label": "Review"
+    },
+    {
+      "kind": "edge",
+      "from": [
+        "SME Validation"
+      ],
+      "to": "In Progress",
+      "label": "Review Fail"
+    },
+    {
+      "kind": "edge",
+      "from": [
+        "Editorial review"
+      ],
+      "to": "Scope Rearrange",
+      "label": "Review Pass"
+    },
+    {
+      "kind": "edge",
+      "from": [
+        "Scope Rearrange"
+      ],
+      "to": "Enhancement",
+      "label": "Add additional questions"
+    },
+    {
+      "kind": "edge",
+      "from": [
+        "In Review"
+      ],
+      "to": "Done",
+      "label": "Approved"
+    },
+    {
+      "kind": "edge",
+      "from": [
+        "SME Validation"
+      ],
+      "to": "Editorial review",
+      "label": "Review Pass"
+    }
+  ],
+  "CDLC: Content Feedback": [
+    {
+      "kind": "start",
+      "to": "To Do"
+    },
+    {
+      "kind": "any",
+      "to": "Suspended",
+      "label": "Suspended"
+    },
+    {
+      "kind": "edge",
+      "from": [
+        "To Do"
+      ],
+      "to": "In Progress",
+      "label": "Work begun"
+    },
+    {
+      "kind": "edge",
+      "from": [
+        "In Progress"
+      ],
+      "to": "Done",
+      "label": "Approved"
+    },
+    {
+      "kind": "edge",
+      "from": [
+        "Suspended"
+      ],
+      "to": "To Do",
+      "label": "Reopen"
+    }
+  ],
+  "CDLC: Content Instructional Design": [
+    {
+      "kind": "start",
+      "to": "To Do"
+    },
+    {
+      "kind": "any",
+      "to": "Suspended",
+      "label": "Suspended"
+    },
+    {
+      "kind": "edge",
+      "from": [
+        "To Do"
+      ],
+      "to": "In Progress",
+      "label": "Work begun"
+    },
+    {
+      "kind": "edge",
+      "from": [
+        "In Progress"
+      ],
+      "to": "In Review",
+      "label": "Send to Review"
+    },
+    {
+      "kind": "edge",
+      "from": [
+        "In Review"
+      ],
+      "to": "Done",
+      "label": "Approved"
+    },
+    {
+      "kind": "edge",
+      "from": [
+        "In Review"
+      ],
+      "to": "In Progress",
+      "label": "Review Instructional Design"
+    },
+    {
+      "kind": "edge",
+      "from": [
+        "Suspended"
+      ],
+      "to": "To Do",
+      "label": "Reopen"
+    }
+  ],
+  "CDLC: Corrections": [
+    {
+      "kind": "start",
+      "to": "To Do"
+    },
+    {
+      "kind": "any",
+      "to": "To Do",
+      "label": "To Do"
+    },
+    {
+      "kind": "edge",
+      "from": [
+        "Assigned"
+      ],
+      "to": "In Progress",
+      "label": "Work begun"
+    },
+    {
+      "kind": "edge",
+      "from": [
+        "To Do"
+      ],
+      "to": "Assigned",
+      "label": "Assign to team member"
+    },
+    {
+      "kind": "edge",
+      "from": [
+        "In Progress"
+      ],
+      "to": "In Review",
+      "label": "Sent for Review"
+    },
+    {
+      "kind": "edge",
+      "from": [
+        "In Review"
+      ],
+      "to": "Done",
+      "label": "Approved"
+    },
+    {
+      "kind": "edge",
+      "from": [
+        "To Do"
+      ],
+      "to": "On Hold",
+      "label": "Need more info"
+    },
+    {
+      "kind": "edge",
+      "from": [
+        "To Do"
+      ],
+      "to": "Rejected",
+      "label": "Rejected"
+    },
+    {
+      "kind": "edge",
+      "from": [
+        "On Hold"
+      ],
+      "to": "Rejected",
+      "label": "Rejected"
+    },
+    {
+      "kind": "edge",
+      "from": [
+        "On Hold"
+      ],
+      "to": "In Progress",
+      "label": "Work begun"
+    },
+    {
+      "kind": "edge",
+      "from": [
+        "In Review"
+      ],
+      "to": "In Progress",
+      "label": "Review Fail"
+    },
+    {
+      "kind": "edge",
+      "from": [
+        "In Progress"
+      ],
+      "to": "Rejected",
+      "label": "Task archived"
+    }
+  ],
+  "CDLC: Course Brief": [
+    {
+      "kind": "start",
+      "to": "To Do"
+    },
+    {
+      "kind": "any",
+      "to": "To Do",
+      "label": "To Do"
+    },
+    {
+      "kind": "edge",
+      "from": [
+        "To Do"
+      ],
+      "to": "Assigned",
+      "label": "Assign to ID"
+    },
+    {
+      "kind": "edge",
+      "from": [
+        "Assigned"
+      ],
+      "to": "In Progress",
+      "label": "Progress"
+    },
+    {
+      "kind": "edge",
+      "from": [
+        "In Progress"
+      ],
+      "to": "Done",
+      "label": "Completion"
+    }
+  ],
+  "CDLC: Course Content Creation": [
+    {
+      "kind": "start",
+      "to": "To Do"
+    },
+    {
+      "kind": "any",
+      "to": "Suspended",
+      "label": "Suspended"
+    },
+    {
+      "kind": "edge",
+      "from": [
+        "SkillCat: Backup / Restore"
+      ],
+      "to": "Course QA on SkillCat",
+      "label": "Review course on SkillCat"
+    },
+    {
+      "kind": "edge",
+      "from": [
+        "To Do"
+      ],
+      "to": "Slide chunks in course sheet",
+      "label": "Work begun"
+    },
+    {
+      "kind": "edge",
+      "from": [
+        "In Review"
+      ],
+      "to": "Slide chunks in course sheet",
+      "label": "Revise Articulate"
+    },
+    {
+      "kind": "edge",
+      "from": [
+        "Course QA on Guroo"
+      ],
+      "to": "Course on Guroo",
+      "label": "Failed QA"
+    },
+    {
+      "kind": "edge",
+      "from": [
+        "Course QA on SkillCat"
+      ],
+      "to": "Staging: Backup / Restore",
+      "label": "Failed QA"
+    },
+    {
+      "kind": "edge",
+      "from": [
+        "Suspended"
+      ],
+      "to": "To Do",
+      "label": "Reopen"
+    },
+    {
+      "kind": "edge",
+      "from": [
+        "In Review"
+      ],
+      "to": "Done",
+      "label": "Approved"
+    },
+    {
+      "kind": "edge",
+      "from": [
+        "Slide chunks in course sheet"
+      ],
+      "to": "In Review",
+      "label": "Review / Verify"
+    },
+    {
+      "kind": "edge",
+      "from": [
+        "Uploading to AWS"
+      ],
+      "to": "Course on Guroo",
+      "label": "Host on Guroo"
+    },
+    {
+      "kind": "edge",
+      "from": [
+        "Course on Guroo"
+      ],
+      "to": "Assessment on Guroo",
+      "label": "Add assessments to Moodle"
+    },
+    {
+      "kind": "edge",
+      "from": [
+        "Assessment on Guroo"
+      ],
+      "to": "Course QA on Guroo",
+      "label": "Review course on Guroo"
+    },
+    {
+      "kind": "edge",
+      "from": [
+        "Course QA on Guroo"
+      ],
+      "to": "Staging: Backup / Restore",
+      "label": "Approved"
+    },
+    {
+      "kind": "edge",
+      "from": [
+        "Staging: Backup / Restore"
+      ],
+      "to": "SkillCat: Backup / Restore",
+      "label": "Host on SkillCat"
+    }
+  ],
+  "CDLC: Course Digitization": [
+    {
+      "kind": "start",
+      "to": "To Do"
+    },
+    {
+      "kind": "any",
+      "to": "Suspended",
+      "label": "Suspended"
+    },
+    {
+      "kind": "any",
+      "to": "On Hold",
+      "label": "On Hold"
+    },
+    {
+      "kind": "edge",
+      "from": [
+        "Suspended",
+        "On Hold"
+      ],
+      "to": "To Do",
+      "label": "Reopen"
+    },
+    {
+      "kind": "edge",
+      "from": [
+        "Update Keywords"
+      ],
+      "to": "SME Review",
+      "label": "In Review"
+    },
+    {
+      "kind": "edge",
+      "from": [
+        "In Review"
+      ],
+      "to": "Restore on SkillCat",
+      "label": "Restore on SkillCat"
+    },
+    {
+      "kind": "edge",
+      "from": [
+        "SME Review"
+      ],
+      "to": "Create Course on Planning",
+      "label": "Review Fail"
+    },
+    {
+      "kind": "edge",
+      "from": [
+        "update spreadsheet"
+      ],
+      "to": "Course Catalog",
+      "label": "Email Marketing Team"
+    },
+    {
+      "kind": "edge",
+      "from": [
+        "Restore on SkillCat"
+      ],
+      "to": "Update Learning Plan",
+      "label": "Update Learning Plan"
+    },
+    {
+      "kind": "edge",
+      "from": [
+        "Request Badge Creation"
+      ],
+      "to": "Upload to AWS",
+      "label": "Upload to AWS"
+    },
+    {
+      "kind": "edge",
+      "from": [
+        "To Do"
+      ],
+      "to": "Request Badge Creation",
+      "label": "Request badge creation"
+    },
+    {
+      "kind": "edge",
+      "from": [
+        "Update Learning Plan"
+      ],
+      "to": "Create Deep Links",
+      "label": "Update Keywords"
+    },
+    {
+      "kind": "edge",
+      "from": [
+        "SME Review"
+      ],
+      "to": "In Review",
+      "label": "Review"
+    },
+    {
+      "kind": "edge",
+      "from": [
+        "Create Deep Links"
+      ],
+      "to": "update spreadsheet",
+      "label": "update spreadsheet"
+    },
+    {
+      "kind": "edge",
+      "from": [
+        "Upload to AWS"
+      ],
+      "to": "Create Course on Planning",
+      "label": "Upload successful"
+    },
+    {
+      "kind": "edge",
+      "from": [
+        "Create Course on Planning"
+      ],
+      "to": "Question Bank on Planning",
+      "label": "Create"
+    },
+    {
+      "kind": "edge",
+      "from": [
+        "In Review"
+      ],
+      "to": "Create Course on Planning",
+      "label": "Review Fail"
+    },
+    {
+      "kind": "edge",
+      "from": [
+        "Question Bank on Planning"
+      ],
+      "to": "Update Keywords",
+      "label": "Planning Tasks"
+    }
+  ],
+  "CDLC: Course Outline": [
+    {
+      "kind": "start",
+      "to": "To Do"
+    },
+    {
+      "kind": "any",
+      "to": "To Do",
+      "label": "To Do"
+    },
+    {
+      "kind": "any",
+      "to": "Suspended",
+      "label": "Suspended"
+    },
+    {
+      "kind": "edge",
+      "from": [
+        "Create course outline"
+      ],
+      "to": "SME Validation",
+      "label": "SME Validation"
+    },
+    {
+      "kind": "edge",
+      "from": [
+        "To Do"
+      ],
+      "to": "Create course outline",
+      "label": "Create course outline"
+    },
+    {
+      "kind": "edge",
+      "from": [
+        "SME Validation"
+      ],
+      "to": "Checklist",
+      "label": "Complete Checklist"
+    },
+    {
+      "kind": "edge",
+      "from": [
+        "Checklist"
+      ],
+      "to": "Done",
+      "label": "Done"
+    }
+  ],
+  "CDLC: Epic": [
+    {
+      "kind": "start",
+      "to": "To Do"
+    },
+    {
+      "kind": "any",
+      "to": "To Do",
+      "label": "To Do"
+    },
+    {
+      "kind": "any",
+      "to": "On Hold",
+      "label": "On Hold"
+    },
+    {
+      "kind": "any",
+      "to": "Suspended",
+      "label": "Suspended"
+    },
+    {
+      "kind": "edge",
+      "from": [
+        "To Do"
+      ],
+      "to": "In Progress",
+      "label": "Work begun"
+    },
+    {
+      "kind": "edge",
+      "from": [
+        "On Hold"
+      ],
+      "to": "To Do",
+      "label": "Resume"
+    },
+    {
+      "kind": "edge",
+      "from": [
+        "In Progress"
+      ],
+      "to": "Digitization",
+      "label": "Send to Digitize"
+    },
+    {
+      "kind": "edge",
+      "from": [
+        "Digitization"
+      ],
+      "to": "Done",
+      "label": "Course complete"
+    },
+    {
+      "kind": "edge",
+      "from": [
+        "Suspended"
+      ],
+      "to": "To Do",
+      "label": "Reopen"
+    }
+  ],
+  "CDLC: Final Slides": [
+    {
+      "kind": "start",
+      "to": "To Do"
+    },
+    {
+      "kind": "any",
+      "to": "Suspended",
+      "label": "Suspended"
+    },
+    {
+      "kind": "any",
+      "to": "On Hold",
+      "label": "On Hold"
+    },
+    {
+      "kind": "edge",
+      "from": [
+        "To Do"
+      ],
+      "to": "In Progress",
+      "label": "Run automation and edit manually"
+    },
+    {
+      "kind": "edge",
+      "from": [
+        "Internal SME review"
+      ],
+      "to": "Graphics definition",
+      "label": "Approve"
+    },
+    {
+      "kind": "edge",
+      "from": [
+        "Internal SME review"
+      ],
+      "to": "In Progress",
+      "label": "Review rejected"
+    },
+    {
+      "kind": "edge",
+      "from": [
+        "Complete checklist"
+      ],
+      "to": "Quality review",
+      "label": "Quality Review"
+    },
+    {
+      "kind": "edge",
+      "from": [
+        "Graphics definition"
+      ],
+      "to": "Done",
+      "label": "Done"
+    },
+    {
+      "kind": "edge",
+      "from": [
+        "Quality review"
+      ],
+      "to": "Internal SME review",
+      "label": "Internal SME Review"
+    },
+    {
+      "kind": "edge",
+      "from": [
+        "Quality review"
+      ],
+      "to": "In Progress",
+      "label": "Review Rejected"
+    },
+    {
+      "kind": "edge",
+      "from": [
+        "In Progress"
+      ],
+      "to": "Complete checklist",
+      "label": "Complete checklist"
+    },
+    {
+      "kind": "edge",
+      "from": [
+        "On Hold"
+      ],
+      "to": "To Do",
+      "label": "Resume"
+    }
+  ],
+  "CDLC: Graphics": [
+    {
+      "kind": "start",
+      "to": "To Do"
+    },
+    {
+      "kind": "any",
+      "to": "Suspended",
+      "label": "Suspended"
+    },
+    {
+      "kind": "edge",
+      "from": [
+        "To Do"
+      ],
+      "to": "In Progress",
+      "label": "Graphic work begun"
+    },
+    {
+      "kind": "edge",
+      "from": [
+        "In Progress"
+      ],
+      "to": "Complete checklist",
+      "label": "Complete checklist"
+    },
+    {
+      "kind": "edge",
+      "from": [
+        "In Review"
+      ],
+      "to": "Send to Instructional Designer",
+      "label": "Send to Instructional Designer"
+    },
+    {
+      "kind": "edge",
+      "from": [
+        "Send to Instructional Designer"
+      ],
+      "to": "In Progress",
+      "label": "Corrections"
+    },
+    {
+      "kind": "edge",
+      "from": [
+        "Send to Instructional Designer"
+      ],
+      "to": "Quality review",
+      "label": "Send for review"
+    },
+    {
+      "kind": "edge",
+      "from": [
+        "Quality review"
+      ],
+      "to": "In Progress",
+      "label": "Corrections"
+    },
+    {
+      "kind": "edge",
+      "from": [
+        "External Review"
+      ],
+      "to": "Done",
+      "label": "Done"
+    },
+    {
+      "kind": "edge",
+      "from": [
+        "Internal SME review"
+      ],
+      "to": "External Review",
+      "label": "Sent to external resource for review"
+    },
+    {
+      "kind": "edge",
+      "from": [
+        "External Review"
+      ],
+      "to": "In Progress",
+      "label": "Make corrections"
+    },
+    {
+      "kind": "edge",
+      "from": [
+        "Quality review"
+      ],
+      "to": "Internal SME review",
+      "label": "Assign to Internal SME"
+    },
+    {
+      "kind": "edge",
+      "from": [
+        "Complete checklist"
+      ],
+      "to": "In Review",
+      "label": "Sent to Manager for Review"
+    },
+    {
+      "kind": "edge",
+      "from": [
+        "Internal SME review"
+      ],
+      "to": "In Progress",
+      "label": "Corrections"
+    },
+    {
+      "kind": "edge",
+      "from": [
+        "Send to Instructional Designer"
+      ],
+      "to": "External Review",
+      "label": "External review"
+    },
+    {
+      "kind": "edge",
+      "from": [
+        "Send to Instructional Designer"
+      ],
+      "to": "Internal SME review",
+      "label": "SME Review"
+    },
+    {
+      "kind": "edge",
+      "from": [
+        "In Review"
+      ],
+      "to": "In Progress",
+      "label": "Revise Graphic"
+    },
+    {
+      "kind": "edge",
+      "from": [
+        "Suspended"
+      ],
+      "to": "To Do",
+      "label": "Reopen"
+    }
+  ],
+  "CDLC: Improvement": [
+    {
+      "kind": "start",
+      "to": "To Do"
+    },
+    {
+      "kind": "any",
+      "to": "Suspended",
+      "label": "Suspended"
+    },
+    {
+      "kind": "edge",
+      "from": [
+        "To Do"
+      ],
+      "to": "In Progress",
+      "label": "Improvement Begun"
+    },
+    {
+      "kind": "edge",
+      "from": [
+        "In Progress"
+      ],
+      "to": "In Review",
+      "label": "Sent for Review"
+    },
+    {
+      "kind": "edge",
+      "from": [
+        "In Review"
+      ],
+      "to": "Done",
+      "label": "Approved"
+    },
+    {
+      "kind": "edge",
+      "from": [
+        "In Review"
+      ],
+      "to": "In Progress",
+      "label": "Modify"
+    },
+    {
+      "kind": "edge",
+      "from": [
+        "Suspended"
+      ],
+      "to": "To Do",
+      "label": "Reopen"
+    }
+  ],
+  "CDLC: Move Source Files": [
+    {
+      "kind": "start",
+      "to": "To Do"
+    },
+    {
+      "kind": "edge",
+      "from": [
+        "To Do"
+      ],
+      "to": "In Progress",
+      "label": "Progress"
+    },
+    {
+      "kind": "edge",
+      "from": [
+        "In Progress"
+      ],
+      "to": "In Review",
+      "label": "Send for Review"
+    },
+    {
+      "kind": "edge",
+      "from": [
+        "In Review"
+      ],
+      "to": "Done",
+      "label": "Review Approved"
+    },
+    {
+      "kind": "edge",
+      "from": [
+        "In Review"
+      ],
+      "to": "In Progress",
+      "label": "Review Failed"
+    },
+    {
+      "kind": "edge",
+      "from": [
+        "Done"
+      ],
+      "to": "To Do",
+      "label": "Start Over"
+    }
+  ],
+  "CDLC: Recording": [
+    {
+      "kind": "start",
+      "to": "Scripting"
+    },
+    {
+      "kind": "edge",
+      "from": [
+        "Scripting"
+      ],
+      "to": "Assigned",
+      "label": "Assigned"
+    },
+    {
+      "kind": "edge",
+      "from": [
+        "Assigned"
+      ],
+      "to": "In Progress",
+      "label": "Progress"
+    },
+    {
+      "kind": "edge",
+      "from": [
+        "In Progress"
+      ],
+      "to": "In Review",
+      "label": "Review"
+    },
+    {
+      "kind": "edge",
+      "from": [
+        "In Review"
+      ],
+      "to": "Done",
+      "label": "Approved"
+    },
+    {
+      "kind": "edge",
+      "from": [
+        "In Review"
+      ],
+      "to": "In Progress",
+      "label": "Review Fail"
+    }
+  ],
+  "CDLC: Restrict Course Folder": [
+    {
+      "kind": "start",
+      "to": "To Do"
+    },
+    {
+      "kind": "any",
+      "to": "Suspended",
+      "label": "Suspended"
+    },
+    {
+      "kind": "edge",
+      "from": [
+        "To Do"
+      ],
+      "to": "In Progress",
+      "label": "Progress"
+    },
+    {
+      "kind": "edge",
+      "from": [
+        "In Progress"
+      ],
+      "to": "Done",
+      "label": "Completion"
+    }
+  ],
+  "CDLC: Reviews": [
+    {
+      "kind": "start",
+      "to": "In Review"
+    },
+    {
+      "kind": "any",
+      "to": "In Review",
+      "label": "In Review"
+    },
+    {
+      "kind": "any",
+      "to": "Suspended",
+      "label": "Suspended"
+    },
+    {
+      "kind": "any",
+      "to": "On Hold",
+      "label": "On Hold"
+    },
+    {
+      "kind": "edge",
+      "from": [
+        "In Progress"
+      ],
+      "to": "In Review",
+      "label": "Sent for Review"
+    },
+    {
+      "kind": "edge",
+      "from": [
+        "In Review"
+      ],
+      "to": "Done",
+      "label": "Approved"
+    },
+    {
+      "kind": "edge",
+      "from": [
+        "In Review"
+      ],
+      "to": "In Progress",
+      "label": "Review Fail"
+    }
+  ],
+  "CDLC: Run Image Archiving Automation": [
+    {
+      "kind": "start",
+      "to": "To Do"
+    },
+    {
+      "kind": "any",
+      "to": "Suspended",
+      "label": "Suspended"
+    },
+    {
+      "kind": "edge",
+      "from": [
+        "To Do"
+      ],
+      "to": "In Progress",
+      "label": "Progress"
+    },
+    {
+      "kind": "edge",
+      "from": [
+        "In Progress"
+      ],
+      "to": "In Review",
+      "label": "Review"
+    },
+    {
+      "kind": "edge",
+      "from": [
+        "In Review"
+      ],
+      "to": "Done",
+      "label": "Review Approved"
+    },
+    {
+      "kind": "edge",
+      "from": [
+        "In Review"
+      ],
+      "to": "In Progress",
+      "label": "Review Failed"
+    },
+    {
+      "kind": "edge",
+      "from": [
+        "Done"
+      ],
+      "to": "To Do",
+      "label": "Start Over"
+    }
+  ],
+  "CDLC: Simulation Specs": [
+    {
+      "kind": "start",
+      "to": "To Do"
+    },
+    {
+      "kind": "any",
+      "to": "Suspended",
+      "label": "Suspended"
+    },
+    {
+      "kind": "edge",
+      "from": [
+        "To Do"
+      ],
+      "to": "Business Specs in Progress",
+      "label": "Write Business Specs"
+    },
+    {
+      "kind": "edge",
+      "from": [
+        "Business Specs in Progress"
+      ],
+      "to": "Business Specs in Review",
+      "label": "Sent for Review"
+    },
+    {
+      "kind": "edge",
+      "from": [
+        "Business Specs in Review"
+      ],
+      "to": "Business Specs in Progress",
+      "label": "Review Fail"
+    },
+    {
+      "kind": "edge",
+      "from": [
+        "Business Specs in Review"
+      ],
+      "to": "Learning Objectives in Progress",
+      "label": "Business Specs Approved"
+    },
+    {
+      "kind": "edge",
+      "from": [
+        "Learning Objectives in Progress"
+      ],
+      "to": "Learning Objective in Review",
+      "label": "Sent for Review"
+    },
+    {
+      "kind": "edge",
+      "from": [
+        "Learning Objective in Review"
+      ],
+      "to": "Learning Objectives in Progress",
+      "label": "Review Fail"
+    },
+    {
+      "kind": "edge",
+      "from": [
+        "Learning Objective in Review"
+      ],
+      "to": "Done",
+      "label": "Specs are Ready"
+    },
+    {
+      "kind": "edge",
+      "from": [
+        "Suspended"
+      ],
+      "to": "To Do",
+      "label": "Reopen"
+    }
+  ],
+  "CDLC: Spanish Translations": [
+    {
+      "kind": "start",
+      "to": "To Do"
+    },
+    {
+      "kind": "any",
+      "to": "On Hold",
+      "label": "On Hold"
+    },
+    {
+      "kind": "any",
+      "to": "Suspended",
+      "label": "Suspended"
+    },
+    {
+      "kind": "any",
+      "to": "To Do",
+      "label": "To Do"
+    },
+    {
+      "kind": "edge",
+      "from": [
+        "To Do"
+      ],
+      "to": "Assigned",
+      "label": "Assign to team member"
+    },
+    {
+      "kind": "edge",
+      "from": [
+        "Upload to AWS"
+      ],
+      "to": "Done",
+      "label": "Done"
+    },
+    {
+      "kind": "edge",
+      "from": [
+        "In Translation"
+      ],
+      "to": "Complete checklist",
+      "label": "Complete checklist"
+    },
+    {
+      "kind": "edge",
+      "from": [
+        "Complete checklist"
+      ],
+      "to": "In Review",
+      "label": "Sent for Review"
+    },
+    {
+      "kind": "edge",
+      "from": [
+        "In Review"
+      ],
+      "to": "Upload to AWS",
+      "label": "Approved"
+    },
+    {
+      "kind": "edge",
+      "from": [
+        "On Hold",
+        "Assigned"
+      ],
+      "to": "In Translation",
+      "label": "Work begun"
+    },
+    {
+      "kind": "edge",
+      "from": [
+        "In Review"
+      ],
+      "to": "In Translation",
+      "label": "Review Fail"
+    }
+  ],
+  "CDLC: Stock image downloading": [
+    {
+      "kind": "start",
+      "to": "To Do"
+    },
+    {
+      "kind": "any",
+      "to": "To Do",
+      "label": "To Do"
+    },
+    {
+      "kind": "any",
+      "to": "Suspended",
+      "label": "Suspended"
+    },
+    {
+      "kind": "edge",
+      "from": [
+        "To Do"
+      ],
+      "to": "In Progress",
+      "label": "In Progress"
+    },
+    {
+      "kind": "edge",
+      "from": [
+        "In Review"
+      ],
+      "to": "Done",
+      "label": "Done"
+    },
+    {
+      "kind": "edge",
+      "from": [
+        "In Progress"
+      ],
+      "to": "In Review",
+      "label": "Send for review"
+    },
+    {
+      "kind": "edge",
+      "from": [
+        "In Review"
+      ],
+      "to": "In Progress",
+      "label": "Review rejected"
+    }
+  ],
+  "CDLC: Task/Subtask": [
+    {
+      "kind": "start",
+      "to": "To Do"
+    },
+    {
+      "kind": "any",
+      "to": "Suspended",
+      "label": "Suspended"
+    },
+    {
+      "kind": "any",
+      "to": "On Hold",
+      "label": "On Hold"
+    },
+    {
+      "kind": "edge",
+      "from": [
+        "On Hold"
+      ],
+      "to": "In Progress",
+      "label": "Progress"
+    },
+    {
+      "kind": "edge",
+      "from": [
+        "On Hold"
+      ],
+      "to": "In Review",
+      "label": "Review"
+    },
+    {
+      "kind": "edge",
+      "from": [
+        "To Do"
+      ],
+      "to": "In Progress",
+      "label": "Progress"
+    },
+    {
+      "kind": "edge",
+      "from": [
+        "In Progress"
+      ],
+      "to": "In Review",
+      "label": "Review"
+    },
+    {
+      "kind": "edge",
+      "from": [
+        "In Review"
+      ],
+      "to": "In Progress",
+      "label": "Review Fail"
+    },
+    {
+      "kind": "edge",
+      "from": [
+        "In Review"
+      ],
+      "to": "Done",
+      "label": "Completion"
+    },
+    {
+      "kind": "edge",
+      "from": [
+        "Done"
+      ],
+      "to": "To Do",
+      "label": "Start Over"
+    },
+    {
+      "kind": "edge",
+      "from": [
+        "On Hold"
+      ],
+      "to": "To Do",
+      "label": "Start Over"
+    }
+  ],
+  "CDLC: Topic": [
+    {
+      "kind": "start",
+      "to": "To Do"
+    },
+    {
+      "kind": "any",
+      "to": "To Do",
+      "label": "To Do"
+    },
+    {
+      "kind": "any",
+      "to": "Suspended",
+      "label": "Suspended"
+    },
+    {
+      "kind": "any",
+      "to": "On Hold",
+      "label": "On Hold"
+    },
+    {
+      "kind": "edge",
+      "from": [
+        "Final Slides"
+      ],
+      "to": "Ready for Graphics",
+      "label": "Final Slides ready"
+    },
+    {
+      "kind": "edge",
+      "from": [
+        "Spanish Translations"
+      ],
+      "to": "Uploading to AWS",
+      "label": "Upload to AWS"
+    },
+    {
+      "kind": "edge",
+      "from": [
+        "In Review"
+      ],
+      "to": "Uploading to AWS",
+      "label": "For Certification Course"
+    },
+    {
+      "kind": "edge",
+      "from": [
+        "Uploading to AWS"
+      ],
+      "to": "Done",
+      "label": "Done"
+    },
+    {
+      "kind": "edge",
+      "from": [
+        "To Do"
+      ],
+      "to": "Final Slides",
+      "label": "In Progress"
+    },
+    {
+      "kind": "edge",
+      "from": [
+        "Ready for Graphics"
+      ],
+      "to": "Graphics Creation",
+      "label": "Graphics in progress"
+    },
+    {
+      "kind": "edge",
+      "from": [
+        "Graphics Creation"
+      ],
+      "to": "In Review",
+      "label": "Review by Quality and SME"
+    },
+    {
+      "kind": "edge",
+      "from": [
+        "In Review"
+      ],
+      "to": "Spanish Translations",
+      "label": "Ready for Translations"
+    }
+  ],
+  "CDLC: Topic Assessment": [
+    {
+      "kind": "start",
+      "to": "To Do"
+    },
+    {
+      "kind": "any",
+      "to": "To Do",
+      "label": "To Do"
+    },
+    {
+      "kind": "any",
+      "to": "Suspended",
+      "label": "Suspended"
+    },
+    {
+      "kind": "any",
+      "to": "On Hold",
+      "label": "On Hold"
+    },
+    {
+      "kind": "edge",
+      "from": [
+        "To Do"
+      ],
+      "to": "In Progress",
+      "label": "Work begun"
+    },
+    {
+      "kind": "edge",
+      "from": [
+        "In Review"
+      ],
+      "to": "In Progress",
+      "label": "Corrections"
+    },
+    {
+      "kind": "edge",
+      "from": [
+        "Complete checklist"
+      ],
+      "to": "In Review",
+      "label": "SME Review"
+    },
+    {
+      "kind": "edge",
+      "from": [
+        "In Progress"
+      ],
+      "to": "Complete checklist",
+      "label": "Checklist"
+    },
+    {
+      "kind": "edge",
+      "from": [
+        "In Review"
+      ],
+      "to": "Done",
+      "label": "Done"
+    }
+  ],
+  "CDLC: Topic Final Slides": [
+    {
+      "kind": "start",
+      "to": "To Do"
+    },
+    {
+      "kind": "any",
+      "to": "Suspended",
+      "label": "Suspended"
+    },
+    {
+      "kind": "any",
+      "to": "On Hold",
+      "label": "On Hold"
+    },
+    {
+      "kind": "edge",
+      "from": [
+        "To Do"
+      ],
+      "to": "In Progress",
+      "label": "Run automation and edit manually"
+    },
+    {
+      "kind": "edge",
+      "from": [
+        "Internal SME review"
+      ],
+      "to": "Done",
+      "label": "Approve"
+    },
+    {
+      "kind": "edge",
+      "from": [
+        "Internal SME review"
+      ],
+      "to": "In Progress",
+      "label": "Review rejected"
+    },
+    {
+      "kind": "edge",
+      "from": [
+        "Complete checklist"
+      ],
+      "to": "Quality review",
+      "label": "Quality Team review"
+    },
+    {
+      "kind": "edge",
+      "from": [
+        "Quality review"
+      ],
+      "to": "In Progress",
+      "label": "Review rejected"
+    },
+    {
+      "kind": "edge",
+      "from": [
+        "Quality review"
+      ],
+      "to": "Internal SME review",
+      "label": "SME Review"
+    },
+    {
+      "kind": "edge",
+      "from": [
+        "In Progress"
+      ],
+      "to": "Complete checklist",
+      "label": "Complete checklist"
+    },
+    {
+      "kind": "edge",
+      "from": [
+        "On Hold"
+      ],
+      "to": "To Do",
+      "label": "Resume"
+    }
+  ],
+  "CDLC: Topic Graphics": [
+    {
+      "kind": "start",
+      "to": "To Do"
+    },
+    {
+      "kind": "any",
+      "to": "Suspended",
+      "label": "Suspended"
+    },
+    {
+      "kind": "edge",
+      "from": [
+        "To Do"
+      ],
+      "to": "In Progress",
+      "label": "Graphic work begun"
+    },
+    {
+      "kind": "edge",
+      "from": [
+        "In Progress"
+      ],
+      "to": "Complete checklist",
+      "label": "Complete checklist"
+    },
+    {
+      "kind": "edge",
+      "from": [
+        "In Review"
+      ],
+      "to": "Send to Instructional Designer",
+      "label": "Send to Instructional Designer"
+    },
+    {
+      "kind": "edge",
+      "from": [
+        "Send to Instructional Designer"
+      ],
+      "to": "In Progress",
+      "label": "Corrections"
+    },
+    {
+      "kind": "edge",
+      "from": [
+        "Send to Instructional Designer"
+      ],
+      "to": "Done",
+      "label": "Done"
+    },
+    {
+      "kind": "edge",
+      "from": [
+        "Complete checklist"
+      ],
+      "to": "In Review",
+      "label": "Sent to Manager for Review"
+    },
+    {
+      "kind": "edge",
+      "from": [
+        "In Review"
+      ],
+      "to": "In Progress",
+      "label": "Revise Graphic"
+    },
+    {
+      "kind": "edge",
+      "from": [
+        "Suspended"
+      ],
+      "to": "To Do",
+      "label": "Reopen"
+    }
+  ],
+  "Certification: Articulate Creation": [
+    {
+      "kind": "start",
+      "to": "To Do"
+    },
+    {
+      "kind": "any",
+      "to": "On Hold",
+      "label": "On Hold"
+    },
+    {
+      "kind": "any",
+      "to": "Suspended",
+      "label": "Suspended"
+    },
+    {
+      "kind": "any",
+      "to": "To Do",
+      "label": "To Do"
+    },
+    {
+      "kind": "edge",
+      "from": [
+        "ID Review"
+      ],
+      "to": "SME Review",
+      "label": "SME Review"
+    },
+    {
+      "kind": "edge",
+      "from": [
+        "SME Review"
+      ],
+      "to": "Quality review",
+      "label": "QA Review"
+    },
+    {
+      "kind": "edge",
+      "from": [
+        "Quality review"
+      ],
+      "to": "ID Review",
+      "label": "ID Corrections"
+    },
+    {
+      "kind": "edge",
+      "from": [
+        "SME Review"
+      ],
+      "to": "ID Review",
+      "label": "ID Corrections"
+    },
+    {
+      "kind": "edge",
+      "from": [
+        "Quality review"
+      ],
+      "to": "Done",
+      "label": "Completion"
+    },
+    {
+      "kind": "edge",
+      "from": [
+        "To Do"
+      ],
+      "to": "Generate Articulate",
+      "label": "Articulate Generation"
+    },
+    {
+      "kind": "edge",
+      "from": [
+        "Generate Articulate"
+      ],
+      "to": "ID Review",
+      "label": "ID Review"
+    },
+    {
+      "kind": "edge",
+      "from": [
+        "ID Review"
+      ],
+      "to": "Corrections",
+      "label": "VD Corrections"
+    },
+    {
+      "kind": "edge",
+      "from": [
+        "Corrections"
+      ],
+      "to": "ID Review",
+      "label": "ID Review"
+    },
+    {
+      "kind": "edge",
+      "from": [
+        "Corrections"
+      ],
+      "to": "SME Review",
+      "label": "SME Review"
+    }
+  ],
+  "Certification: Graphic Definitions": [
+    {
+      "kind": "start",
+      "to": "To Do"
+    },
+    {
+      "kind": "any",
+      "to": "To Do",
+      "label": "To Do"
+    },
+    {
+      "kind": "any",
+      "to": "On Hold",
+      "label": "On Hold"
+    },
+    {
+      "kind": "any",
+      "to": "Suspended",
+      "label": "Suspended"
+    },
+    {
+      "kind": "edge",
+      "from": [
+        "Review & Revise Visuals"
+      ],
+      "to": "Review & Revise Definition",
+      "label": "Revise"
+    },
+    {
+      "kind": "edge",
+      "from": [
+        "Generate AI Visuals"
+      ],
+      "to": "Review & Revise Visuals",
+      "label": "Revise"
+    },
+    {
+      "kind": "edge",
+      "from": [
+        "To Do"
+      ],
+      "to": "Generate Graphic Definition",
+      "label": "Generation"
+    },
+    {
+      "kind": "edge",
+      "from": [
+        "Generate Graphic Definition"
+      ],
+      "to": "Review & Revise Definition",
+      "label": "GD Review"
+    },
+    {
+      "kind": "edge",
+      "from": [
+        "Review & Revise Definition"
+      ],
+      "to": "Review & Revise Visuals",
+      "label": "Visuals' Review"
+    },
+    {
+      "kind": "edge",
+      "from": [
+        "Review & Revise Visuals"
+      ],
+      "to": "Generate AI Visuals",
+      "label": "Generate Visuals"
+    },
+    {
+      "kind": "edge",
+      "from": [
+        "Generate AI Visuals"
+      ],
+      "to": "Review Final GD",
+      "label": "Final GD Review"
+    },
+    {
+      "kind": "edge",
+      "from": [
+        "Review Final GD"
+      ],
+      "to": "Done",
+      "label": "Completion"
+    }
+  ],
+  "Certification: Research Note": [
+    {
+      "kind": "start",
+      "to": "To Do"
+    },
+    {
+      "kind": "any",
+      "to": "On Hold",
+      "label": "On Hold"
+    },
+    {
+      "kind": "any",
+      "to": "Suspended",
+      "label": "Suspended"
+    },
+    {
+      "kind": "any",
+      "to": "To Do",
+      "label": "To Do"
+    },
+    {
+      "kind": "edge",
+      "from": [
+        "To Do"
+      ],
+      "to": "Manual Review",
+      "label": "Manual Review"
+    },
+    {
+      "kind": "edge",
+      "from": [
+        "Manual Review"
+      ],
+      "to": "Inline Image Check",
+      "label": "Inline Image Check"
+    },
+    {
+      "kind": "edge",
+      "from": [
+        "Inline Image Check"
+      ],
+      "to": "Done",
+      "label": "Completion"
+    }
+  ],
+  "Certification: Slide Chunks": [
+    {
+      "kind": "start",
+      "to": "To Do"
+    },
+    {
+      "kind": "any",
+      "to": "On Hold",
+      "label": "On Hold"
+    },
+    {
+      "kind": "any",
+      "to": "Suspended",
+      "label": "Suspended"
+    },
+    {
+      "kind": "any",
+      "to": "To Do",
+      "label": "To Do"
+    },
+    {
+      "kind": "edge",
+      "from": [
+        "To Do"
+      ],
+      "to": "In Progress",
+      "label": "Progress"
+    },
+    {
+      "kind": "edge",
+      "from": [
+        "In Progress"
+      ],
+      "to": "Paraphrasing",
+      "label": "Paraphrasing"
+    },
+    {
+      "kind": "edge",
+      "from": [
+        "Paraphrasing"
+      ],
+      "to": "In Review",
+      "label": "Review"
+    },
+    {
+      "kind": "edge",
+      "from": [
+        "In Review"
+      ],
+      "to": "Done",
+      "label": "Completion"
+    },
+    {
+      "kind": "edge",
+      "from": [
+        "In Review"
+      ],
+      "to": "Paraphrasing",
+      "label": "Review Fail"
+    }
+  ],
+  "Certification: Template Generation": [
+    {
+      "kind": "start",
+      "to": "To Do"
+    },
+    {
+      "kind": "any",
+      "to": "On Hold",
+      "label": "On Hold"
+    },
+    {
+      "kind": "any",
+      "to": "Suspended",
+      "label": "Suspended"
+    },
+    {
+      "kind": "edge",
+      "from": [
+        "To Do"
+      ],
+      "to": "Done",
+      "label": "Completion"
+    },
+    {
+      "kind": "edge",
+      "from": [
+        "Done"
+      ],
+      "to": "To Do",
+      "label": "Start Over"
+    }
+  ],
+  "Digitization - Badge Creation": [
+    {
+      "kind": "start",
+      "to": "To Do"
+    },
+    {
+      "kind": "any",
+      "to": "Suspended",
+      "label": "Suspended"
+    },
+    {
+      "kind": "edge",
+      "from": [
+        "In Progress"
+      ],
+      "to": "In Review",
+      "label": "Review"
+    },
+    {
+      "kind": "edge",
+      "from": [
+        "To Do"
+      ],
+      "to": "In Progress",
+      "label": "Progress"
+    },
+    {
+      "kind": "edge",
+      "from": [
+        "In Review"
+      ],
+      "to": "In Progress",
+      "label": "Review Fail"
+    },
+    {
+      "kind": "edge",
+      "from": [
+        "In Review"
+      ],
+      "to": "Done",
+      "label": "Completion"
+    },
+    {
+      "kind": "edge",
+      "from": [
+        "Done"
+      ],
+      "to": "To Do",
+      "label": "Reopen Task"
+    }
+  ],
+  "Digitization - Course Catalog Updating": [
+    {
+      "kind": "start",
+      "to": "To Do"
+    },
+    {
+      "kind": "any",
+      "to": "Suspended",
+      "label": "Suspended"
+    },
+    {
+      "kind": "edge",
+      "from": [
+        "To Do"
+      ],
+      "to": "Assigned",
+      "label": "Progress"
+    },
+    {
+      "kind": "edge",
+      "from": [
+        "In Progress"
+      ],
+      "to": "In Review",
+      "label": "Completion"
+    },
+    {
+      "kind": "edge",
+      "from": [
+        "Assigned"
+      ],
+      "to": "In Progress",
+      "label": "Progress"
+    },
+    {
+      "kind": "edge",
+      "from": [
+        "In Review"
+      ],
+      "to": "Done",
+      "label": "Completion"
+    }
+  ],
+  "Digitization - Data Sheet Creation": [
+    {
+      "kind": "start",
+      "to": "To Do"
+    },
+    {
+      "kind": "any",
+      "to": "Suspended",
+      "label": "Suspended"
+    },
+    {
+      "kind": "edge",
+      "from": [
+        "To Do"
+      ],
+      "to": "Assigned",
+      "label": "Progress"
+    },
+    {
+      "kind": "edge",
+      "from": [
+        "In Progress"
+      ],
+      "to": "In Review",
+      "label": "Completion"
+    },
+    {
+      "kind": "edge",
+      "from": [
+        "Assigned"
+      ],
+      "to": "In Progress",
+      "label": "Progress"
+    },
+    {
+      "kind": "edge",
+      "from": [
+        "In Review"
+      ],
+      "to": "Done",
+      "label": "Completion"
+    }
+  ],
+  "Digitization - Restore on SkillCat": [
+    {
+      "kind": "start",
+      "to": "To Do"
+    },
+    {
+      "kind": "any",
+      "to": "Suspended",
+      "label": "Suspended"
+    },
+    {
+      "kind": "edge",
+      "from": [
+        "QA Review"
+      ],
+      "to": "Done",
+      "label": "Review Approved"
+    },
+    {
+      "kind": "edge",
+      "from": [
+        "Done"
+      ],
+      "to": "To Do",
+      "label": "Start Over"
+    },
+    {
+      "kind": "edge",
+      "from": [
+        "Restore on SkillCat"
+      ],
+      "to": "Update Learning Plan",
+      "label": "On SkillCat"
+    },
+    {
+      "kind": "edge",
+      "from": [
+        "Update Learning Plan"
+      ],
+      "to": "Create Deep Links",
+      "label": "Production"
+    },
+    {
+      "kind": "edge",
+      "from": [
+        "Create Deep Links"
+      ],
+      "to": "update spreadsheet",
+      "label": "Production"
+    },
+    {
+      "kind": "edge",
+      "from": [
+        "update spreadsheet"
+      ],
+      "to": "QA Review",
+      "label": "Review"
+    },
+    {
+      "kind": "edge",
+      "from": [
+        "To Do"
+      ],
+      "to": "Restore on SkillCat",
+      "label": "In Progress"
+    }
+  ],
+  "Digitization - Review": [
+    {
+      "kind": "start",
+      "to": "To Do"
+    },
+    {
+      "kind": "any",
+      "to": "To Do",
+      "label": "To Do"
+    },
+    {
+      "kind": "any",
+      "to": "Suspended",
+      "label": "Suspended"
+    },
+    {
+      "kind": "edge",
+      "from": [
+        "To Do"
+      ],
+      "to": "Quality review",
+      "label": "In Progress"
+    },
+    {
+      "kind": "edge",
+      "from": [
+        "SME Review"
+      ],
+      "to": "Done",
+      "label": "Completion"
+    },
+    {
+      "kind": "edge",
+      "from": [
+        "Quality review"
+      ],
+      "to": "SME Review",
+      "label": "Internal SME Review"
+    }
+  ],
+  "Digitization - Upload to AWS + Planning": [
+    {
+      "kind": "start",
+      "to": "To Do"
+    },
+    {
+      "kind": "any",
+      "to": "Assigned",
+      "label": "Assigned"
+    },
+    {
+      "kind": "any",
+      "to": "Suspended",
+      "label": "Suspended"
+    },
+    {
+      "kind": "edge",
+      "from": [
+        "In Review"
+      ],
+      "to": "Create Course on Planning",
+      "label": "Review Fail"
+    },
+    {
+      "kind": "edge",
+      "from": [
+        "Create Course on Planning"
+      ],
+      "to": "Update Question Bank on Planning",
+      "label": "Planning"
+    },
+    {
+      "kind": "edge",
+      "from": [
+        "Upload to AWS"
+      ],
+      "to": "Create Course on Planning",
+      "label": "Create on Planning"
+    },
+    {
+      "kind": "edge",
+      "from": [
+        "Update Question Bank on Planning"
+      ],
+      "to": "Update Keywords",
+      "label": "Planning"
+    },
+    {
+      "kind": "edge",
+      "from": [
+        "In Review"
+      ],
+      "to": "Done",
+      "label": "Completion"
+    },
+    {
+      "kind": "edge",
+      "from": [
+        "To Do"
+      ],
+      "to": "Assigned",
+      "label": "In Progress"
+    },
+    {
+      "kind": "edge",
+      "from": [
+        "Assigned"
+      ],
+      "to": "Upload to AWS",
+      "label": "Progress"
+    },
+    {
+      "kind": "edge",
+      "from": [
+        "Update Keywords"
+      ],
+      "to": "In Review",
+      "label": "Review"
+    }
+  ],
+  "Generate Performance Report": [
+    {
+      "kind": "start",
+      "to": "To Do"
+    },
+    {
+      "kind": "any",
+      "to": "Suspended",
+      "label": "Suspended"
+    },
+    {
+      "kind": "edge",
+      "from": [
+        "To Do"
+      ],
+      "to": "In Progress",
+      "label": "Progress"
+    },
+    {
+      "kind": "edge",
+      "from": [
+        "In Progress"
+      ],
+      "to": "Done",
+      "label": "Completion"
+    },
+    {
+      "kind": "edge",
+      "from": [
+        "Suspended"
+      ],
+      "to": "To Do",
+      "label": "To Do"
+    }
+  ],
+  "PPT generation": [
+    {
+      "kind": "start",
+      "to": "To Do"
+    },
+    {
+      "kind": "any",
+      "to": "Suspended",
+      "label": "Suspended"
+    },
+    {
+      "kind": "any",
+      "to": "To Do",
+      "label": "To Do"
+    },
+    {
+      "kind": "edge",
+      "from": [
+        "To Do"
+      ],
+      "to": "In Progress",
+      "label": "In Progress"
+    },
+    {
+      "kind": "edge",
+      "from": [
+        "In Review"
+      ],
+      "to": "Done",
+      "label": "Completion"
+    },
+    {
+      "kind": "edge",
+      "from": [
+        "In Progress"
+      ],
+      "to": "In Review",
+      "label": "Send to manager for review"
+    },
+    {
+      "kind": "edge",
+      "from": [
+        "In Review"
+      ],
+      "to": "In Progress",
+      "label": "Rejected. Update course."
+    }
+  ],
+  "SGP: Task": [
+    {
+      "kind": "start",
+      "to": "To Do"
+    },
+    {
+      "kind": "any",
+      "to": "To Do",
+      "label": "To Do"
+    },
+    {
+      "kind": "any",
+      "to": "On Hold",
+      "label": "On Hold"
+    },
+    {
+      "kind": "any",
+      "to": "Discard",
+      "label": "Discard"
+    },
+    {
+      "kind": "edge",
+      "from": [
+        "Assigned"
+      ],
+      "to": "In Progress",
+      "label": "Work begun"
+    },
+    {
+      "kind": "edge",
+      "from": [
+        "To Do"
+      ],
+      "to": "Assigned",
+      "label": "Assign to team member"
+    },
+    {
+      "kind": "edge",
+      "from": [
+        "Reproduced"
+      ],
+      "to": "Done",
+      "label": "Fixed by Devs"
+    },
+    {
+      "kind": "edge",
+      "from": [
+        "In Progress"
+      ],
+      "to": "In Review",
+      "label": "Sent for Review"
+    },
+    {
+      "kind": "edge",
+      "from": [
+        "In Review"
+      ],
+      "to": "Reproduced",
+      "label": "Reproduced"
+    },
+    {
+      "kind": "edge",
+      "from": [
+        "In Review"
+      ],
+      "to": "Done",
+      "label": "Approved"
+    },
+    {
+      "kind": "edge",
+      "from": [
+        "In Progress"
+      ],
+      "to": "Reproduced",
+      "label": "Reproduced/ Isolated"
+    },
+    {
+      "kind": "edge",
+      "from": [
+        "On Hold"
+      ],
+      "to": "In Progress",
+      "label": "Work begun"
+    },
+    {
+      "kind": "edge",
+      "from": [
+        "In Review"
+      ],
+      "to": "In Progress",
+      "label": "Review Fail"
+    }
+  ]
+}

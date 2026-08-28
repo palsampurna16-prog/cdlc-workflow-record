@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>CDLC Workflow Record</title>
+<title>SkillCat Jira</title>
 <meta name="description" content="The seven CDLC process stages, all 69 Jira work types with their workflow statuses and usage, and the change tickets that produced them.">
 <!-- Internal reference. Asks well-behaved crawlers not to index this page.
      This is not access control: the repository is public and so is this file. -->
@@ -12,1221 +12,368 @@
 </head>
 <body>
 <style>
-/* Atlassian / Jira design language, drill-down navigation. */
-
-:root {
-  color-scheme: light;
-  --paper:#F7F8F9; --surface:#FFFFFF; --surface-2:#F1F2F4; --surface-3:#EBECF0;
-  --ink:#172B4D; --ink-2:#44546F; --muted:#626F86;
-  --line:#DFE1E6; --line-soft:#EBECF0;
-  --accent:#0052CC; --accent-hover:#0065FF; --accent-soft:#E9F2FF; --accent-ink:#FFFFFF;
-  --cat-new-fg:#44546F;  --cat-new-bg:#DFE1E6;
-  --cat-ind-fg:#0052CC;  --cat-ind-bg:#DEEBFF;
-  --cat-done-fg:#006644; --cat-done-bg:#E3FCEF;
-  --dead-fg:#626F86;     --dead-bg:#EBECF0;
-  --warn-fg:#974F0C;     --warn-bg:#FFF0B3;
-  --err-fg:#BF2600;      --err-bg:#FFEBE6;
-  --shadow: 0 1px 1px rgba(9,30,66,.25), 0 0 1px 1px rgba(9,30,66,.13);
-  --font: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu,
-          "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif;
-  --mono: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, "Liberation Mono", monospace;
-}
-
-@media (prefers-color-scheme: dark) {
-  :root:not([data-theme="light"]) {
-    color-scheme: dark;
-    --paper:#1D2125; --surface:#22272B; --surface-2:#282E33; --surface-3:#2C333A;
-    --ink:#B6C2CF; --ink-2:#9FADBC; --muted:#8C9BAB;
-    --line:#38414A; --line-soft:#2C333A;
-    --accent:#579DFF; --accent-hover:#85B8FF; --accent-soft:#1C2B41; --accent-ink:#1D2125;
-    --cat-new-fg:#9FADBC;  --cat-new-bg:#2C333A;
-    --cat-ind-fg:#85B8FF;  --cat-ind-bg:#09326C;
-    --cat-done-fg:#7EE2B8; --cat-done-bg:#164B35;
-    --dead-fg:#8C9BAB;     --dead-bg:#303940;
-    --warn-fg:#F5CD47;     --warn-bg:#533F04;
-    --err-fg:#FD9891;      --err-bg:#5D1F1A;
-    --shadow: 0 1px 1px rgba(3,4,4,.5), 0 0 1px 1px rgba(3,4,4,.35);
+  :root {
+    --c-surface:#FFFFFF; --c-surface-sunken:#F7F8F9; --c-surface-hover:#F1F2F4; --c-surface-press:#DCDFE4;
+    --c-text:#172B4D; --c-text-subtle:#44546F; --c-text-subtlest:#626F86; --c-text-inverse:#FFFFFF;
+    --c-border:#091E4224; --c-border-strong:#8590A2;
+    --c-brand:#0C66E4; --c-link:#0C66E4;
+    --c-blue:#1868DB; --c-purple:#6E5DC6; --c-green:#22A06B; --c-orange:#E56910;
+    --c-info-bg:#E9F2FE; --c-info-br:#8FB8F6;
+    --c-warn-bg:#FFF7D6; --c-warn-br:#F5CD47;
+    --radius-sm:3px; --radius:6px; --radius-lg:8px;
+    --shadow-raised:0 1px 1px #091E4240, 0 0 1px #091E424F;
+    --shadow-overlay:0 8px 12px #091E4226, 0 0 1px #091E424F;
+    --space-050:4px; --space-100:8px; --space-150:12px; --space-200:16px;
+    --space-300:24px; --space-400:32px; --space-600:48px;
+    --nav-height:56px;
+    --font-sans: ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", sans-serif;
+    --duration:100ms; --ease:cubic-bezier(0.2,0,0,1);
   }
-}
+  *,*::before,*::after { box-sizing:border-box; }
+  body { margin:0; font-family:var(--font-sans); font-size:14px; line-height:1.42857;
+         color:var(--c-text); background:var(--c-surface); -webkit-font-smoothing:antialiased; }
+  a { color:var(--c-link); text-decoration:none; }
+  a:hover { text-decoration:underline; }
+  :focus-visible { outline:2px solid var(--c-brand); outline-offset:2px; border-radius:var(--radius-sm); }
 
-:root[data-theme="dark"] {
-  color-scheme: dark;
-  --paper:#1D2125; --surface:#22272B; --surface-2:#282E33; --surface-3:#2C333A;
-  --ink:#B6C2CF; --ink-2:#9FADBC; --muted:#8C9BAB;
-  --line:#38414A; --line-soft:#2C333A;
-  --accent:#579DFF; --accent-hover:#85B8FF; --accent-soft:#1C2B41; --accent-ink:#1D2125;
-  --cat-new-fg:#9FADBC;  --cat-new-bg:#2C333A;
-  --cat-ind-fg:#85B8FF;  --cat-ind-bg:#09326C;
-  --cat-done-fg:#7EE2B8; --cat-done-bg:#164B35;
-  --dead-fg:#8C9BAB;     --dead-bg:#303940;
-  --warn-fg:#F5CD47;     --warn-bg:#533F04;
-  --err-fg:#FD9891;      --err-bg:#5D1F1A;
-  --shadow: 0 1px 1px rgba(3,4,4,.5), 0 0 1px 1px rgba(3,4,4,.35);
-}
+  /* nav */
+  .nav { position:sticky; top:0; z-index:10; display:flex; align-items:center; gap:var(--space-100);
+         height:var(--nav-height); padding:0 var(--space-100);
+         background:var(--c-surface); border-bottom:1px solid var(--c-border); }
+  .nav-btn { display:grid; place-items:center; width:32px; height:32px; border:0; border-radius:var(--radius);
+             background:transparent; color:var(--c-text-subtle); cursor:pointer;
+             transition:background-color var(--duration) var(--ease); }
+  .nav-btn:hover { background:var(--c-surface-hover); }
+  .wordmark { display:flex; align-items:center; gap:var(--space-100); padding:0 var(--space-100);
+              font-size:16px; font-weight:600; letter-spacing:-0.01em; color:var(--c-text);
+              cursor:pointer; background:none; border:0; font-family:inherit; border-radius:var(--radius); }
+  .wordmark:hover { background:var(--c-surface-hover); }
+  .search { flex:0 1 460px; margin-left:var(--space-100); position:relative; }
+  .search input { width:100%; height:32px; padding:0 var(--space-150) 0 34px; font:inherit; color:var(--c-text);
+                  background:var(--c-surface); border:1px solid var(--c-border-strong); border-radius:var(--radius-sm); }
+  .search input:focus { outline:none; border-color:var(--c-brand); box-shadow:inset 0 0 0 1px var(--c-brand); }
+  .search svg { position:absolute; left:10px; top:50%; transform:translateY(-50%);
+                color:var(--c-text-subtle); pointer-events:none; }
+  .nav-spacer { flex:1; }
+  .avatar-me { width:32px; height:32px; border-radius:50%; background:var(--c-purple);
+               color:var(--c-text-inverse); display:grid; place-items:center;
+               font-size:12px; font-weight:600; }
 
-* { box-sizing: border-box; }
+  /* shell */
+  .page { max-width:1240px; margin:0 auto; padding:var(--space-400) var(--space-400) var(--space-600); }
+  .crumbs { display:flex; align-items:center; gap:var(--space-050); margin-bottom:var(--space-150);
+            font-size:12px; color:var(--c-text-subtle); flex-wrap:wrap; }
+  .crumbs button { background:none; border:0; padding:0; font:inherit; color:var(--c-link);
+                   cursor:pointer; border-radius:var(--radius-sm); }
+  .crumbs button:hover { text-decoration:underline; }
+  .crumbs .sep { color:var(--c-text-subtlest); }
+  h1 { margin:0; font-size:24px; font-weight:600; letter-spacing:-0.01em; }
+  h2 { margin:var(--space-400) 0 var(--space-150); font-size:16px; font-weight:600; }
+  .lede { margin:var(--space-100) 0 0; max-width:70ch; color:var(--c-text-subtle); }
+  .page-head { margin-bottom:var(--space-300); }
+  .eyebrow { margin:0 0 var(--space-050); font-size:11px; font-weight:700; letter-spacing:0.08em;
+             text-transform:uppercase; color:var(--c-text-subtlest); }
 
-body {
-  margin: 0; background: var(--paper); color: var(--ink);
-  font-family: var(--font); font-size: 14px; line-height: 1.4286;
-  -webkit-font-smoothing: antialiased;
-}
-a { color: var(--accent); }
-a:hover { color: var(--accent-hover); }
+  /* project cards */
+  .grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(264px,1fr)); gap:var(--space-200); }
+  .card { display:flex; flex-direction:column; height:100%; gap:var(--space-150); padding:var(--space-200);
+          text-align:left; font:inherit; color:inherit; background:var(--c-surface);
+          border:1px solid var(--c-border); border-radius:var(--radius-lg); box-shadow:var(--shadow-raised);
+          cursor:pointer; transition:transform var(--duration) var(--ease),
+          box-shadow var(--duration) var(--ease), background-color var(--duration) var(--ease); }
+  .card:hover { background:var(--c-surface-sunken); box-shadow:var(--shadow-overlay); transform:translateY(-2px); }
+  .card:active { transform:translateY(0); }
+  .card-top { display:flex; align-items:center; gap:var(--space-150); }
+  .pavatar { flex:none; width:40px; height:40px; border-radius:var(--radius); display:grid; place-items:center;
+             font-size:13px; font-weight:700; color:var(--c-text-inverse); }
+  .pavatar.lg { width:48px; height:48px; font-size:15px; }
+  .tone-blue{background:var(--c-blue);} .tone-purple{background:var(--c-purple);}
+  .tone-green{background:var(--c-green);} .tone-orange{background:var(--c-orange);}
+  .card-name { font-size:14px; font-weight:600; line-height:1.3; }
+  .card-key { margin-top:2px; font-size:12px; color:var(--c-text-subtlest); }
+  .card-meta { display:flex; margin-top:auto; align-items:center; gap:var(--space-100);
+               padding-top:var(--space-150); border-top:1px solid var(--c-border);
+               font-size:12px; color:var(--c-text-subtle); }
+  .lozenge { display:inline-block; padding:0 var(--space-050); font-size:11px; font-weight:700;
+             text-transform:uppercase; letter-spacing:0.06em; line-height:16px;
+             border-radius:var(--radius-sm); background:var(--c-surface-press); color:var(--c-text-subtle); }
+  .count { font-variant-numeric:tabular-nums; }
 
-.wrap {
-  max-width: 860px; margin: 0 auto;
-  padding: 28px clamp(16px, 3vw, 32px) 96px;
-}
+  /* space header */
+  .space-head { display:flex; align-items:center; gap:var(--space-200); margin-bottom:var(--space-300); }
+  .empty { margin-top:var(--space-300); padding:var(--space-600) var(--space-400); text-align:center;
+           background:var(--c-surface-sunken); border:1px solid var(--c-border); border-radius:var(--radius-lg); }
+  .empty h2 { margin:0 0 var(--space-100); }
+  .empty p { margin:0 auto; max-width:46ch; color:var(--c-text-subtle); }
+  .no-results { padding:var(--space-400); color:var(--c-text-subtle); }
 
-/* ---------- breadcrumb ---------- */
+  /* workflow strip */
+  .flowline { display:flex; align-items:center; flex-wrap:wrap; gap:var(--space-100);
+              padding:var(--space-200); background:var(--c-surface-sunken);
+              border:1px solid var(--c-border); border-radius:var(--radius-lg); }
+  .status { display:inline-block; padding:2px var(--space-100); font-size:12px; font-weight:600;
+            line-height:18px; border-radius:var(--radius-sm);
+            background:var(--c-surface-press); color:var(--c-text-subtle); }
+  .status.todo { background:#DCDFE4; color:#44546F; }
+  .status.prog { background:#E9F2FE; color:#0055CC; }
+  .status.done { background:#DCFFF1; color:#216E4E; }
+  .arrow { color:var(--c-text-subtlest); font-size:13px; }
+  .side { margin-top:var(--space-150); font-size:12px; color:var(--c-text-subtlest); }
 
-.crumbs {
-  display: flex; flex-wrap: wrap; align-items: center; gap: 4px;
-  font-size: 13px; margin-bottom: 20px; min-height: 26px;
-}
-.crumbs button {
-  font: inherit; border: 0; background: none; color: var(--accent);
-  cursor: pointer; padding: 3px 6px; margin-left: -6px; border-radius: 3px;
-}
-.crumbs button:hover { background: var(--surface-3); }
-.crumbs button:focus-visible { outline: 2px solid var(--accent); outline-offset: 1px; }
-.crumbs .sep { color: var(--muted); }
-.crumbs .here { color: var(--ink-2); padding: 3px 0; }
+  /* stage sequence */
+  .stages { display:flex; align-items:stretch; gap:var(--space-100); flex-wrap:wrap; }
+  .stage { flex:1 1 200px; min-width:190px; display:flex; flex-direction:column; gap:var(--space-100);
+           padding:var(--space-200); text-align:left; font:inherit; color:inherit;
+           background:var(--c-surface); border:1px solid var(--c-border);
+           border-radius:var(--radius-lg); box-shadow:var(--shadow-raised); cursor:pointer;
+           transition:transform var(--duration) var(--ease), box-shadow var(--duration) var(--ease),
+                      background-color var(--duration) var(--ease); }
+  .stage:hover { background:var(--c-surface-sunken); box-shadow:var(--shadow-overlay); transform:translateY(-2px); }
+  .stage.ghost { border-style:dashed; box-shadow:none; background:var(--c-surface-sunken); }
+  .stage-n { font-size:11px; font-weight:700; letter-spacing:0.08em; text-transform:uppercase;
+             color:var(--c-text-subtlest); }
+  .stage-name { font-size:14px; font-weight:600; line-height:1.3; }
+  .stage-type { font-size:12px; color:var(--c-text-subtlest); word-break:break-word; }
+  .stage-meta { margin-top:auto; padding-top:var(--space-100); border-top:1px solid var(--c-border);
+                font-size:12px; color:var(--c-text-subtle); }
+  .seq-arrow { align-self:center; color:var(--c-text-subtlest); font-size:16px; }
 
-/* ---------- headings ---------- */
+  /* detail */
+  .facts { display:grid; grid-template-columns:repeat(auto-fit,minmax(200px,1fr)); gap:var(--space-200);
+           padding:var(--space-200); background:var(--c-surface-sunken);
+           border:1px solid var(--c-border); border-radius:var(--radius-lg); }
+  .fact dt { font-size:11px; font-weight:700; letter-spacing:0.08em; text-transform:uppercase;
+             color:var(--c-text-subtlest); margin-bottom:var(--space-050); }
+  .fact dd { margin:0; font-size:14px; font-weight:600; }
+  .rows { border:1px solid var(--c-border); border-radius:var(--radius-lg); overflow:hidden; }
+  .row { display:flex; align-items:center; gap:var(--space-150); padding:var(--space-150) var(--space-200);
+         border-bottom:1px solid var(--c-border); }
+  .row:last-child { border-bottom:0; }
+  .row:nth-child(odd) { background:var(--c-surface-sunken); }
+  .row-n { flex:none; width:22px; font-size:12px; font-variant-numeric:tabular-nums;
+           color:var(--c-text-subtlest); }
+  .row-name { font-weight:600; }
+  .row-type { margin-left:auto; font-size:12px; color:var(--c-text-subtlest); text-align:right; }
+  .note { margin-top:var(--space-300); padding:var(--space-150) var(--space-200);
+          background:var(--c-warn-bg); border:1px solid var(--c-warn-br);
+          border-radius:var(--radius); color:var(--c-text); }
+  .note strong { display:block; margin-bottom:var(--space-050); font-size:12px;
+                 text-transform:uppercase; letter-spacing:0.06em; }
+  .chips { display:flex; flex-wrap:wrap; gap:var(--space-100); }
 
-.eyebrow {
-  font-size: 11px; font-weight: 600; letter-spacing: .08em;
-  text-transform: uppercase; color: var(--muted); margin: 0 0 6px;
-}
-h1 {
-  font-size: 24px; font-weight: 600; line-height: 1.18; letter-spacing: -.008em;
-  margin: 0 0 6px; color: var(--ink); overflow-wrap: anywhere;
-}
-.lede { margin: 0 0 22px; color: var(--ink-2); max-width: 68ch; }
-
-h2 {
-  font-size: 13px; font-weight: 700; letter-spacing: .06em; text-transform: uppercase;
-  color: var(--muted); margin: 26px 0 10px;
-}
-
-/* ---------- branch cards (home) ---------- */
-
-.branches { display: grid; gap: 8px; }
-.branch {
-  display: flex; align-items: center; gap: 14px; width: 100%; text-align: left;
-  font: inherit; cursor: pointer; padding: 16px 18px;
-  background: var(--surface); border: 1px solid var(--line);
-  border-radius: 3px; box-shadow: var(--shadow); color: var(--ink);
-}
-.branch:hover { border-color: var(--accent); }
-.branch:focus-visible { outline: 2px solid var(--accent); outline-offset: 1px; }
-.branch .n {
-  font-size: 22px; font-weight: 600; color: var(--accent);
-  font-variant-numeric: tabular-nums; min-width: 46px;
-}
-.branch .t { flex: 1; min-width: 0; }
-.branch .t b { display: block; font-size: 15px; font-weight: 600; }
-.branch .t span { display: block; font-size: 13px; color: var(--muted); margin-top: 2px; }
-.branch .go { color: var(--muted); font-size: 18px; }
-
-/* ---------- lists ---------- */
-
-.filter {
-  width: 100%; font-family: var(--font); font-size: 14px; color: var(--ink);
-  background: var(--surface-2); border: 2px solid var(--line);
-  border-radius: 3px; padding: 7px 10px; margin-bottom: 12px;
-}
-.filter:focus { background: var(--surface); border-color: var(--accent); outline: none; }
-.filter::placeholder { color: var(--muted); }
-
-.count-line {
-  font-size: 12px; color: var(--muted); margin: 0 0 10px;
-  font-variant-numeric: tabular-nums;
-}
-
-.items { display: flex; flex-direction: column; border-top: 1px solid var(--line-soft); }
-.item {
-  display: flex; align-items: baseline; gap: 12px; width: 100%; text-align: left;
-  font: inherit; cursor: pointer; padding: 11px 8px; margin: 0;
-  background: none; border: 0; border-bottom: 1px solid var(--line-soft); color: var(--ink);
-}
-.item:hover { background: var(--surface-2); }
-.item:focus-visible { outline: 2px solid var(--accent); outline-offset: -2px; }
-.item .lbl { flex: 1; min-width: 0; font-size: 14px; font-weight: 500; overflow-wrap: anywhere; }
-.item .meta { font-size: 12px; color: var(--muted); text-align: right; white-space: nowrap; }
-
-.group-h {
-  font-size: 12px; font-weight: 700; letter-spacing: .05em; text-transform: uppercase;
-  color: var(--muted); padding: 18px 8px 6px; border-bottom: 2px solid var(--line);
-}
-
-/* ---------- detail ---------- */
-
-.facts {
-  display: grid; grid-template-columns: max-content 1fr; gap: 8px 16px;
-  padding: 14px 16px; background: var(--surface); border: 1px solid var(--line);
-  border-radius: 3px; box-shadow: var(--shadow); margin-bottom: 4px; font-size: 13px;
-}
-.facts dt {
-  font-size: 11px; font-weight: 700; letter-spacing: .06em; text-transform: uppercase;
-  color: var(--muted); padding-top: 2px;
-}
-.facts dd { margin: 0; color: var(--ink-2); overflow-wrap: anywhere; }
-.facts dd strong { color: var(--ink); font-weight: 600; }
-
-.prose { margin: 0 0 14px; color: var(--ink-2); max-width: 68ch; }
-.prose code, .facts code {
-  font-family: var(--mono); font-size: 12px; background: var(--surface-2);
-  border: 1px solid var(--line-soft); padding: 1px 4px; border-radius: 3px; color: var(--ink);
-}
-
-.chips { display: flex; flex-wrap: wrap; gap: 4px; }
-.chip {
-  display: inline-block; font-size: 11px; font-weight: 700; letter-spacing: .06em;
-  text-transform: uppercase; padding: 2px 6px; border-radius: 3px; white-space: nowrap;
-}
-.chip.new  { color: var(--cat-new-fg);  background: var(--cat-new-bg); }
-.chip.ind  { color: var(--cat-ind-fg);  background: var(--cat-ind-bg); }
-.chip.done { color: var(--cat-done-fg); background: var(--cat-done-bg); }
-.chip.plain {
-  text-transform: none; letter-spacing: 0; font-weight: 500; font-size: 12px;
-  color: var(--ink-2); background: var(--surface-2); border: 1px solid var(--line);
-}
-.chip.b-active  { color: var(--cat-done-fg); background: var(--cat-done-bg); }
-.chip.b-dormant { color: var(--warn-fg);     background: var(--warn-bg); }
-.chip.b-never   { color: var(--err-fg);      background: var(--err-bg); }
-.chip.ok   { color: var(--cat-done-fg); background: var(--cat-done-bg); }
-.chip.open { color: var(--cat-ind-fg);  background: var(--cat-ind-bg); }
-.chip.dead { color: var(--dead-fg);     background: var(--dead-bg); }
-
-button.chip { cursor: pointer; border: 1px solid transparent; font-family: var(--font); }
-button.chip:hover { border-color: var(--accent); }
-button.chip:focus-visible { outline: 2px solid var(--accent); outline-offset: 1px; }
-
-/* transitions */
-.flow { margin: 0; padding: 0; list-style: none; display: flex; flex-direction: column; gap: 6px; }
-.flow li {
-  display: flex; flex-wrap: wrap; align-items: center; gap: 6px;
-  font-size: 13px; padding: 7px 10px;
-  background: var(--surface); border: 1px solid var(--line-soft); border-radius: 3px;
-}
-.flow .arrow { color: var(--accent); font-weight: 700; }
-.flow .lab { color: var(--ink-2); font-size: 12px; margin-left: 2px; }
-.flow .from-any {
-  font-size: 11px; font-weight: 700; letter-spacing: .06em; text-transform: uppercase;
-  color: var(--muted);
-}
-
-.linklist { margin: 0; padding: 0; list-style: none; display: flex; flex-direction: column; gap: 3px; }
-.linklist li { font-size: 13px; color: var(--ink-2); display: flex; gap: 8px; }
-.linklist a, .linklist code { font-family: var(--mono); font-size: 12px; flex: 0 0 auto; }
-.linklist s { color: var(--dead-fg); }
-
-.empty { padding: 26px 0; color: var(--muted); font-style: italic; }
-
-.note {
-  font-size: 12px; color: var(--muted); margin-top: 26px;
-  padding-top: 14px; border-top: 1px solid var(--line);
-}
-.note a { color: var(--accent); }
-
-mark { background: #FFF0B3; color: #172B4D; padding: 0 1px; border-radius: 2px; }
-:root[data-theme="dark"] mark { background: #533F04; color: #F8E6A0; }
-@media (prefers-color-scheme: dark) {
-  :root:not([data-theme="light"]) mark { background: #533F04; color: #F8E6A0; }
-}
-
-@media (prefers-reduced-motion: reduce) { * { transition: none !important; animation: none !important; } }
+  @media (max-width:640px) {
+    .page { padding:var(--space-300) var(--space-200) var(--space-400); }
+    .search { display:none; }
+    .seq-arrow { display:none; }
+  }
 </style>
 
-<div class="wrap">
-  <nav class="crumbs" id="crumbs" aria-label="Breadcrumb"></nav>
-  <div id="view"></div>
-</div>
+<header class="nav">
+  <button class="nav-btn" aria-label="App switcher">
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+      <circle cx="6" cy="6" r="1.8"/><circle cx="12" cy="6" r="1.8"/><circle cx="18" cy="6" r="1.8"/>
+      <circle cx="6" cy="12" r="1.8"/><circle cx="12" cy="12" r="1.8"/><circle cx="18" cy="12" r="1.8"/>
+      <circle cx="6" cy="18" r="1.8"/><circle cx="12" cy="18" r="1.8"/><circle cx="18" cy="18" r="1.8"/>
+    </svg>
+  </button>
+  <button class="wordmark" id="home-link">
+    <svg width="20" height="20" viewBox="0 0 32 32" aria-hidden="true">
+      <path fill="#2684FF" d="M16 2 4 14a2 2 0 0 0 0 2.8l6 6 6-6z"/>
+      <path fill="#0052CC" d="m16 2 12 12a2 2 0 0 1 0 2.8l-6 6-6-6z" opacity=".85"/>
+    </svg>
+    SkillCat Jira
+  </button>
+  <div class="search">
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+      <circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/>
+    </svg>
+    <input id="q" type="search" placeholder="Search projects" aria-label="Search projects" autocomplete="off">
+  </div>
+  <div class="nav-spacer"></div>
+  <div class="avatar-me" title="Signed in">SP</div>
+</header>
+
+<main class="page" id="view"></main>
 
 <script>
-/* ============================ STATUS CATEGORIES ============================ */
-const CAT = {
-  "Done":"done","On Hold":"new","To Do":"new","Suspended":"done","In Progress":"ind",
-  "Digitization":"ind","In Review":"ind","Ready for Graphics":"ind","Uploading to AWS":"done",
-  "Spanish Translations":"ind","Final Slides":"ind","Graphics Creation":"ind",
-  "Graphics definition":"ind","Internal SME review":"ind","Complete checklist":"ind",
-  "Quality review":"ind","Send to Instructional Designer":"ind","Assigned":"new",
-  "Rejected":"done","SME Review":"ind","Upload to AWS":"ind","Update Keywords":"ind",
-  "Update Question Bank on Planning":"ind","Create Course on Planning":"ind","Reproduced":"done",
-  "Discard":"done","Create Deep Links":"ind","QA Review":"ind","Restore on SkillCat":"ind",
-  "Update Learning Plan":"ind","update spreadsheet":"ind","Checklist":"ind",
-  "External Review":"ind","In Translation":"ind","Course Catalog":"done",
-  "Question Bank on Planning":"ind","Request Badge Creation":"ind","SME Validation":"ind",
-  "Scope Rearrange":"ind","Enhancement":"ind","Editorial review":"ind","Dependency":"ind",
-  "Run AI AGENT":"ind","Approved":"ind","CHECK REFERENCES":"ind",
-  "Business Specs in Progress":"ind","Learning Objectives in Progress":"ind",
-  "Business Specs in Review":"ind","Learning Objective in Review":"ind",
-  "Course QA on SkillCat":"ind","SkillCat: Backup / Restore":"ind",
-  "Slide chunks in course sheet":"ind","Assessment on Guroo":"ind","Course on Guroo":"ind",
-  "Course QA on Guroo":"ind","Staging: Backup / Restore":"ind","Create course outline":"ind",
-  "Scripting":"new","Inline Image Check":"ind","Manual Review":"ind","Paraphrasing":"ind",
-  "Review & Revise Definition":"ind","Review & Revise Visuals":"ind",
-  "Generate Graphic Definition":"ind","Review Final GD":"ind","Generate AI Visuals":"ind",
-  "ID Review":"ind","Generate Articulate":"ind","Corrections":"ind",
-  "Finalize as per SME Requirements":"new","Referencing":"done","Video Recording":"new",
-  "Video Review":"done","Manual Edit":"ind","Storyboard":"ind","Video Creation":"ind"
-};
-
-const E = "Epic", S = "Standard", T = "Sub-task";
-
-/* [name, level, statuses[], relatedChangeKeys[]] */
-const DATA = [
-["Course & epic level", [
-  ["Epic", E, ["Done","On Hold","To Do","Suspended","In Progress","Digitization"], ["SGP-10349","SGP-9553","SGP-10441","SGP-10442","SGP-10815"], "CDLC: Epic"],
-  ["Course: Specs", S, ["In Review","Done","On Hold","To Do","Suspended","In Progress"], ["SGP-11280"], "CDLC: Task/Subtask"],
-  ["Course: Content Creation", S, ["In Review","Scope Rearrange","Course QA on SkillCat","SkillCat: Backup / Restore","Slide chunks in course sheet","Done","Assessment on Guroo","Uploading to AWS","Course on Guroo","Course QA on Guroo","Staging: Backup / Restore","To Do","Suspended"], [], "CDLC: Course Content Creation"],
-  ["CDLC: Course Brief", S, ["Assigned","Done","To Do","In Progress"], ["SGP-9672"], "CDLC: Course Brief"],
-  ["CDLC: Course outline", S, ["SME Validation","Done","To Do","Checklist","Suspended","Create course outline"], ["SGP-10442"], "CDLC: Course Outline"],
-  ["CDLC: Research notes", S, ["Done","To Do","Suspended","In Progress"], [], "CDLC: Content Feedback"],
-  ["CDLC: Final Slides", S, ["Graphics definition","Internal SME review","Done","Complete checklist","On Hold","To Do","Suspended","In Progress","Quality review"], ["SGP-9762","SGP-10334"], "CDLC: Final Slides"],
-  ["CDLC: Corrections", S, ["In Review","Assigned","Done","Rejected","On Hold","To Do","In Progress"], ["SGP-10334"], "CDLC: Corrections"],
-  ["CDLC: Content Review", T, ["In Review","Done","On Hold","Suspended","In Progress"], [], "CDLC: Reviews"],
-  ["CDLC: Content Upkeep", S, ["Assigned","In Review","Reproduced","Discard","Done","On Hold","To Do","In Progress"], ["SGP-10335"], "SGP: Task"],
-  ["CDLC: Content Upkeep (sub-task)", T, ["Assigned","In Review","Reproduced","Discard","Done","On Hold","To Do","In Progress"], ["SGP-10335"], "SGP: Task"],
-  ["CDLC: PPT generation", S, ["In Review","Done","To Do","Suspended","In Progress"], ["SGP-9695","SGP-9940"], "PPT generation"],
-  ["CDLC: Stock image downloading", S, ["In Review","Done","To Do","Suspended","In Progress"], [], "CDLC: Stock image downloading"],
-  ["CDLC: Translations", S, ["Assigned","Upload to AWS","In Review","Complete checklist","Done","In Translation","On Hold","To Do","Suspended"], ["SGP-10243","SGP-10411","SGP-9340"], "CDLC: Spanish Translations"],
-  ["CDLC: Badge and Course Image", T, ["In Review","Done","To Do","Suspended","In Progress"], [], "CDLC: Stock image downloading"],
-  ["CDLC: Recording", T, ["Assigned","In Review","Done","Scripting","In Progress"], ["SGP-10978"], "CDLC: Recording"],
-  ["CDLC: Base Articulate file creation", T, ["In Review","Assigned","Done","Rejected","On Hold","To Do","Checklist","In Progress"], ["SGP-10334","SGP-9552"], "CDLC: Base Articulate file creation"],
-  ["CDLC: Articulate Review", T, ["Internal SME review","In Review","Done","On Hold","Corrections","To Do","Suspended","Quality review"], ["SGP-10834","SGP-9762"], "CDLC: Articulate review"],
-  ["CDLC: Vyond video", T, ["In Review","Send to Instructional Designer","External Review","Internal SME review","Done","Complete checklist","To Do","Suspended","In Progress","Quality review"], [], "CDLC: Graphics"],
-  ["Graphics", S, ["In Review","Send to Instructional Designer","External Review","Internal SME review","Done","Complete checklist","To Do","Suspended","In Progress","Quality review"], ["SGP-9946"], "CDLC: Graphics"],
-  ["Assessment", S, ["Internal SME review","Done","Complete checklist","On Hold","To Do","Suspended","In Progress","Quality review"], ["SGP-9946"], "CDLC: Assessment"],
-  ["Instructional Design", S, ["In Review","Done","To Do","Suspended","In Progress"], [], "CDLC: Content Instructional Design"]
-]],
-
-["Topic level", [
-  ["CDLC: Topic", S, ["In Review","Done","On Hold","Ready for Graphics","Uploading to AWS","Spanish Translations","To Do","Suspended","Final Slides","Graphics Creation"], ["SGP-10343","SGP-10411","SGP-10361"], "CDLC: Topic"],
-  ["CDLC: Topic Final Slides", T, ["Internal SME review","Done","Complete checklist","On Hold","To Do","Suspended","In Progress","Quality review"], ["SGP-9762","SGP-10334"], "CDLC: Topic Final Slides"],
-  ["CDLC: Topic Graphics", T, ["In Review","Send to Instructional Designer","Done","Complete checklist","To Do","Suspended","In Progress"], ["SGP-9999","SGP-10334"], "CDLC: Topic Graphics"],
-  ["CDLC: Topic Assessment", T, ["In Review","Complete checklist","Done","On Hold","To Do","Suspended","In Progress"], ["SGP-9946","SGP-10334"], "CDLC: Topic Assessment"],
-  ["CDLC: Topic Corrections", T, ["In Review","Assigned","Done","Rejected","On Hold","To Do","In Progress"], ["SGP-10334"], "CDLC: Corrections"],
-  ["CDLC: Topic PPT Generation", T, ["In Review","Done","To Do","Suspended","In Progress"], ["SGP-10284","SGP-10334"], "PPT generation"],
-  ["CDLC: Topic Stock image downloading", T, ["In Review","Done","To Do","Suspended","In Progress"], [], "CDLC: Stock image downloading"],
-  ["CDLC: Topic Translations", T, ["Assigned","Upload to AWS","In Review","Complete checklist","Done","In Translation","On Hold","To Do","Suspended"], ["SGP-10243","SGP-10334"], "CDLC: Spanish Translations"]
-]],
-
-["Digitization", [
-  ["Content: Digitization (Instructional)", S, ["Create Deep Links","In Review","SME Review","Update Keywords","Create Course on Planning","Update Learning Plan","Upload to AWS","On Hold","Restore on SkillCat","Course Catalog","To Do","Question Bank on Planning","Suspended","Request Badge Creation","update spreadsheet"], ["SGP-10335"], "CDLC: Course Digitization"],
-  ["Content: Digitization (Informational)", S, ["Create Deep Links","In Review","SME Review","Update Keywords","Create Course on Planning","Update Learning Plan","Upload to AWS","On Hold","Restore on SkillCat","Course Catalog","To Do","Question Bank on Planning","Suspended","Request Badge Creation","update spreadsheet"], ["SGP-10335","SGP-10284"], "CDLC: Course Digitization"],
-  ["Digitization - Upload to AWS + Planning", S, ["Assigned","Upload to AWS","In Review","Update Keywords","Update Question Bank on Planning","Done","Create Course on Planning","To Do","Suspended"], ["SGP-10335","SGP-9553"], "Digitization - Upload to AWS + Planning"],
-  ["Digitization - Upload to AWS + Planning (sub-task)", T, ["Assigned","Upload to AWS","In Review","Update Keywords","Update Question Bank on Planning","Done","Create Course on Planning","To Do","Suspended"], ["SGP-10335","SGP-9553"], "Digitization - Upload to AWS + Planning"],
-  ["Digitization - Restore on SkillCat", S, ["Create Deep Links","Done","QA Review","Restore on SkillCat","Update Learning Plan","To Do","Suspended","update spreadsheet"], ["SGP-9555","SGP-10418","SGP-7303","SGP-9553","SGP-9762"], "Digitization - Restore on SkillCat"],
-  ["Digitization - Restore on SkillCat (sub-task)", T, ["Create Deep Links","Done","QA Review","Restore on SkillCat","Update Learning Plan","To Do","Suspended","update spreadsheet"], ["SGP-9555","SGP-10418","SGP-7303","SGP-10335"], "Digitization - Restore on SkillCat"],
-  ["Digitization - Review", S, ["SME Review","Done","To Do","Suspended","Quality review"], ["SGP-9762"], "Digitization - Review"],
-  ["Digitization - Review (sub-task)", T, ["SME Review","Done","To Do","Suspended","Quality review"], ["SGP-9762","SGP-10335"], "Digitization - Review"],
-  ["Digitization - Badge Creation", S, ["In Review","Done","To Do","Suspended","In Progress"], [], "Digitization - Badge Creation"],
-  ["Digitization - Badge Creation (Sub-task)", T, ["In Review","Done","To Do","Suspended","In Progress"], ["SGP-10335"], "Digitization - Badge Creation"],
-  ["Digitization - Data Sheet Creation", S, ["Assigned","In Review","Done","To Do","Suspended","In Progress"], ["SGP-10380"], "Digitization - Data Sheet Creation"],
-  ["Digitization - Data Sheet Creation (sub-task)", T, ["Assigned","In Review","Done","To Do","Suspended","In Progress"], ["SGP-10380","SGP-10335"], "Digitization - Data Sheet Creation"],
-  ["Digitization - Course Catalog Updating", S, ["Assigned","In Review","Done","To Do","Suspended","In Progress"], [], "Digitization - Course Catalog Updating"],
-  ["Digitization - Course Catalog Updating (sub-task)", T, ["Assigned","In Review","Done","To Do","Suspended","In Progress"], ["SGP-10335"], "Digitization - Course Catalog Updating"]
-]],
-
-["Course operations", [
-  ["CDLC: Generate Performance Report", S, ["Done","To Do","Suspended","In Progress"], [], "Generate Performance Report"],
-  ["CDLC: Generate Performance Report (sub-task)", T, ["Done","To Do","Suspended","In Progress"], ["SGP-10335"], "Generate Performance Report"],
-  ["CDLC: Move Source Files", S, ["In Review","Done","To Do","In Progress"], ["SGP-7310"], "CDLC: Move Source Files"],
-  ["CDLC: Move Source Files (sub-task)", T, ["In Review","Done","To Do","In Progress"], ["SGP-7310","SGP-10335"], "CDLC: Move Source Files"],
-  ["CDLC: Restrict Course Folder", S, ["Done","To Do","Suspended","In Progress"], [], "CDLC: Restrict Course Folder"],
-  ["CDLC: Restrict Course Folder (sub-task)", T, ["Done","To Do","Suspended","In Progress"], ["SGP-10335"], "CDLC: Restrict Course Folder"],
-  ["CDLC: Run Image Archiving Automation", S, ["In Review","Done","To Do","Suspended","In Progress"], ["SGP-7310"], "CDLC: Run Image Archiving Automation"],
-  ["CDLC: Run Image Archiving Automation (sub-task)", T, ["In Review","Done","To Do","Suspended","In Progress"], ["SGP-7310","SGP-10335"], "CDLC: Run Image Archiving Automation"]
-]],
-
-["Certification", [
-  ["Certification: Template Generation", S, ["Done","On Hold","To Do","Suspended"], ["SGP-9940","SGP-10674"], "Certification: Template Generation"],
-  ["Certification: Research Note", T, ["Inline Image Check","Done","On Hold","Manual Review","To Do","Suspended"], ["SGP-9940"], "Certification: Research Note"],
-  ["Certification: Slide Chunks", T, ["In Review","Paraphrasing","Done","On Hold","To Do","Suspended","In Progress"], ["SGP-9940"], "Certification: Slide Chunks"],
-  ["Certification: Graphic Definitions", T, ["Review & Revise Definition","Done","Review & Revise Visuals","On Hold","Generate Graphic Definition","To Do","Review Final GD","Suspended","Generate AI Visuals"], ["SGP-9940"], "Certification: Graphic Definitions"],
-  ["Certification: Articulate Creation", T, ["ID Review","SME Review","Done","On Hold","Generate Articulate","Corrections","To Do","Suspended","Quality review"], ["SGP-9940","SGP-10355","SGP-10834"], "Certification: Articulate Creation"]
-]],
-
-["Applied Layers", [
-  ["Applied Layers: Toolkit", S, ["Assigned","In Review","Done","To Do","Suspended","In Progress"], ["SGP-10766"], "Applied Layers: Toolkit/Instructions"],
-  ["Applied Layers: Instructions", S, ["Assigned","In Review","Done","To Do","Suspended","In Progress"], ["SGP-10766"], "Applied Layers: Toolkit/Instructions"],
-  ["Applied Layers: Content Finalization", S, ["Finalize as per SME Requirements","Generate Graphic Definition","Referencing"], ["SGP-10766"], "Applied Layers: Content Finalization"],
-  ["Applied Layers: Video Recording", S, ["Video Recording","Video Review","Manual Edit"], ["SGP-10766"], "Applied Layers: Video Recording"],
-  ["Applied Layers: Video Creation", S, ["In Review","SME Review","Done","On Hold","Suspended","Storyboard","Video Creation"], ["SGP-10766","SGP-10978"], "Applied Layers: Video Creation & Review"]
-]],
-
-["Simulation & generic", [
-  ["Simulation: Specs", S, ["Business Specs in Progress","Learning Objectives in Progress","Business Specs in Review","Done","To Do","Suspended","Learning Objective in Review"], [], "CDLC: Simulation Specs"],
-  ["Simulation: Content Creation", S, ["In Review","SME Validation","Scope Rearrange","Enhancement","Done","Editorial review","To Do","Suspended","In Progress"], [], "CDLC: Content Creation"],
-  ["Task", S, ["In Review","Done","On Hold","To Do","Suspended","In Progress"], [], "CDLC: Task/Subtask"],
-  ["Sub-task", T, ["In Review","Done","On Hold","To Do","Suspended","In Progress"], [], "CDLC: Task/Subtask"],
-  ["Bug", S, ["In Review","Done","To Do","Suspended","In Progress"], [], "CDLC: Bug"],
-  ["Improvement", S, ["In Review","Done","To Do","Suspended","In Progress"], [], "CDLC: Improvement"],
-  ["Feedback", S, ["Done","To Do","Suspended","In Progress"], [], "CDLC: Content Feedback"]
-]]
+/* Four spaces, from the live skillcatapp.atlassian.net site. Counts 28 August 2026. */
+const PROJECTS = [
+  { key:"CDLC", name:"Content Development Life Cycle", type:"Software", style:"Company-managed", issues:7961,  tone:"blue"   },
+  { key:"SGP",  name:"SkillCat General Project",       type:"Software", style:"Company-managed", issues:10880, tone:"purple" },
+  { key:"CIP",  name:"Course Improvement Project",     type:"Business", style:"Team-managed",    issues:140,   tone:"green"  },
+  { key:"QFT",  name:"Quiz Feedback Tracker",          type:"Software", style:"Company-managed", issues:3721,  tone:"orange" },
 ];
 
-const OK = "ok", OPEN = "open", DEAD = "dead";
-
-const LOG = [
-["SGP-11280","2026-08-24",OK,"Shipped","Simplify the Course: Specs workflow",
- "Asks for <code>Complete checklist</code>, <code>Run AI AGENT</code>, <code>CHECK REFERENCES</code>, <code>Approved</code> and <code>Dependency</code> to be removed from the work type that creates Business Specs &amp; Outline, possibly by swapping in an existing basic workflow. Done: the work type was moved onto the shared CDLC: Task/Subtask workflow, which Sub-task and Task also use.",
- ["Course: Specs"],
- "Its own workflow, 10 statuses: To Do · In Progress · Complete checklist · Run AI AGENT · CHECK REFERENCES · In Review · Approved · Dependency · Suspended · Done",
- "The shared CDLC: Task/Subtask workflow, 6 statuses: To Do · In Progress · In Review · On Hold · Suspended · Done",[]],
-
-["SGP-10978","2026-08-03",OPEN,"In Review","New work item type for video creation and recording",
- "Specifies a full workflow with two review gates and loop-backs on failure. Also meant to replace the video creation task inside the Applied Layers workflow.",
- ["Applied Layers","Video"],null,
- "To Do → Storyboard → SME Review → (fail: Storyboard | pass: Video Creation) → SME Review → (fail: Video Creation | pass: In Review) → (fail: Video Creation | pass: Done). On Hold and Suspended reachable from any status.",[]],
-
-["CDLC-9503","2026-07-27",OK,"Shipped","Add an SME to the SME group and field",
- "New subject matter expert added to Jira, to the SME group, and to the SME dropdown field.",
- ["Fields"],null,null,[]],
-
-["SGP-10834","2026-07-15",OK,"Shipped","Require a Final Storyline Link before Articulate work can close",
- "Visual Designers were not updating the Storyline file after Articulate review. A new field was created and a validator now blocks the move to Done until it is filled.",
- ["Articulate","Validators","Certification","Fields"],
- "Articulate work types could move to Done with no record of the final Storyline file",
- "Final Storyline Link required before Done on CDLC: Articulate Review and Certification: Articulate Creation",
- [["SGP-10835",OK,"Create the field, add it to screen, screen scheme and layout"],
-  ["SGP-10836",OK,"Add the validator to both Articulate workflows"]]],
-
-["SGP-10825","2026-07-15",OK,"Shipped","Add a plumbing SME to the SME dropdown",
- "a plumbing SME added to the list of SMEs available in the Jira field.",["Fields"],null,null,[]],
-
-["SGP-10815","2026-07-13",OK,"Shipped","Fix courses stuck at 5% completion on the project dashboard",
- "Epic percentage complete was not advancing past 5% for a set of courses.",
- ["Epic","Automations"],null,null,[]],
-
-["SGP-10785","2026-07-10",OK,"Shipped","Backfill Planning and Production Link on earlier tickets",
- "Tickets created before those links existed were never populated. The automation now fills them in retrospectively.",
- ["Digitization","Automations","Fields"],null,null,
- [["SGP-10882",OK,"Update Planning Link"],["SGP-10883",OK,"Update Production Link"]]],
-
-["SGP-10766","2026-07-08",OK,"Shipped","Build the Applied Layers workflows from scratch",
- "Five new work types for hands-on task courses, each at course level but not itself a course. Toolkit and Instructions share one workflow; the other three got bespoke ones.",
- ["Applied Layers","Video"],
- "No Applied Layers work types existed",
- "Toolkit and Instructions: To Do · Assigned · In Progress · In Review · Done. Content Finalization: Finalize as per SME Requirements · Generate Graphic Definition · Referencing. Video Recording: Video Recording · Manual Edit · Video Review. Video Creation: Storyboard · Video Creation · SME Review · In Review · Done",
- [["SGP-10777",OK,"Create the five Applied Layers work types"],
-  ["SGP-10778",OK,"Finalize workflows for Toolkit, Instructions and Video Creation"],
-  ["SGP-10843",OK,"Create workflows for Content Finalization, Video Recording and Video Creation"],
-  ["SGP-10844",OK,"Add Course Type"],
-  ["SGP-10845",OK,"Auto-create all five when an epic is opened with Course Type = Hands-on Task"],
-  ["SGP-10854",OK,"Write the process doc"],
-  ["SGP-10779",DEAD,"Set up Excel sheets for import"]]],
-
-["SGP-10674","2026-07-02",OPEN,"To Do","Certification work types are being created multiple times",
- "The automation fires more than once when the trigger item moves to Done, producing duplicate tickets. Open since early July.",
- ["Certification","Automations"],null,null,[]],
-
-["SGP-10442","2026-06-16",OPEN,"To Do","Show outline readiness in the epic progress bar",
- "Request: if epic percentage is above 0% but no topic has progressed, that should read as \"outline ready\".",
- ["Epic"],null,null,[]],
-
-["SGP-10441","2026-06-16",OK,"Shipped","Exclude Translation from Certification course progress",
- "Certification courses have no translation step, so counting it was holding their completion percentage down.",
- ["Certification","Epic","Automations"],null,null,[]],
-
-["SGP-10411","2026-06-11",OK,"Shipped","Let users skip Spanish Translations",
- "Workflow changed so the Spanish Translations status is no longer mandatory on the way through.",
- ["Translations"],null,null,[]],
-
-["SGP-10355","2026-06-03",OK,"Shipped","Rebuild the Certification: Articulate Creation workflow",
- "The workflow shipped a month earlier was too thin. Corrections, SME Review and Quality Review were added, In Review was renamed, and loop-backs were defined so a failed review returns to ID Review.",
- ["Certification","Articulate"],
- "To Do → Generate Articulate → In Review → Done",
- "To Do → Generate Articulate → ID Review ⇄ Corrections → SME Review → Quality review → Done, with SME Review and Quality review able to send it back to ID Review",[]],
-
-["SGP-10335","2026-06-02",OK,"Shipped","Restructure digitization into sub-tasks",
- "The single Digitization Process ticket was broken into eleven sub-task work types, each with its own workflow, and every digitization automation was rewritten to point at them.",
- ["Digitization"],
- "One flat Digitization Process work type",
- "Eleven sub-task work types: Badge Creation, Upload to AWS + Planning, Review, Restore on SkillCat, Data Sheet Creation, Content Upkeep, Run Image Archiving, Course Catalog Updating, Generate Performance Report, Move Source Files, Restrict Course Folder",
- [["SGP-10336",OK,"Create Course Introduction, assigned to the ID named in Contributors"],
-  ["SGP-10342",OK,"Create the eleven sub-task work types"],
-  ["SGP-10343",OK,"Auto-create CDLC: Topic as soon as the epic moves to Digitization"],
-  ["SGP-10344",OK,"Associate a workflow with each of the eleven new work types"],
-  ["SGP-10345",OK,"Repoint every digitization automation at the new work types"],
-  ["SGP-10372",OK,"Switch all copied fields to {{triggerIssue.…}} syntax"],
-  ["SGP-10380",OK,"Retire the Digitization Process work type in favour of Digitization - Data Sheet Creation"],
-  ["SGP-10418",OK,"Remove the backwards transitions out of QA Review on Restore on SkillCat"]]],
-
-["SGP-10243","2026-05-18",OK,"Shipped","Make translations drive the parent topic",
- "Two automations so the Topic follows its Translation sub-task instead of being moved by hand.",
- ["Translations","Automations"],null,
- "Translation → Upload to AWS also moves the Topic to Upload to AWS. Translation → Done also moves the Topic to Done.",[]],
-
-["SGP-10021","2026-05-11",OPEN,"To Do","A field for translations?",
- "Open question, never specified further.",["Translations","Fields"],null,null,[]],
-
-["SGP-10001","2026-05-07",OK,"Shipped","Fix how Visual Designer is copied",
- "Automations using \"Copy from Parent\" were replaced with an explicit <code>{{issue.parent.Visual Designer(s)}}</code> reference across at least five automations, including Topic creation, Certification PPTX and the digitization chain.",
- ["Automations","Fields"],null,null,[]],
-
-["SGP-9998","2026-05-07",OK,"Shipped","Add validators across CDLC",
- "An umbrella for gating transitions on required fields. Three shipped, six were discarded and two are still parked. The pattern that survived was: block the transition, not the ticket creation.",
- ["Validators"],null,null,
- [["SGP-9999",OK,"Graphics can't leave In Review without Articulate Review Link and VD filled"],
-  ["SGP-10334",OK,"Sub-tasks need Target End Date and Checklist to leave To Do, across eight work types"],
-  ["SGP-10349",OK,"Epic can't move to Digitization until ID, VD and QA Specialist are filled"],
-  ["SGP-10028",OPEN,"Spanish file required before a translation can move on"],
-  ["SGP-10361",OPEN,"Topic name required before To Do → In Progress — blocked, because Topic is moved entirely by automation"],
-  ["SGP-10000",DEAD,"Seven fields required before Epic leaves To Do"],
-  ["SGP-10029",DEAD,"Checklist added to epic or topic"],
-  ["SGP-10060",DEAD,"Epic can't be created without Course Type and Contributors"],
-  ["SGP-10173",DEAD,"Topic can't reach Final Slides without Checklist and Contributors"],
-  ["SGP-10244",DEAD,"Topic can only close once every sub-task is Done"]]],
-
-["SGP-9946","2026-05-04",OPEN,"To Do","Delete duplicate work types",
- "Names the exact problem still visible in the config today: CDLC: Assessment and CDLC: Topic Assessment both exist, and the same doubling runs across many work types. The plan was to filter for tickets of the dead type, migrate them, then delete it.",
- ["Cleanup"],null,null,[]],
-
-["SGP-9940","2026-05-04",OK,"Shipped","Build the Certification course track",
- "Five new work types with their own workflows and automations, triggered when an epic is created with Course Type set to Certification.",
- ["Certification"],
- "No certification-specific work types existed",
- "Template Generation: To Do · Done. Research Note: To Do → Manual Review → Inline Image Check → Done. Slide Chunks: To Do → In Progress → Paraphrasing → In Review → Done. Graphic Definitions: To Do → Generate Graphic Definition → Review &amp; Revise Definition → Review &amp; Revise Visuals → Generate AI Visuals → Review Final GD → Done. Articulate Creation: To Do → Generate Articulate → In Review → Done",
- [["SGP-9941",OK,"Create the five Certification work types"],
-  ["SGP-9942",OK,"Define all five workflows, and remove \"Add Video Links\" from PPT Generation"],
-  ["SGP-9943",OK,"Automations: create Template Generation on Certification epics, populate Course Type on every topic"]]],
-
-["SGP-9818","2026-04-23",OK,"Shipped","Fix fields not copying from epic to child items",
- "ID, VD and QA were not reaching newly created topics. Eleven automations were edited, including Topic Created, Create Base Articulate File, Final Slides complete, Move Source Files and Restrict Course Folder.",
- ["Automations","Fields"],null,null,
- [["SGP-9819",OK,"Edit the eleven affected automations"]]],
-
-["SGP-9762","2026-04-22",OK,"Shipped","Standardize the review status name",
- "Three work types each called the same stage something different. The decision was to settle on Quality review.",
- ["Naming","Articulate","Digitization"],
- "Final Slides said In Review, Articulate said Quality Review, Digitization: Review said QA Review",
- "All three set to Quality review — though QA Review is still live today on both Restore on SkillCat work types",[]],
-
-["SGP-9745","2026-04-21",OPEN,"To Do","Automate start and end dates",
- "Never specified further.",["Automations"],null,null,[]],
-
-["SGP-9700","2026-04-17",OPEN,"In Progress","Fill Contributors automatically from Assignee",
- "The idea was to derive Contributors from whoever is assigned and which group they belong to. Scope was cut back in July to Visual Designer and Digitization Resource only. Digitization Resource is the hard case, because it is a dropdown of people who are not Jira users.",
- ["Automations","Fields"],null,null,
- [["SGP-10673",OK,"Check the members of each group"],
-  ["SGP-10675",OK,"Set up the global automation"],
-  ["SGP-10823",OK,"Narrow scope to VD and Digitization Resource"],
-  ["SGP-10679",OPEN,"Automation for Digitization Resource"],
-  ["SGP-10677",DEAD,"Automation for SGP"],
-  ["SGP-10678",DEAD,"Automation for QFT"]]],
-
-["SGP-9695","2026-04-16",OK,"Shipped","Make the automations leaner",
- "Every automation was separately checking which work type it was looking at, which was burning through the automation budget. Redundant condition checks were stripped and overlapping rules merged.",
- ["Automations"],null,null,
- [["SGP-10284",OK,"Merge the two competing PPT Generation automations, which disagreed about whether Informational courses were included"]]],
-
-["SGP-9672","2026-04-16",OK,"Shipped","Create the Course Briefing work type",
- "For the briefing between Instructional Designer and SME, with Visual Designer and QA Specialist present. Wired into the epic creation automation.",
- ["Work types"],null,"CDLC: Course Brief — To Do · Assigned · In Progress · Done",
- [["SGP-9733",OK,"Add it to the epic creation automation"]]],
-
-["SGP-9591","2026-04-14",OK,"Shipped","Add a Contributors tab beside Key Details",
- "Applied to every screen scheme in CDLC.",["Fields"],null,null,[]],
-
-["SGP-9590","2026-04-14",OK,"Shipped","Rename Data Entry Resource to Digitization Resource",
- "Data migrated across, two new people added to the dropdown, and the old custom field deleted.",
- ["Fields","Digitization"],"Data Entry Resource","Digitization Resource — old field deleted",
- [["SGP-9616",OK,"Add email addresses for two Digitization team members"],
-  ["SGP-9617",OK,"Migrate the data across"],
-  ["SGP-9618",OK,"Delete the old field"]]],
-
-["SGP-9558","2026-04-13",OPEN,"To Do","Add timelines for Digitization tasks",
- "Never specified further.",["Digitization"],null,null,[]],
-
-["SGP-9555","2026-04-13",OK,"Shipped","Add a QA Review step after a course reaches production",
- "A quality gate inserted into the Restore on SkillCat workflow, after In Review. The change was announced by email.",
- ["Digitization"],"Restore on SkillCat ended at In Review","QA Review inserted after In Review",
- [["SGP-9606",OK,"Send out an email about the change"]]],
-
-["SGP-9554","2026-04-13",OPEN,"On Hold","Give different work types different layouts",
- "Every CDLC work type except Epic shares one layout, so Production Link shows up on tickets that have no use for it — including early-stage Final Slides and Articulate Review work.",
- ["Fields"],null,null,[]],
-
-["SGP-9553","2026-04-13",OK,"Shipped","Cascade the course links from epic to children",
- "Course Folder Link, Planning Link and Production Link now flow down from the epic instead of being typed in repeatedly. Two validators were added so the links can't be skipped.",
- ["Fields","Digitization","Validators","Automations"],null,null,
- [["SGP-10446",OK,"Automations for Course Folder Link"],
-  ["SGP-10449",OK,"Copy Planning Link onto the Digitization Process ticket and everything after it"],
-  ["SGP-10451",OK,"Copy Production Link onto the Digitization Process ticket and everything after it"],
-  ["SGP-10452",OK,"Planning Link required to move Upload to AWS + Planning into In Review"],
-  ["SGP-10453",OK,"Production Link required to move Restore on SkillCat into In Review"]]],
-
-["SGP-9552","2026-04-13",DEAD,"Discarded","Stop pulling the Articulate link from the epic",
- "Automations were copying Articulate Review Link from the parent epic, but the epic has no such field — every topic has its own link. The fix was to read from CDLC: Topic instead. Dropped after a follow-up review.",
- ["Articulate","Automations"],null,null,[]],
-
-["SGP-9342","2026-04-07",OPEN,"On Hold","List automations costing more time than they save",
- "An audit that was never completed.",["Automations"],null,null,[]],
-
-["SGP-9340","2026-04-07",OPEN,"On Hold","Plan the Jira workflow for translations after corrections",
- "Parked.",["Translations"],null,null,[]],
-
-["SGP-9075","2026-03-31",OK,"Shipped","Document the workflows and automations",
- "Paired with SGP-9078, which documented the Jira work types.",["Docs"],null,null,[]],
-
-["SGP-8311","2026-03-04",OK,"Shipped","JIRA Workflow",
- "Closed with no description recorded, so what changed here is not recoverable from Jira.",
- ["Unknown"],null,null,[]],
-
-["SGP-7310","2026-01-27",OK,"Shipped","Add the image archiving ticket to the digitization chain",
- "Every course needs its images extracted and tagged. A new ticket now appears automatically once Restore to SkillCat closes, and closing it in turn creates the Move Source Files ticket.",
- ["Digitization","Automations"],null,
- "Run Image Archiving Automation — To Do · In Progress · In Review · Done, auto-created after Restore to SkillCat and itself creating Move Source Files",[]],
-
-["SGP-7303","2026-01-27",OK,"Shipped","Add a course folder move step to digitization",
- "Once a course is released its folder has to move out of \"Ongoing courses in progress\" into Course Specific Documents. Added to the Restore on SkillCat workflow after Update Spreadsheet.",
- ["Digitization"],"No folder move step existed","Step added to Restore on SkillCat, after update spreadsheet",[]],
-
-["CIP-52","2025-11-13",OK,"Shipped","Implement updated review workflows",
- "Recorded only as \"apply the approved changes to the review workflows, update documentation and communicate the new process\". The approved changes themselves were not written down in the ticket.",
- ["Review","Unknown"],null,null,[]]
-];
-
-/* Ticket counts per work type, measured against all 7,960 CDLC issues on 29 August 2026.
-   [total ever, created in the last 365 days]. A type with no ticket in a year reads Dormant. */
-const USAGE = {
-"Epic":[418,99],
-"CDLC: Topic":[561,288],
-"CDLC: Topic Final Slides":[524,245],
-"CDLC: Restrict Course Folder (sub-task)":[15,15],
-"CDLC: Move Source Files (sub-task)":[13,13],
-"CDLC: Generate Performance Report (sub-task)":[15,15],
-"CDLC: Topic Graphics":[447,242],
-"CDLC: Topic Assessment":[469,312],
-"CDLC: Topic Corrections":[284,222],
-"Digitization - Badge Creation (Sub-task)":[21,21],
-"Digitization - Review (sub-task)":[20,20],
-"Digitization - Upload to AWS + Planning (sub-task)":[20,20],
-"CDLC: Content Upkeep (sub-task)":[40,40],
-"Digitization - Data Sheet Creation (sub-task)":[20,20],
-"Digitization - Restore on SkillCat (sub-task)":[20,20],
-"CDLC: Topic PPT Generation":[459,269],
-"CDLC: Content Review":[518,518],
-"CDLC: Base Articulate file creation":[389,190],
-"CDLC: Vyond video":[0,0],
-"CDLC: Topic Stock image downloading":[15,0],
-"CDLC: Articulate Review":[413,225],
-"CDLC: Topic Translations":[389,266],
-"Digitization - Review":[36,36],
-"Graphics":[216,0],
-"Content: Digitization (Informational)":[158,3],
-"Content: Digitization (Instructional)":[50,7],
-"Digitization - Restore on SkillCat":[36,36],
-"Digitization - Upload to AWS + Planning":[36,36],
-"Simulation: Content Creation":[57,0],
-"Course: Specs":[314,83],
-"CDLC: Corrections":[60,0],
-"CDLC: Final Slides":[118,2],
-"Simulation: Specs":[56,0],
-"Improvement":[160,0],
-"Bug":[1,0],
-"Assessment":[150,0],
-"Instructional Design":[57,0],
-"CDLC: PPT generation":[91,0],
-"CDLC: Stock image downloading":[50,0],
-"Feedback":[1,0],
-"Course: Content Creation":[83,0],
-"CDLC: Content Upkeep":[102,84],
-"CDLC: Course outline":[94,2],
-"CDLC: Research notes":[85,0],
-"CDLC: Translations":[90,7],
-"Sub-task":[169,161],
-"CDLC: Badge and Course Image":[31,8],
-"Task":[99,90],
-"Digitization - Badge Creation":[34,34],
-"Digitization - Data Sheet Creation":[55,55],
-"Digitization - Course Catalog Updating":[32,32],
-"CDLC: Generate Performance Report":[19,19],
-"CDLC: Recording":[20,20],
-"CDLC: Run Image Archiving Automation":[13,13],
-"CDLC: Move Source Files":[13,13],
-"CDLC: Restrict Course Folder":[3,3],
-"CDLC: Course Brief":[66,66],
-"Certification: Template Generation":[27,27],
-"Certification: Research Note":[47,47],
-"Certification: Slide Chunks":[43,43],
-"Certification: Graphic Definitions":[41,41],
-"Certification: Articulate Creation":[41,41],
-"Digitization - Course Catalog Updating (sub-task)":[13,13],
-"CDLC: Run Image Archiving Automation (sub-task)":[13,13],
-"Applied Layers: Toolkit":[2,2],
-"Applied Layers: Instructions":[2,2],
-"Applied Layers: Content Finalization":[2,2],
-"Applied Layers: Video Recording":[2,2],
-"Applied Layers: Video Creation":[2,2]
-};
-
-const TRANSITIONS = {
-"Applied Layers: Content Finalization": [{"kind":"start","to":"Finalize as per SME Requirements"},{"kind":"edge","from":["Finalize as per SME Requirements"],"to":"Generate Graphic Definition","label":"Create Graphic Definition"},{"kind":"edge","from":["Generate Graphic Definition"],"to":"Referencing","label":"Referencing"}],
-"Applied Layers: Toolkit/Instructions": [{"kind":"start","to":"To Do"},{"kind":"any","to":"Suspended","label":"Suspended"},{"kind":"edge","from":["To Do"],"to":"Assigned","label":"Assigned to team member"},{"kind":"edge","from":["Assigned"],"to":"In Progress","label":"Progress"},{"kind":"edge","from":["In Progress"],"to":"In Review","label":"Review"},{"kind":"edge","from":["In Review"],"to":"In Progress","label":"Review Fail"},{"kind":"edge","from":["In Review"],"to":"Done","label":"Approved"}],
-"Applied Layers: Video Creation & Review": [{"kind":"start","to":"Storyboard"},{"kind":"any","to":"On Hold","label":"On Hold"},{"kind":"any","to":"Suspended","label":"Suspended"},{"kind":"edge","from":["Storyboard"],"to":"SME Review","label":"SME Review"},{"kind":"edge","from":["SME Review"],"to":"Storyboard","label":"Review Fail"},{"kind":"edge","from":["In Review"],"to":"Video Creation","label":"Review Fail"},{"kind":"edge","from":["Video Creation"],"to":"In Review","label":"In Review"},{"kind":"edge","from":["SME Review"],"to":"Video Creation","label":"Video Creation"},{"kind":"edge","from":["In Review"],"to":"Done","label":"Completion"}],
-"Applied Layers: Video Recording": [{"kind":"start","to":"Video Recording"},{"kind":"edge","from":["Video Recording"],"to":"Manual Edit","label":"Manual Edit"},{"kind":"edge","from":["Manual Edit"],"to":"Video Review","label":"ID/SME Video Review"}],
-"CDLC: Articulate review": [{"kind":"start","to":"To Do"},{"kind":"any","to":"Suspended","label":"Suspended"},{"kind":"any","to":"On Hold","label":"On Hold"},{"kind":"edge","from":["On Hold"],"to":"Internal SME review","label":"SME Review"},{"kind":"edge","from":["On Hold"],"to":"In Review","label":"ID Review"},{"kind":"edge","from":["On Hold"],"to":"Corrections","label":"VD Corrections"},{"kind":"edge","from":["Quality review"],"to":"Internal SME review","label":"SME Review"},{"kind":"edge","from":["In Review"],"to":"Corrections","label":"VD Corrections"},{"kind":"edge","from":["Internal SME review"],"to":"In Review","label":"ID Review"},{"kind":"edge","from":["To Do"],"to":"Quality review","label":"QA Review"},{"kind":"edge","from":["Corrections"],"to":"Done","label":"Completion"},{"kind":"edge","from":["Suspended"],"to":"To Do","label":"Reopen"},{"kind":"edge","from":["In Review"],"to":"Quality review","label":"QA Review"},{"kind":"edge","from":["On Hold"],"to":"Quality review","label":"QA Review"}],
-"CDLC: Assessment": [{"kind":"start","to":"To Do"},{"kind":"any","to":"Suspended","label":"Suspended"},{"kind":"any","to":"On Hold","label":"On Hold"},{"kind":"edge","from":["To Do"],"to":"In Progress","label":"Work begun"},{"kind":"edge","from":["Complete checklist"],"to":"Quality review","label":"Send to Quality for review"},{"kind":"edge","from":["Quality review"],"to":"In Progress","label":"Review rejected"},{"kind":"edge","from":["Quality review"],"to":"Internal SME review","label":"SME Review"},{"kind":"edge","from":["Internal SME review"],"to":"In Progress","label":"Corrections"},{"kind":"edge","from":["In Progress"],"to":"Complete checklist","label":"Checklist"},{"kind":"edge","from":["On Hold"],"to":"To Do","label":"Resume"},{"kind":"edge","from":["Internal SME review"],"to":"Done","label":"Done"}],
-"CDLC: Base Articulate file creation": [{"kind":"start","to":"To Do"},{"kind":"any","to":"To Do","label":"To Do"},{"kind":"edge","from":["Assigned"],"to":"In Progress","label":"Work begun"},{"kind":"edge","from":["To Do"],"to":"Assigned","label":"Assign to team member"},{"kind":"edge","from":["Checklist"],"to":"Done","label":"Done"},{"kind":"edge","from":["In Review"],"to":"Checklist","label":"Check for issues"},{"kind":"edge","from":["In Progress"],"to":"In Review","label":"Sent for Review"},{"kind":"edge","from":["To Do"],"to":"On Hold","label":"Need more info"},{"kind":"edge","from":["To Do"],"to":"Rejected","label":"Rejected"},{"kind":"edge","from":["On Hold"],"to":"Rejected","label":"Rejected"},{"kind":"edge","from":["On Hold"],"to":"In Progress","label":"Work begun"},{"kind":"edge","from":["Checklist"],"to":"In Progress","label":"Review Fail"},{"kind":"edge","from":["In Progress"],"to":"Rejected","label":"Task archived"}],
-"CDLC: Bug": [{"kind":"start","to":"To Do"},{"kind":"any","to":"Suspended","label":"Suspended"},{"kind":"edge","from":["To Do"],"to":"In Progress","label":"Work begun"},{"kind":"edge","from":["In Progress"],"to":"In Review","label":"Sent for Review"},{"kind":"edge","from":["In Review"],"to":"Done","label":"Fixed & Closed"},{"kind":"edge","from":["In Review"],"to":"In Progress","label":"Review Fail"}],
-"CDLC: Content Creation": [{"kind":"start","to":"To Do"},{"kind":"any","to":"Suspended","label":"Closed"},{"kind":"any","to":"To Do","label":"To Do"},{"kind":"edge","from":["Editorial review"],"to":"In Progress","label":"Review Fail"},{"kind":"edge","from":["To Do"],"to":"In Progress","label":"Work begun"},{"kind":"edge","from":["In Review"],"to":"In Progress","label":"Final Review failed"},{"kind":"edge","from":["Enhancement"],"to":"In Review","label":"Final Review"},{"kind":"edge","from":["Editorial review"],"to":"Enhancement","label":"Editorial review pass"},{"kind":"edge","from":["In Progress"],"to":"SME Validation","label":"Review"},{"kind":"edge","from":["SME Validation"],"to":"In Progress","label":"Review Fail"},{"kind":"edge","from":["Editorial review"],"to":"Scope Rearrange","label":"Review Pass"},{"kind":"edge","from":["Scope Rearrange"],"to":"Enhancement","label":"Add additional questions"},{"kind":"edge","from":["In Review"],"to":"Done","label":"Approved"},{"kind":"edge","from":["SME Validation"],"to":"Editorial review","label":"Review Pass"}],
-"CDLC: Content Feedback": [{"kind":"start","to":"To Do"},{"kind":"any","to":"Suspended","label":"Suspended"},{"kind":"edge","from":["To Do"],"to":"In Progress","label":"Work begun"},{"kind":"edge","from":["In Progress"],"to":"Done","label":"Approved"},{"kind":"edge","from":["Suspended"],"to":"To Do","label":"Reopen"}],
-"CDLC: Content Instructional Design": [{"kind":"start","to":"To Do"},{"kind":"any","to":"Suspended","label":"Suspended"},{"kind":"edge","from":["To Do"],"to":"In Progress","label":"Work begun"},{"kind":"edge","from":["In Progress"],"to":"In Review","label":"Send to Review"},{"kind":"edge","from":["In Review"],"to":"Done","label":"Approved"},{"kind":"edge","from":["In Review"],"to":"In Progress","label":"Review Instructional Design"},{"kind":"edge","from":["Suspended"],"to":"To Do","label":"Reopen"}],
-"CDLC: Corrections": [{"kind":"start","to":"To Do"},{"kind":"any","to":"To Do","label":"To Do"},{"kind":"edge","from":["Assigned"],"to":"In Progress","label":"Work begun"},{"kind":"edge","from":["To Do"],"to":"Assigned","label":"Assign to team member"},{"kind":"edge","from":["In Progress"],"to":"In Review","label":"Sent for Review"},{"kind":"edge","from":["In Review"],"to":"Done","label":"Approved"},{"kind":"edge","from":["To Do"],"to":"On Hold","label":"Need more info"},{"kind":"edge","from":["To Do"],"to":"Rejected","label":"Rejected"},{"kind":"edge","from":["On Hold"],"to":"Rejected","label":"Rejected"},{"kind":"edge","from":["On Hold"],"to":"In Progress","label":"Work begun"},{"kind":"edge","from":["In Review"],"to":"In Progress","label":"Review Fail"},{"kind":"edge","from":["In Progress"],"to":"Rejected","label":"Task archived"}],
-"CDLC: Course Brief": [{"kind":"start","to":"To Do"},{"kind":"any","to":"To Do","label":"To Do"},{"kind":"edge","from":["To Do"],"to":"Assigned","label":"Assign to ID"},{"kind":"edge","from":["Assigned"],"to":"In Progress","label":"Progress"},{"kind":"edge","from":["In Progress"],"to":"Done","label":"Completion"}],
-"CDLC: Course Content Creation": [{"kind":"start","to":"To Do"},{"kind":"any","to":"Suspended","label":"Suspended"},{"kind":"edge","from":["SkillCat: Backup / Restore"],"to":"Course QA on SkillCat","label":"Review course on SkillCat"},{"kind":"edge","from":["To Do"],"to":"Slide chunks in course sheet","label":"Work begun"},{"kind":"edge","from":["In Review"],"to":"Slide chunks in course sheet","label":"Revise Articulate"},{"kind":"edge","from":["Course QA on Guroo"],"to":"Course on Guroo","label":"Failed QA"},{"kind":"edge","from":["Course QA on SkillCat"],"to":"Staging: Backup / Restore","label":"Failed QA"},{"kind":"edge","from":["Suspended"],"to":"To Do","label":"Reopen"},{"kind":"edge","from":["In Review"],"to":"Done","label":"Approved"},{"kind":"edge","from":["Slide chunks in course sheet"],"to":"In Review","label":"Review / Verify"},{"kind":"edge","from":["Uploading to AWS"],"to":"Course on Guroo","label":"Host on Guroo"},{"kind":"edge","from":["Course on Guroo"],"to":"Assessment on Guroo","label":"Add assessments to Moodle"},{"kind":"edge","from":["Assessment on Guroo"],"to":"Course QA on Guroo","label":"Review course on Guroo"},{"kind":"edge","from":["Course QA on Guroo"],"to":"Staging: Backup / Restore","label":"Approved"},{"kind":"edge","from":["Staging: Backup / Restore"],"to":"SkillCat: Backup / Restore","label":"Host on SkillCat"}],
-"CDLC: Course Digitization": [{"kind":"start","to":"To Do"},{"kind":"any","to":"Suspended","label":"Suspended"},{"kind":"any","to":"On Hold","label":"On Hold"},{"kind":"edge","from":["Suspended","On Hold"],"to":"To Do","label":"Reopen"},{"kind":"edge","from":["Update Keywords"],"to":"SME Review","label":"In Review"},{"kind":"edge","from":["In Review"],"to":"Restore on SkillCat","label":"Restore on SkillCat"},{"kind":"edge","from":["SME Review"],"to":"Create Course on Planning","label":"Review Fail"},{"kind":"edge","from":["update spreadsheet"],"to":"Course Catalog","label":"Email Marketing Team"},{"kind":"edge","from":["Restore on SkillCat"],"to":"Update Learning Plan","label":"Update Learning Plan"},{"kind":"edge","from":["Request Badge Creation"],"to":"Upload to AWS","label":"Upload to AWS"},{"kind":"edge","from":["To Do"],"to":"Request Badge Creation","label":"Request badge creation"},{"kind":"edge","from":["Update Learning Plan"],"to":"Create Deep Links","label":"Update Keywords"},{"kind":"edge","from":["SME Review"],"to":"In Review","label":"Review"},{"kind":"edge","from":["Create Deep Links"],"to":"update spreadsheet","label":"update spreadsheet"},{"kind":"edge","from":["Upload to AWS"],"to":"Create Course on Planning","label":"Upload successful"},{"kind":"edge","from":["Create Course on Planning"],"to":"Question Bank on Planning","label":"Create"},{"kind":"edge","from":["In Review"],"to":"Create Course on Planning","label":"Review Fail"},{"kind":"edge","from":["Question Bank on Planning"],"to":"Update Keywords","label":"Planning Tasks"}],
-"CDLC: Course Outline": [{"kind":"start","to":"To Do"},{"kind":"any","to":"To Do","label":"To Do"},{"kind":"any","to":"Suspended","label":"Suspended"},{"kind":"edge","from":["Create course outline"],"to":"SME Validation","label":"SME Validation"},{"kind":"edge","from":["To Do"],"to":"Create course outline","label":"Create course outline"},{"kind":"edge","from":["SME Validation"],"to":"Checklist","label":"Complete Checklist"},{"kind":"edge","from":["Checklist"],"to":"Done","label":"Done"}],
-"CDLC: Epic": [{"kind":"start","to":"To Do"},{"kind":"any","to":"To Do","label":"To Do"},{"kind":"any","to":"On Hold","label":"On Hold"},{"kind":"any","to":"Suspended","label":"Suspended"},{"kind":"edge","from":["To Do"],"to":"In Progress","label":"Work begun"},{"kind":"edge","from":["On Hold"],"to":"To Do","label":"Resume"},{"kind":"edge","from":["In Progress"],"to":"Digitization","label":"Send to Digitize"},{"kind":"edge","from":["Digitization"],"to":"Done","label":"Course complete"},{"kind":"edge","from":["Suspended"],"to":"To Do","label":"Reopen"}],
-"CDLC: Final Slides": [{"kind":"start","to":"To Do"},{"kind":"any","to":"Suspended","label":"Suspended"},{"kind":"any","to":"On Hold","label":"On Hold"},{"kind":"edge","from":["To Do"],"to":"In Progress","label":"Run automation and edit manually"},{"kind":"edge","from":["Internal SME review"],"to":"Graphics definition","label":"Approve"},{"kind":"edge","from":["Internal SME review"],"to":"In Progress","label":"Review rejected"},{"kind":"edge","from":["Complete checklist"],"to":"Quality review","label":"Quality Review"},{"kind":"edge","from":["Graphics definition"],"to":"Done","label":"Done"},{"kind":"edge","from":["Quality review"],"to":"Internal SME review","label":"Internal SME Review"},{"kind":"edge","from":["Quality review"],"to":"In Progress","label":"Review Rejected"},{"kind":"edge","from":["In Progress"],"to":"Complete checklist","label":"Complete checklist"},{"kind":"edge","from":["On Hold"],"to":"To Do","label":"Resume"}],
-"CDLC: Graphics": [{"kind":"start","to":"To Do"},{"kind":"any","to":"Suspended","label":"Suspended"},{"kind":"edge","from":["To Do"],"to":"In Progress","label":"Graphic work begun"},{"kind":"edge","from":["In Progress"],"to":"Complete checklist","label":"Complete checklist"},{"kind":"edge","from":["In Review"],"to":"Send to Instructional Designer","label":"Send to Instructional Designer"},{"kind":"edge","from":["Send to Instructional Designer"],"to":"In Progress","label":"Corrections"},{"kind":"edge","from":["Send to Instructional Designer"],"to":"Quality review","label":"Send for review"},{"kind":"edge","from":["Quality review"],"to":"In Progress","label":"Corrections"},{"kind":"edge","from":["External Review"],"to":"Done","label":"Done"},{"kind":"edge","from":["Internal SME review"],"to":"External Review","label":"Sent to external resource for review"},{"kind":"edge","from":["External Review"],"to":"In Progress","label":"Make corrections"},{"kind":"edge","from":["Quality review"],"to":"Internal SME review","label":"Assign to Internal SME"},{"kind":"edge","from":["Complete checklist"],"to":"In Review","label":"Sent to Manager for Review"},{"kind":"edge","from":["Internal SME review"],"to":"In Progress","label":"Corrections"},{"kind":"edge","from":["Send to Instructional Designer"],"to":"External Review","label":"External review"},{"kind":"edge","from":["Send to Instructional Designer"],"to":"Internal SME review","label":"SME Review"},{"kind":"edge","from":["In Review"],"to":"In Progress","label":"Revise Graphic"},{"kind":"edge","from":["Suspended"],"to":"To Do","label":"Reopen"}],
-"CDLC: Improvement": [{"kind":"start","to":"To Do"},{"kind":"any","to":"Suspended","label":"Suspended"},{"kind":"edge","from":["To Do"],"to":"In Progress","label":"Improvement Begun"},{"kind":"edge","from":["In Progress"],"to":"In Review","label":"Sent for Review"},{"kind":"edge","from":["In Review"],"to":"Done","label":"Approved"},{"kind":"edge","from":["In Review"],"to":"In Progress","label":"Modify"},{"kind":"edge","from":["Suspended"],"to":"To Do","label":"Reopen"}],
-"CDLC: Move Source Files": [{"kind":"start","to":"To Do"},{"kind":"edge","from":["To Do"],"to":"In Progress","label":"Progress"},{"kind":"edge","from":["In Progress"],"to":"In Review","label":"Send for Review"},{"kind":"edge","from":["In Review"],"to":"Done","label":"Review Approved"},{"kind":"edge","from":["In Review"],"to":"In Progress","label":"Review Failed"},{"kind":"edge","from":["Done"],"to":"To Do","label":"Start Over"}],
-"CDLC: Recording": [{"kind":"start","to":"Scripting"},{"kind":"edge","from":["Scripting"],"to":"Assigned","label":"Assigned"},{"kind":"edge","from":["Assigned"],"to":"In Progress","label":"Progress"},{"kind":"edge","from":["In Progress"],"to":"In Review","label":"Review"},{"kind":"edge","from":["In Review"],"to":"Done","label":"Approved"},{"kind":"edge","from":["In Review"],"to":"In Progress","label":"Review Fail"}],
-"CDLC: Restrict Course Folder": [{"kind":"start","to":"To Do"},{"kind":"any","to":"Suspended","label":"Suspended"},{"kind":"edge","from":["To Do"],"to":"In Progress","label":"Progress"},{"kind":"edge","from":["In Progress"],"to":"Done","label":"Completion"}],
-"CDLC: Reviews": [{"kind":"start","to":"In Review"},{"kind":"any","to":"In Review","label":"In Review"},{"kind":"any","to":"Suspended","label":"Suspended"},{"kind":"any","to":"On Hold","label":"On Hold"},{"kind":"edge","from":["In Progress"],"to":"In Review","label":"Sent for Review"},{"kind":"edge","from":["In Review"],"to":"Done","label":"Approved"},{"kind":"edge","from":["In Review"],"to":"In Progress","label":"Review Fail"}],
-"CDLC: Run Image Archiving Automation": [{"kind":"start","to":"To Do"},{"kind":"any","to":"Suspended","label":"Suspended"},{"kind":"edge","from":["To Do"],"to":"In Progress","label":"Progress"},{"kind":"edge","from":["In Progress"],"to":"In Review","label":"Review"},{"kind":"edge","from":["In Review"],"to":"Done","label":"Review Approved"},{"kind":"edge","from":["In Review"],"to":"In Progress","label":"Review Failed"},{"kind":"edge","from":["Done"],"to":"To Do","label":"Start Over"}],
-"CDLC: Simulation Specs": [{"kind":"start","to":"To Do"},{"kind":"any","to":"Suspended","label":"Suspended"},{"kind":"edge","from":["To Do"],"to":"Business Specs in Progress","label":"Write Business Specs"},{"kind":"edge","from":["Business Specs in Progress"],"to":"Business Specs in Review","label":"Sent for Review"},{"kind":"edge","from":["Business Specs in Review"],"to":"Business Specs in Progress","label":"Review Fail"},{"kind":"edge","from":["Business Specs in Review"],"to":"Learning Objectives in Progress","label":"Business Specs Approved"},{"kind":"edge","from":["Learning Objectives in Progress"],"to":"Learning Objective in Review","label":"Sent for Review"},{"kind":"edge","from":["Learning Objective in Review"],"to":"Learning Objectives in Progress","label":"Review Fail"},{"kind":"edge","from":["Learning Objective in Review"],"to":"Done","label":"Specs are Ready"},{"kind":"edge","from":["Suspended"],"to":"To Do","label":"Reopen"}],
-"CDLC: Spanish Translations": [{"kind":"start","to":"To Do"},{"kind":"any","to":"On Hold","label":"On Hold"},{"kind":"any","to":"Suspended","label":"Suspended"},{"kind":"any","to":"To Do","label":"To Do"},{"kind":"edge","from":["To Do"],"to":"Assigned","label":"Assign to team member"},{"kind":"edge","from":["Upload to AWS"],"to":"Done","label":"Done"},{"kind":"edge","from":["In Translation"],"to":"Complete checklist","label":"Complete checklist"},{"kind":"edge","from":["Complete checklist"],"to":"In Review","label":"Sent for Review"},{"kind":"edge","from":["In Review"],"to":"Upload to AWS","label":"Approved"},{"kind":"edge","from":["On Hold","Assigned"],"to":"In Translation","label":"Work begun"},{"kind":"edge","from":["In Review"],"to":"In Translation","label":"Review Fail"}],
-"CDLC: Stock image downloading": [{"kind":"start","to":"To Do"},{"kind":"any","to":"To Do","label":"To Do"},{"kind":"any","to":"Suspended","label":"Suspended"},{"kind":"edge","from":["To Do"],"to":"In Progress","label":"In Progress"},{"kind":"edge","from":["In Review"],"to":"Done","label":"Done"},{"kind":"edge","from":["In Progress"],"to":"In Review","label":"Send for review"},{"kind":"edge","from":["In Review"],"to":"In Progress","label":"Review rejected"}],
-"CDLC: Task/Subtask": [{"kind":"start","to":"To Do"},{"kind":"any","to":"Suspended","label":"Suspended"},{"kind":"any","to":"On Hold","label":"On Hold"},{"kind":"edge","from":["On Hold"],"to":"In Progress","label":"Progress"},{"kind":"edge","from":["On Hold"],"to":"In Review","label":"Review"},{"kind":"edge","from":["To Do"],"to":"In Progress","label":"Progress"},{"kind":"edge","from":["In Progress"],"to":"In Review","label":"Review"},{"kind":"edge","from":["In Review"],"to":"In Progress","label":"Review Fail"},{"kind":"edge","from":["In Review"],"to":"Done","label":"Completion"},{"kind":"edge","from":["Done"],"to":"To Do","label":"Start Over"},{"kind":"edge","from":["On Hold"],"to":"To Do","label":"Start Over"}],
-"CDLC: Topic": [{"kind":"start","to":"To Do"},{"kind":"any","to":"To Do","label":"To Do"},{"kind":"any","to":"Suspended","label":"Suspended"},{"kind":"any","to":"On Hold","label":"On Hold"},{"kind":"edge","from":["Final Slides"],"to":"Ready for Graphics","label":"Final Slides ready"},{"kind":"edge","from":["Spanish Translations"],"to":"Uploading to AWS","label":"Upload to AWS"},{"kind":"edge","from":["In Review"],"to":"Uploading to AWS","label":"For Certification Course"},{"kind":"edge","from":["Uploading to AWS"],"to":"Done","label":"Done"},{"kind":"edge","from":["To Do"],"to":"Final Slides","label":"In Progress"},{"kind":"edge","from":["Ready for Graphics"],"to":"Graphics Creation","label":"Graphics in progress"},{"kind":"edge","from":["Graphics Creation"],"to":"In Review","label":"Review by Quality and SME"},{"kind":"edge","from":["In Review"],"to":"Spanish Translations","label":"Ready for Translations"}],
-"CDLC: Topic Assessment": [{"kind":"start","to":"To Do"},{"kind":"any","to":"To Do","label":"To Do"},{"kind":"any","to":"Suspended","label":"Suspended"},{"kind":"any","to":"On Hold","label":"On Hold"},{"kind":"edge","from":["To Do"],"to":"In Progress","label":"Work begun"},{"kind":"edge","from":["In Review"],"to":"In Progress","label":"Corrections"},{"kind":"edge","from":["Complete checklist"],"to":"In Review","label":"SME Review"},{"kind":"edge","from":["In Progress"],"to":"Complete checklist","label":"Checklist"},{"kind":"edge","from":["In Review"],"to":"Done","label":"Done"}],
-"CDLC: Topic Final Slides": [{"kind":"start","to":"To Do"},{"kind":"any","to":"Suspended","label":"Suspended"},{"kind":"any","to":"On Hold","label":"On Hold"},{"kind":"edge","from":["To Do"],"to":"In Progress","label":"Run automation and edit manually"},{"kind":"edge","from":["Internal SME review"],"to":"Done","label":"Approve"},{"kind":"edge","from":["Internal SME review"],"to":"In Progress","label":"Review rejected"},{"kind":"edge","from":["Complete checklist"],"to":"Quality review","label":"Quality Team review"},{"kind":"edge","from":["Quality review"],"to":"In Progress","label":"Review rejected"},{"kind":"edge","from":["Quality review"],"to":"Internal SME review","label":"SME Review"},{"kind":"edge","from":["In Progress"],"to":"Complete checklist","label":"Complete checklist"},{"kind":"edge","from":["On Hold"],"to":"To Do","label":"Resume"}],
-"CDLC: Topic Graphics": [{"kind":"start","to":"To Do"},{"kind":"any","to":"Suspended","label":"Suspended"},{"kind":"edge","from":["To Do"],"to":"In Progress","label":"Graphic work begun"},{"kind":"edge","from":["In Progress"],"to":"Complete checklist","label":"Complete checklist"},{"kind":"edge","from":["In Review"],"to":"Send to Instructional Designer","label":"Send to Instructional Designer"},{"kind":"edge","from":["Send to Instructional Designer"],"to":"In Progress","label":"Corrections"},{"kind":"edge","from":["Send to Instructional Designer"],"to":"Done","label":"Done"},{"kind":"edge","from":["Complete checklist"],"to":"In Review","label":"Sent to Manager for Review"},{"kind":"edge","from":["In Review"],"to":"In Progress","label":"Revise Graphic"},{"kind":"edge","from":["Suspended"],"to":"To Do","label":"Reopen"}],
-"Certification: Articulate Creation": [{"kind":"start","to":"To Do"},{"kind":"any","to":"On Hold","label":"On Hold"},{"kind":"any","to":"Suspended","label":"Suspended"},{"kind":"any","to":"To Do","label":"To Do"},{"kind":"edge","from":["ID Review"],"to":"SME Review","label":"SME Review"},{"kind":"edge","from":["SME Review"],"to":"Quality review","label":"QA Review"},{"kind":"edge","from":["Quality review"],"to":"ID Review","label":"ID Corrections"},{"kind":"edge","from":["SME Review"],"to":"ID Review","label":"ID Corrections"},{"kind":"edge","from":["Quality review"],"to":"Done","label":"Completion"},{"kind":"edge","from":["To Do"],"to":"Generate Articulate","label":"Articulate Generation"},{"kind":"edge","from":["Generate Articulate"],"to":"ID Review","label":"ID Review"},{"kind":"edge","from":["ID Review"],"to":"Corrections","label":"VD Corrections"},{"kind":"edge","from":["Corrections"],"to":"ID Review","label":"ID Review"},{"kind":"edge","from":["Corrections"],"to":"SME Review","label":"SME Review"}],
-"Certification: Graphic Definitions": [{"kind":"start","to":"To Do"},{"kind":"any","to":"To Do","label":"To Do"},{"kind":"any","to":"On Hold","label":"On Hold"},{"kind":"any","to":"Suspended","label":"Suspended"},{"kind":"edge","from":["Review & Revise Visuals"],"to":"Review & Revise Definition","label":"Revise"},{"kind":"edge","from":["Generate AI Visuals"],"to":"Review & Revise Visuals","label":"Revise"},{"kind":"edge","from":["To Do"],"to":"Generate Graphic Definition","label":"Generation"},{"kind":"edge","from":["Generate Graphic Definition"],"to":"Review & Revise Definition","label":"GD Review"},{"kind":"edge","from":["Review & Revise Definition"],"to":"Review & Revise Visuals","label":"Visuals' Review"},{"kind":"edge","from":["Review & Revise Visuals"],"to":"Generate AI Visuals","label":"Generate Visuals"},{"kind":"edge","from":["Generate AI Visuals"],"to":"Review Final GD","label":"Final GD Review"},{"kind":"edge","from":["Review Final GD"],"to":"Done","label":"Completion"}],
-"Certification: Research Note": [{"kind":"start","to":"To Do"},{"kind":"any","to":"On Hold","label":"On Hold"},{"kind":"any","to":"Suspended","label":"Suspended"},{"kind":"any","to":"To Do","label":"To Do"},{"kind":"edge","from":["To Do"],"to":"Manual Review","label":"Manual Review"},{"kind":"edge","from":["Manual Review"],"to":"Inline Image Check","label":"Inline Image Check"},{"kind":"edge","from":["Inline Image Check"],"to":"Done","label":"Completion"}],
-"Certification: Slide Chunks": [{"kind":"start","to":"To Do"},{"kind":"any","to":"On Hold","label":"On Hold"},{"kind":"any","to":"Suspended","label":"Suspended"},{"kind":"any","to":"To Do","label":"To Do"},{"kind":"edge","from":["To Do"],"to":"In Progress","label":"Progress"},{"kind":"edge","from":["In Progress"],"to":"Paraphrasing","label":"Paraphrasing"},{"kind":"edge","from":["Paraphrasing"],"to":"In Review","label":"Review"},{"kind":"edge","from":["In Review"],"to":"Done","label":"Completion"},{"kind":"edge","from":["In Review"],"to":"Paraphrasing","label":"Review Fail"}],
-"Certification: Template Generation": [{"kind":"start","to":"To Do"},{"kind":"any","to":"On Hold","label":"On Hold"},{"kind":"any","to":"Suspended","label":"Suspended"},{"kind":"edge","from":["To Do"],"to":"Done","label":"Completion"},{"kind":"edge","from":["Done"],"to":"To Do","label":"Start Over"}],
-"Digitization - Badge Creation": [{"kind":"start","to":"To Do"},{"kind":"any","to":"Suspended","label":"Suspended"},{"kind":"edge","from":["In Progress"],"to":"In Review","label":"Review"},{"kind":"edge","from":["To Do"],"to":"In Progress","label":"Progress"},{"kind":"edge","from":["In Review"],"to":"In Progress","label":"Review Fail"},{"kind":"edge","from":["In Review"],"to":"Done","label":"Completion"},{"kind":"edge","from":["Done"],"to":"To Do","label":"Reopen Task"}],
-"Digitization - Course Catalog Updating": [{"kind":"start","to":"To Do"},{"kind":"any","to":"Suspended","label":"Suspended"},{"kind":"edge","from":["To Do"],"to":"Assigned","label":"Progress"},{"kind":"edge","from":["In Progress"],"to":"In Review","label":"Completion"},{"kind":"edge","from":["Assigned"],"to":"In Progress","label":"Progress"},{"kind":"edge","from":["In Review"],"to":"Done","label":"Completion"}],
-"Digitization - Data Sheet Creation": [{"kind":"start","to":"To Do"},{"kind":"any","to":"Suspended","label":"Suspended"},{"kind":"edge","from":["To Do"],"to":"Assigned","label":"Progress"},{"kind":"edge","from":["In Progress"],"to":"In Review","label":"Completion"},{"kind":"edge","from":["Assigned"],"to":"In Progress","label":"Progress"},{"kind":"edge","from":["In Review"],"to":"Done","label":"Completion"}],
-"Digitization - Restore on SkillCat": [{"kind":"start","to":"To Do"},{"kind":"any","to":"Suspended","label":"Suspended"},{"kind":"edge","from":["QA Review"],"to":"Done","label":"Review Approved"},{"kind":"edge","from":["Done"],"to":"To Do","label":"Start Over"},{"kind":"edge","from":["Restore on SkillCat"],"to":"Update Learning Plan","label":"On SkillCat"},{"kind":"edge","from":["Update Learning Plan"],"to":"Create Deep Links","label":"Production"},{"kind":"edge","from":["Create Deep Links"],"to":"update spreadsheet","label":"Production"},{"kind":"edge","from":["update spreadsheet"],"to":"QA Review","label":"Review"},{"kind":"edge","from":["To Do"],"to":"Restore on SkillCat","label":"In Progress"}],
-"Digitization - Review": [{"kind":"start","to":"To Do"},{"kind":"any","to":"To Do","label":"To Do"},{"kind":"any","to":"Suspended","label":"Suspended"},{"kind":"edge","from":["To Do"],"to":"Quality review","label":"In Progress"},{"kind":"edge","from":["SME Review"],"to":"Done","label":"Completion"},{"kind":"edge","from":["Quality review"],"to":"SME Review","label":"Internal SME Review"}],
-"Digitization - Upload to AWS + Planning": [{"kind":"start","to":"To Do"},{"kind":"any","to":"Assigned","label":"Assigned"},{"kind":"any","to":"Suspended","label":"Suspended"},{"kind":"edge","from":["In Review"],"to":"Create Course on Planning","label":"Review Fail"},{"kind":"edge","from":["Create Course on Planning"],"to":"Update Question Bank on Planning","label":"Planning"},{"kind":"edge","from":["Upload to AWS"],"to":"Create Course on Planning","label":"Create on Planning"},{"kind":"edge","from":["Update Question Bank on Planning"],"to":"Update Keywords","label":"Planning"},{"kind":"edge","from":["In Review"],"to":"Done","label":"Completion"},{"kind":"edge","from":["To Do"],"to":"Assigned","label":"In Progress"},{"kind":"edge","from":["Assigned"],"to":"Upload to AWS","label":"Progress"},{"kind":"edge","from":["Update Keywords"],"to":"In Review","label":"Review"}],
-"Generate Performance Report": [{"kind":"start","to":"To Do"},{"kind":"any","to":"Suspended","label":"Suspended"},{"kind":"edge","from":["To Do"],"to":"In Progress","label":"Progress"},{"kind":"edge","from":["In Progress"],"to":"Done","label":"Completion"},{"kind":"edge","from":["Suspended"],"to":"To Do","label":"To Do"}],
-"PPT generation": [{"kind":"start","to":"To Do"},{"kind":"any","to":"Suspended","label":"Suspended"},{"kind":"any","to":"To Do","label":"To Do"},{"kind":"edge","from":["To Do"],"to":"In Progress","label":"In Progress"},{"kind":"edge","from":["In Review"],"to":"Done","label":"Completion"},{"kind":"edge","from":["In Progress"],"to":"In Review","label":"Send to manager for review"},{"kind":"edge","from":["In Review"],"to":"In Progress","label":"Rejected. Update course."}],
-"SGP: Task": [{"kind":"start","to":"To Do"},{"kind":"any","to":"To Do","label":"To Do"},{"kind":"any","to":"On Hold","label":"On Hold"},{"kind":"any","to":"Discard","label":"Discard"},{"kind":"edge","from":["Assigned"],"to":"In Progress","label":"Work begun"},{"kind":"edge","from":["To Do"],"to":"Assigned","label":"Assign to team member"},{"kind":"edge","from":["Reproduced"],"to":"Done","label":"Fixed by Devs"},{"kind":"edge","from":["In Progress"],"to":"In Review","label":"Sent for Review"},{"kind":"edge","from":["In Review"],"to":"Reproduced","label":"Reproduced"},{"kind":"edge","from":["In Review"],"to":"Done","label":"Approved"},{"kind":"edge","from":["In Progress"],"to":"Reproduced","label":"Reproduced/ Isolated"},{"kind":"edge","from":["On Hold"],"to":"In Progress","label":"Work begun"},{"kind":"edge","from":["In Review"],"to":"In Progress","label":"Review Fail"}]
-};
-
-
-const ROLES = [
-  ["Instructional Designer", "Drafting, editing and iterating content in line with the brief", "The ID Team Manager"],
-  ["Visual Designer", "Creating visuals and graphics aligning with the Instructional Designer's brief", "The VD Team Manager"],
-  ["QA Specialist", "Reviewing content for accuracy, tone, grammar and brand alignment", "The QA Specialist"],
-  ["Digitization Resource", "Creating translations and ensuring the course and all its assets upload correctly to the app", "The Digitization Manager"],
-  ["Subject Matter Expert", "Providing specialist input and validating factual accuracy. Can be internal or external", "Usually the Internal SME"]
-];
-
-/* n, title, owner, summary, who[], workTypes[], triggers[[from, to]], mismatches[[docSays, jiraHas]] */
-const PROCESS = [
-[1, "Epic Creation", "Instructional Designers' Team Manager",
- "The ID Team Manager creates an epic for a course in the pipeline. What gets created underneath depends on the Course Type field: Instructional, Informational and Practical courses produce Business Specs and a Course Brief, while Certification courses produce Template Generation instead. The ID Team Manager then moves the epic from To Do to In Progress and assigns it to an Instructional Designer.",
- ["Reporter: ID Team Manager", "Assignee: Instructional Designer"],
- ["Epic", "Course: Specs", "CDLC: Course Brief", "Certification: Template Generation"],
- [["Epic created, Course Type = Instructional / Informational / Practical", "Business Specs & Course Brief"],
-  ["Epic created, Course Type = Certification", "Certification: Template Generation"]],
- [["CDLC: Epic", "Epic"], ["CDLC: Business Specs", "Course: Specs"]]],
-
-[2, "Topic Creation", "Instructional Designer",
- "The Instructional Designer creates and names the topic, the primary child item under an epic. Every field except Topic is copied down from the epic, which is why the epic has to be filled in properly first. Final Slides and Articulate Review Link get added later, and must be added on the CDLC: Topic so they cascade to everything created after it.",
- ["Reporter and Assignee: Instructional Designer"],
- ["CDLC: Topic"],
- [["Topic created, Course Type = Certification", "Certification: Research Note"],
-  ["Topic created, Course Type = Informational / Instructional / Practical", "CDLC: Topic Final Slides"],
-  ["ID starts work on Final Slides", "CDLC: Topic moves To Do → Final Slides"]],
- [["Certification: Research Notes", "Certification: Research Note"]]],
-
-[3, "Final Slides / Research Note Creation", "Instructional Designer, then QA and SME",
- "The Instructional Designer develops the content against the approved learning objectives, then passes it for review. The reviewer is identified by the status: Quality review means it sits with the QA Specialist, Internal SME review means it sits with the Internal SME. Output is an Excel or Google Sheet.",
- ["Instructional Designer", "QA Specialist", "Internal SME"],
- ["CDLC: Topic Final Slides", "Certification: Research Note"],
- [["CDLC: Topic Final Slides marked Done", "CDLC: Topic Graphics and CDLC: Topic PPT Generation"],
-  ["Certification: Research Note marked Done", "Certification: Slide Chunks"]],
- []],
-
-[4, "Base Articulate / Slide Chunks Creation", "Instructional Designer and Digitization",
- "For Instructional, Practical and Informational courses the ID generates a PPT, which Digitization turns into a Base Articulate file — the template for the final Storyline file, carrying voiceover, captions and slide titles. Its Description field arrives pre-filled with instructions for the Digitization team. The Digitization Manager assigns it onward to Data Entry, then back to the ID, who closes it. For Certification courses the ID works on Slide Chunks instead. This runs alongside Stage 5.",
- ["Instructional Designer", "Digitization Resource"],
- ["CDLC: Topic PPT Generation", "CDLC: Base Articulate file creation", "Certification: Slide Chunks"],
- [["CDLC: Topic PPT Generation marked Done", "CDLC: Base Articulate file creation, assigned to the Digitization Manager"],
-  ["Certification: Slide Chunks marked Done", "Certification: Graphic Definitions, assigned to the ID"]],
- [["CDLC: Base Articulate File Creation", "CDLC: Base Articulate file creation"]]],
-
-[5, "Graphics / Graphic Definition Creation", "Visual Designer, or ID for Certification",
- "For Informational, Instructional and Practical courses the Visual Designer works the graphics into the Articulate Storyline file built in Stage 4, following the Graphic Definition the ID wrote in the Final Slides sheet. The VD adds the Articulate Review Link, completes the checklist, sends it to the VD Team Manager, who passes it to the ID with the status Send to Instructional Designer. Anything the ID wants changed goes through CDLC: Topic Corrections, which bounces between ID and VD. For Certification courses the ID prepares the Graphic Definition instead.",
- ["Visual Designer", "The VD Team Manager", "Instructional Designer"],
- ["CDLC: Topic Graphics", "CDLC: Topic Corrections", "Certification: Graphic Definitions"],
- [["CDLC: Topic Graphics created", "parent CDLC: Topic moves to Ready for Graphics"],
-  ["CDLC: Topic Graphics marked Done", "CDLC: Articulate Review and CDLC: Topic Corrections; parent Topic moves to In Review and its Articulate Review Link is filled from the Graphics field"],
-  ["Certification: Graphic Definitions marked Done", "CDLC: Topic PPT Generation"]],
- [["Certification: Graphic Definition", "Certification: Graphic Definitions"]]],
-
-[6, "Articulate Review", "QA Specialist and SMEs",
- "The ID and VD have both finished with the Storyline file and share it for review. Status moves In Progress → In Review, and back again for corrections, with the Assignee changing hands each time a concern is raised or resolved. CDLC: Topic Assessment is the last step that needs the Instructional Designer, who is both Assignee and Reporter on it.",
- ["Instructional Designer", "QA Specialist", "Internal SME (the Internal SME)", "External SME"],
- ["CDLC: Articulate Review", "CDLC: Topic Assessment", "Certification: Articulate Creation"],
- [["CDLC: Articulate Review marked Done", "CDLC: Topic Translations and CDLC: Topic Assessment"],
-  ["Certification: Articulate Creation marked Done", "CDLC: Topic Assessment"]],
- [["Creates work types SME Review and External Review", "Both are statuses, not work types — no such work types exist"]]],
-
-[7, "Translation & Digitization", "Digitization and Data Entry",
- "Two things run here. Translation: once the ID uploads the finalised Storyline file, the Digitization Resource translates it to Spanish, the Digitization Manager routes it to the course's QA Specialist, and after QA it goes to Upload to AWS and then Done — each of which drags the parent Topic along with it. Digitization: the moment the epic moves to Digitization, a fan of tickets is created, each setting off further automations as it closes. Outputs are the Planning Link on guroo.com and the Production Link on skillcat.app.",
- ["Digitization Resource", "The Digitization Manager", "QA Specialist"],
- ["CDLC: Topic Translations", "Digitization - Upload to AWS + Planning", "Digitization - Review",
-  "Digitization - Restore on SkillCat", "Digitization - Data Sheet Creation", "Digitization - Badge Creation",
-  "Digitization - Course Catalog Updating", "CDLC: Content Upkeep", "CDLC: Run Image Archiving Automation",
-  "CDLC: Generate Performance Report", "CDLC: Restrict Course Folder", "CDLC: Move Source Files"],
- [["Epic moves to Digitization", "Badge and Course Image Creation, Upload to AWS + Planning, Review, Restore on SkillCat, Data Sheet Creation, Course Metadata and Create Course Introduction"],
-  ["Digitization - Review marked Done", "CDLC: Generate Performance Report"],
-  ["CDLC: Generate Performance Report marked Done", "CDLC: Restrict Course Folder"],
-  ["Digitization - Restore on SkillCat marked Done", "Digitization - Course Catalog Updating and CDLC: Run Image Archiving Automation"],
-  ["CDLC: Run Image Archiving Automation marked Done", "CDLC: Move Source Files"],
-  ["CDLC: Topic Translations moves to Upload to AWS", "parent CDLC: Topic moves to Uploading to AWS"],
-  ["CDLC: Topic Translations marked Done", "parent CDLC: Topic moves to Done"]],
- [["CDLC: Run Image Archiving", "CDLC: Run Image Archiving Automation"],
-  ["Translation path To Do → In Progress → In Review → Upload to AWS → Done", "CDLC: Topic Translations has no In Progress status. Its set includes Assigned, In Translation and Complete checklist, none of which the SOP mentions"]]]
-];
-
-
-/* [name, type, scope, when it gets filled, enforcing ticket | null] */
-const FIELDS = [
-
-["Jira sets these", "Nobody fills them. They arrive with the ticket or are written by automation.", [
-  ["Project", "project", "All 69 · required", "Fixed when the work item is created", null],
-  ["Issue Type", "issuetype", "All 69 · required", "Chosen at creation, or set by the automation that creates the item", null],
-  ["Reporter", "user", "All 69 · required", "Whoever created the item, or the automation account", null],
-  ["Parent", "issuelink", "68 of 69 · required on sub-tasks", "Set by the automation that creates the child", null],
-  ["Parent Link", "any", "62 of 69", "Maintained by Jira for the hierarchy", null],
-  ["Epic Link", "any", "5 work types", "Legacy hierarchy field, superseded by Parent", null],
-  ["Linked Issues", "array", "63 of 69", "Only when someone links two items by hand", null],
-  ["Attachment", "array", "67 of 69", "Whoever uploads a file", null],
-  ["Epic Percentage Complete", "number", "Epic only", "Automation, recalculated as child items close", "SGP-10441", "auto"],
-  ["Epic Progress Bar", "string", "Epic only", "Automation, alongside the percentage", "SGP-10442", "auto"]
-]],
-
-["Instructional Designers' Team Manager", "Filled at epic creation. The SOP calls these the essential and crucial fields; everything downstream is copied from them, so an epic filled in badly propagates.", [
-  ["Summary", "string", "All 69 · required", "At epic creation, then set by automation on children", null],
-  ["Description", "string", "All 69", "At epic creation. Some work types arrive with it pre-filled as instructions", null],
-  ["Epic Name", "string", "Epic only", "At epic creation", null],
-  ["Course type", "option", "64 of 69", "At epic creation. Decides which child work types get created", null],
-  ["Assignee", "user", "All 69", "At epic creation, then reassigned by hand as work changes hands", null],
-  ["Checklist", "string", "64 of 69", "At epic creation, and again per sub-task before it can leave To Do", "SGP-9998", "val"],
-  ["Instructional Designer", "array", "64 of 69", "At epic creation. Blocks the move to Digitization if empty", "SGP-9998", "val"],
-  ["Visual Designer(s)", "array", "64 of 69", "At epic creation. Blocks the move to Digitization if empty", "SGP-9998", "val"],
-  ["Quality Specialists", "array", "64 of 69", "At epic creation. Blocks the move to Digitization if empty", "SGP-9998", "val"],
-  ["Subject Matter Expert", "array", "64 of 69", "At epic creation", null],
-  ["External Reviewer", "array", "64 of 69", "At epic creation, where the course uses one", null],
-  ["Business Specs", "string", "64 of 69", "At epic creation", null],
-  ["Course outline document", "string", "63 of 69", "At epic creation", null],
-  ["Estimate sheet", "string", "Epic only", "At epic creation", null],
-  ["Topic", "string", "64 of 69", "Named by the ID when the topic is created; copied down after that", null],
-  ["Due date", "date", "All 69", "At epic creation", null],
-  ["Course Folder Link", "string", "64 of 69", "Added on the epic, then cascaded to every child item", "SGP-9553", "auto"]
-]],
-
-["Instructional Designer", "Filled during the work itself rather than at setup.", [
-  ["Final Slides link", "string", "63 of 69", "Added to the Topic once Final Slides exist, so it shows on everything created afterwards", null],
-  ["Target end", "date", "64 of 69", "Required alongside the Checklist before a sub-task can leave To Do", "SGP-9998", "val"]
-]],
-
-["Visual Designer", "Both of these are gates: the work type cannot move on until the link is there.", [
-  ["Articulate Review Link", "string", "63 of 69", "Added at the Graphics stage. Blocks the move out of In Review if empty", "SGP-9998", "val"],
-  ["Final Storyline Link", "string", "64 of 69", "Added after Articulate review. Blocks the move to Done if empty", "SGP-10834", "val"]
-]],
-
-["Digitization", "Produced during digitization and copied back onto the parent items.", [
-  ["Planning Link", "string", "64 of 69", "Added on Upload to AWS + Planning. Blocks the move to In Review if empty", "SGP-9553", "val"],
-  ["Production Link", "string", "64 of 69", "Added on Restore on SkillCat. Blocks the move to In Review if empty", "SGP-9553", "val"],
-  ["Digitization Resource", "array", "64 of 69", "Who is doing the digitization. Renamed from Data Entry Resource", "SGP-9590", "note"]
-]],
-
-["No documented owner", "These exist in Jira but the SOP never says who fills them or when. Some may be dead; some may be quietly load-bearing. Worth a pass before v1.1 of the doc.", [
-  ["Priority", "priority", "All 69", "Not mentioned in the SOP", null],
-  ["Start date", "date", "62 of 69", "Not mentioned. An automation to set start and end dates was requested and never built", "SGP-9745", "note"],
-  ["Pod number", "option", "64 of 69", "Not mentioned in the SOP", null],
-  ["Topic type", "option", "63 of 69", "Not mentioned in the SOP", null],
-  ["Course Difficulty Level", "option", "5 work types", "Not mentioned. Only on Simulation, Feedback and Improvement types", null],
-  ["Simulation Difficulty Level", "option", "3 work types", "Not mentioned. Simulation work types only", null],
-  ["Course category", "string", "Epic only", "Not mentioned in the SOP", null],
-  ["Course competency", "string", "Epic only", "Not mentioned in the SOP", null],
-  ["Course keywords", "string", "Epic only", "Not mentioned, though Update Keywords is a digitization status", null],
-  ["Learning plan", "string", "Epic only", "Not mentioned, though Update Learning Plan is a digitization status", null],
-  ["Guroo Course Link", "string", "Course: Content Creation only", "Not mentioned. That work type is dormant", null],
-  ["Staging Course Link", "string", "Course: Content Creation only", "Not mentioned. That work type is dormant", null],
-  ["SkillCat Course Link", "string", "Course: Content Creation only", "Not mentioned. That work type is dormant", null],
-  ["Articulate Story File Link", "string", "Course: Content Creation only", "Not mentioned. Overlaps with Final Storyline Link", null],
-  ["Storyboard Doc", "string", "Simulation: Content Creation only", "Not mentioned. That work type is dormant", null],
-  ["Learning Objective Doc", "string", "Simulation: Specs only", "Not mentioned. That work type is dormant", null],
-  ["Feedback Source", "array", "Feedback only · required", "Not mentioned. The only custom field Jira marks required anywhere in CDLC", null],
-  ["Feedback Reference Link", "string", "Feedback only", "Not mentioned. That work type is dormant", null]
-]]
-];
-/* ============================ NAVIGATION ============================ */
-/* One screen at a time. `path` drives everything:
-     []                          home
-     ["workflows"]               list
-     ["workflows", name]         detail
-   Same for worktypes, process, fields, changes. */
+/* Canonical CDLC Epic shape. Generated from data/cdlc-epic.json — see scripts/embed-data.mjs. */
+const CDLC = /*__CDLC_EPIC__*/{"generated":"2026-08-28","evidence":"CDLC-8592 (live reference epic) and CDLC-8999 (completed epic, digitization stage)","epic":{"name":"CDLC Epic","type":"Epic","workflow":"CDLC: Epic","statuses":["Done","On Hold","To Do","Suspended","In Progress","Digitization"],"usage":{"ever":418,"recent":99},"transitions":[{"kind":"start","to":"To Do"},{"kind":"any","to":"To Do","label":"To Do"},{"kind":"any","to":"On Hold","label":"On Hold"},{"kind":"any","to":"Suspended","label":"Suspended"},{"kind":"edge","from":["To Do"],"to":"In Progress","label":"Work begun"},{"kind":"edge","from":["On Hold"],"to":"To Do","label":"Resume"},{"kind":"edge","from":["In Progress"],"to":"Digitization","label":"Send to Digitize"},{"kind":"edge","from":["Digitization"],"to":"Done","label":"Course complete"},{"kind":"edge","from":["Suspended"],"to":"To Do","label":"Reopen"}],"blurb":"One Epic is one course. Everything needed to take that course from a business brief to a published product hangs beneath it."},"stages":[{"id":"business-specs","name":"Business Specs & Outline","type":"Course: Specs","blurb":"Opens the course. Produces the Scope Doc and Research Doc that everything downstream is built against.","note":"Jira describes this type as “Use this to create: Scope Doc & Research Doc”. Note the type is Course: Specs, not the similarly-named CDLC: Course outline work type — that one is not used here.","workflow":"CDLC: Task/Subtask","statuses":["In Review","Done","On Hold","To Do","Suspended","In Progress"],"usage":{"ever":314,"recent":83},"transitions":[{"kind":"start","to":"To Do"},{"kind":"any","to":"Suspended","label":"Suspended"},{"kind":"any","to":"On Hold","label":"On Hold"},{"kind":"edge","from":["On Hold"],"to":"In Progress","label":"Progress"},{"kind":"edge","from":["On Hold"],"to":"In Review","label":"Review"},{"kind":"edge","from":["To Do"],"to":"In Progress","label":"Progress"},{"kind":"edge","from":["In Progress"],"to":"In Review","label":"Review"},{"kind":"edge","from":["In Review"],"to":"In Progress","label":"Review Fail"},{"kind":"edge","from":["In Review"],"to":"Done","label":"Completion"},{"kind":"edge","from":["Done"],"to":"To Do","label":"Start Over"},{"kind":"edge","from":["On Hold"],"to":"To Do","label":"Start Over"}],"subtasks":[]},{"id":"course-brief","name":"Course Brief","type":"CDLC: Course Brief","blurb":"The briefing between Instructional Designer and SME, with the Video Director and QA Specialist present.","note":"The newest stage in the lifecycle — all 66 of its tickets were created in the last year.","workflow":"CDLC: Course Brief","statuses":["Assigned","Done","To Do","In Progress"],"usage":{"ever":66,"recent":66},"transitions":[{"kind":"start","to":"To Do"},{"kind":"any","to":"To Do","label":"To Do"},{"kind":"edge","from":["To Do"],"to":"Assigned","label":"Assign to ID"},{"kind":"edge","from":["Assigned"],"to":"In Progress","label":"Progress"},{"kind":"edge","from":["In Progress"],"to":"Done","label":"Completion"}],"subtasks":[]},{"id":"topic","name":"Topic 1 … N","type":"CDLC: Topic","blurb":"The body of the course. One Topic per teaching unit, each carrying the same four production subtasks. The number of topics varies by course — the reference epic CDLC-8592 has four.","note":"A Topic's status names the production stage it is sitting in — the workflow doubles as a pipeline.","workflow":"CDLC: Topic","statuses":["In Review","Done","On Hold","Ready for Graphics","Uploading to AWS","Spanish Translations","To Do","Suspended","Final Slides","Graphics Creation"],"usage":{"ever":561,"recent":288},"transitions":[{"kind":"start","to":"To Do"},{"kind":"any","to":"To Do","label":"To Do"},{"kind":"any","to":"Suspended","label":"Suspended"},{"kind":"any","to":"On Hold","label":"On Hold"},{"kind":"edge","from":["Final Slides"],"to":"Ready for Graphics","label":"Final Slides ready"},{"kind":"edge","from":["Spanish Translations"],"to":"Uploading to AWS","label":"Upload to AWS"},{"kind":"edge","from":["In Review"],"to":"Uploading to AWS","label":"For Certification Course"},{"kind":"edge","from":["Uploading to AWS"],"to":"Done","label":"Done"},{"kind":"edge","from":["To Do"],"to":"Final Slides","label":"In Progress"},{"kind":"edge","from":["Ready for Graphics"],"to":"Graphics Creation","label":"Graphics in progress"},{"kind":"edge","from":["Graphics Creation"],"to":"In Review","label":"Review by Quality and SME"},{"kind":"edge","from":["In Review"],"to":"Spanish Translations","label":"Ready for Translations"}],"subtasks":[{"name":"Final Slides","type":"CDLC: Topic Final Slides","statuses":["Internal SME review","Done","Complete checklist","On Hold","To Do","Suspended","In Progress","Quality review"],"workflow":"CDLC: Topic Final Slides"},{"name":"Graphics","type":"CDLC: Topic Graphics","statuses":["In Review","Send to Instructional Designer","Done","Complete checklist","To Do","Suspended","In Progress"],"workflow":"CDLC: Topic Graphics"},{"name":"PPT generation","type":"CDLC: Topic PPT Generation","statuses":["In Review","Done","To Do","Suspended","In Progress"],"workflow":"PPT generation"},{"name":"Base Articulate file","type":"CDLC: Base Articulate file creation","statuses":["In Review","Assigned","Done","Rejected","On Hold","To Do","Checklist","In Progress"],"workflow":"CDLC: Base Articulate file creation"}]},{"id":"digitization","name":"Digitization Process","type":"Digitization - Data Sheet Creation","blurb":"Closes the course. One ticket holding every step that turns finished content into a live product on SkillCat.","note":"The container ticket is typed Digitization - Data Sheet Creation even though Data Sheet Creation is only one of the twelve steps inside it. The type name understates what the ticket holds.","workflow":"Digitization - Data Sheet Creation","statuses":["Assigned","In Review","Done","To Do","Suspended","In Progress"],"usage":{"ever":55,"recent":55},"transitions":[{"kind":"start","to":"To Do"},{"kind":"any","to":"Suspended","label":"Suspended"},{"kind":"edge","from":["To Do"],"to":"Assigned","label":"Progress"},{"kind":"edge","from":["In Progress"],"to":"In Review","label":"Completion"},{"kind":"edge","from":["Assigned"],"to":"In Progress","label":"Progress"},{"kind":"edge","from":["In Review"],"to":"Done","label":"Completion"}],"subtasks":[{"name":"Request Badge and Course Image","type":"Digitization - Badge Creation (Sub-task)","statuses":["In Review","Done","To Do","Suspended","In Progress"],"workflow":"Digitization - Badge Creation"},{"name":"Upload to AWS + Planning","type":"Digitization - Upload to AWS + Planning (sub-task)","statuses":["Assigned","Upload to AWS","In Review","Update Keywords","Update Question Bank on Planning","Done","Create Course on Planning","To Do","Suspended"],"workflow":"Digitization - Upload to AWS + Planning"},{"name":"Review","type":"Digitization - Review (sub-task)","statuses":["SME Review","Done","To Do","Suspended","Quality review"],"workflow":"Digitization - Review"},{"name":"Restore on SkillCat","type":"Digitization - Restore on SkillCat (sub-task)","statuses":["Create Deep Links","Done","QA Review","Restore on SkillCat","Update Learning Plan","To Do","Suspended","update spreadsheet"],"workflow":"Digitization - Restore on SkillCat"},{"name":"Create Data Sheet","type":"Digitization - Data Sheet Creation (sub-task)","statuses":["Assigned","In Review","Done","To Do","Suspended","In Progress"],"workflow":"Digitization - Data Sheet Creation"},{"name":"Course Metadata","type":"CDLC: Content Upkeep (sub-task)","statuses":["Assigned","In Review","Reproduced","Discard","Done","On Hold","To Do","In Progress"],"workflow":"SGP: Task"},{"name":"Create Course Introduction","type":"CDLC: Content Upkeep (sub-task)","statuses":["Assigned","In Review","Reproduced","Discard","Done","On Hold","To Do","In Progress"],"workflow":"SGP: Task"},{"name":"QA – Generate Performance Report","type":"CDLC: Generate Performance Report (sub-task)","statuses":["Done","To Do","Suspended","In Progress"],"workflow":"Generate Performance Report"},{"name":"Update Course Catalog","type":"Digitization - Course Catalog Updating (sub-task)","statuses":["Assigned","In Review","Done","To Do","Suspended","In Progress"],"workflow":"Digitization - Course Catalog Updating"},{"name":"Run Image Archiving","type":"CDLC: Run Image Archiving Automation (sub-task)","statuses":["In Review","Done","To Do","Suspended","In Progress"],"workflow":"CDLC: Run Image Archiving Automation"},{"name":"Move Source Files","type":"CDLC: Move Source Files (sub-task)","statuses":["In Review","Done","To Do","In Progress"],"workflow":"CDLC: Move Source Files"},{"name":"Restrict Course Folder","type":"CDLC: Restrict Course Folder (sub-task)","statuses":["Done","To Do","Suspended","In Progress"],"workflow":"CDLC: Restrict Course Folder"}]}]}/*__END__*/;
 
 const esc = s => String(s).replace(/[&<>"]/g, c => ({ "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;" }[c]));
-const hl = (t, q) => {
-  if (!q) return esc(t);
-  const i = t.toLowerCase().indexOf(q);
-  if (i < 0) return esc(t);
-  return esc(t.slice(0,i)) + "<mark>" + esc(t.slice(i,i+q.length)) + "</mark>" + esc(t.slice(i+q.length));
-};
-
-// ---- derived indexes -------------------------------------------------
-const WORKTYPES = [];                       // flat [name, family, level, statuses, refs, workflow]
-for (const [family, rows] of DATA)
-  for (const [n, lvl, sts, refs, wf] of rows) WORKTYPES.push({ n, family, lvl, sts, refs: refs||[], wf });
-
-const BY_WF = {};                           // workflow -> work types using it
-for (const w of WORKTYPES) (BY_WF[w.wf] = BY_WF[w.wf] || []).push(w);
-
-const LOG_BY_KEY = Object.fromEntries(LOG.map(e => [e[0], e]));
-
-function usageOf(name) {
-  const u = USAGE[name.trim()] || [0,0];
-  const state = u[0] === 0 ? "never" : (u[1] === 0 ? "dormant" : "active");
-  return { state, ever: u[0], y1: u[1],
-    label: state === "never" ? "Never used" : state === "dormant" ? "Dormant" : "Active" };
-}
-
-// a workflow is active if any work type using it is active
-function wfUsage(wf) {
-  const list = BY_WF[wf] || [];
-  const ever = list.reduce((a,w) => a + usageOf(w.n).ever, 0);
-  const y1   = list.reduce((a,w) => a + usageOf(w.n).y1, 0);
-  return { ever, y1, state: ever === 0 ? "never" : (y1 === 0 ? "dormant" : "active") };
-}
-
-// change tickets touching a workflow = union of refs of its work types
-function changesFor(wf) {
-  const s = new Set();
-  for (const w of BY_WF[wf] || []) for (const r of w.refs) if (LOG_BY_KEY[r]) s.add(r);
-  return [...s];
-}
-
-const BRANCHES = [
-  ["workflows", "Workflows",     () => Object.keys(TRANSITIONS).length,
-   "Every workflow in the project, with its statuses and the arrows between them."],
-  ["worktypes", "Work types",    () => WORKTYPES.length,
-   "Every work item type, which workflow drives it, and how much it is used."],
-  ["process",   "The process",   () => PROCESS.length,
-   "The seven stages of the content lifecycle, in order, and who owns each."],
-  ["fields",    "Fields",        () => FIELDS.reduce((a,g) => a + g[2].length, 0),
-   "Every field on a CDLC work item and the role responsible for filling it."],
-  ["changes",   "Change history",() => LOG.length,
-   "What has been changed in this project's Jira setup, newest first."]
-];
-
-let path = [];
-let query = "";
-
 const view = document.getElementById("view");
-const crumbs = document.getElementById("crumbs");
+const search = document.getElementById("q");
+const avatar = (p,cls) => `<div class="pavatar ${cls||""} tone-${p.tone}" aria-hidden="true">${esc(p.key)}</div>`;
 
-function go(p) { path = p; query = ""; render(); window.scrollTo({ top: 0, behavior: "smooth" }); }
+/* status colouring follows Jira's three categories */
+const DONE = ["Done"], TODO = ["To Do"];
+const statusCls = s => DONE.includes(s) ? "done" : TODO.includes(s) ? "todo" : "prog";
+const statusPill = s => `<span class="status ${statusCls(s)}">${esc(s)}</span>`;
 
-// ---- breadcrumb ------------------------------------------------------
-function renderCrumbs() {
-  const b = BRANCHES.find(x => x[0] === path[0]);
-  const parts = [["CDLC", []]];
-  if (b) parts.push([b[1], [b[0]]]);
-  if (path.length > 1) parts.push([path[1], null]);
-
-  crumbs.innerHTML = parts.map(([label, target], i) => {
-    const last = i === parts.length - 1;
-    const sep = i ? `<span class="sep">/</span>` : "";
-    return sep + (last || !target
-      ? `<span class="here">${esc(label)}</span>`
-      : `<button data-go='${JSON.stringify(target)}'>${esc(label)}</button>`);
-  }).join("");
-
-  for (const btn of crumbs.querySelectorAll("button[data-go]"))
-    btn.addEventListener("click", () => go(JSON.parse(btn.dataset.go)));
+/* ---------- routing ---------- */
+function route() {
+  const raw = decodeURIComponent(location.hash.replace(/^#\/?/, ""));
+  const [key, stage] = raw.split("/").filter(Boolean);
+  const k = (key||"").toUpperCase();
+  return { key: PROJECTS.some(p=>p.key===k) ? k : null, stage: stage||null };
 }
+const go = path => { location.hash = path ? "/"+path : "/"; };
 
-// ---- shared pieces ---------------------------------------------------
-const chip = (n, cls) => `<span class="chip ${cls || (CAT[n] || "ind")}">${esc(n)}</span>`;
-
-function itemList(rows, onPick) {
-  // rows: [{ key, label, meta }]
-  const q = query.toLowerCase();
-  const hit = rows.filter(r => !q || (r.label + " " + (r.search || "")).toLowerCase().includes(q));
-  let html = `<input class="filter" id="filter" type="search" placeholder="Filter…" value="${esc(query)}" aria-label="Filter">`;
-  html += `<p class="count-line">${hit.length} of ${rows.length}</p>`;
-  if (!hit.length) return html + `<p class="empty">Nothing matches that.</p>`;
-
-  html += `<div class="items">`;
-  let group = null;
-  for (const r of hit) {
-    if (r.group && r.group !== group) { group = r.group; html += `<div class="group-h">${esc(group)}</div>`; }
-    html += `<button class="item" data-key="${esc(r.key)}">` +
-            `<span class="lbl">${hl(r.label, q)}</span>` +
-            `<span class="meta">${r.meta || ""}</span></button>`;
-  }
-  return html + `</div>`;
-}
-
-function wireList(onPick) {
-  const f = document.getElementById("filter");
-  if (f) {
-    f.addEventListener("input", () => {
-      query = f.value;
-      const at = f.selectionStart;
-      render(true);
-      const nf = document.getElementById("filter");
-      if (nf) { nf.focus(); nf.setSelectionRange(at, at); }
-    });
-  }
-  for (const b of view.querySelectorAll(".item[data-key]"))
-    b.addEventListener("click", () => onPick(b.dataset.key));
-}
-
-function jiraLink(k) {
-  return `<a href="https://skillcatapp.atlassian.net/browse/${k}" target="_blank" rel="noopener">${k}</a>`;
-}
-
-// ---- views -----------------------------------------------------------
-function viewHome() {
+/* ---------- projects ---------- */
+function viewProjects(filter="") {
+  const q = filter.trim().toLowerCase();
+  const shown = q ? PROJECTS.filter(p=>(p.key+" "+p.name).toLowerCase().includes(q)) : PROJECTS;
   view.innerHTML =
-    `<p class="eyebrow">Jira project</p>
-     <h1>Content Development Life Cycle</h1>
-     <p class="lede">How this project is put together in Jira, and how it got that way.
-       Pick a branch to open it. Nothing else is shown until you do.</p>
-     <div class="branches">` +
-    BRANCHES.map(([key, label, n, desc]) =>
-      `<button class="branch" data-branch="${key}">
-         <span class="n">${n()}</span>
-         <span class="t"><b>${esc(label)}</b><span>${esc(desc)}</span></span>
-         <span class="go" aria-hidden="true">&rsaquo;</span>
-       </button>`).join("") +
-    `</div>
-     <p class="note">Workflows, statuses, transitions and fields are read from Jira
-       configuration. Usage counts are a snapshot taken on 29 August 2026 against 7,960 issues.
-       The change history is reconstructed from the tickets that requested each change, because
-       Jira keeps no audit trail of workflow configuration itself.</p>`;
-
-  for (const b of view.querySelectorAll(".branch[data-branch]"))
-    b.addEventListener("click", () => go([b.dataset.branch]));
+    `<div class="page-head"><h1>Projects</h1>
+       <p class="lede">The four Jira spaces this record covers. Open one to go further.</p></div>` +
+    (shown.length
+      ? `<div class="grid">` + shown.map(p =>
+          `<button class="card" data-key="${esc(p.key)}">
+             <div class="card-top">${avatar(p)}
+               <div><div class="card-name">${esc(p.name)}</div>
+                    <div class="card-key">${esc(p.key)}</div></div></div>
+             <div class="card-meta"><span class="lozenge">${esc(p.type)}</span>
+               <span class="count">${p.issues.toLocaleString()} issues</span></div>
+           </button>`).join("") + `</div>`
+      : `<p class="no-results">No project matches &ldquo;${esc(filter)}&rdquo;.</p>`);
+  view.querySelectorAll(".card").forEach(el =>
+    el.addEventListener("click", () => go(el.dataset.key)));
 }
 
-function listWorkflows() {
-  const rows = Object.keys(TRANSITIONS).sort().map(w => {
-    const u = wfUsage(w), n = (BY_WF[w] || []).length;
-    return { key: w, label: w, search: (BY_WF[w] || []).map(x => x.n).join(" "),
-      meta: `${n} work type${n === 1 ? "" : "s"} · ${TRANSITIONS[w].filter(e => e.kind !== "start").length} transitions` +
-            (u.state === "active" ? "" : ` · <span class="chip b-${u.state}">${u.state}</span>`) };
+/* ---------- CDLC epic ---------- */
+function crumbs(parts) {
+  return `<nav class="crumbs" aria-label="Breadcrumb">` + parts.map((p,i) =>
+    (i ? `<span class="sep">/</span>` : "") +
+    (p.to !== undefined ? `<button data-to="${esc(p.to)}">${esc(p.label)}</button>`
+                        : `<span>${esc(p.label)}</span>`)).join("") + `</nav>`;
+}
+
+function wireCrumbs() {
+  view.querySelectorAll(".crumbs button").forEach(el =>
+    el.addEventListener("click", () => go(el.dataset.to)));
+}
+
+function viewEpic(key) {
+  const p = PROJECTS.find(x=>x.key===key);
+  if (key !== "CDLC" || !CDLC) return viewSpace(key);
+
+  /* the epic's happy path, drawn from its transition graph */
+  const path = ["To Do","In Progress","Digitization","Done"];
+
+  /* Topic repeats, so it is drawn three times: two real, one continuation */
+  const boxes = [];
+  CDLC.stages.forEach((s,i) => {
+    if (s.id === "topic") {
+      boxes.push({...s, label:"Topic 1"}, {...s, label:"Topic 2"}, {...s, label:"Topic N", ghost:true});
+    } else boxes.push({...s, label:s.name});
   });
-  view.innerHTML = `<h1>Workflows</h1><p class="lede">47 workflows drive the 69 work types.
-    Two work types naming the same workflow really are the same workflow.</p>` + itemList(rows);
-  wireList(k => go(["workflows", k]));
-}
-
-function detailWorkflow(name) {
-  const edges = TRANSITIONS[name];
-  if (!edges) return go(["workflows"]);
-  const users = BY_WF[name] || [];
-  const u = wfUsage(name);
-  const start = edges.filter(e => e.kind === "start");
-  const norm = edges.filter(e => e.kind === "edge");
-  const any = edges.filter(e => e.kind === "any");
-  const sts = [...new Set(users.flatMap(w => w.sts))];
-  const ch = changesFor(name);
 
   view.innerHTML =
-    `<p class="eyebrow">Workflow</p><h1>${esc(name)}</h1>
+    crumbs([{label:"Projects", to:""},{label:"CDLC"}]) +
+    `<div class="page-head">
+       <p class="eyebrow">${esc(p.name)}</p>
+       <h1>CDLC Epic</h1>
+       <p class="lede">${esc(CDLC.epic.blurb)}</p>
+     </div>
+
+     <div class="flowline">` +
+       path.map((s,i)=>(i?`<span class="arrow">&rarr;</span>`:"")+statusPill(s)).join("") +
+     `</div>
+     <p class="side">The Epic's own workflow &mdash; <strong>${esc(CDLC.epic.workflow)}</strong>,
+        ${CDLC.epic.statuses.length} statuses. <em>On Hold</em> and <em>Suspended</em> are reachable
+        from any status, and both return to <em>To&nbsp;Do</em>.
+        ${CDLC.epic.usage.ever.toLocaleString()} epics exist.</p>
+
+     <h2>Children of the Epic</h2>
+     <p class="lede" style="margin-bottom:var(--space-200)">Every ticket that hangs directly beneath
+        a course Epic, in the order they are worked. Open any one to see what it is.</p>
+     <div class="stages">` +
+       boxes.map((b,i) =>
+         (i ? `<span class="seq-arrow">&rarr;</span>` : "") +
+         `<button class="stage${b.ghost?" ghost":""}" data-stage="${esc(b.id)}">
+            <span class="stage-n">${b.ghost ? "&hellip;" : "Step "+(boxes.slice(0,i+1).filter(x=>!x.ghost).length)}</span>
+            <span class="stage-name">${esc(b.label)}</span>
+            <span class="stage-type">${esc(b.type)}</span>
+            <span class="stage-meta">${b.statuses.length} statuses${
+              b.subtasks.length ? " &middot; "+b.subtasks.length+" subtasks" : ""}</span>
+          </button>`).join("") +
+     `</div>`;
+
+  wireCrumbs();
+  view.querySelectorAll(".stage").forEach(el =>
+    el.addEventListener("click", () => go("CDLC/"+el.dataset.stage)));
+}
+
+/* ---------- a single stage ---------- */
+function viewStage(key, id) {
+  const s = CDLC && CDLC.stages.find(x=>x.id===id);
+  if (!s) return viewEpic(key);
+
+  view.innerHTML =
+    crumbs([{label:"Projects", to:""},{label:"CDLC", to:"CDLC"},{label:s.name}]) +
+    `<div class="page-head">
+       <p class="eyebrow">Child of CDLC Epic</p>
+       <h1>${esc(s.name)}</h1>
+       <p class="lede">${esc(s.blurb)}</p>
+     </div>
+
      <dl class="facts">
-       <dt>Statuses</dt><dd><div class="chips">${sts.map(s => chip(s)).join("")}</div></dd>
-       <dt>Used by</dt><dd>${users.length} work type${users.length === 1 ? "" : "s"}</dd>
-       <dt>Tickets</dt><dd>${u.ever.toLocaleString()} ever · ${u.y1.toLocaleString()} in the last 12 months
-         <span class="chip b-${u.state}">${u.state}</span></dd>
+       <div class="fact"><dt>Work type</dt><dd>${esc(s.type)}</dd></div>
+       <div class="fact"><dt>Workflow</dt><dd>${esc(s.workflow)}</dd></div>
+       <div class="fact"><dt>Tickets ever</dt><dd>${s.usage ? s.usage.ever.toLocaleString() : "&mdash;"}</dd></div>
+       <div class="fact"><dt>Last 12 months</dt><dd>${s.usage ? s.usage.recent.toLocaleString() : "&mdash;"}</dd></div>
      </dl>
-     <h2>Transitions</h2>
-     <ul class="flow">` +
-    start.map(e => `<li><span class="from-any">Starts at</span>${chip(e.to)}</li>`).join("") +
-    norm.map(e => `<li>${e.from.map(f => chip(f)).join("")}<span class="arrow">&rarr;</span>` +
-                  `${chip(e.to)}<span class="lab">${esc(e.label)}</span></li>`).join("") +
-    any.map(e => `<li><span class="from-any">From any</span><span class="arrow">&rarr;</span>` +
-                 `${chip(e.to)}<span class="lab">${esc(e.label)}</span></li>`).join("") +
-    `</ul>
-     <h2>Work types using it</h2><div class="chips">` +
-    users.map(w => `<button class="chip plain" data-wt="${esc(w.n)}">${esc(w.n)}</button>`).join("") +
-    `</div>` +
-    (ch.length ? `<h2>Changes that touched it</h2><div class="chips">` +
-      ch.map(k => `<button class="chip plain" data-ch="${k}">${k} · ${esc(LOG_BY_KEY[k][4])}</button>`).join("") +
-      `</div>` : "");
 
-  for (const b of view.querySelectorAll("[data-wt]")) b.addEventListener("click", () => go(["worktypes", b.dataset.wt]));
-  for (const b of view.querySelectorAll("[data-ch]")) b.addEventListener("click", () => go(["changes", b.dataset.ch]));
-}
+     <h2>Statuses in its workflow</h2>
+     <div class="chips">${s.statuses.map(statusPill).join("")}</div>` +
 
-function listWorktypes() {
-  const rows = WORKTYPES.map(w => {
-    const u = usageOf(w.n);
-    return { key: w.n, label: w.n, group: w.family, search: w.sts.join(" ") + " " + w.wf,
-      meta: `${w.sts.length} statuses · ${u.ever} tickets` +
-            (u.state === "active" ? "" : ` · <span class="chip b-${u.state}">${u.state}</span>`) };
-  });
-  view.innerHTML = `<h1>Work types</h1><p class="lede">Every work item type in the project,
-    grouped the way the team talks about them.</p>` + itemList(rows);
-  wireList(k => go(["worktypes", k]));
-}
-
-function detailWorktype(name) {
-  const w = WORKTYPES.find(x => x.n === name);
-  if (!w) return go(["worktypes"]);
-  const u = usageOf(w.n);
-  const stage = PROCESS.find(p => p[5].includes(w.n));
-  const refs = w.refs.filter(r => LOG_BY_KEY[r]);
-
-  view.innerHTML =
-    `<p class="eyebrow">Work type</p><h1>${esc(w.n)}</h1>
-     <dl class="facts">
-       <dt>Family</dt><dd>${esc(w.family)}</dd>
-       <dt>Level</dt><dd>${esc(w.lvl)}</dd>
-       <dt>Workflow</dt><dd><button class="chip plain" data-wf="${esc(w.wf)}">${esc(w.wf)}</button></dd>
-       <dt>Statuses</dt><dd><div class="chips">${w.sts.map(s => chip(s)).join("")}</div></dd>
-       <dt>Usage</dt><dd>${u.ever.toLocaleString()} tickets ever · ${u.y1.toLocaleString()} in the last 12 months
-         <span class="chip b-${u.state}">${u.label}</span></dd>` +
-    (stage ? `<dt>Stage</dt><dd><button class="chip plain" data-st="${stage[0]}">${String(stage[0]).padStart(2,"0")} · ${esc(stage[1])}</button></dd>` : "") +
-    `</dl>` +
-    (refs.length ? `<h2>Changes that touched it</h2><div class="chips">` +
-      refs.map(k => `<button class="chip plain" data-ch="${k}">${k} · ${esc(LOG_BY_KEY[k][4])}</button>`).join("") +
-      `</div>` : "");
-
-  for (const b of view.querySelectorAll("[data-wf]")) b.addEventListener("click", () => go(["workflows", b.dataset.wf]));
-  for (const b of view.querySelectorAll("[data-ch]")) b.addEventListener("click", () => go(["changes", b.dataset.ch]));
-  for (const b of view.querySelectorAll("[data-st]")) b.addEventListener("click", () => go(["process", b.dataset.st]));
-}
-
-function listProcess() {
-  const rows = PROCESS.map(p => ({ key: String(p[0]), label: `${String(p[0]).padStart(2,"0")} · ${p[1]}`,
-    search: p[2] + " " + p[3], meta: esc(p[2]) }));
-  view.innerHTML = `<h1>The process</h1><p class="lede">Seven stages, in order, from the SOP.
-    Each names its owner, the work types involved, and what it sets off next.</p>` + itemList(rows);
-  wireList(k => go(["process", k]));
-}
-
-function detailProcess(n) {
-  const p = PROCESS.find(x => String(x[0]) === String(n));
-  if (!p) return go(["process"]);
-  const [num, title, owner, summary, who, types, triggers, mism] = p;
-
-  view.innerHTML =
-    `<p class="eyebrow">Stage ${String(num).padStart(2,"0")}</p><h1>${esc(title)}</h1>
-     <p class="prose">${esc(summary)}</p>
-     <dl class="facts">
-       <dt>Owner</dt><dd>${esc(owner)}</dd>
-       <dt>Who</dt><dd><div class="chips">${who.map(x => `<span class="chip plain">${esc(x)}</span>`).join("")}</div></dd>
-       <dt>Work types</dt><dd><div class="chips">${types.map(t =>
-         `<button class="chip plain" data-wt="${esc(t)}">${esc(t)}</button>`).join("")}</div></dd>
-     </dl>
-     <h2>Triggers next</h2>
-     <ul class="flow">` +
-    triggers.map(([f, t]) => `<li><code>${esc(f)}</code><span class="arrow">&rarr;</span><span>${esc(t)}</span></li>`).join("") +
-    `</ul>` +
-    (mism.length ? `<h2>Where the SOP disagrees with Jira</h2><ul class="linklist">` +
-      mism.map(([d, j]) => `<li><span>SOP says <code>${esc(d)}</code> — Jira has <strong>${esc(j)}</strong></span></li>`).join("") +
-      `</ul>` : "");
-
-  for (const b of view.querySelectorAll("[data-wt]")) b.addEventListener("click", () => go(["worktypes", b.dataset.wt]));
-}
-
-function listFields() {
-  const rows = [];
-  for (const [owner, note, fs] of FIELDS)
-    for (const f of fs) rows.push({ key: f[0], label: f[0], group: owner,
-      search: f[1] + " " + f[2] + " " + f[3], meta: esc(f[2]) });
-  view.innerHTML = `<h1>Fields</h1><p class="lede">Every field on a CDLC work item, grouped by
-    the role responsible for filling it. Eighteen have no documented owner.</p>` + itemList(rows);
-  wireList(k => go(["fields", k]));
-}
-
-function detailField(name) {
-  let owner = null, note = null, f = null;
-  for (const [o, nt, fs] of FIELDS) { const hit = fs.find(x => x[0] === name); if (hit) { owner = o; note = nt; f = hit; } }
-  if (!f) return go(["fields"]);
-  const [n, type, scope, when, tk, kind] = f;
-  const KIND = { val: "Enforced by a validator", auto: "Set by automation", note: "See the change" };
-
-  view.innerHTML =
-    `<p class="eyebrow">Field</p><h1>${esc(n)}</h1>
-     <dl class="facts">
-       <dt>Filled by</dt><dd><strong>${esc(owner)}</strong></dd>
-       <dt>Type</dt><dd><code>${esc(type)}</code></dd>
-       <dt>Scope</dt><dd>${esc(scope)}</dd>
-       <dt>When</dt><dd>${esc(when)}</dd>` +
-    (tk ? `<dt>Rule</dt><dd>${esc(KIND[kind] || KIND.note)} — <button class="chip plain" data-ch="${tk}">${tk}</button></dd>` : "") +
-    `</dl><p class="prose">${esc(note)}</p>`;
-
-  for (const b of view.querySelectorAll("[data-ch]")) b.addEventListener("click", () => go(["changes", b.dataset.ch]));
-}
-
-const MONTHS = ["January","February","March","April","May","June","July","August","September","October","November","December"];
-const monthOf = d => { const [y,m] = d.split("-"); return MONTHS[+m-1] + " " + y; };
-
-function listChanges() {
-  const rows = LOG.map(e => ({ key: e[0], label: e[4], group: monthOf(e[1]),
-    search: e[0] + " " + e[5] + " " + e[6].join(" "),
-    meta: `${e[0]} · <span class="chip ${e[2]}">${esc(e[3])}</span>` }));
-  view.innerHTML = `<h1>Change history</h1><p class="lede">Forty changes made to this project's
-    Jira setup between November 2025 and August 2026, newest first.</p>` + itemList(rows);
-  wireList(k => go(["changes", k]));
-}
-
-function detailChange(key) {
-  const e = LOG_BY_KEY[key];
-  if (!e) return go(["changes"]);
-  const [k, date, state, label, title, what, tags, before, after, subs] = e;
-  const affected = WORKTYPES.filter(w => w.refs.includes(k));
-
-  view.innerHTML =
-    `<p class="eyebrow">${esc(monthOf(date))}</p><h1>${esc(title)}</h1>
-     <dl class="facts">
-       <dt>Ticket</dt><dd>${jiraLink(k)}</dd>
-       <dt>State</dt><dd><span class="chip ${state}">${esc(label)}</span></dd>
-       <dt>Areas</dt><dd><div class="chips">${tags.map(t => `<span class="chip plain">${esc(t)}</span>`).join("")}</div></dd>
-     </dl>
-     <p class="prose">${what}</p>` +
-    (before || after
-      ? `<dl class="facts">` +
-        (before ? `<dt>Was</dt><dd>${esc(before)}</dd>` : "") +
-        (after  ? `<dt>Became</dt><dd><strong>${esc(after)}</strong></dd>` : "") + `</dl>`
+    (s.subtasks.length
+      ? `<h2>Subtasks beneath it</h2>
+         <div class="rows">` + s.subtasks.map((t,i) =>
+           `<div class="row"><span class="row-n">${i+1}</span>
+              <span class="row-name">${esc(t.name)}</span>
+              <span class="row-type">${esc(t.type)}</span></div>`).join("") + `</div>`
       : "") +
-    (affected.length ? `<h2>Work types affected</h2><div class="chips">` +
-      affected.map(w => `<button class="chip plain" data-wt="${esc(w.n)}">${esc(w.n)}</button>`).join("") + `</div>` : "") +
-    (subs.length ? `<h2>Sub-tickets</h2><ul class="linklist">` +
-      subs.map(([sk, ss, st]) => `<li>${jiraLink(sk)}${ss === DEAD ? `<s>${esc(st)}</s>` : `<span>${esc(st)}</span>`}</li>`).join("") +
-      `</ul>` : "");
 
-  for (const b of view.querySelectorAll("[data-wt]")) b.addEventListener("click", () => go(["worktypes", b.dataset.wt]));
+    (s.note ? `<div class="note"><strong>Worth knowing</strong>${esc(s.note)}</div>` : "");
+
+  wireCrumbs();
 }
 
-// ---- router ----------------------------------------------------------
-function render(keepQuery) {
-  if (!keepQuery && false) query = "";
-  renderCrumbs();
-  const [branch, item] = path;
-  if (!branch) return viewHome();
-  if (branch === "workflows") return item ? detailWorkflow(item) : listWorkflows();
-  if (branch === "worktypes") return item ? detailWorktype(item) : listWorktypes();
-  if (branch === "process")   return item ? detailProcess(item)  : listProcess();
-  if (branch === "fields")    return item ? detailField(item)    : listFields();
-  if (branch === "changes")   return item ? detailChange(item)   : listChanges();
-  return viewHome();
+/* ---------- other spaces ---------- */
+function viewSpace(key) {
+  const p = PROJECTS.find(x=>x.key===key);
+  view.innerHTML =
+    crumbs([{label:"Projects", to:""},{label:p.key}]) +
+    `<div class="space-head">${avatar(p,"lg")}
+       <div><h1>${esc(p.name)}</h1>
+         <p class="lede">${esc(p.key)} &middot; ${esc(p.style)} ${p.type.toLowerCase()} project
+            &middot; ${p.issues.toLocaleString()} issues</p></div></div>
+     <div class="empty"><h2>Nothing in this space yet</h2>
+       <p>This is where ${esc(p.key)}&rsquo;s contents will go. Nothing has been added for it so far.</p></div>`;
+  wireCrumbs();
 }
 
+/* ---------- render ---------- */
+function render() {
+  const { key, stage } = route();
+  search.parentElement.style.visibility = key ? "hidden" : "";
+  if (key === "CDLC" && stage) viewStage(key, stage);
+  else if (key === "CDLC")     viewEpic(key);
+  else if (key)                viewSpace(key);
+  else                         viewProjects(search.value);
+  window.scrollTo({ top:0 });
+}
+window.addEventListener("hashchange", render);
+search.addEventListener("input", () => { if (!route().key) viewProjects(search.value); });
+document.getElementById("home-link").addEventListener("click", () => go(""));
 render();
 </script>
 </body>

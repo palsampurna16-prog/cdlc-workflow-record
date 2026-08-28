@@ -4,3 +4,4 @@ node_modules/
 *.local
 .impeccable/
 redaction-map.json
+.claude/launch.json
