@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 // Rewrites data/worktypes.json statuses+workflow and data/transitions.json from
 // data/jira-workflows-export.json, which is Jira's own workflow configuration.
-// Usage counts, family and change references are preserved — they are not in the export.
+// Usage counts, family and change references are preserved, they are not in the export.
 import { readFile, writeFile } from "node:fs/promises";
 
 const read = async f => JSON.parse(await readFile(new URL(`../data/${f}`, import.meta.url), "utf8"));
@@ -20,7 +20,7 @@ const transitions = Object.fromEntries(Object.entries(WF).map(([w, ts]) => [w,
     return { kind, from: (from ?? []).map(nm), to: nm(to), label };
   })]));
 
-const statusesOf = w => [...new Set((WF[w] ?? []).flatMap(([, , f, t]) =>
+const statusesOf = w => [...new Set((WF[w] ?? []).flatMap(([, f, t]) =>
   [...(f ?? []).map(nm), nm(t)]))];
 
 let wfFixed = 0, stFixed = 0, unmapped = [];
@@ -35,7 +35,7 @@ const worktypes = W.map(t => {
 
 await writeFile(new URL("../data/transitions.json", import.meta.url), JSON.stringify(transitions, null, 2) + "\n");
 await writeFile(new URL("../data/worktypes.json", import.meta.url), JSON.stringify(worktypes, null, 2) + "\n");
-console.log(`synced from export — ${Object.keys(transitions).length} workflows, ${worktypes.length} work types`);
+console.log(`synced from export, ${Object.keys(transitions).length} workflows, ${worktypes.length} work types`);
 console.log(`  workflow mappings corrected: ${wfFixed}`);
 console.log(`  status sets corrected:       ${stFixed}`);
 if (unmapped.length) console.log(`  not in export (left alone):  ${unmapped.join(", ")}`);

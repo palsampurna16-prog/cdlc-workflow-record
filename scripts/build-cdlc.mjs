@@ -1,5 +1,5 @@
 #!/usr/bin/env node
-// Builds data/cdlc-epic.json — the canonical shape of a CDLC course Epic.
+// Builds data/cdlc-epic.json, the canonical shape of a CDLC course Epic.
 //
 // Structure and example keys come from two live epics: CDLC-8592 (in flight,
 // four topics at four different stages) and CDLC-8999 (complete, so its
@@ -30,20 +30,20 @@ const sub = (name, type, example, blurb) => ({ id: slug(name), name, example, bl
 const STAGES = [
   { id:"business-specs", name:"Business Specs & Outline", type:"Course: Specs", example:"CDLC-8593",
     blurb:"Opens the course. Produces the Scope Doc and Research Doc that everything downstream is built against.",
-    note:"Jira describes this type as “Use this to create: Scope Doc & Research Doc”. The type is Course: Specs — "+
+    note:"Jira describes this type as “Use this to create: Scope Doc & Research Doc”. The type is Course: Specs, "+
          "not the similarly-named CDLC: Course outline work type, which is not used here. It has no subtasks: "+
          "the whole stage is one ticket.",
     subtasks: [] },
 
   { id:"course-brief", name:"Course Brief", type:"CDLC: Course Brief", example:"CDLC-8594",
     blurb:"The briefing between Instructional Designer and SME, with the Video Director and QA Specialist present.",
-    note:"The newest stage in the lifecycle — all 66 of its tickets were created within the last year. "+
+    note:"The newest stage in the lifecycle: all 66 of its tickets were created within the last year. "+
          "Like Business Specs, it carries no subtasks.",
     subtasks: [] },
 
   { id:"topic", name:"Topic 1 … N", type:"CDLC: Topic", example:"CDLC-9313",
     blurb:"The body of the course. One Topic per teaching unit, each carrying the same four production subtasks. "+
-          "The number of topics varies by course — the reference epic CDLC-8592 has four.",
+          "The number of topics varies by course. The reference epic CDLC-8592 has four.",
     note:"Taken from the Jira automation rules, not from a sample. The chain is strictly sequential: "+
          "Final Slides → PPT generation → Base Articulate file → Graphics → Articulate Review, which then "+
          "creates Translations, Assessment, SME Review and External Review together. A Topic therefore carries "+
@@ -53,7 +53,7 @@ const STAGES = [
       sub("Final Slides","CDLC: Topic Final Slides","CDLC-9314",
           "Created with the Topic itself."),
       sub("Graphic Definition","Sub-task",null,
-          "Created with the Topic itself. Uses the generic Sub-task type — there is no work type for it."),
+          "Created with the Topic itself. Uses the generic Sub-task type, because no work type exists for it."),
       sub("PPT generation","CDLC: Topic PPT Generation","CDLC-9595",
           "Created when Final Slides is marked Done."),
       sub("Base Articulate file","CDLC: Base Articulate file creation","CDLC-9596",
@@ -94,7 +94,7 @@ const STAGES = [
           "Created with the Digitization Process ticket."),
       sub("Create Course Introduction","CDLC: Content Upkeep (sub-task)","CDLC-9308",
           "Created with the Digitization Process ticket."),
-      sub("QA – Generate Performance Report","CDLC: Generate Performance Report (sub-task)","CDLC-9405",
+      sub("QA - Generate Performance Report","CDLC: Generate Performance Report (sub-task)","CDLC-9405",
           "Created when Review is marked Done."),
       sub("Update Course Catalog","Digitization - Course Catalog Updating (sub-task)","CDLC-9516",
           "Created when Restore on SkillCat is marked Done."),
@@ -158,5 +158,5 @@ const doc = {
 await writeFile(new URL("../data/cdlc-epic.json", import.meta.url), JSON.stringify(doc, null, 2) + "\n");
 
 const subs = doc.stages.reduce((n, s) => n + s.subtasks.length, 0);
-console.log(`built cdlc-epic.json — ${doc.stages.length} stages, ${subs} subtasks, ` +
+console.log(`built cdlc-epic.json, ${doc.stages.length} stages, ${subs} subtasks, ` +
             `${new Set(doc.stages.flatMap(s => s.subtasks.map(t => t.type))).size} distinct subtask types`);

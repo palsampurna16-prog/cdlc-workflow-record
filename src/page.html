@@ -338,7 +338,7 @@ const PROJECTS = [
   { key:"QFT",  name:"Quiz Feedback Tracker",          type:"Software", style:"Company-managed", issues:3721,  tone:"orange" },
 ];
 
-/* Canonical CDLC Epic shape. Generated from data/cdlc-epic.json — see scripts/embed-data.mjs. */
+/* Canonical CDLC Epic shape. Generated from data/cdlc-epic.json, see scripts/embed-data.mjs. */
 const CDLC = /*__CDLC_EPIC__*/null/*__END__*/;
 
 const esc = s => String(s).replace(/[&<>"]/g, c => ({ "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;" }[c]));
@@ -368,7 +368,7 @@ const jiraLink = k =>
 /* Lays a workflow out as a single left-to-right line.
    The line is the longest run of real transitions from the initial status, so it is
    the main path through the workflow rather than a hand-written sequence. Everything
-   off that line — dead ends, and statuses reachable from anywhere — is set apart, so
+   off that line, dead ends, and statuses reachable from anywhere, is set apart, so
    the main line stays readable. Colour follows position: start grey, middle blue,
    final green. */
 function workflowGraph(tr, example) {
@@ -381,7 +381,7 @@ function workflowGraph(tr, example) {
   edges.forEach(e => (e.from || []).forEach(f => (next[f] = next[f] || []).push(e.to)));
 
   /* Longest run onward, never revisiting a status already on this path. Workflows
-     loop back constantly — Done to To Do, review to In Progress — and without this
+     loop back constantly, Done to To Do, review to In Progress, and without this
      the line follows a loop instead of finishing. */
   const best = (s, seen) => {
     let win = [];
@@ -414,7 +414,7 @@ function workflowGraph(tr, example) {
 
 /* Work type and workflow usually carry the same name, differing only by a
    "(sub-task)" suffix or capitalisation. Showing both every time is noise, so the
-   workflow appears only where it is genuinely a different thing — Course: Specs
+   workflow appears only where it is genuinely a different thing, Course: Specs
    running on CDLC: Task/Subtask, Course Metadata on SGP: Task, and so on. */
 const norm = s => String(s).toLowerCase()
   .replace(/\(sub-?task\)/g, "").replace(/^cdlc:\s*/, "").replace(/[^a-z0-9]+/g, " ").trim();
@@ -489,7 +489,7 @@ const OUTCLS = { "Shipped":"done", "Discarded":"todo", "To Do":"todo" };
 /* body is authored HTML limited to <code>; escape everything then restore that one tag */
 const richText = t => esc(t)
   .replace(/&lt;(\/?code)&gt;/g, "<$1>")      /* the one tag the source uses */
-  .replace(/&amp;(\w+|#\d+);/g, "&$1;");     /* source is already escaped — undo the double escape */
+  .replace(/&amp;(\w+|#\d+);/g, "&$1;");     /* source is already escaped, undo the double escape */
 
 let histFilter = new Set();
 
@@ -564,8 +564,8 @@ function viewChange(key) {
        <p class="body">${richText(c.body)}</p>` +
     ((c.before||c.after) ? `<h2>Before and after</h2>
        <div class="ba">
-         <div class="ba-box"><span class="ba-k">Before</span>${richText(c.before||"&mdash;")}</div>
-         <div class="ba-box after"><span class="ba-k">After</span>${richText(c.after||"&mdash;")}</div>
+         <div class="ba-box"><span class="ba-k">Before</span>${richText(c.before||"None recorded")}</div>
+         <div class="ba-box after"><span class="ba-k">After</span>${richText(c.after||"None recorded")}</div>
        </div>` : "") +
     (c.affected.length ? `<h2>Work types affected</h2><div class="chips">` +
        c.affected.map(a=>`<span class="status prog">${esc(a)}</span>`).join("") + `</div>` : "") +
@@ -698,7 +698,7 @@ function viewStage(key, id) {
               <span class="row-name">${esc(t.name)}</span>
               <span class="row-type">${esc(t.type)}</span>
               <span class="row-go">&rsaquo;</span></button>`).join("") + `</div>`
-      : `<div class="terminal">This stage is a single ticket &mdash; it has no subtasks beneath it.</div>`);
+      : `<div class="terminal">This stage is a single ticket. It has no subtasks beneath it.</div>`);
 
   wireCrumbs();
   view.querySelectorAll(".rows button.row").forEach(el =>

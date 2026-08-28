@@ -387,7 +387,7 @@
       [
         "SGP-10361",
         "open",
-        "Topic name required before To Do → In Progress — blocked, because Topic is moved entirely by automation"
+        "Topic name required before To Do → In Progress, blocked, because Topic is moved entirely by automation"
       ],
       [
         "SGP-10000",
@@ -494,7 +494,7 @@
       "Digitization"
     ],
     "before": "Final Slides said In Review, Articulate said Quality Review, Digitization: Review said QA Review",
-    "after": "All three set to Quality review — though QA Review is still live today on both Restore on SkillCat work types",
+    "after": "All three set to Quality review, though QA Review is still live today on both Restore on SkillCat work types",
     "subTickets": []
   },
   {
@@ -588,7 +588,7 @@
       "Work types"
     ],
     "before": null,
-    "after": "CDLC: Course Brief — To Do · Assigned · In Progress · Done",
+    "after": "CDLC: Course Brief: To Do · Assigned · In Progress · Done",
     "subTickets": [
       [
         "SGP-9733",
@@ -623,7 +623,7 @@
       "Digitization"
     ],
     "before": "Data Entry Resource",
-    "after": "Digitization Resource — old field deleted",
+    "after": "Digitization Resource, old field deleted",
     "subTickets": [
       [
         "SGP-9616",
@@ -682,7 +682,7 @@
     "state": "open",
     "outcome": "On Hold",
     "title": "Give different work types different layouts",
-    "body": "Every CDLC work type except Epic shares one layout, so Production Link shows up on tickets that have no use for it — including early-stage Final Slides and Articulate Review work.",
+    "body": "Every CDLC work type except Epic shares one layout, so Production Link shows up on tickets that have no use for it, including early-stage Final Slides and Articulate Review work.",
     "affected": [
       "Fields"
     ],
@@ -739,7 +739,7 @@
     "state": "dead",
     "outcome": "Discarded",
     "title": "Stop pulling the Articulate link from the epic",
-    "body": "Automations were copying Articulate Review Link from the parent epic, but the epic has no such field — every topic has its own link. The fix was to read from CDLC: Topic instead. Dropped after a follow-up review.",
+    "body": "Automations were copying Articulate Review Link from the parent epic, but the epic has no such field, every topic has its own link. The fix was to read from CDLC: Topic instead. Dropped after a follow-up review.",
     "affected": [
       "Articulate",
       "Automations"
@@ -816,7 +816,7 @@
       "Automations"
     ],
     "before": null,
-    "after": "Run Image Archiving Automation — To Do · In Progress · In Review · Done, auto-created after Restore to SkillCat and itself creating Move Source Files",
+    "after": "Run Image Archiving Automation: To Do · In Progress · In Review · Done, auto-created after Restore to SkillCat and itself creating Move Source Files",
     "subTickets": []
   },
   {

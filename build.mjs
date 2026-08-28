@@ -25,7 +25,7 @@ let fragment = (await readFile(SRC, "utf8")).trim();
 const cdlc = JSON.parse(await readFile(new URL("./data/cdlc-epic.json", import.meta.url), "utf8"));
 const CDLC_RE = /\/\*__CDLC_EPIC__\*\/[\s\S]*?\/\*__END__\*\//;
 if (!CDLC_RE.test(fragment)) {
-  console.error("src/page.html is missing the /*__CDLC_EPIC__*/ placeholder — aborting rather than guessing.");
+  console.error("src/page.html is missing the /*__CDLC_EPIC__*/ placeholder, aborting rather than guessing.");
   process.exit(1);
 }
 fragment = fragment.replace(CDLC_RE, "/*__CDLC_EPIC__*/" + JSON.stringify(cdlc) + "/*__END__*/");
@@ -33,7 +33,7 @@ fragment = fragment.replace(CDLC_RE, "/*__CDLC_EPIC__*/" + JSON.stringify(cdlc) 
 const changes = JSON.parse(await readFile(new URL("./data/changes.json", import.meta.url), "utf8"));
 const CH_RE = /\/\*__CHANGES__\*\/[\s\S]*?\/\*__ENDC__\*\//;
 if (!CH_RE.test(fragment)) {
-  console.error("src/page.html is missing the /*__CHANGES__*/ placeholder — aborting.");
+  console.error("src/page.html is missing the /*__CHANGES__*/ placeholder, aborting.");
   process.exit(1);
 }
 fragment = fragment.replace(CH_RE, "/*__CHANGES__*/" + JSON.stringify(changes) + "/*__ENDC__*/");
@@ -41,7 +41,7 @@ fragment = fragment.replace(CH_RE, "/*__CHANGES__*/" + JSON.stringify(changes) +
 const fields = JSON.parse(await readFile(new URL("./data/fields.json", import.meta.url), "utf8"));
 const F_RE = /\/\*__FIELDS__\*\/[\s\S]*?\/\*__ENDF__\*\//;
 if (!F_RE.test(fragment)) {
-  console.error("src/page.html is missing the /*__FIELDS__*/ placeholder — aborting.");
+  console.error("src/page.html is missing the /*__FIELDS__*/ placeholder, aborting.");
   process.exit(1);
 }
 fragment = fragment.replace(F_RE, "/*__FIELDS__*/" + JSON.stringify(fields) + "/*__ENDF__*/");
@@ -87,4 +87,4 @@ ${body}
 `;
 
 await writeFile(OUT, html, "utf8");
-console.log(`built index.html — ${html.length.toLocaleString()} bytes, title "${title}"`);
+console.log(`built index.html, ${html.length.toLocaleString()} bytes, title "${title}"`);

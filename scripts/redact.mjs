@@ -2,7 +2,7 @@
 // Replaces named individuals with the role they hold.
 //
 // The repository is public, so the committed source carries roles rather than
-// names. The mapping itself is deliberately NOT committed — a file pairing each
+// names. The mapping itself is deliberately NOT committed, a file pairing each
 // name with their role would publish exactly what this removes. It lives in
 // redaction-map.json, which is gitignored; redaction-map.example.json shows the
 // shape. Only the mechanism is public.

@@ -98,7 +98,7 @@
       4,
       "Base Articulate / Slide Chunks Creation",
       "Instructional Designer and Digitization",
-      "For Instructional, Practical and Informational courses the ID generates a PPT, which Digitization turns into a Base Articulate file — the template for the final Storyline file, carrying voiceover, captions and slide titles. Its Description field arrives pre-filled with instructions for the Digitization team. The Digitization Manager assigns it onward to Data Entry, then back to the ID, who closes it. For Certification courses the ID works on Slide Chunks instead. This runs alongside Stage 5.",
+      "For Instructional, Practical and Informational courses the ID generates a PPT, which Digitization turns into a Base Articulate file, the template for the final Storyline file, carrying voiceover, captions and slide titles. Its Description field arrives pre-filled with instructions for the Digitization team. The Digitization Manager assigns it onward to Data Entry, then back to the ID, who closes it. For Certification courses the ID works on Slide Chunks instead. This runs alongside Stage 5.",
       [
         "Instructional Designer",
         "Digitization Resource"
@@ -190,7 +190,7 @@
       [
         [
           "Creates work types SME Review and External Review",
-          "Both are statuses, not work types — no such work types exist"
+          "Both are statuses, not work types, no such work types exist"
         ]
       ]
     ],
@@ -198,7 +198,7 @@
       7,
       "Translation & Digitization",
       "Digitization and Data Entry",
-      "Two things run here. Translation: once the ID uploads the finalised Storyline file, the Digitization Resource translates it to Spanish, the Digitization Manager routes it to the course's QA Specialist, and after QA it goes to Upload to AWS and then Done — each of which drags the parent Topic along with it. Digitization: the moment the epic moves to Digitization, a fan of tickets is created, each setting off further automations as it closes. Outputs are the Planning Link on guroo.com and the Production Link on skillcat.app.",
+      "Two things run here. Translation: once the ID uploads the finalised Storyline file, the Digitization Resource translates it to Spanish, the Digitization Manager routes it to the course's QA Specialist, and after QA it goes to Upload to AWS and then Done, each of which drags the parent Topic along with it. Digitization: the moment the epic moves to Digitization, a fan of tickets is created, each setting off further automations as it closes. Outputs are the Planning Link on guroo.com and the Production Link on skillcat.app.",
       [
         "Digitization Resource",
         "The Digitization Manager",
