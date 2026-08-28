@@ -4,12 +4,12 @@
     "family": "Course & epic level",
     "level": "Epic",
     "statuses": [
-      "Done",
-      "On Hold",
       "To Do",
+      "On Hold",
       "Suspended",
       "In Progress",
-      "Digitization"
+      "Digitization",
+      "Done"
     ],
     "workflow": "CDLC: Epic",
     "changeRefs": [
@@ -29,12 +29,12 @@
     "family": "Course & epic level",
     "level": "Standard",
     "statuses": [
-      "In Review",
-      "Done",
-      "On Hold",
       "To Do",
       "Suspended",
-      "In Progress"
+      "On Hold",
+      "In Progress",
+      "In Review",
+      "Done"
     ],
     "workflow": "CDLC: Task/Subtask",
     "changeRefs": [
@@ -50,19 +50,18 @@
     "family": "Course & epic level",
     "level": "Standard",
     "statuses": [
-      "In Review",
-      "Scope Rearrange",
-      "Course QA on SkillCat",
-      "SkillCat: Backup / Restore",
-      "Slide chunks in course sheet",
-      "Done",
-      "Assessment on Guroo",
-      "Uploading to AWS",
-      "Course on Guroo",
-      "Course QA on Guroo",
-      "Staging: Backup / Restore",
       "To Do",
-      "Suspended"
+      "Suspended",
+      "SkillCat: Backup / Restore",
+      "Course QA on SkillCat",
+      "Creating Google Slides",
+      "In Review",
+      "Course QA on Guroo",
+      "Course on Guroo",
+      "Staging: Backup / Restore",
+      "Done",
+      "Uploading to AWS",
+      "Assessment on Guroo"
     ],
     "workflow": "CDLC: Course Content Creation",
     "changeRefs": [],
@@ -76,10 +75,10 @@
     "family": "Course & epic level",
     "level": "Standard",
     "statuses": [
-      "Assigned",
-      "Done",
       "To Do",
-      "In Progress"
+      "Assigned",
+      "In Progress",
+      "Done"
     ],
     "workflow": "CDLC: Course Brief",
     "changeRefs": [
@@ -95,12 +94,12 @@
     "family": "Course & epic level",
     "level": "Standard",
     "statuses": [
-      "SME Validation",
-      "Done",
       "To Do",
-      "Checklist",
       "Suspended",
-      "Create course outline"
+      "Generate Course Outline with Learning Objectives",
+      "SME Verification",
+      "Checklist",
+      "Done"
     ],
     "workflow": "CDLC: Course Outline",
     "changeRefs": [
@@ -116,10 +115,10 @@
     "family": "Course & epic level",
     "level": "Standard",
     "statuses": [
-      "Done",
       "To Do",
       "Suspended",
-      "In Progress"
+      "In Progress",
+      "Done"
     ],
     "workflow": "CDLC: Content Feedback",
     "changeRefs": [],
@@ -133,15 +132,15 @@
     "family": "Course & epic level",
     "level": "Standard",
     "statuses": [
-      "Graphics definition",
-      "Internal SME review",
-      "Done",
-      "Complete checklist",
-      "On Hold",
       "To Do",
       "Suspended",
+      "On Hold",
       "In Progress",
-      "Quality review"
+      "Internal SME review",
+      "Graphics definition",
+      "Complete checklist",
+      "Quality review",
+      "Done"
     ],
     "workflow": "CDLC: Final Slides",
     "changeRefs": [
@@ -158,13 +157,13 @@
     "family": "Course & epic level",
     "level": "Standard",
     "statuses": [
-      "In Review",
-      "Assigned",
-      "Done",
-      "Rejected",
-      "On Hold",
       "To Do",
-      "In Progress"
+      "Assigned",
+      "In Progress",
+      "In Review",
+      "Done",
+      "On Hold",
+      "Rejected"
     ],
     "workflow": "CDLC: Corrections",
     "changeRefs": [
@@ -181,10 +180,10 @@
     "level": "Sub-task",
     "statuses": [
       "In Review",
-      "Done",
-      "On Hold",
       "Suspended",
-      "In Progress"
+      "On Hold",
+      "In Progress",
+      "Done"
     ],
     "workflow": "CDLC: Reviews",
     "changeRefs": [],
@@ -198,14 +197,14 @@
     "family": "Course & epic level",
     "level": "Standard",
     "statuses": [
-      "Assigned",
-      "In Review",
-      "Reproduced",
-      "Discard",
-      "Done",
-      "On Hold",
       "To Do",
-      "In Progress"
+      "On Hold",
+      "Discard",
+      "Assigned",
+      "In Progress",
+      "Reproduced",
+      "Done",
+      "In Review"
     ],
     "workflow": "SGP: Task",
     "changeRefs": [
@@ -221,14 +220,14 @@
     "family": "Course & epic level",
     "level": "Sub-task",
     "statuses": [
-      "Assigned",
-      "In Review",
-      "Reproduced",
-      "Discard",
-      "Done",
-      "On Hold",
       "To Do",
-      "In Progress"
+      "On Hold",
+      "Discard",
+      "Assigned",
+      "In Progress",
+      "Reproduced",
+      "Done",
+      "In Review"
     ],
     "workflow": "SGP: Task",
     "changeRefs": [
@@ -244,11 +243,11 @@
     "family": "Course & epic level",
     "level": "Standard",
     "statuses": [
-      "In Review",
-      "Done",
       "To Do",
       "Suspended",
-      "In Progress"
+      "In Progress",
+      "In Review",
+      "Done"
     ],
     "workflow": "PPT generation",
     "changeRefs": [
@@ -265,11 +264,11 @@
     "family": "Course & epic level",
     "level": "Standard",
     "statuses": [
-      "In Review",
-      "Done",
       "To Do",
       "Suspended",
-      "In Progress"
+      "In Progress",
+      "In Review",
+      "Done"
     ],
     "workflow": "CDLC: Stock image downloading",
     "changeRefs": [],
@@ -283,15 +282,15 @@
     "family": "Course & epic level",
     "level": "Standard",
     "statuses": [
+      "To Do",
+      "On Hold",
+      "Suspended",
       "Assigned",
       "Upload to AWS",
-      "In Review",
-      "Complete checklist",
       "Done",
       "In Translation",
-      "On Hold",
-      "To Do",
-      "Suspended"
+      "Complete checklist",
+      "In Review"
     ],
     "workflow": "CDLC: Spanish Translations",
     "changeRefs": [
@@ -309,11 +308,11 @@
     "family": "Course & epic level",
     "level": "Sub-task",
     "statuses": [
-      "In Review",
-      "Done",
       "To Do",
       "Suspended",
-      "In Progress"
+      "In Progress",
+      "In Review",
+      "Done"
     ],
     "workflow": "CDLC: Stock image downloading",
     "changeRefs": [],
@@ -327,11 +326,11 @@
     "family": "Course & epic level",
     "level": "Sub-task",
     "statuses": [
-      "Assigned",
-      "In Review",
-      "Done",
       "Scripting",
-      "In Progress"
+      "Assigned",
+      "In Progress",
+      "In Review",
+      "Done"
     ],
     "workflow": "CDLC: Recording",
     "changeRefs": [
@@ -347,14 +346,14 @@
     "family": "Course & epic level",
     "level": "Sub-task",
     "statuses": [
-      "In Review",
-      "Assigned",
-      "Done",
-      "Rejected",
-      "On Hold",
       "To Do",
+      "Assigned",
+      "In Progress",
       "Checklist",
-      "In Progress"
+      "Done",
+      "In Review",
+      "On Hold",
+      "Rejected"
     ],
     "workflow": "CDLC: Base Articulate file creation",
     "changeRefs": [
@@ -371,14 +370,14 @@
     "family": "Course & epic level",
     "level": "Sub-task",
     "statuses": [
-      "Internal SME review",
-      "In Review",
-      "Done",
-      "On Hold",
-      "Corrections",
       "To Do",
       "Suspended",
-      "Quality review"
+      "On Hold",
+      "Internal SME review",
+      "In Review",
+      "Corrections",
+      "Quality review",
+      "Done"
     ],
     "workflow": "CDLC: Articulate review",
     "changeRefs": [
@@ -395,16 +394,16 @@
     "family": "Course & epic level",
     "level": "Sub-task",
     "statuses": [
-      "In Review",
-      "Send to Instructional Designer",
-      "External Review",
-      "Internal SME review",
-      "Done",
-      "Complete checklist",
       "To Do",
       "Suspended",
       "In Progress",
-      "Quality review"
+      "Complete checklist",
+      "In Review",
+      "Send to Instructional Designer",
+      "Quality review",
+      "External Review",
+      "Done",
+      "Internal SME review"
     ],
     "workflow": "CDLC: Graphics",
     "changeRefs": [],
@@ -418,16 +417,16 @@
     "family": "Course & epic level",
     "level": "Standard",
     "statuses": [
-      "In Review",
-      "Send to Instructional Designer",
-      "External Review",
-      "Internal SME review",
-      "Done",
-      "Complete checklist",
       "To Do",
       "Suspended",
       "In Progress",
-      "Quality review"
+      "Complete checklist",
+      "In Review",
+      "Send to Instructional Designer",
+      "Quality review",
+      "External Review",
+      "Done",
+      "Internal SME review"
     ],
     "workflow": "CDLC: Graphics",
     "changeRefs": [
@@ -443,14 +442,14 @@
     "family": "Course & epic level",
     "level": "Standard",
     "statuses": [
-      "Internal SME review",
-      "Done",
-      "Complete checklist",
-      "On Hold",
       "To Do",
       "Suspended",
+      "On Hold",
       "In Progress",
-      "Quality review"
+      "Complete checklist",
+      "Quality review",
+      "Internal SME review",
+      "Done"
     ],
     "workflow": "CDLC: Assessment",
     "changeRefs": [
@@ -466,11 +465,11 @@
     "family": "Course & epic level",
     "level": "Standard",
     "statuses": [
-      "In Review",
-      "Done",
       "To Do",
       "Suspended",
-      "In Progress"
+      "In Progress",
+      "In Review",
+      "Done"
     ],
     "workflow": "CDLC: Content Instructional Design",
     "changeRefs": [],
@@ -484,15 +483,15 @@
     "family": "Topic level",
     "level": "Standard",
     "statuses": [
-      "In Review",
-      "Done",
-      "On Hold",
-      "Ready for Graphics",
-      "Uploading to AWS",
-      "Spanish Translations",
       "To Do",
       "Suspended",
+      "On Hold",
       "Final Slides",
+      "Ready for Graphics",
+      "Spanish Translations",
+      "Uploading to AWS",
+      "In Review",
+      "Done",
       "Graphics Creation"
     ],
     "workflow": "CDLC: Topic",
@@ -511,13 +510,13 @@
     "family": "Topic level",
     "level": "Sub-task",
     "statuses": [
+      "To Do",
+      "Suspended",
+      "On Hold",
+      "In Progress",
       "Internal SME review",
       "Done",
       "Complete checklist",
-      "On Hold",
-      "To Do",
-      "Suspended",
-      "In Progress",
       "Quality review"
     ],
     "workflow": "CDLC: Topic Final Slides",
@@ -535,13 +534,13 @@
     "family": "Topic level",
     "level": "Sub-task",
     "statuses": [
-      "In Review",
-      "Send to Instructional Designer",
-      "Done",
-      "Complete checklist",
       "To Do",
       "Suspended",
-      "In Progress"
+      "In Progress",
+      "Complete checklist",
+      "In Review",
+      "Send to Instructional Designer",
+      "Done"
     ],
     "workflow": "CDLC: Topic Graphics",
     "changeRefs": [
@@ -558,13 +557,13 @@
     "family": "Topic level",
     "level": "Sub-task",
     "statuses": [
-      "In Review",
-      "Complete checklist",
-      "Done",
-      "On Hold",
       "To Do",
       "Suspended",
-      "In Progress"
+      "On Hold",
+      "In Progress",
+      "In Review",
+      "Complete checklist",
+      "Done"
     ],
     "workflow": "CDLC: Topic Assessment",
     "changeRefs": [
@@ -581,13 +580,13 @@
     "family": "Topic level",
     "level": "Sub-task",
     "statuses": [
-      "In Review",
-      "Assigned",
-      "Done",
-      "Rejected",
-      "On Hold",
       "To Do",
-      "In Progress"
+      "Assigned",
+      "In Progress",
+      "In Review",
+      "Done",
+      "On Hold",
+      "Rejected"
     ],
     "workflow": "CDLC: Corrections",
     "changeRefs": [
@@ -603,11 +602,11 @@
     "family": "Topic level",
     "level": "Sub-task",
     "statuses": [
-      "In Review",
-      "Done",
       "To Do",
       "Suspended",
-      "In Progress"
+      "In Progress",
+      "In Review",
+      "Done"
     ],
     "workflow": "PPT generation",
     "changeRefs": [
@@ -624,11 +623,11 @@
     "family": "Topic level",
     "level": "Sub-task",
     "statuses": [
-      "In Review",
-      "Done",
       "To Do",
       "Suspended",
-      "In Progress"
+      "In Progress",
+      "In Review",
+      "Done"
     ],
     "workflow": "CDLC: Stock image downloading",
     "changeRefs": [],
@@ -642,15 +641,15 @@
     "family": "Topic level",
     "level": "Sub-task",
     "statuses": [
+      "To Do",
+      "On Hold",
+      "Suspended",
       "Assigned",
       "Upload to AWS",
-      "In Review",
-      "Complete checklist",
       "Done",
       "In Translation",
-      "On Hold",
-      "To Do",
-      "Suspended"
+      "Complete checklist",
+      "In Review"
     ],
     "workflow": "CDLC: Spanish Translations",
     "changeRefs": [
@@ -667,21 +666,21 @@
     "family": "Digitization",
     "level": "Standard",
     "statuses": [
-      "Create Deep Links",
-      "In Review",
-      "SME Review",
-      "Update Keywords",
-      "Create Course on Planning",
-      "Update Learning Plan",
-      "Upload to AWS",
-      "On Hold",
-      "Restore on SkillCat",
-      "Course Catalog",
       "To Do",
-      "Question Bank on Planning",
       "Suspended",
+      "On Hold",
+      "Update Keywords",
+      "SME Review",
+      "In Review",
+      "Restore on SkillCat",
+      "Create Course on Planning",
+      "update spreadsheet",
+      "Course Catalog",
+      "Update Learning Plan",
       "Request Badge Creation",
-      "update spreadsheet"
+      "Upload to AWS",
+      "Create Deep Links",
+      "Question Bank on Planning"
     ],
     "workflow": "CDLC: Course Digitization",
     "changeRefs": [
@@ -697,21 +696,21 @@
     "family": "Digitization",
     "level": "Standard",
     "statuses": [
-      "Create Deep Links",
-      "In Review",
-      "SME Review",
-      "Update Keywords",
-      "Create Course on Planning",
-      "Update Learning Plan",
-      "Upload to AWS",
-      "On Hold",
-      "Restore on SkillCat",
-      "Course Catalog",
       "To Do",
-      "Question Bank on Planning",
       "Suspended",
+      "On Hold",
+      "Update Keywords",
+      "SME Review",
+      "In Review",
+      "Restore on SkillCat",
+      "Create Course on Planning",
+      "update spreadsheet",
+      "Course Catalog",
+      "Update Learning Plan",
       "Request Badge Creation",
-      "update spreadsheet"
+      "Upload to AWS",
+      "Create Deep Links",
+      "Question Bank on Planning"
     ],
     "workflow": "CDLC: Course Digitization",
     "changeRefs": [
@@ -728,15 +727,15 @@
     "family": "Digitization",
     "level": "Standard",
     "statuses": [
-      "Assigned",
-      "Upload to AWS",
-      "In Review",
-      "Update Keywords",
-      "Update Question Bank on Planning",
-      "Done",
-      "Create Course on Planning",
       "To Do",
-      "Suspended"
+      "Assigned",
+      "Suspended",
+      "In Review",
+      "Create Course on Planning",
+      "Update Question Bank on Planning",
+      "Upload to AWS",
+      "Update Keywords",
+      "Done"
     ],
     "workflow": "Digitization - Upload to AWS + Planning",
     "changeRefs": [
@@ -753,15 +752,15 @@
     "family": "Digitization",
     "level": "Sub-task",
     "statuses": [
-      "Assigned",
-      "Upload to AWS",
-      "In Review",
-      "Update Keywords",
-      "Update Question Bank on Planning",
-      "Done",
-      "Create Course on Planning",
       "To Do",
-      "Suspended"
+      "Assigned",
+      "Suspended",
+      "In Review",
+      "Create Course on Planning",
+      "Update Question Bank on Planning",
+      "Upload to AWS",
+      "Update Keywords",
+      "Done"
     ],
     "workflow": "Digitization - Upload to AWS + Planning",
     "changeRefs": [
@@ -778,13 +777,13 @@
     "family": "Digitization",
     "level": "Standard",
     "statuses": [
-      "Create Deep Links",
-      "Done",
-      "QA Review",
-      "Restore on SkillCat",
-      "Update Learning Plan",
       "To Do",
       "Suspended",
+      "QA Review",
+      "Done",
+      "Restore on SkillCat",
+      "Update Learning Plan",
+      "Create Deep Links",
       "update spreadsheet"
     ],
     "workflow": "Digitization - Restore on SkillCat",
@@ -805,13 +804,13 @@
     "family": "Digitization",
     "level": "Sub-task",
     "statuses": [
-      "Create Deep Links",
-      "Done",
-      "QA Review",
-      "Restore on SkillCat",
-      "Update Learning Plan",
       "To Do",
       "Suspended",
+      "QA Review",
+      "Done",
+      "Restore on SkillCat",
+      "Update Learning Plan",
+      "Create Deep Links",
       "update spreadsheet"
     ],
     "workflow": "Digitization - Restore on SkillCat",
@@ -831,11 +830,11 @@
     "family": "Digitization",
     "level": "Standard",
     "statuses": [
-      "SME Review",
-      "Done",
       "To Do",
       "Suspended",
-      "Quality review"
+      "Quality review",
+      "SME Review",
+      "Done"
     ],
     "workflow": "Digitization - Review",
     "changeRefs": [
@@ -851,11 +850,11 @@
     "family": "Digitization",
     "level": "Sub-task",
     "statuses": [
-      "SME Review",
-      "Done",
       "To Do",
       "Suspended",
-      "Quality review"
+      "Quality review",
+      "SME Review",
+      "Done"
     ],
     "workflow": "Digitization - Review",
     "changeRefs": [
@@ -872,11 +871,11 @@
     "family": "Digitization",
     "level": "Standard",
     "statuses": [
-      "In Review",
-      "Done",
       "To Do",
       "Suspended",
-      "In Progress"
+      "In Progress",
+      "In Review",
+      "Done"
     ],
     "workflow": "Digitization - Badge Creation",
     "changeRefs": [],
@@ -890,11 +889,11 @@
     "family": "Digitization",
     "level": "Sub-task",
     "statuses": [
-      "In Review",
-      "Done",
       "To Do",
       "Suspended",
-      "In Progress"
+      "In Progress",
+      "In Review",
+      "Done"
     ],
     "workflow": "Digitization - Badge Creation",
     "changeRefs": [
@@ -910,12 +909,12 @@
     "family": "Digitization",
     "level": "Standard",
     "statuses": [
-      "Assigned",
-      "In Review",
-      "Done",
       "To Do",
       "Suspended",
-      "In Progress"
+      "Assigned",
+      "In Progress",
+      "In Review",
+      "Done"
     ],
     "workflow": "Digitization - Data Sheet Creation",
     "changeRefs": [
@@ -931,12 +930,12 @@
     "family": "Digitization",
     "level": "Sub-task",
     "statuses": [
-      "Assigned",
-      "In Review",
-      "Done",
       "To Do",
       "Suspended",
-      "In Progress"
+      "Assigned",
+      "In Progress",
+      "In Review",
+      "Done"
     ],
     "workflow": "Digitization - Data Sheet Creation",
     "changeRefs": [
@@ -953,12 +952,12 @@
     "family": "Digitization",
     "level": "Standard",
     "statuses": [
-      "Assigned",
-      "In Review",
-      "Done",
       "To Do",
       "Suspended",
-      "In Progress"
+      "Assigned",
+      "In Progress",
+      "In Review",
+      "Done"
     ],
     "workflow": "Digitization - Course Catalog Updating",
     "changeRefs": [],
@@ -972,12 +971,12 @@
     "family": "Digitization",
     "level": "Sub-task",
     "statuses": [
-      "Assigned",
-      "In Review",
-      "Done",
       "To Do",
       "Suspended",
-      "In Progress"
+      "Assigned",
+      "In Progress",
+      "In Review",
+      "Done"
     ],
     "workflow": "Digitization - Course Catalog Updating",
     "changeRefs": [
@@ -993,10 +992,10 @@
     "family": "Course operations",
     "level": "Standard",
     "statuses": [
-      "Done",
       "To Do",
       "Suspended",
-      "In Progress"
+      "In Progress",
+      "Done"
     ],
     "workflow": "Generate Performance Report",
     "changeRefs": [],
@@ -1010,10 +1009,10 @@
     "family": "Course operations",
     "level": "Sub-task",
     "statuses": [
-      "Done",
       "To Do",
       "Suspended",
-      "In Progress"
+      "In Progress",
+      "Done"
     ],
     "workflow": "Generate Performance Report",
     "changeRefs": [
@@ -1029,10 +1028,10 @@
     "family": "Course operations",
     "level": "Standard",
     "statuses": [
-      "In Review",
-      "Done",
       "To Do",
-      "In Progress"
+      "In Progress",
+      "In Review",
+      "Done"
     ],
     "workflow": "CDLC: Move Source Files",
     "changeRefs": [
@@ -1048,10 +1047,10 @@
     "family": "Course operations",
     "level": "Sub-task",
     "statuses": [
-      "In Review",
-      "Done",
       "To Do",
-      "In Progress"
+      "In Progress",
+      "In Review",
+      "Done"
     ],
     "workflow": "CDLC: Move Source Files",
     "changeRefs": [
@@ -1068,10 +1067,10 @@
     "family": "Course operations",
     "level": "Standard",
     "statuses": [
-      "Done",
       "To Do",
       "Suspended",
-      "In Progress"
+      "In Progress",
+      "Done"
     ],
     "workflow": "CDLC: Restrict Course Folder",
     "changeRefs": [],
@@ -1085,10 +1084,10 @@
     "family": "Course operations",
     "level": "Sub-task",
     "statuses": [
-      "Done",
       "To Do",
       "Suspended",
-      "In Progress"
+      "In Progress",
+      "Done"
     ],
     "workflow": "CDLC: Restrict Course Folder",
     "changeRefs": [
@@ -1104,11 +1103,11 @@
     "family": "Course operations",
     "level": "Standard",
     "statuses": [
-      "In Review",
-      "Done",
       "To Do",
       "Suspended",
-      "In Progress"
+      "In Progress",
+      "In Review",
+      "Done"
     ],
     "workflow": "CDLC: Run Image Archiving Automation",
     "changeRefs": [
@@ -1124,11 +1123,11 @@
     "family": "Course operations",
     "level": "Sub-task",
     "statuses": [
-      "In Review",
-      "Done",
       "To Do",
       "Suspended",
-      "In Progress"
+      "In Progress",
+      "In Review",
+      "Done"
     ],
     "workflow": "CDLC: Run Image Archiving Automation",
     "changeRefs": [
@@ -1145,10 +1144,10 @@
     "family": "Certification",
     "level": "Standard",
     "statuses": [
-      "Done",
-      "On Hold",
       "To Do",
-      "Suspended"
+      "On Hold",
+      "Suspended",
+      "Done"
     ],
     "workflow": "Certification: Template Generation",
     "changeRefs": [
@@ -1165,12 +1164,12 @@
     "family": "Certification",
     "level": "Sub-task",
     "statuses": [
-      "Inline Image Check",
-      "Done",
-      "On Hold",
-      "Manual Review",
       "To Do",
-      "Suspended"
+      "On Hold",
+      "Suspended",
+      "Manual Review",
+      "Inline Image Check",
+      "Done"
     ],
     "workflow": "Certification: Research Note",
     "changeRefs": [
@@ -1186,13 +1185,13 @@
     "family": "Certification",
     "level": "Sub-task",
     "statuses": [
-      "In Review",
-      "Paraphrasing",
-      "Done",
-      "On Hold",
       "To Do",
+      "On Hold",
       "Suspended",
-      "In Progress"
+      "In Progress",
+      "Paraphrasing",
+      "In Review",
+      "Done"
     ],
     "workflow": "Certification: Slide Chunks",
     "changeRefs": [
@@ -1208,15 +1207,15 @@
     "family": "Certification",
     "level": "Sub-task",
     "statuses": [
-      "Review & Revise Definition",
-      "Done",
-      "Review & Revise Visuals",
-      "On Hold",
-      "Generate Graphic Definition",
       "To Do",
-      "Review Final GD",
+      "On Hold",
       "Suspended",
-      "Generate AI Visuals"
+      "Review & Revise Visuals",
+      "Review & Revise Definition",
+      "Generate AI Visuals",
+      "Generate Graphic Definition",
+      "Review Final GD",
+      "Done"
     ],
     "workflow": "Certification: Graphic Definitions",
     "changeRefs": [
@@ -1232,15 +1231,15 @@
     "family": "Certification",
     "level": "Sub-task",
     "statuses": [
+      "To Do",
+      "On Hold",
+      "Suspended",
       "ID Review",
       "SME Review",
+      "Quality review",
       "Done",
-      "On Hold",
       "Generate Articulate",
-      "Corrections",
-      "To Do",
-      "Suspended",
-      "Quality review"
+      "Corrections"
     ],
     "workflow": "Certification: Articulate Creation",
     "changeRefs": [
@@ -1258,12 +1257,12 @@
     "family": "Applied Layers",
     "level": "Standard",
     "statuses": [
-      "Assigned",
-      "In Review",
-      "Done",
       "To Do",
       "Suspended",
-      "In Progress"
+      "Assigned",
+      "In Progress",
+      "In Review",
+      "Done"
     ],
     "workflow": "Applied Layers: Toolkit/Instructions",
     "changeRefs": [
@@ -1279,12 +1278,12 @@
     "family": "Applied Layers",
     "level": "Standard",
     "statuses": [
-      "Assigned",
-      "In Review",
-      "Done",
       "To Do",
       "Suspended",
-      "In Progress"
+      "Assigned",
+      "In Progress",
+      "In Review",
+      "Done"
     ],
     "workflow": "Applied Layers: Toolkit/Instructions",
     "changeRefs": [
@@ -1319,8 +1318,8 @@
     "level": "Standard",
     "statuses": [
       "Video Recording",
-      "Video Review",
-      "Manual Edit"
+      "Manual Edit",
+      "Video Review"
     ],
     "workflow": "Applied Layers: Video Recording",
     "changeRefs": [
@@ -1336,13 +1335,13 @@
     "family": "Applied Layers",
     "level": "Standard",
     "statuses": [
-      "In Review",
-      "SME Review",
-      "Done",
+      "Storyboard",
       "On Hold",
       "Suspended",
-      "Storyboard",
-      "Video Creation"
+      "SME Review",
+      "In Review",
+      "Video Creation",
+      "Done"
     ],
     "workflow": "Applied Layers: Video Creation & Review",
     "changeRefs": [
@@ -1359,13 +1358,13 @@
     "family": "Simulation & generic",
     "level": "Standard",
     "statuses": [
-      "Business Specs in Progress",
-      "Learning Objectives in Progress",
-      "Business Specs in Review",
-      "Done",
       "To Do",
       "Suspended",
-      "Learning Objective in Review"
+      "Business Specs in Progress",
+      "Business Specs in Review",
+      "Learning Objective in Progress",
+      "Learning Objective in Review",
+      "Done"
     ],
     "workflow": "CDLC: Simulation Specs",
     "changeRefs": [],
@@ -1379,15 +1378,15 @@
     "family": "Simulation & generic",
     "level": "Standard",
     "statuses": [
-      "In Review",
-      "SME Validation",
-      "Scope Rearrange",
-      "Enhancement",
-      "Done",
-      "Editorial review",
       "To Do",
       "Suspended",
-      "In Progress"
+      "Editorial review",
+      "In Progress",
+      "In Review",
+      "Additional Questions",
+      "SME Verification",
+      "Scope Rearrange",
+      "Done"
     ],
     "workflow": "CDLC: Content Creation",
     "changeRefs": [],
@@ -1401,12 +1400,12 @@
     "family": "Simulation & generic",
     "level": "Standard",
     "statuses": [
-      "In Review",
-      "Done",
-      "On Hold",
       "To Do",
       "Suspended",
-      "In Progress"
+      "On Hold",
+      "In Progress",
+      "In Review",
+      "Done"
     ],
     "workflow": "CDLC: Task/Subtask",
     "changeRefs": [],
@@ -1420,12 +1419,12 @@
     "family": "Simulation & generic",
     "level": "Sub-task",
     "statuses": [
-      "In Review",
-      "Done",
-      "On Hold",
       "To Do",
       "Suspended",
-      "In Progress"
+      "On Hold",
+      "In Progress",
+      "In Review",
+      "Done"
     ],
     "workflow": "CDLC: Task/Subtask",
     "changeRefs": [],
@@ -1439,11 +1438,11 @@
     "family": "Simulation & generic",
     "level": "Standard",
     "statuses": [
-      "In Review",
-      "Done",
       "To Do",
       "Suspended",
-      "In Progress"
+      "In Progress",
+      "In Review",
+      "Done"
     ],
     "workflow": "CDLC: Bug",
     "changeRefs": [],
@@ -1457,11 +1456,11 @@
     "family": "Simulation & generic",
     "level": "Standard",
     "statuses": [
-      "In Review",
-      "Done",
       "To Do",
       "Suspended",
-      "In Progress"
+      "In Progress",
+      "In Review",
+      "Done"
     ],
     "workflow": "CDLC: Improvement",
     "changeRefs": [],
@@ -1475,10 +1474,10 @@
     "family": "Simulation & generic",
     "level": "Standard",
     "statuses": [
-      "Done",
       "To Do",
       "Suspended",
-      "In Progress"
+      "In Progress",
+      "Done"
     ],
     "workflow": "CDLC: Content Feedback",
     "changeRefs": [],

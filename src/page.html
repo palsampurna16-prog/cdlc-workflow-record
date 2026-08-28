@@ -202,6 +202,32 @@
                border-top:1px solid var(--c-border); font-size:12px; color:var(--c-text-subtle); }
   .caption { margin-top:var(--space-150); font-size:12px; color:var(--c-text-subtlest); }
 
+
+  /* history */
+  .hist-month { margin:var(--space-400) 0 var(--space-100); font-size:12px; font-weight:700;
+                letter-spacing:0.08em; text-transform:uppercase; color:var(--c-text-subtlest); }
+  .hist { border:1px solid var(--c-border); border-radius:var(--radius-lg); overflow:hidden; }
+  .hist button { display:flex; align-items:center; gap:var(--space-150); width:100%;
+                 padding:var(--space-150) var(--space-200); text-align:left; font:inherit; color:inherit;
+                 background:none; border:0; border-bottom:1px solid var(--c-border); cursor:pointer;
+                 transition:background-color var(--duration) var(--ease); }
+  .hist button:last-child { border-bottom:0; }
+  .hist button:nth-child(odd) { background:var(--c-surface-sunken); }
+  .hist button:hover { background:var(--c-surface-press); }
+  .hist-day { flex:none; width:26px; font-size:12px; font-variant-numeric:tabular-nums;
+              color:var(--c-text-subtlest); }
+  .hist-title { font-weight:600; }
+  .hist-key { flex:none; font-size:12px; color:var(--c-text-subtlest); }
+  .hist-out { flex:none; margin-left:auto; }
+  .ba { display:grid; grid-template-columns:repeat(auto-fit,minmax(260px,1fr)); gap:var(--space-200); }
+  .ba-box { padding:var(--space-200); border:1px solid var(--c-border); border-radius:var(--radius-lg); }
+  .ba-box.after { background:var(--c-info-bg); border-color:var(--c-info-br); }
+  .ba-k { display:block; font-size:11px; font-weight:700; letter-spacing:0.08em;
+          text-transform:uppercase; color:var(--c-text-subtlest); margin-bottom:var(--space-100); }
+  .body code { padding:1px 4px; background:var(--c-surface-press); border-radius:var(--radius-sm);
+               font-size:0.92em; }
+  .body { max-width:70ch; }
+
   @media (max-width:640px) {
     .page { padding:var(--space-300) var(--space-200) var(--space-400); }
     .search { display:none; }
@@ -304,6 +330,81 @@ function facts(o, extra) {
    </dl>`;
 }
 
+
+/* ---------- change history ---------- */
+const CHANGES = /*__CHANGES__*/[]/*__ENDC__*/;
+const MONTHS=["January","February","March","April","May","June","July","August",
+              "September","October","November","December"];
+const monthOf = d => MONTHS[+d.slice(5,7)-1] + " " + d.slice(0,4);
+const OUTCLS = { "Shipped":"done", "Discarded":"todo", "To Do":"todo" };
+/* body is authored HTML limited to <code>; escape everything then restore that one tag */
+const richText = t => esc(t)
+  .replace(/&lt;(\/?code)&gt;/g, "<$1>")      /* the one tag the source uses */
+  .replace(/&amp;(\w+|#\d+);/g, "&$1;");     /* source is already escaped — undo the double escape */
+
+function viewHistory() {
+  const rows = [...CHANGES].sort((a,b)=>b.date.localeCompare(a.date));
+  let out = "", month = "";
+  rows.forEach(c => {
+    const m = monthOf(c.date);
+    if (m !== month) { if (month) out += `</div>`; out += `<p class="hist-month">${esc(m)}</p><div class="hist">`; month = m; }
+    out += `<button data-k="${esc(c.key)}">
+       <span class="hist-day">${c.date.slice(8,10)}</span>
+       <span class="hist-title">${esc(c.title)}</span>
+       <span class="hist-key">${esc(c.key)}</span>
+       <span class="hist-out"><span class="status ${OUTCLS[c.outcome]||"prog"}">${esc(c.outcome)}</span></span>
+     </button>`;
+  });
+  if (month) out += `</div>`;
+
+  view.innerHTML =
+    crumbs([{label:"Projects", to:""},{label:"CDLC", to:"CDLC"},{label:"Change history"}]) +
+    `<div class="col"><div class="page-head"><h1>Change history</h1></div>
+       <div class="facts" style="margin-bottom:var(--space-200)">
+         <div class="fact"><dt>Changes</dt><dd>${CHANGES.length}</dd></div>
+         <div class="fact"><dt>Shipped</dt><dd>${CHANGES.filter(c=>c.outcome==="Shipped").length}</dd></div>
+         <div class="fact"><dt>Still open</dt><dd>${CHANGES.filter(c=>c.state==="open").length}</dd></div>
+         <div class="fact"><dt>Period</dt><dd style="font-weight:400">${esc(monthOf(rows[rows.length-1].date))} &ndash; ${esc(monthOf(rows[0].date))}</dd></div>
+       </div>` + out + `</div>`;
+  wireCrumbs();
+  view.querySelectorAll(".hist button").forEach(el =>
+    el.addEventListener("click", () => go("CDLC/history/"+el.dataset.k)));
+}
+
+function viewChange(key) {
+  const c = CHANGES.find(x=>x.key===key);
+  if (!c) return viewHistory();
+  view.innerHTML =
+    crumbs([{label:"Projects", to:""},{label:"CDLC", to:"CDLC"},
+            {label:"Change history", to:"CDLC/history"},{label:c.key}]) +
+    `<div class="col">
+       <div class="page-head">
+         <p class="eyebrow">${esc(monthOf(c.date))} &middot; ${jiraLink(c.key)}</p>
+         <h1>${esc(c.title)}</h1>
+       </div>
+       <dl class="facts">
+         <div class="fact"><dt>Outcome</dt><dd><span class="status ${OUTCLS[c.outcome]||"prog"}">${esc(c.outcome)}</span></dd></div>
+         <div class="fact"><dt>Raised</dt><dd style="font-weight:400">${esc(c.date)}</dd></div>
+         <div class="fact"><dt>Work types affected</dt><dd style="font-weight:400">${c.affected.length||"None"}</dd></div>
+         <div class="fact"><dt>Sub-tickets</dt><dd style="font-weight:400">${c.subTickets.length||"None"}</dd></div>
+       </dl>
+       <h2>What was asked</h2>
+       <p class="body">${richText(c.body)}</p>` +
+    ((c.before||c.after) ? `<h2>Before and after</h2>
+       <div class="ba">
+         <div class="ba-box"><span class="ba-k">Before</span>${richText(c.before||"&mdash;")}</div>
+         <div class="ba-box after"><span class="ba-k">After</span>${richText(c.after||"&mdash;")}</div>
+       </div>` : "") +
+    (c.affected.length ? `<h2>Work types affected</h2><div class="chips">` +
+       c.affected.map(a=>`<span class="status prog">${esc(a)}</span>`).join("") + `</div>` : "") +
+    (c.subTickets.length ? `<h2>Sub-tickets</h2><div class="rows">` +
+       c.subTickets.map((t,i)=>`<div class="row"><span class="row-n">${i+1}</span>
+          <span class="row-name">${esc(typeof t==="string"?t:(t.title||t.key||""))}</span>
+          <span class="row-type">${esc(typeof t==="string"?"":(t.key||""))}</span></div>`).join("") + `</div>` : "") +
+    `</div>`;
+  wireCrumbs();
+}
+
 /* ---------- projects ---------- */
 function viewProjects(filter="") {
   const q = filter.trim().toLowerCase();
@@ -392,11 +493,16 @@ function viewEpic(key) {
               </span>
             </button>`; }).join("") +
     `  </div>
+       <p class="caption"><button class="crumb-like" id="to-history"
+            style="background:none;border:0;padding:0;font:inherit;color:var(--c-link);cursor:pointer">
+            View the change history &rarr;</button></p>
        <p class="caption">Drawn for Instructional, Informational and Practical courses.
           Certification courses replace the first two steps with Template Generation.</p>
      </div>`;
 
   wireCrumbs();
+  const th=document.getElementById("to-history");
+  if (th) th.addEventListener("click", () => go("CDLC/history"));
   view.querySelectorAll(".stage").forEach(el =>
     el.addEventListener("click", () => go("CDLC/"+el.dataset.stage)));
 }
@@ -479,7 +585,9 @@ function viewSpace(key) {
 function render() {
   const { key, stage, sub } = route();
   search.parentElement.style.visibility = key ? "hidden" : "";
-  if (key === "CDLC" && stage && sub) viewSubtask(key, stage, sub);
+  if (key === "CDLC" && stage === "history" && sub) viewChange(sub);
+  else if (key === "CDLC" && stage === "history") viewHistory();
+  else if (key === "CDLC" && stage && sub) viewSubtask(key, stage, sub);
   else if (key === "CDLC" && stage) viewStage(key, stage);
   else if (key === "CDLC")     viewEpic(key);
   else if (key)                viewSpace(key);

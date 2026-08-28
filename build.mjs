@@ -30,6 +30,14 @@ if (!CDLC_RE.test(fragment)) {
 }
 fragment = fragment.replace(CDLC_RE, "/*__CDLC_EPIC__*/" + JSON.stringify(cdlc) + "/*__END__*/");
 
+const changes = JSON.parse(await readFile(new URL("./data/changes.json", import.meta.url), "utf8"));
+const CH_RE = /\/\*__CHANGES__\*\/[\s\S]*?\/\*__ENDC__\*\//;
+if (!CH_RE.test(fragment)) {
+  console.error("src/page.html is missing the /*__CHANGES__*/ placeholder — aborting.");
+  process.exit(1);
+}
+fragment = fragment.replace(CH_RE, "/*__CHANGES__*/" + JSON.stringify(changes) + "/*__ENDC__*/");
+
 const pairs = await loadMap();
 if (REDACT) {
   if (!pairs) {
