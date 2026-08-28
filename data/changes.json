@@ -798,7 +798,7 @@
     "title": "JIRA Workflow",
     "body": "Closed with no description recorded, so what changed here is not recoverable from Jira.",
     "affected": [
-      "Unknown"
+      "Miscellaneous"
     ],
     "before": null,
     "after": null,
@@ -842,7 +842,7 @@
     "body": "Recorded only as \"apply the approved changes to the review workflows, update documentation and communicate the new process\". The approved changes themselves were not written down in the ticket.",
     "affected": [
       "Review",
-      "Unknown"
+      "Miscellaneous"
     ],
     "before": null,
     "after": null,
