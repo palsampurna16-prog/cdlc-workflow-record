@@ -47,8 +47,8 @@ const STAGES = [
     note:"Taken from the Jira automation rules, not from a sample. The chain is strictly sequential: "+
          "Final Slides → PPT generation → Base Articulate file → Graphics → Articulate Review, which then "+
          "creates Translations, Assessment, SME Review and External Review together. A Topic therefore carries "+
-         "different numbers of subtasks depending how far along it is. CDLC: Topic Corrections is not listed: "+
-         "it exists as a work type with 284 tickets, but no enabled rule creates it.",
+         "different numbers of subtasks depending how far along it is. Topic Corrections is the exception: no rule "+
+         "creates it, it is added by hand whenever corrections are needed.",
     subtasks: [
       sub("Final Slides","CDLC: Topic Final Slides","CDLC-9314",
           "Created with the Topic itself."),
@@ -70,38 +70,40 @@ const STAGES = [
           "Created when Articulate Review is marked Done."),
       sub("External Review","CDLC: Content Review",null,
           "Created when Articulate Review is marked Done."),
+      sub("Topic Corrections","CDLC: Topic Corrections",null,
+          "Not automated. Created by hand under a Topic whenever corrections are needed."),
     ] },
 
   { id:"digitization", name:"Digitization Process", type:"Digitization - Data Sheet Creation", example:"CDLC-9301",
     blurb:"Closes the course. One ticket holding every step that turns finished content into a live product on SkillCat.",
-    note:"The container ticket is typed Digitization - Data Sheet Creation even though Data Sheet Creation is only "+
-         "one of the twelve steps inside it — the type name understates what the ticket holds. Five of the twelve "+
-         "subtasks borrow work types from outside the Digitization family.",
+    note:"Taken from the Jira automation rules. Moving the Epic to Digitization creates this ticket and seven of "+
+         "its subtasks at once; the remaining five are chained off those. The container is typed Digitization - "+
+         "Data Sheet Creation even though Data Sheet Creation is only one of the twelve steps inside it.",
     subtasks: [
       sub("Request Badge and Course Image","Digitization - Badge Creation (Sub-task)","CDLC-9302",
-          "Commissions the course badge and cover image."),
+          "Created with the Digitization Process ticket."),
       sub("Upload to AWS + Planning","Digitization - Upload to AWS + Planning (sub-task)","CDLC-9303",
-          "Moves the built course into AWS and plans its release."),
+          "Created with the Digitization Process ticket."),
       sub("Review","Digitization - Review (sub-task)","CDLC-9304",
-          "Checks the uploaded course before it is restored onto the platform."),
+          "Created with the Digitization Process ticket."),
       sub("Restore on SkillCat","Digitization - Restore on SkillCat (sub-task)","CDLC-9305",
-          "Puts the course onto SkillCat itself."),
+          "Created with the Digitization Process ticket."),
       sub("Create Data Sheet","Digitization - Data Sheet Creation (sub-task)","CDLC-9306",
-          "Produces the course data sheet."),
+          "Created with the Digitization Process ticket."),
       sub("Course Metadata","CDLC: Content Upkeep (sub-task)","CDLC-9307",
-          "Fills in the descriptive data the platform lists the course by."),
+          "Created with the Digitization Process ticket."),
       sub("Create Course Introduction","CDLC: Content Upkeep (sub-task)","CDLC-9308",
-          "Writes the course's introduction."),
+          "Created with the Digitization Process ticket."),
       sub("QA – Generate Performance Report","CDLC: Generate Performance Report (sub-task)","CDLC-9405",
-          "Generates the QA performance report for the finished course."),
+          "Created when Review is marked Done."),
       sub("Update Course Catalog","Digitization - Course Catalog Updating (sub-task)","CDLC-9516",
-          "Adds the course to the catalog so learners can find it."),
+          "Created when Restore on SkillCat is marked Done."),
       sub("Run Image Archiving","CDLC: Run Image Archiving Automation (sub-task)","CDLC-9517",
-          "Runs the automation that archives the course's source images."),
+          "Created when Restore on SkillCat is marked Done."),
       sub("Move Source Files","CDLC: Move Source Files (sub-task)","CDLC-9529",
-          "Files the course's source material in its final location."),
+          "Created when Run Image Archiving is marked Done."),
       sub("Restrict Course Folder","CDLC: Restrict Course Folder (sub-task)","CDLC-9591",
-          "Locks down the course folder now that the course is published."),
+          "Created when Generate Performance Report is marked Done or Suspended."),
     ] },
 ];
 

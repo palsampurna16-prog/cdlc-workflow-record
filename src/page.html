@@ -294,8 +294,9 @@ function workflowGraph(tr) {
   `</div>`;
 }
 
-function facts(o) {
-  return `<dl class="facts">
+function facts(o, extra) {
+  return `<dl class="facts">` +
+     (extra ? `<div class="fact"><dt>Created</dt><dd style="font-weight:400">${esc(extra)}</dd></div>` : "") + `
      <div class="fact"><dt>Work type</dt><dd>${esc(o.type)}</dd></div>
      <div class="fact"><dt>Workflow</dt><dd>${esc(o.workflow)}</dd></div>
      <div class="fact"><dt>Tickets ever</dt><dd>${o.usage ? o.usage.ever.toLocaleString() : "&mdash;"}</dd></div>
@@ -448,7 +449,7 @@ function viewSubtask(key, stageId, subId) {
        <p class="eyebrow">Subtask of ${esc(st.name)}</p>
        <h1>${esc(t.name)}</h1>
      </div>` +
-    facts(t) +
+    facts(t, t.blurb) +
     `<h2>Its workflow</h2>
      ${workflowGraph(t.transitions)}
      <p class="example">All ${t.statuses.length} statuses:

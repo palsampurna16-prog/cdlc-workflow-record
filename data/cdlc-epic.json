@@ -356,7 +356,7 @@
       "type": "CDLC: Topic",
       "example": "CDLC-9313",
       "blurb": "The body of the course. One Topic per teaching unit, each carrying the same four production subtasks. The number of topics varies by course — the reference epic CDLC-8592 has four.",
-      "note": "Taken from the Jira automation rules, not from a sample. The chain is strictly sequential: Final Slides → PPT generation → Base Articulate file → Graphics → Articulate Review, which then creates Translations, Assessment, SME Review and External Review together. A Topic therefore carries different numbers of subtasks depending how far along it is. CDLC: Topic Corrections is not listed: it exists as a work type with 284 tickets, but no enabled rule creates it.",
+      "note": "Taken from the Jira automation rules, not from a sample. The chain is strictly sequential: Final Slides → PPT generation → Base Articulate file → Graphics → Articulate Review, which then creates Translations, Assessment, SME Review and External Review together. A Topic therefore carries different numbers of subtasks depending how far along it is. Topic Corrections is the exception: no rule creates it, it is added by hand whenever corrections are needed.",
       "subtasks": [
         {
           "id": "final-slides",
@@ -1280,6 +1280,118 @@
               "label": "Review Fail"
             }
           ]
+        },
+        {
+          "id": "topic-corrections",
+          "name": "Topic Corrections",
+          "example": null,
+          "blurb": "Not automated. Created by hand under a Topic whenever corrections are needed.",
+          "type": "CDLC: Topic Corrections",
+          "workflow": "CDLC: Corrections",
+          "statuses": [
+            "In Review",
+            "Assigned",
+            "Done",
+            "Rejected",
+            "On Hold",
+            "To Do",
+            "In Progress"
+          ],
+          "usage": {
+            "ever": 284,
+            "recent": 222
+          },
+          "transitions": [
+            {
+              "kind": "start",
+              "to": "To Do"
+            },
+            {
+              "kind": "any",
+              "to": "To Do",
+              "label": "To Do"
+            },
+            {
+              "kind": "edge",
+              "from": [
+                "Assigned"
+              ],
+              "to": "In Progress",
+              "label": "Work begun"
+            },
+            {
+              "kind": "edge",
+              "from": [
+                "To Do"
+              ],
+              "to": "Assigned",
+              "label": "Assign to team member"
+            },
+            {
+              "kind": "edge",
+              "from": [
+                "In Progress"
+              ],
+              "to": "In Review",
+              "label": "Sent for Review"
+            },
+            {
+              "kind": "edge",
+              "from": [
+                "In Review"
+              ],
+              "to": "Done",
+              "label": "Approved"
+            },
+            {
+              "kind": "edge",
+              "from": [
+                "To Do"
+              ],
+              "to": "On Hold",
+              "label": "Need more info"
+            },
+            {
+              "kind": "edge",
+              "from": [
+                "To Do"
+              ],
+              "to": "Rejected",
+              "label": "Rejected"
+            },
+            {
+              "kind": "edge",
+              "from": [
+                "On Hold"
+              ],
+              "to": "Rejected",
+              "label": "Rejected"
+            },
+            {
+              "kind": "edge",
+              "from": [
+                "On Hold"
+              ],
+              "to": "In Progress",
+              "label": "Work begun"
+            },
+            {
+              "kind": "edge",
+              "from": [
+                "In Review"
+              ],
+              "to": "In Progress",
+              "label": "Review Fail"
+            },
+            {
+              "kind": "edge",
+              "from": [
+                "In Progress"
+              ],
+              "to": "Rejected",
+              "label": "Task archived"
+            }
+          ]
         }
       ],
       "workflow": "CDLC: Topic",
@@ -1391,13 +1503,13 @@
       "type": "Digitization - Data Sheet Creation",
       "example": "CDLC-9301",
       "blurb": "Closes the course. One ticket holding every step that turns finished content into a live product on SkillCat.",
-      "note": "The container ticket is typed Digitization - Data Sheet Creation even though Data Sheet Creation is only one of the twelve steps inside it — the type name understates what the ticket holds. Five of the twelve subtasks borrow work types from outside the Digitization family.",
+      "note": "Taken from the Jira automation rules. Moving the Epic to Digitization creates this ticket and seven of its subtasks at once; the remaining five are chained off those. The container is typed Digitization - Data Sheet Creation even though Data Sheet Creation is only one of the twelve steps inside it.",
       "subtasks": [
         {
           "id": "request-badge-and-course-image",
           "name": "Request Badge and Course Image",
           "example": "CDLC-9302",
-          "blurb": "Commissions the course badge and cover image.",
+          "blurb": "Created with the Digitization Process ticket.",
           "type": "Digitization - Badge Creation (Sub-task)",
           "workflow": "Digitization - Badge Creation",
           "statuses": [
@@ -1467,7 +1579,7 @@
           "id": "upload-to-aws-planning",
           "name": "Upload to AWS + Planning",
           "example": "CDLC-9303",
-          "blurb": "Moves the built course into AWS and plans its release.",
+          "blurb": "Created with the Digitization Process ticket.",
           "type": "Digitization - Upload to AWS + Planning (sub-task)",
           "workflow": "Digitization - Upload to AWS + Planning",
           "statuses": [
@@ -1570,7 +1682,7 @@
           "id": "review",
           "name": "Review",
           "example": "CDLC-9304",
-          "blurb": "Checks the uploaded course before it is restored onto the platform.",
+          "blurb": "Created with the Digitization Process ticket.",
           "type": "Digitization - Review (sub-task)",
           "workflow": "Digitization - Review",
           "statuses": [
@@ -1629,7 +1741,7 @@
           "id": "restore-on-skillcat",
           "name": "Restore on SkillCat",
           "example": "CDLC-9305",
-          "blurb": "Puts the course onto SkillCat itself.",
+          "blurb": "Created with the Digitization Process ticket.",
           "type": "Digitization - Restore on SkillCat (sub-task)",
           "workflow": "Digitization - Restore on SkillCat",
           "statuses": [
@@ -1718,7 +1830,7 @@
           "id": "create-data-sheet",
           "name": "Create Data Sheet",
           "example": "CDLC-9306",
-          "blurb": "Produces the course data sheet.",
+          "blurb": "Created with the Digitization Process ticket.",
           "type": "Digitization - Data Sheet Creation (sub-task)",
           "workflow": "Digitization - Data Sheet Creation",
           "statuses": [
@@ -1781,7 +1893,7 @@
           "id": "course-metadata",
           "name": "Course Metadata",
           "example": "CDLC-9307",
-          "blurb": "Fills in the descriptive data the platform lists the course by.",
+          "blurb": "Created with the Digitization Process ticket.",
           "type": "CDLC: Content Upkeep (sub-task)",
           "workflow": "SGP: Task",
           "statuses": [
@@ -1896,7 +2008,7 @@
           "id": "create-course-introduction",
           "name": "Create Course Introduction",
           "example": "CDLC-9308",
-          "blurb": "Writes the course's introduction.",
+          "blurb": "Created with the Digitization Process ticket.",
           "type": "CDLC: Content Upkeep (sub-task)",
           "workflow": "SGP: Task",
           "statuses": [
@@ -2011,7 +2123,7 @@
           "id": "qa-generate-performance-report",
           "name": "QA – Generate Performance Report",
           "example": "CDLC-9405",
-          "blurb": "Generates the QA performance report for the finished course.",
+          "blurb": "Created when Review is marked Done.",
           "type": "CDLC: Generate Performance Report (sub-task)",
           "workflow": "Generate Performance Report",
           "statuses": [
@@ -2064,7 +2176,7 @@
           "id": "update-course-catalog",
           "name": "Update Course Catalog",
           "example": "CDLC-9516",
-          "blurb": "Adds the course to the catalog so learners can find it.",
+          "blurb": "Created when Restore on SkillCat is marked Done.",
           "type": "Digitization - Course Catalog Updating (sub-task)",
           "workflow": "Digitization - Course Catalog Updating",
           "statuses": [
@@ -2127,7 +2239,7 @@
           "id": "run-image-archiving",
           "name": "Run Image Archiving",
           "example": "CDLC-9517",
-          "blurb": "Runs the automation that archives the course's source images.",
+          "blurb": "Created when Restore on SkillCat is marked Done.",
           "type": "CDLC: Run Image Archiving Automation (sub-task)",
           "workflow": "CDLC: Run Image Archiving Automation",
           "statuses": [
@@ -2197,7 +2309,7 @@
           "id": "move-source-files",
           "name": "Move Source Files",
           "example": "CDLC-9529",
-          "blurb": "Files the course's source material in its final location.",
+          "blurb": "Created when Run Image Archiving is marked Done.",
           "type": "CDLC: Move Source Files (sub-task)",
           "workflow": "CDLC: Move Source Files",
           "statuses": [
@@ -2261,7 +2373,7 @@
           "id": "restrict-course-folder",
           "name": "Restrict Course Folder",
           "example": "CDLC-9591",
-          "blurb": "Locks down the course folder now that the course is published.",
+          "blurb": "Created when Generate Performance Report is marked Done or Suspended.",
           "type": "CDLC: Restrict Course Folder (sub-task)",
           "workflow": "CDLC: Restrict Course Folder",
           "statuses": [
