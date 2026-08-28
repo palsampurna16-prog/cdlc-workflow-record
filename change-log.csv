@@ -1,4 +1,5 @@
 ﻿"Date","Time","Changed by","What changed","Files touched","Files","Reference"
+"2026-08-28","21:36","github-actions[bot]","chore: update the change log [skip ci]","1","change-log.csv","d524d1a"
 "2026-08-29","00:36","Sampurna Pal","feat: keep an automatic change log as a spreadsheet","3",".github/workflows/changelog.yml, change-log.csv, scripts/make-changelog.mjs","0469811"
 "2026-08-29","00:26","Sampurna Pal","chore: remove every em dash from the page and the repo","13","README.md, build.mjs, data/cdlc-epic.json, data/changes.json, data/epic-reference.json, data/process-doc.json, data/process.json, index.html, scripts/build-cdlc.mjs, scripts/redact.mjs, scripts/refresh-usage.mjs, scripts/sync-from-export.mjs, src/page.html","36d37b7"
 "2026-08-29","00:21","Sampurna Pal","refactor: plain language on the Fields tab","3","data/fields.json, index.html, src/page.html","d2b3e90"
