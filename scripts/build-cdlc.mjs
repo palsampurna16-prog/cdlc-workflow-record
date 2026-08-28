@@ -44,28 +44,32 @@ const STAGES = [
   { id:"topic", name:"Topic 1 … N", type:"CDLC: Topic", example:"CDLC-9313",
     blurb:"The body of the course. One Topic per teaching unit, each carrying the same four production subtasks. "+
           "The number of topics varies by course — the reference epic CDLC-8592 has four.",
-    note:"A Topic's status names the production stage it is sitting in, so the workflow doubles as a pipeline. "+
-         "The subtasks are created by automation, not by hand: marking one Done creates the next. Final Slides → Done "+
-         "creates Graphics and PPT Generation; PPT Generation → Done creates the Base Articulate file; Graphics → Done "+
-         "creates Articulate Review and Corrections; Articulate Review → Done creates Translations and Assessment. "+
-         "Topics therefore carry different numbers of subtasks depending how far along they are, not because practice varies.",
+    note:"Taken from the Jira automation rules, not from a sample. The chain is strictly sequential: "+
+         "Final Slides → PPT generation → Base Articulate file → Graphics → Articulate Review, which then "+
+         "creates Translations, Assessment, SME Review and External Review together. A Topic therefore carries "+
+         "different numbers of subtasks depending how far along it is. CDLC: Topic Corrections is not listed: "+
+         "it exists as a work type with 284 tickets, but no enabled rule creates it.",
     subtasks: [
       sub("Final Slides","CDLC: Topic Final Slides","CDLC-9314",
-          "The teaching content itself, written out as finished slides. First subtask created under a Topic."),
-      sub("Graphics","CDLC: Topic Graphics","CDLC-9594",
-          "Artwork for the topic. Created when Final Slides is marked Done."),
+          "Created with the Topic itself."),
+      sub("Graphic Definition","Sub-task",null,
+          "Created with the Topic itself. Uses the generic Sub-task type — there is no work type for it."),
       sub("PPT generation","CDLC: Topic PPT Generation","CDLC-9595",
-          "Automated build of the PowerPoint deck. Created when Final Slides is marked Done."),
+          "Created when Final Slides is marked Done."),
       sub("Base Articulate file","CDLC: Base Articulate file creation","CDLC-9596",
-          "The Articulate source file the published course is assembled from. Created when PPT generation is marked Done."),
+          "Created when PPT generation is marked Done, for Informational, Instructional, Interview and Practical courses only."),
+      sub("Graphics","CDLC: Topic Graphics","CDLC-9594",
+          "Created when the Base Articulate file is marked Done."),
       sub("Articulate Review","CDLC: Articulate Review",null,
-          "Review of the assembled Articulate file by QA and SME. Created when Graphics is marked Done."),
-      sub("Topic Corrections","CDLC: Topic Corrections",null,
-          "Anything the Instructional Designer wants changed after review. Created alongside Articulate Review."),
-      sub("Topic Translations","CDLC: Topic Translations",null,
-          "Spanish translation of the reviewed file. Created when Articulate Review is marked Done."),
-      sub("Topic Assessment","CDLC: Topic Assessment","CDLC-9276",
-          "The topic's assessment questions. Created when Articulate Review is marked Done."),
+          "Created when Graphics is marked Done."),
+      sub("Translations","CDLC: Topic Translations",null,
+          "Created when Articulate Review is marked Done."),
+      sub("Assessment","CDLC: Topic Assessment","CDLC-9276",
+          "Created when Articulate Review is marked Done."),
+      sub("SME Review","CDLC: Content Review",null,
+          "Created when Articulate Review is marked Done."),
+      sub("External Review","CDLC: Content Review",null,
+          "Created when Articulate Review is marked Done."),
     ] },
 
   { id:"digitization", name:"Digitization Process", type:"Digitization - Data Sheet Creation", example:"CDLC-9301",

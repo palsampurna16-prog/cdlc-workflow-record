@@ -356,13 +356,13 @@
       "type": "CDLC: Topic",
       "example": "CDLC-9313",
       "blurb": "The body of the course. One Topic per teaching unit, each carrying the same four production subtasks. The number of topics varies by course — the reference epic CDLC-8592 has four.",
-      "note": "A Topic's status names the production stage it is sitting in, so the workflow doubles as a pipeline. The subtasks are created by automation, not by hand: marking one Done creates the next. Final Slides → Done creates Graphics and PPT Generation; PPT Generation → Done creates the Base Articulate file; Graphics → Done creates Articulate Review and Corrections; Articulate Review → Done creates Translations and Assessment. Topics therefore carry different numbers of subtasks depending how far along they are, not because practice varies.",
+      "note": "Taken from the Jira automation rules, not from a sample. The chain is strictly sequential: Final Slides → PPT generation → Base Articulate file → Graphics → Articulate Review, which then creates Translations, Assessment, SME Review and External Review together. A Topic therefore carries different numbers of subtasks depending how far along it is. CDLC: Topic Corrections is not listed: it exists as a work type with 284 tickets, but no enabled rule creates it.",
       "subtasks": [
         {
           "id": "final-slides",
           "name": "Final Slides",
           "example": "CDLC-9314",
-          "blurb": "The teaching content itself, written out as finished slides. First subtask created under a Topic.",
+          "blurb": "Created with the Topic itself.",
           "type": "CDLC: Topic Final Slides",
           "workflow": "CDLC: Topic Final Slides",
           "statuses": [
@@ -461,24 +461,23 @@
           ]
         },
         {
-          "id": "graphics",
-          "name": "Graphics",
-          "example": "CDLC-9594",
-          "blurb": "Artwork for the topic. Created when Final Slides is marked Done.",
-          "type": "CDLC: Topic Graphics",
-          "workflow": "CDLC: Topic Graphics",
+          "id": "graphic-definition",
+          "name": "Graphic Definition",
+          "example": null,
+          "blurb": "Created with the Topic itself. Uses the generic Sub-task type — there is no work type for it.",
+          "type": "Sub-task",
+          "workflow": "CDLC: Task/Subtask",
           "statuses": [
             "In Review",
-            "Send to Instructional Designer",
             "Done",
-            "Complete checklist",
+            "On Hold",
             "To Do",
             "Suspended",
             "In Progress"
           ],
           "usage": {
-            "ever": 447,
-            "recent": 242
+            "ever": 169,
+            "recent": 161
           },
           "transitions": [
             {
@@ -491,68 +490,73 @@
               "label": "Suspended"
             },
             {
+              "kind": "any",
+              "to": "On Hold",
+              "label": "On Hold"
+            },
+            {
+              "kind": "edge",
+              "from": [
+                "On Hold"
+              ],
+              "to": "In Progress",
+              "label": "Progress"
+            },
+            {
+              "kind": "edge",
+              "from": [
+                "On Hold"
+              ],
+              "to": "In Review",
+              "label": "Review"
+            },
+            {
               "kind": "edge",
               "from": [
                 "To Do"
               ],
               "to": "In Progress",
-              "label": "Graphic work begun"
+              "label": "Progress"
             },
             {
               "kind": "edge",
               "from": [
                 "In Progress"
               ],
-              "to": "Complete checklist",
-              "label": "Complete checklist"
+              "to": "In Review",
+              "label": "Review"
             },
             {
               "kind": "edge",
               "from": [
                 "In Review"
               ],
-              "to": "Send to Instructional Designer",
-              "label": "Send to Instructional Designer"
-            },
-            {
-              "kind": "edge",
-              "from": [
-                "Send to Instructional Designer"
-              ],
               "to": "In Progress",
-              "label": "Corrections"
+              "label": "Review Fail"
             },
             {
               "kind": "edge",
               "from": [
-                "Send to Instructional Designer"
+                "In Review"
               ],
               "to": "Done",
-              "label": "Done"
+              "label": "Completion"
             },
             {
               "kind": "edge",
               "from": [
-                "Complete checklist"
-              ],
-              "to": "In Review",
-              "label": "Sent to Manager for Review"
-            },
-            {
-              "kind": "edge",
-              "from": [
-                "In Review"
-              ],
-              "to": "In Progress",
-              "label": "Revise Graphic"
-            },
-            {
-              "kind": "edge",
-              "from": [
-                "Suspended"
+                "Done"
               ],
               "to": "To Do",
-              "label": "Reopen"
+              "label": "Start Over"
+            },
+            {
+              "kind": "edge",
+              "from": [
+                "On Hold"
+              ],
+              "to": "To Do",
+              "label": "Start Over"
             }
           ]
         },
@@ -560,7 +564,7 @@
           "id": "ppt-generation",
           "name": "PPT generation",
           "example": "CDLC-9595",
-          "blurb": "Automated build of the PowerPoint deck. Created when Final Slides is marked Done.",
+          "blurb": "Created when Final Slides is marked Done.",
           "type": "CDLC: Topic PPT Generation",
           "workflow": "PPT generation",
           "statuses": [
@@ -627,7 +631,7 @@
           "id": "base-articulate-file",
           "name": "Base Articulate file",
           "example": "CDLC-9596",
-          "blurb": "The Articulate source file the published course is assembled from. Created when PPT generation is marked Done.",
+          "blurb": "Created when PPT generation is marked Done, for Informational, Instructional, Interview and Practical courses only.",
           "type": "CDLC: Base Articulate file creation",
           "workflow": "CDLC: Base Articulate file creation",
           "statuses": [
@@ -745,10 +749,106 @@
           ]
         },
         {
+          "id": "graphics",
+          "name": "Graphics",
+          "example": "CDLC-9594",
+          "blurb": "Created when the Base Articulate file is marked Done.",
+          "type": "CDLC: Topic Graphics",
+          "workflow": "CDLC: Topic Graphics",
+          "statuses": [
+            "In Review",
+            "Send to Instructional Designer",
+            "Done",
+            "Complete checklist",
+            "To Do",
+            "Suspended",
+            "In Progress"
+          ],
+          "usage": {
+            "ever": 447,
+            "recent": 242
+          },
+          "transitions": [
+            {
+              "kind": "start",
+              "to": "To Do"
+            },
+            {
+              "kind": "any",
+              "to": "Suspended",
+              "label": "Suspended"
+            },
+            {
+              "kind": "edge",
+              "from": [
+                "To Do"
+              ],
+              "to": "In Progress",
+              "label": "Graphic work begun"
+            },
+            {
+              "kind": "edge",
+              "from": [
+                "In Progress"
+              ],
+              "to": "Complete checklist",
+              "label": "Complete checklist"
+            },
+            {
+              "kind": "edge",
+              "from": [
+                "In Review"
+              ],
+              "to": "Send to Instructional Designer",
+              "label": "Send to Instructional Designer"
+            },
+            {
+              "kind": "edge",
+              "from": [
+                "Send to Instructional Designer"
+              ],
+              "to": "In Progress",
+              "label": "Corrections"
+            },
+            {
+              "kind": "edge",
+              "from": [
+                "Send to Instructional Designer"
+              ],
+              "to": "Done",
+              "label": "Done"
+            },
+            {
+              "kind": "edge",
+              "from": [
+                "Complete checklist"
+              ],
+              "to": "In Review",
+              "label": "Sent to Manager for Review"
+            },
+            {
+              "kind": "edge",
+              "from": [
+                "In Review"
+              ],
+              "to": "In Progress",
+              "label": "Revise Graphic"
+            },
+            {
+              "kind": "edge",
+              "from": [
+                "Suspended"
+              ],
+              "to": "To Do",
+              "label": "Reopen"
+            }
+          ]
+        },
+        {
           "id": "articulate-review",
           "name": "Articulate Review",
           "example": null,
-          "blurb": "Review of the assembled Articulate file by QA and SME. Created when Graphics is marked Done.",
+          "blurb": "Created when Graphics is marked Done.",
           "type": "CDLC: Articulate Review",
           "workflow": "CDLC: Articulate review",
           "statuses": [
@@ -871,122 +971,10 @@
           ]
         },
         {
-          "id": "topic-corrections",
-          "name": "Topic Corrections",
+          "id": "translations",
+          "name": "Translations",
           "example": null,
-          "blurb": "Anything the Instructional Designer wants changed after review. Created alongside Articulate Review.",
-          "type": "CDLC: Topic Corrections",
-          "workflow": "CDLC: Corrections",
-          "statuses": [
-            "In Review",
-            "Assigned",
-            "Done",
-            "Rejected",
-            "On Hold",
-            "To Do",
-            "In Progress"
-          ],
-          "usage": {
-            "ever": 284,
-            "recent": 222
-          },
-          "transitions": [
-            {
-              "kind": "start",
-              "to": "To Do"
-            },
-            {
-              "kind": "any",
-              "to": "To Do",
-              "label": "To Do"
-            },
-            {
-              "kind": "edge",
-              "from": [
-                "Assigned"
-              ],
-              "to": "In Progress",
-              "label": "Work begun"
-            },
-            {
-              "kind": "edge",
-              "from": [
-                "To Do"
-              ],
-              "to": "Assigned",
-              "label": "Assign to team member"
-            },
-            {
-              "kind": "edge",
-              "from": [
-                "In Progress"
-              ],
-              "to": "In Review",
-              "label": "Sent for Review"
-            },
-            {
-              "kind": "edge",
-              "from": [
-                "In Review"
-              ],
-              "to": "Done",
-              "label": "Approved"
-            },
-            {
-              "kind": "edge",
-              "from": [
-                "To Do"
-              ],
-              "to": "On Hold",
-              "label": "Need more info"
-            },
-            {
-              "kind": "edge",
-              "from": [
-                "To Do"
-              ],
-              "to": "Rejected",
-              "label": "Rejected"
-            },
-            {
-              "kind": "edge",
-              "from": [
-                "On Hold"
-              ],
-              "to": "Rejected",
-              "label": "Rejected"
-            },
-            {
-              "kind": "edge",
-              "from": [
-                "On Hold"
-              ],
-              "to": "In Progress",
-              "label": "Work begun"
-            },
-            {
-              "kind": "edge",
-              "from": [
-                "In Review"
-              ],
-              "to": "In Progress",
-              "label": "Review Fail"
-            },
-            {
-              "kind": "edge",
-              "from": [
-                "In Progress"
-              ],
-              "to": "Rejected",
-              "label": "Task archived"
-            }
-          ]
-        },
-        {
-          "id": "topic-translations",
-          "name": "Topic Translations",
-          "example": null,
-          "blurb": "Spanish translation of the reviewed file. Created when Articulate Review is marked Done.",
+          "blurb": "Created when Articulate Review is marked Done.",
           "type": "CDLC: Topic Translations",
           "workflow": "CDLC: Spanish Translations",
           "statuses": [
@@ -1084,10 +1072,10 @@
           ]
         },
         {
-          "id": "topic-assessment",
-          "name": "Topic Assessment",
+          "id": "assessment",
+          "name": "Assessment",
           "example": "CDLC-9276",
-          "blurb": "The topic's assessment questions. Created when Articulate Review is marked Done.",
+          "blurb": "Created when Articulate Review is marked Done.",
           "type": "CDLC: Topic Assessment",
           "workflow": "CDLC: Topic Assessment",
           "statuses": [
@@ -1162,6 +1150,134 @@
               ],
               "to": "Done",
               "label": "Done"
+            }
+          ]
+        },
+        {
+          "id": "sme-review",
+          "name": "SME Review",
+          "example": null,
+          "blurb": "Created when Articulate Review is marked Done.",
+          "type": "CDLC: Content Review",
+          "workflow": "CDLC: Reviews",
+          "statuses": [
+            "In Review",
+            "Done",
+            "On Hold",
+            "Suspended",
+            "In Progress"
+          ],
+          "usage": {
+            "ever": 518,
+            "recent": 518
+          },
+          "transitions": [
+            {
+              "kind": "start",
+              "to": "In Review"
+            },
+            {
+              "kind": "any",
+              "to": "In Review",
+              "label": "In Review"
+            },
+            {
+              "kind": "any",
+              "to": "Suspended",
+              "label": "Suspended"
+            },
+            {
+              "kind": "any",
+              "to": "On Hold",
+              "label": "On Hold"
+            },
+            {
+              "kind": "edge",
+              "from": [
+                "In Progress"
+              ],
+              "to": "In Review",
+              "label": "Sent for Review"
+            },
+            {
+              "kind": "edge",
+              "from": [
+                "In Review"
+              ],
+              "to": "Done",
+              "label": "Approved"
+            },
+            {
+              "kind": "edge",
+              "from": [
+                "In Review"
+              ],
+              "to": "In Progress",
+              "label": "Review Fail"
+            }
+          ]
+        },
+        {
+          "id": "external-review",
+          "name": "External Review",
+          "example": null,
+          "blurb": "Created when Articulate Review is marked Done.",
+          "type": "CDLC: Content Review",
+          "workflow": "CDLC: Reviews",
+          "statuses": [
+            "In Review",
+            "Done",
+            "On Hold",
+            "Suspended",
+            "In Progress"
+          ],
+          "usage": {
+            "ever": 518,
+            "recent": 518
+          },
+          "transitions": [
+            {
+              "kind": "start",
+              "to": "In Review"
+            },
+            {
+              "kind": "any",
+              "to": "In Review",
+              "label": "In Review"
+            },
+            {
+              "kind": "any",
+              "to": "Suspended",
+              "label": "Suspended"
+            },
+            {
+              "kind": "any",
+              "to": "On Hold",
+              "label": "On Hold"
+            },
+            {
+              "kind": "edge",
+              "from": [
+                "In Progress"
+              ],
+              "to": "In Review",
+              "label": "Sent for Review"
+            },
+            {
+              "kind": "edge",
+              "from": [
+                "In Review"
+              ],
+              "to": "Done",
+              "label": "Approved"
+            },
+            {
+              "kind": "edge",
+              "from": [
+                "In Review"
+              ],
+              "to": "In Progress",
+              "label": "Review Fail"
             }
           ]
         }
