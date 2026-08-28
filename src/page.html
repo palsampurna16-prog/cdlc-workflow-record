@@ -328,6 +328,10 @@ button.chip:focus-visible { outline: 2px solid var(--accent); outline-offset: 1p
 .badge.b-dormant { color: var(--warn-fg);     background: var(--warn-bg); }
 .badge.b-never   { color: var(--err-fg);      background: var(--err-bg); }
 
+.ownernote {
+  margin: 8px 0 4px; font-size: 13px; color: var(--muted); max-width: 78ch;
+}
+
 /* ---------- workflow transitions ---------- */
 
 .flow { margin-top: 2px; }
@@ -470,6 +474,9 @@ footer { border-top: 1px solid var(--line); padding-top: 16px; color: var(--mute
     <button class="tabbtn" id="tab-proc" role="tab" aria-selected="false" aria-controls="panel-proc">
       The process <em>7</em>
     </button>
+    <button class="tabbtn" id="tab-fields" role="tab" aria-selected="false" aria-controls="panel-fields">
+      Fields <em>52</em>
+    </button>
   </div>
 
   <!-- ======================= CURRENT STATE ======================= -->
@@ -580,6 +587,50 @@ footer { border-top: 1px solid var(--line); padding-top: 16px; color: var(--mute
         <p>In order. Work type chips link through to the inventory.</p>
       </div>
       <div id="out-proc"></div>
+    </section>
+  </div>
+
+  <!-- ======================= FIELDS ======================= -->
+  <div class="panel" id="panel-fields" role="tabpanel" aria-labelledby="tab-fields" hidden>
+
+    <details class="caveat">
+      <summary>Where this comes from</summary>
+      <div class="caveat-body">
+      <p><strong>The field list is from Jira; the ownership is not.</strong> Every field below is
+        read from the CDLC create metadata, so the names, types, scope and required flags are
+        live configuration. Who fills each one comes from the Content Team SOP and from the
+        change tickets that introduced the field, because Jira has no concept of an owner.</p>
+      <p><strong>Only five fields are required by Jira itself</strong>, and four of those are set
+        for you. Everything else is optional at creation, which means the discipline lives in
+        transition validators rather than in the field configuration. Where a validator does
+        enforce a field, it is named on the row.</p>
+      </div>
+    </details>
+
+    <section>
+      <div class="section-head">
+        <h2>The gap</h2>
+        <p>How much of the field set the SOP actually assigns an owner to.</p>
+      </div>
+      <div class="counts">
+        <div class="count"><b>52</b><span>Fields</span></div>
+        <div class="count"><b>24</b><span>With an owner</span></div>
+        <div class="count"><b>18</b><span>Undocumented</span></div>
+        <div class="count"><b>5</b><span>Required by Jira</span></div>
+        <div class="count"><b>9</b><span>Validator-enforced</span></div>
+      </div>
+    </section>
+
+    <section>
+      <div class="section-head">
+        <h2>Who fills what</h2>
+        <p>Grouped by the role responsible. Ticket keys link to the change that introduced the rule.</p>
+      </div>
+      <div class="controls">
+        <input id="q-fields" type="search" placeholder="Search fields…" autocomplete="off" aria-label="Search fields">
+        <span class="hitcount" id="hits-fields"></span>
+      </div>
+      <div id="out-fields"></div>
     </section>
   </div>
 
@@ -1098,7 +1149,8 @@ for (const [, types] of DATA)
 const tabs = {
   now: { btn: document.getElementById("tab-now"), panel: document.getElementById("panel-now") },
   log: { btn: document.getElementById("tab-log"), panel: document.getElementById("panel-log") },
-  proc: { btn: document.getElementById("tab-proc"), panel: document.getElementById("panel-proc") }
+  proc: { btn: document.getElementById("tab-proc"), panel: document.getElementById("panel-proc") },
+  fields: { btn: document.getElementById("tab-fields"), panel: document.getElementById("panel-fields") }
 };
 
 function showTab(which) {
@@ -1111,6 +1163,7 @@ function showTab(which) {
 tabs.now.btn.addEventListener("click", () => showTab("now"));
 tabs.log.btn.addEventListener("click", () => showTab("log"));
 tabs.proc.btn.addEventListener("click", () => showTab("proc"));
+tabs.fields.btn.addEventListener("click", () => showTab("fields"));
 
 /* ============================ INVENTORY ============================ */
 const outNow = document.getElementById("out-now");
@@ -1453,5 +1506,135 @@ function renderProc() {
 }
 
 renderProc();
+
+/* ============================ FIELDS ============================ */
+/* Field names, types, scope and required flags: Jira CDLC create metadata, 29 August 2026.
+   Ownership: Content Team SOP v1.0 plus the change tickets that introduced each field. */
+
+/* [name, type, scope, when it gets filled, enforcing ticket | null] */
+const FIELDS = [
+
+["Jira sets these", "Nobody fills them. They arrive with the ticket or are written by automation.", [
+  ["Project", "project", "All 69 · required", "Fixed when the work item is created", null],
+  ["Issue Type", "issuetype", "All 69 · required", "Chosen at creation, or set by the automation that creates the item", null],
+  ["Reporter", "user", "All 69 · required", "Whoever created the item, or the automation account", null],
+  ["Parent", "issuelink", "68 of 69 · required on sub-tasks", "Set by the automation that creates the child", null],
+  ["Parent Link", "any", "62 of 69", "Maintained by Jira for the hierarchy", null],
+  ["Epic Link", "any", "5 work types", "Legacy hierarchy field, superseded by Parent", null],
+  ["Linked Issues", "array", "63 of 69", "Only when someone links two items by hand", null],
+  ["Attachment", "array", "67 of 69", "Whoever uploads a file", null],
+  ["Epic Percentage Complete", "number", "Epic only", "Automation, recalculated as child items close", "SGP-10441", "auto"],
+  ["Epic Progress Bar", "string", "Epic only", "Automation, alongside the percentage", "SGP-10442", "auto"]
+]],
+
+["Instructional Designers' Team Manager", "Filled at epic creation. The SOP calls these the essential and crucial fields; everything downstream is copied from them, so an epic filled in badly propagates.", [
+  ["Summary", "string", "All 69 · required", "At epic creation, then set by automation on children", null],
+  ["Description", "string", "All 69", "At epic creation. Some work types arrive with it pre-filled as instructions", null],
+  ["Epic Name", "string", "Epic only", "At epic creation", null],
+  ["Course type", "option", "64 of 69", "At epic creation. Decides which child work types get created", null],
+  ["Assignee", "user", "All 69", "At epic creation, then reassigned by hand as work changes hands", null],
+  ["Checklist", "string", "64 of 69", "At epic creation, and again per sub-task before it can leave To Do", "SGP-9998", "val"],
+  ["Instructional Designer", "array", "64 of 69", "At epic creation. Blocks the move to Digitization if empty", "SGP-9998", "val"],
+  ["Visual Designer(s)", "array", "64 of 69", "At epic creation. Blocks the move to Digitization if empty", "SGP-9998", "val"],
+  ["Quality Specialists", "array", "64 of 69", "At epic creation. Blocks the move to Digitization if empty", "SGP-9998", "val"],
+  ["Subject Matter Expert", "array", "64 of 69", "At epic creation", null],
+  ["External Reviewer", "array", "64 of 69", "At epic creation, where the course uses one", null],
+  ["Business Specs", "string", "64 of 69", "At epic creation", null],
+  ["Course outline document", "string", "63 of 69", "At epic creation", null],
+  ["Estimate sheet", "string", "Epic only", "At epic creation", null],
+  ["Topic", "string", "64 of 69", "Named by the ID when the topic is created; copied down after that", null],
+  ["Due date", "date", "All 69", "At epic creation", null],
+  ["Course Folder Link", "string", "64 of 69", "Added on the epic, then cascaded to every child item", "SGP-9553", "auto"]
+]],
+
+["Instructional Designer", "Filled during the work itself rather than at setup.", [
+  ["Final Slides link", "string", "63 of 69", "Added to the Topic once Final Slides exist, so it shows on everything created afterwards", null],
+  ["Target end", "date", "64 of 69", "Required alongside the Checklist before a sub-task can leave To Do", "SGP-9998", "val"]
+]],
+
+["Visual Designer", "Both of these are gates: the work type cannot move on until the link is there.", [
+  ["Articulate Review Link", "string", "63 of 69", "Added at the Graphics stage. Blocks the move out of In Review if empty", "SGP-9998", "val"],
+  ["Final Storyline Link", "string", "64 of 69", "Added after Articulate review. Blocks the move to Done if empty", "SGP-10834", "val"]
+]],
+
+["Digitization", "Produced during digitization and copied back onto the parent items.", [
+  ["Planning Link", "string", "64 of 69", "Added on Upload to AWS + Planning. Blocks the move to In Review if empty", "SGP-9553", "val"],
+  ["Production Link", "string", "64 of 69", "Added on Restore on SkillCat. Blocks the move to In Review if empty", "SGP-9553", "val"],
+  ["Digitization Resource", "array", "64 of 69", "Who is doing the digitization. Renamed from Data Entry Resource", "SGP-9590", "note"]
+]],
+
+["No documented owner", "These exist in Jira but the SOP never says who fills them or when. Some may be dead; some may be quietly load-bearing. Worth a pass before v1.1 of the doc.", [
+  ["Priority", "priority", "All 69", "Not mentioned in the SOP", null],
+  ["Start date", "date", "62 of 69", "Not mentioned. An automation to set start and end dates was requested and never built", "SGP-9745", "note"],
+  ["Pod number", "option", "64 of 69", "Not mentioned in the SOP", null],
+  ["Topic type", "option", "63 of 69", "Not mentioned in the SOP", null],
+  ["Course Difficulty Level", "option", "5 work types", "Not mentioned. Only on Simulation, Feedback and Improvement types", null],
+  ["Simulation Difficulty Level", "option", "3 work types", "Not mentioned. Simulation work types only", null],
+  ["Course category", "string", "Epic only", "Not mentioned in the SOP", null],
+  ["Course competency", "string", "Epic only", "Not mentioned in the SOP", null],
+  ["Course keywords", "string", "Epic only", "Not mentioned, though Update Keywords is a digitization status", null],
+  ["Learning plan", "string", "Epic only", "Not mentioned, though Update Learning Plan is a digitization status", null],
+  ["Guroo Course Link", "string", "Course: Content Creation only", "Not mentioned. That work type is dormant", null],
+  ["Staging Course Link", "string", "Course: Content Creation only", "Not mentioned. That work type is dormant", null],
+  ["SkillCat Course Link", "string", "Course: Content Creation only", "Not mentioned. That work type is dormant", null],
+  ["Articulate Story File Link", "string", "Course: Content Creation only", "Not mentioned. Overlaps with Final Storyline Link", null],
+  ["Storyboard Doc", "string", "Simulation: Content Creation only", "Not mentioned. That work type is dormant", null],
+  ["Learning Objective Doc", "string", "Simulation: Specs only", "Not mentioned. That work type is dormant", null],
+  ["Feedback Source", "array", "Feedback only · required", "Not mentioned. The only custom field Jira marks required anywhere in CDLC", null],
+  ["Feedback Reference Link", "string", "Feedback only", "Not mentioned. That work type is dormant", null]
+]]
+];
+
+const outFields = document.getElementById("out-fields");
+const hitsFields = document.getElementById("hits-fields");
+const qFields = document.getElementById("q-fields");
+
+function renderFields() {
+  const term = qFields.value.trim().toLowerCase();
+  let shown = 0, html = "";
+
+  for (const [owner, note, rows] of FIELDS) {
+    const hit = rows.filter(([n, t, scope, when, tk]) =>
+      !term || [n, t, scope, when, tk || "", owner].join(" ").toLowerCase().includes(term));
+    if (!hit.length) continue;
+    shown += hit.length;
+
+    html += `<div class="fam"><div class="fam-head"><h3>${esc(owner)}</h3>` +
+            `<em>${hit.length} of ${rows.length}</em></div>` +
+            `<p class="ownernote">${esc(note)}</p>`;
+
+    const CHIP = { val:  ["s-open", "Enforced by a validator"],
+                   auto: ["s-ok",   "Set by automation"],
+                   note: ["s-none", "See the change"] };
+    for (const [n, t, scope, when, tk, kind] of hit) {
+      html += `<div class="row"><div class="row-name">` +
+              `<b>${hl(esc(n), term)}</b>` +
+              `<span class="lvl">${esc(t)} · ${esc(scope)}</span>` +
+              (tk ? `<div class="xrefs"><button class="xref" data-jump="${tk}" ` +
+                    `title="Show the change that introduced this">${tk}</button></div>` : ``) +
+              `</div><div class="ebody"><p class="what">${hl(esc(when), term)}</p>` +
+              (tk ? `<div class="chips"><span class="chip ${(CHIP[kind]||CHIP.note)[0]}">` +
+                    `${(CHIP[kind]||CHIP.note)[1]}</span></div>` : ``) +
+              `</div></div>`;
+    }
+    html += `</div>`;
+  }
+
+  outFields.innerHTML = html || `<p class="empty">No field matches that.</p>`;
+  hitsFields.textContent = shown + " of 52 fields";
+
+  for (const b of outFields.querySelectorAll(".xref")) {
+    b.addEventListener("click", () => {
+      qLog.value = b.dataset.jump;
+      renderLog();
+      showTab("log");
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    });
+  }
+}
+
+qFields.addEventListener("input", renderFields);
+renderFields();
+
 
 </script>
