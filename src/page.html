@@ -174,10 +174,38 @@
               border-radius:var(--radius); font-size:13px; }
   .example { margin-top:var(--space-150); font-size:12px; color:var(--c-text-subtle); }
 
+
+  /* centred single-column flow for the epic page */
+  .col { max-width:720px; }
+
+  .stages.vertical { flex-direction:column; align-items:stretch; gap:0; }
+  .stages.vertical .stage { flex:none; width:100%; min-width:0; }
+  .stages.vertical .seq-arrow { align-self:center; padding:var(--space-100) 0;
+                                font-size:20px; line-height:1; }
+  .stage-head { display:flex; align-items:baseline; gap:var(--space-150); }
+  .stage-head .stage-name { font-size:16px; }
+  .stage-row { display:flex; align-items:center; justify-content:space-between;
+               gap:var(--space-150); flex-wrap:wrap; }
+
+
+  /* course type fork */
+  .fork { display:grid; grid-template-columns:repeat(auto-fit,minmax(280px,1fr)); gap:var(--space-200); }
+  .fork-branch { padding:var(--space-200); background:var(--c-surface); border:1px solid var(--c-border);
+                 border-radius:var(--radius-lg); box-shadow:var(--shadow-raised); }
+  .fork-branch.alt { background:var(--c-info-bg); border-color:var(--c-info-br); }
+  .fork-type { display:block; font-size:14px; font-weight:600; margin-bottom:var(--space-150); }
+  .fork-line { display:flex; gap:var(--space-100); padding:var(--space-100) 0;
+               border-top:1px solid var(--c-border); font-size:13px; }
+  .fork-k { flex:none; width:96px; color:var(--c-text-subtlest); font-size:12px; }
+  .fork-v { color:var(--c-text); }
+  .fork-then { display:block; margin-top:var(--space-150); padding-top:var(--space-150);
+               border-top:1px solid var(--c-border); font-size:12px; color:var(--c-text-subtle); }
+  .caption { margin-top:var(--space-150); font-size:12px; color:var(--c-text-subtlest); }
+
   @media (max-width:640px) {
     .page { padding:var(--space-300) var(--space-200) var(--space-400); }
     .search { display:none; }
-    .seq-arrow { display:none; }
+    .stages:not(.vertical) .seq-arrow { display:none; }
   }
 </style>
 
@@ -310,50 +338,62 @@ function wireCrumbs() {
 }
 
 function viewEpic(key) {
-  const p = PROJECTS.find(x=>x.key===key);
   if (key !== "CDLC" || !CDLC) return viewSpace(key);
 
-  /* the epic's happy path, drawn from its transition graph */
-  const path = ["To Do","In Progress","Digitization","Done"];
-
-  /* Topic repeats, so it is drawn three times: two real, one continuation */
+  /* Topic repeats, so it is drawn twice plus a continuation */
   const boxes = [];
-  CDLC.stages.forEach((s,i) => {
-    if (s.id === "topic") {
-      boxes.push({...s, label:"Topic 1"}, {...s, label:"Topic 2"}, {...s, label:"Topic N", ghost:true});
-    } else boxes.push({...s, label:s.name});
+  CDLC.stages.forEach(st => {
+    if (st.id === "topic")
+      boxes.push({...st, label:"Topic 1"}, {...st, label:"Topic 2"}, {...st, label:"Topic N", ghost:true});
+    else boxes.push({...st, label:st.name});
   });
+  let n = 0;
 
   view.innerHTML =
     crumbs([{label:"Projects", to:""},{label:"CDLC"}]) +
-    `<div class="page-head">
-       <p class="eyebrow">${esc(p.name)}</p>
-       <h1>CDLC Epic</h1>
-       <p class="lede">${esc(CDLC.epic.blurb)}</p>
-     </div>
+    `<div class="col">
+       <div class="page-head">
+         <h1>CDLC Epic</h1>
+         <p class="lede">One Epic is one course.</p>
+       </div>
 
-     <div class="flowline">` +
-       path.map((s,i)=>(i?`<span class="arrow">&rarr;</span>`:"")+statusPill(s)).join("") +
-     `</div>
-     <p class="side">The Epic's own workflow &mdash; <strong>${esc(CDLC.epic.workflow)}</strong>,
-        ${CDLC.epic.statuses.length} statuses. <em>On Hold</em> and <em>Suspended</em> are reachable
-        from any status, and both return to <em>To&nbsp;Do</em>.
-        ${CDLC.epic.usage.ever.toLocaleString()} epics exist.</p>
+       <h2>Its workflow</h2>
+       ${workflowGraph(CDLC.epic.transitions)}
 
-     <h2>Children of the Epic</h2>
-     <p class="lede" style="margin-bottom:var(--space-200)">Every ticket that hangs directly beneath
-        a course Epic, in the order they are worked. Open any one to see what it is.</p>
-     <div class="stages">` +
-       boxes.map((b,i) =>
-         (i ? `<span class="seq-arrow">&rarr;</span>` : "") +
-         `<button class="stage${b.ghost?" ghost":""}" data-stage="${esc(b.id)}">
-            <span class="stage-n">${b.ghost ? "&hellip;" : "Step "+(boxes.slice(0,i+1).filter(x=>!x.ghost).length)}</span>
-            <span class="stage-name">${esc(b.label)}</span>
-            <span class="stage-type">${esc(b.type)}</span>
-            <span class="stage-meta">${b.statuses.length} statuses${
-              b.subtasks.length ? " &middot; "+b.subtasks.length+" subtasks" : ""}</span>
-          </button>`).join("") +
-     `</div>`;
+       <h2>Course Type decides the tree</h2>
+       <div class="fork">` +
+         CDLC.courseTypeFork.branches.map((b,i) =>
+           `<div class="fork-branch${i?" alt":""}">
+              <span class="fork-type">${esc(b.type)}</span>
+              <span class="fork-line"><span class="fork-k">Epic creates</span>
+                <span class="fork-v">${b.epicCreates.map(esc).join(" &middot; ")}</span></span>
+              <span class="fork-line"><span class="fork-k">Topic creates</span>
+                <span class="fork-v">${b.topicCreates.map(esc).join(" &middot; ")}</span></span>
+              <span class="fork-then">${esc(b.then)}</span>
+            </div>`).join("") +
+    `  </div>
+       <p class="caption">${esc(CDLC.courseTypeFork.why)}</p>
+
+       <h2>Children of the Epic</h2>
+       <div class="stages vertical">` +
+         boxes.map((b,i) => {
+           if (!b.ghost) n++;
+           return (i ? `<span class="seq-arrow">&darr;</span>` : "") +
+           `<button class="stage${b.ghost?" ghost":""}" data-stage="${esc(b.id)}">
+              <span class="stage-head">
+                <span class="stage-n">${b.ghost ? "&hellip;" : "Step "+n}</span>
+                <span class="stage-name">${esc(b.label)}</span>
+              </span>
+              <span class="stage-row">
+                <span class="stage-type">${esc(b.type)}</span>
+                <span class="stage-type">${b.statuses.length} statuses${
+                  b.subtasks.length ? " &middot; "+b.subtasks.length+" subtasks" : ""}</span>
+              </span>
+            </button>`; }).join("") +
+    `  </div>
+       <p class="caption">Drawn for Instructional, Informational and Practical courses.
+          Certification courses replace the first two steps with Template Generation.</p>
+     </div>`;
 
   wireCrumbs();
   view.querySelectorAll(".stage").forEach(el =>

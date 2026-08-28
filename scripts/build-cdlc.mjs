@@ -14,6 +14,7 @@ import { readFile, writeFile } from "node:fs/promises";
 const read = async f => JSON.parse(await readFile(new URL(`../data/${f}`, import.meta.url), "utf8"));
 const W = await read("worktypes.json");
 const T = await read("transitions.json");
+const P = await read("process-doc.json");
 
 const slug = s => s.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "");
 
@@ -44,8 +45,9 @@ const STAGES = [
     blurb:"The body of the course. One Topic per teaching unit, each carrying the same four production subtasks. "+
           "The number of topics varies by course — the reference epic CDLC-8592 has four.",
     note:"A Topic's status names the production stage it is sitting in, so the workflow doubles as a pipeline. "+
-         "The four subtasks are a convention people follow by hand, not something Jira enforces — in CDLC-8592 the "+
-         "four topics carry six, four, three and one subtask respectively, created as work reaches them.",
+         "The subtasks are created by automation, not by hand: marking one Done creates the next. Final Slides → Done "+
+         "creates Graphics and PPT Generation; PPT Generation → Done creates the Base Articulate file. That is why the "+
+         "four topics in CDLC-8592 carry six, four, three and one subtask — they are at different points in the same cascade.",
     subtasks: [
       sub("Final Slides","CDLC: Topic Final Slides","CDLC-9314",
           "The teaching content itself, written out as finished slides."),
@@ -100,6 +102,10 @@ const doc = {
     blurb: "One Epic is one course. Everything needed to take that course from a business brief to a "+
            "published product hangs beneath it.",
   },
+  courseTypeFork: P.courseTypeFork,
+  sop: { version: P.version, effective: P.effective, status: P.status,
+         stages: P.stages.map(({ n, name, owner, what, automation }) => ({ n, name, owner, what, automation })),
+         roles: P.roles },
   stages: STAGES.map(s => ({ ...s, ...join(s.type) })),
 };
 
