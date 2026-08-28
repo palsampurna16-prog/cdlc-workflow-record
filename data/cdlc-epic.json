@@ -192,6 +192,27 @@
       }
     ]
   },
+  "branches": [
+    {
+      "id": "instructional",
+      "label": "Instructional / Informational / Practical",
+      "stageIds": [
+        "business-specs",
+        "course-brief",
+        "topic",
+        "digitization"
+      ]
+    },
+    {
+      "id": "certification",
+      "label": "Certification",
+      "stageIds": [
+        "template-generation",
+        "topic-cert",
+        "digitization"
+      ]
+    }
+  ],
   "stages": [
     {
       "id": "business-specs",
@@ -2469,6 +2490,698 @@
           ],
           "to": "Done",
           "label": "Completion"
+        }
+      ]
+    },
+    {
+      "id": "template-generation",
+      "name": "Template Generation",
+      "type": "Certification: Template Generation",
+      "example": null,
+      "blurb": "Opens a certification course. Created with the Epic, in place of Business Specs and Course Brief.",
+      "note": null,
+      "subtasks": [],
+      "workflow": "Certification: Template Generation",
+      "statuses": [
+        "To Do",
+        "On Hold",
+        "Suspended",
+        "Done"
+      ],
+      "usage": {
+        "ever": 27,
+        "recent": 27
+      },
+      "transitions": [
+        {
+          "kind": "start",
+          "to": "To Do"
+        },
+        {
+          "kind": "any",
+          "to": "On Hold",
+          "label": "On Hold"
+        },
+        {
+          "kind": "any",
+          "to": "Suspended",
+          "label": "Suspended"
+        },
+        {
+          "kind": "edge",
+          "from": [
+            "To Do"
+          ],
+          "to": "Done",
+          "label": "Completion"
+        },
+        {
+          "kind": "edge",
+          "from": [
+            "Done"
+          ],
+          "to": "To Do",
+          "label": "Start Over"
+        }
+      ]
+    },
+    {
+      "id": "topic-cert",
+      "name": "Topic 1 … N",
+      "type": "CDLC: Topic",
+      "example": null,
+      "blurb": "The body of a certification course. Same Topic work type as other courses, but a different chain beneath it.",
+      "note": "Every subtask here is created by automation, each when the one before it is marked Done.",
+      "subtasks": [
+        {
+          "id": "research-note",
+          "name": "Research Note",
+          "example": null,
+          "blurb": "Created with the Topic itself.",
+          "type": "Certification: Research Note",
+          "workflow": "Certification: Research Note",
+          "statuses": [
+            "To Do",
+            "On Hold",
+            "Suspended",
+            "Manual Review",
+            "Inline Image Check",
+            "Done"
+          ],
+          "usage": {
+            "ever": 47,
+            "recent": 47
+          },
+          "transitions": [
+            {
+              "kind": "start",
+              "to": "To Do"
+            },
+            {
+              "kind": "any",
+              "to": "On Hold",
+              "label": "On Hold"
+            },
+            {
+              "kind": "any",
+              "to": "Suspended",
+              "label": "Suspended"
+            },
+            {
+              "kind": "any",
+              "to": "To Do",
+              "label": "To Do"
+            },
+            {
+              "kind": "edge",
+              "from": [
+                "To Do"
+              ],
+              "to": "Manual Review",
+              "label": "Manual Review"
+            },
+            {
+              "kind": "edge",
+              "from": [
+                "Manual Review"
+              ],
+              "to": "Inline Image Check",
+              "label": "Inline Image Check"
+            },
+            {
+              "kind": "edge",
+              "from": [
+                "Inline Image Check"
+              ],
+              "to": "Done",
+              "label": "Completion"
+            }
+          ]
+        },
+        {
+          "id": "slide-chunks",
+          "name": "Slide Chunks",
+          "example": null,
+          "blurb": "Created when Research Note is marked Done.",
+          "type": "Certification: Slide Chunks",
+          "workflow": "Certification: Slide Chunks",
+          "statuses": [
+            "To Do",
+            "On Hold",
+            "Suspended",
+            "In Progress",
+            "Paraphrasing",
+            "In Review",
+            "Done"
+          ],
+          "usage": {
+            "ever": 43,
+            "recent": 43
+          },
+          "transitions": [
+            {
+              "kind": "start",
+              "to": "To Do"
+            },
+            {
+              "kind": "any",
+              "to": "On Hold",
+              "label": "On Hold"
+            },
+            {
+              "kind": "any",
+              "to": "Suspended",
+              "label": "Suspended"
+            },
+            {
+              "kind": "any",
+              "to": "To Do",
+              "label": "To Do"
+            },
+            {
+              "kind": "edge",
+              "from": [
+                "To Do"
+              ],
+              "to": "In Progress",
+              "label": "Progress"
+            },
+            {
+              "kind": "edge",
+              "from": [
+                "In Progress"
+              ],
+              "to": "Paraphrasing",
+              "label": "Paraphrasing"
+            },
+            {
+              "kind": "edge",
+              "from": [
+                "Paraphrasing"
+              ],
+              "to": "In Review",
+              "label": "Review"
+            },
+            {
+              "kind": "edge",
+              "from": [
+                "In Review"
+              ],
+              "to": "Done",
+              "label": "Completion"
+            },
+            {
+              "kind": "edge",
+              "from": [
+                "In Review"
+              ],
+              "to": "Paraphrasing",
+              "label": "Review Fail"
+            }
+          ]
+        },
+        {
+          "id": "graphic-definitions",
+          "name": "Graphic Definitions",
+          "example": null,
+          "blurb": "Created when Slide Chunks is marked Done.",
+          "type": "Certification: Graphic Definitions",
+          "workflow": "Certification: Graphic Definitions",
+          "statuses": [
+            "To Do",
+            "On Hold",
+            "Suspended",
+            "Review & Revise Visuals",
+            "Review & Revise Definition",
+            "Generate AI Visuals",
+            "Generate Graphic Definition",
+            "Review Final GD",
+            "Done"
+          ],
+          "usage": {
+            "ever": 41,
+            "recent": 41
+          },
+          "transitions": [
+            {
+              "kind": "start",
+              "to": "To Do"
+            },
+            {
+              "kind": "any",
+              "to": "To Do",
+              "label": "To Do"
+            },
+            {
+              "kind": "any",
+              "to": "On Hold",
+              "label": "On Hold"
+            },
+            {
+              "kind": "any",
+              "to": "Suspended",
+              "label": "Suspended"
+            },
+            {
+              "kind": "edge",
+              "from": [
+                "Review & Revise Visuals"
+              ],
+              "to": "Review & Revise Definition",
+              "label": "Revise"
+            },
+            {
+              "kind": "edge",
+              "from": [
+                "Generate AI Visuals"
+              ],
+              "to": "Review & Revise Visuals",
+              "label": "Revise"
+            },
+            {
+              "kind": "edge",
+              "from": [
+                "To Do"
+              ],
+              "to": "Generate Graphic Definition",
+              "label": "Generation"
+            },
+            {
+              "kind": "edge",
+              "from": [
+                "Generate Graphic Definition"
+              ],
+              "to": "Review & Revise Definition",
+              "label": "GD Review"
+            },
+            {
+              "kind": "edge",
+              "from": [
+                "Review & Revise Definition"
+              ],
+              "to": "Review & Revise Visuals",
+              "label": "Visuals' Review"
+            },
+            {
+              "kind": "edge",
+              "from": [
+                "Review & Revise Visuals"
+              ],
+              "to": "Generate AI Visuals",
+              "label": "Generate Visuals"
+            },
+            {
+              "kind": "edge",
+              "from": [
+                "Generate AI Visuals"
+              ],
+              "to": "Review Final GD",
+              "label": "Final GD Review"
+            },
+            {
+              "kind": "edge",
+              "from": [
+                "Review Final GD"
+              ],
+              "to": "Done",
+              "label": "Completion"
+            }
+          ]
+        },
+        {
+          "id": "ppt-generation",
+          "name": "PPT generation",
+          "example": null,
+          "blurb": "Created when Graphic Definitions is marked Done.",
+          "type": "CDLC: Topic PPT Generation",
+          "workflow": "PPT generation",
+          "statuses": [
+            "To Do",
+            "Suspended",
+            "In Progress",
+            "In Review",
+            "Done"
+          ],
+          "usage": {
+            "ever": 459,
+            "recent": 269
+          },
+          "transitions": [
+            {
+              "kind": "start",
+              "to": "To Do"
+            },
+            {
+              "kind": "any",
+              "to": "Suspended",
+              "label": "Suspended"
+            },
+            {
+              "kind": "any",
+              "to": "To Do",
+              "label": "To Do"
+            },
+            {
+              "kind": "edge",
+              "from": [
+                "To Do"
+              ],
+              "to": "In Progress",
+              "label": "In Progress"
+            },
+            {
+              "kind": "edge",
+              "from": [
+                "In Review"
+              ],
+              "to": "Done",
+              "label": "Completion"
+            },
+            {
+              "kind": "edge",
+              "from": [
+                "In Progress"
+              ],
+              "to": "In Review",
+              "label": "Send to manager for review"
+            },
+            {
+              "kind": "edge",
+              "from": [
+                "In Review"
+              ],
+              "to": "In Progress",
+              "label": "Rejected. Update course."
+            }
+          ]
+        },
+        {
+          "id": "articulate-creation",
+          "name": "Articulate Creation",
+          "example": null,
+          "blurb": "Created when PPT generation is marked Done, for Certification courses only.",
+          "type": "Certification: Articulate Creation",
+          "workflow": "Certification: Articulate Creation",
+          "statuses": [
+            "To Do",
+            "On Hold",
+            "Suspended",
+            "ID Review",
+            "SME Review",
+            "Quality review",
+            "Done",
+            "Generate Articulate",
+            "Corrections"
+          ],
+          "usage": {
+            "ever": 41,
+            "recent": 41
+          },
+          "transitions": [
+            {
+              "kind": "start",
+              "to": "To Do"
+            },
+            {
+              "kind": "any",
+              "to": "On Hold",
+              "label": "On Hold"
+            },
+            {
+              "kind": "any",
+              "to": "Suspended",
+              "label": "Suspended"
+            },
+            {
+              "kind": "any",
+              "to": "To Do",
+              "label": "To Do"
+            },
+            {
+              "kind": "edge",
+              "from": [
+                "ID Review"
+              ],
+              "to": "SME Review",
+              "label": "SME Review"
+            },
+            {
+              "kind": "edge",
+              "from": [
+                "SME Review"
+              ],
+              "to": "Quality review",
+              "label": "QA Review"
+            },
+            {
+              "kind": "edge",
+              "from": [
+                "Quality review"
+              ],
+              "to": "ID Review",
+              "label": "ID Corrections"
+            },
+            {
+              "kind": "edge",
+              "from": [
+                "SME Review"
+              ],
+              "to": "ID Review",
+              "label": "ID Corrections"
+            },
+            {
+              "kind": "edge",
+              "from": [
+                "Quality review"
+              ],
+              "to": "Done",
+              "label": "Completion"
+            },
+            {
+              "kind": "edge",
+              "from": [
+                "To Do"
+              ],
+              "to": "Generate Articulate",
+              "label": "Articulate Generation"
+            },
+            {
+              "kind": "edge",
+              "from": [
+                "Generate Articulate"
+              ],
+              "to": "ID Review",
+              "label": "ID Review"
+            },
+            {
+              "kind": "edge",
+              "from": [
+                "ID Review"
+              ],
+              "to": "Corrections",
+              "label": "VD Corrections"
+            },
+            {
+              "kind": "edge",
+              "from": [
+                "Corrections"
+              ],
+              "to": "ID Review",
+              "label": "ID Review"
+            },
+            {
+              "kind": "edge",
+              "from": [
+                "Corrections"
+              ],
+              "to": "SME Review",
+              "label": "SME Review"
+            }
+          ]
+        },
+        {
+          "id": "assessment",
+          "name": "Assessment",
+          "example": null,
+          "blurb": "Created when Articulate Creation is marked Done.",
+          "type": "CDLC: Topic Assessment",
+          "workflow": "CDLC: Topic Assessment",
+          "statuses": [
+            "To Do",
+            "Suspended",
+            "On Hold",
+            "In Progress",
+            "In Review",
+            "Complete checklist",
+            "Done"
+          ],
+          "usage": {
+            "ever": 469,
+            "recent": 312
+          },
+          "transitions": [
+            {
+              "kind": "start",
+              "to": "To Do"
+            },
+            {
+              "kind": "any",
+              "to": "To Do",
+              "label": "To Do"
+            },
+            {
+              "kind": "any",
+              "to": "Suspended",
+              "label": "Suspended"
+            },
+            {
+              "kind": "any",
+              "to": "On Hold",
+              "label": "On Hold"
+            },
+            {
+              "kind": "edge",
+              "from": [
+                "To Do"
+              ],
+              "to": "In Progress",
+              "label": "Work begun"
+            },
+            {
+              "kind": "edge",
+              "from": [
+                "In Review"
+              ],
+              "to": "In Progress",
+              "label": "Corrections"
+            },
+            {
+              "kind": "edge",
+              "from": [
+                "Complete checklist"
+              ],
+              "to": "In Review",
+              "label": "SME Review"
+            },
+            {
+              "kind": "edge",
+              "from": [
+                "In Progress"
+              ],
+              "to": "Complete checklist",
+              "label": "Checklist"
+            },
+            {
+              "kind": "edge",
+              "from": [
+                "In Review"
+              ],
+              "to": "Done",
+              "label": "Done"
+            }
+          ]
+        }
+      ],
+      "workflow": "CDLC: Topic",
+      "statuses": [
+        "To Do",
+        "Suspended",
+        "On Hold",
+        "Final Slides",
+        "Ready for Graphics",
+        "Spanish Translations",
+        "Uploading to AWS",
+        "In Review",
+        "Done",
+        "Graphics Creation"
+      ],
+      "usage": {
+        "ever": 561,
+        "recent": 288
+      },
+      "transitions": [
+        {
+          "kind": "start",
+          "to": "To Do"
+        },
+        {
+          "kind": "any",
+          "to": "To Do",
+          "label": "To Do"
+        },
+        {
+          "kind": "any",
+          "to": "Suspended",
+          "label": "Suspended"
+        },
+        {
+          "kind": "any",
+          "to": "On Hold",
+          "label": "On Hold"
+        },
+        {
+          "kind": "edge",
+          "from": [
+            "Final Slides"
+          ],
+          "to": "Ready for Graphics",
+          "label": "Final Slides ready"
+        },
+        {
+          "kind": "edge",
+          "from": [
+            "Spanish Translations"
+          ],
+          "to": "Uploading to AWS",
+          "label": "Upload to AWS"
+        },
+        {
+          "kind": "edge",
+          "from": [
+            "In Review"
+          ],
+          "to": "Uploading to AWS",
+          "label": "For Certification Course"
+        },
+        {
+          "kind": "edge",
+          "from": [
+            "Uploading to AWS"
+          ],
+          "to": "Done",
+          "label": "Done"
+        },
+        {
+          "kind": "edge",
+          "from": [
+            "To Do"
+          ],
+          "to": "Final Slides",
+          "label": "In Progress"
+        },
+        {
+          "kind": "edge",
+          "from": [
+            "Ready for Graphics"
+          ],
+          "to": "Graphics Creation",
+          "label": "Graphics in progress"
+        },
+        {
+          "kind": "edge",
+          "from": [
+            "Graphics Creation"
+          ],
+          "to": "In Review",
+          "label": "Review by Quality and SME"
+        },
+        {
+          "kind": "edge",
+          "from": [
+            "In Review"
+          ],
+          "to": "Spanish Translations",
+          "label": "Ready for Translations"
         }
       ]
     }

@@ -107,6 +107,31 @@ const STAGES = [
     ] },
 ];
 
+
+const CERT_STAGES = [
+  { id:"template-generation", name:"Template Generation", type:"Certification: Template Generation", example:null,
+    blurb:"Opens a certification course. Created with the Epic, in place of Business Specs and Course Brief.",
+    note:null, subtasks: [] },
+
+  { id:"topic-cert", name:"Topic 1 … N", type:"CDLC: Topic", example:null,
+    blurb:"The body of a certification course. Same Topic work type as other courses, but a different chain beneath it.",
+    note:"Every subtask here is created by automation, each when the one before it is marked Done.",
+    subtasks: [
+      sub("Research Note","Certification: Research Note",null,
+          "Created with the Topic itself."),
+      sub("Slide Chunks","Certification: Slide Chunks",null,
+          "Created when Research Note is marked Done."),
+      sub("Graphic Definitions","Certification: Graphic Definitions",null,
+          "Created when Slide Chunks is marked Done."),
+      sub("PPT generation","CDLC: Topic PPT Generation",null,
+          "Created when Graphic Definitions is marked Done."),
+      sub("Articulate Creation","Certification: Articulate Creation",null,
+          "Created when PPT generation is marked Done, for Certification courses only."),
+      sub("Assessment","CDLC: Topic Assessment",null,
+          "Created when Articulate Creation is marked Done."),
+    ] },
+];
+
 const doc = {
   generated: new Date().toISOString().slice(0, 10),
   evidence: "CDLC-8592 (in-flight reference epic) and CDLC-8999 (complete epic, digitization stage)",
@@ -121,7 +146,13 @@ const doc = {
   sop: { version: P.version, effective: P.effective, status: P.status,
          stages: P.stages.map(({ n, name, owner, what, automation }) => ({ n, name, owner, what, automation })),
          roles: P.roles },
-  stages: STAGES.map(s => ({ ...s, ...join(s.type) })),
+  branches: [
+    { id:"instructional", label:"Instructional / Informational / Practical",
+      stageIds: [...STAGES.map(s => s.id)] },
+    { id:"certification", label:"Certification",
+      stageIds: ["template-generation", "topic-cert", "digitization"] },
+  ],
+  stages: [...STAGES, ...CERT_STAGES].map(s => ({ ...s, ...join(s.type) })),
 };
 
 await writeFile(new URL("../data/cdlc-epic.json", import.meta.url), JSON.stringify(doc, null, 2) + "\n");

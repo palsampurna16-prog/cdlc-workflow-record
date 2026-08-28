@@ -192,7 +192,13 @@
   .fork { display:grid; grid-template-columns:repeat(auto-fit,minmax(280px,1fr)); gap:var(--space-200); }
   .fork-branch { padding:var(--space-200); background:var(--c-surface); border:1px solid var(--c-border);
                  border-radius:var(--radius-lg); box-shadow:var(--shadow-raised); }
-  .fork-branch.alt { background:var(--c-info-bg); border-color:var(--c-info-br); }
+  .fork-branch { text-align:left; font:inherit; color:inherit; cursor:pointer;
+                 transition:background-color var(--duration) var(--ease),
+                            border-color var(--duration) var(--ease),
+                            box-shadow var(--duration) var(--ease); }
+  .fork-branch:hover { background:var(--c-surface-sunken); }
+  .fork-branch[aria-pressed="true"] { background:var(--c-info-bg); border-color:var(--c-brand);
+                 box-shadow:inset 0 0 0 1px var(--c-brand); }
   .fork-type { display:block; font-size:14px; font-weight:600; margin-bottom:var(--space-150); }
   .fork-line { display:flex; gap:var(--space-100); padding:var(--space-100) 0;
                border-top:1px solid var(--c-border); font-size:13px; }
@@ -551,13 +557,17 @@ function wireCrumbs() {
     el.addEventListener("click", () => go(el.dataset.to)));
 }
 
+let branchId = "instructional";
+
 function viewEpic(key) {
   if (key !== "CDLC" || !CDLC) return viewSpace(key);
+  const branch = CDLC.branches.find(b => b.id === branchId) || CDLC.branches[0];
+  const stages = branch.stageIds.map(id => CDLC.stages.find(s => s.id === id)).filter(Boolean);
 
-  /* Topic repeats, so it is drawn twice plus a continuation */
+  /* Topic repeats per teaching unit, so it is drawn twice plus a continuation */
   const boxes = [];
-  CDLC.stages.forEach(st => {
-    if (st.id === "topic")
+  stages.forEach(st => {
+    if (st.id.startsWith("topic"))
       boxes.push({...st, label:"Topic 1"}, {...st, label:"Topic 2"}, {...st, label:"Topic N", ghost:true});
     else boxes.push({...st, label:st.name});
   });
@@ -566,28 +576,23 @@ function viewEpic(key) {
   view.innerHTML =
     crumbs([{label:"Projects", to:""},{label:"CDLC"}]) +
     `<div class="col">
-       <div class="page-head">
-         <h1>CDLC Epic</h1>
-       </div>
+       <div class="page-head"><h1>CDLC Epic</h1></div>
        ${tabs("epic")}
        <p class="lede">One Epic is one course.</p>
 
        <h2>Its workflow</h2>
        ${workflowGraph(CDLC.epic.transitions)}
 
-       <h2>Course Type decides the tree</h2>
+       <h2>Course Type</h2>
        <div class="fork">` +
-         CDLC.courseTypeFork.branches.map((b,i) =>
-           `<div class="fork-branch${i?" alt":""}">
-              <span class="fork-type">${esc(b.type)}</span>
+         CDLC.branches.map(b =>
+           `<button class="fork-branch" data-b="${esc(b.id)}" aria-pressed="${b.id===branch.id}">
+              <span class="fork-type">${esc(b.label)}</span>
               <span class="fork-line"><span class="fork-k">Epic creates</span>
-                <span class="fork-v">${b.epicCreates.map(esc).join(" &middot; ")}</span></span>
-              <span class="fork-line"><span class="fork-k">Topic creates</span>
-                <span class="fork-v">${b.topicCreates.map(esc).join(" &middot; ")}</span></span>
-              <span class="fork-then">${esc(b.then)}</span>
-            </div>`).join("") +
+                <span class="fork-v">${b.stageIds.filter(i=>!i.startsWith("topic")&&i!=="digitization")
+                  .map(i=>esc((CDLC.stages.find(s=>s.id===i)||{}).name)).join(" &middot; ")}</span></span>
+            </button>`).join("") +
     `  </div>
-       <p class="caption">${esc(CDLC.courseTypeFork.why)}</p>
 
        <h2>Children of the Epic</h2>
        <div class="stages vertical">` +
@@ -601,16 +606,15 @@ function viewEpic(key) {
               </span>
               <span class="stage-row">
                 <span class="stage-type">${esc(b.type)}</span>
-                <span class="stage-type">${b.statuses.length} statuses${
-                  b.subtasks.length ? " &middot; "+b.subtasks.length+" subtasks" : ""}</span>
+                <span class="stage-type">${b.subtasks.length ? b.subtasks.length+" subtasks" : "single ticket"}</span>
               </span>
             </button>`; }).join("") +
     `  </div>
-       <p class="caption">Drawn for Instructional, Informational and Practical courses.
-          Certification courses replace the first two steps with Template Generation.</p>
      </div>`;
 
   wireCrumbs(); wireTabs();
+  view.querySelectorAll(".fork-branch").forEach(el =>
+    el.addEventListener("click", () => { branchId = el.dataset.b; viewEpic(key); }));
   view.querySelectorAll(".stage").forEach(el =>
     el.addEventListener("click", () => go("CDLC/"+el.dataset.stage)));
 }
