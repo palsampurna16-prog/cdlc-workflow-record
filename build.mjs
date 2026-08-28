@@ -14,10 +14,21 @@ const SRC = new URL("./src/page.html", import.meta.url);
 const OUT = new URL("./index.html", import.meta.url);
 
 const DESCRIPTION =
-  "The seven CDLC process stages, all 69 Jira work types with their workflow " +
-  "statuses and usage, and the change tickets that produced them.";
+  "How a CDLC course Epic is built in Jira: its workflow, every stage beneath it, " +
+  "and every subtask beneath those, down to the bottom of the tree.";
 
 let fragment = (await readFile(SRC, "utf8")).trim();
+
+// src/page.html carries a placeholder rather than the data itself, so the source
+// stays editable and data/ remains the single source of truth. Injected before
+// redaction runs, so the redaction net covers the data too.
+const cdlc = JSON.parse(await readFile(new URL("./data/cdlc-epic.json", import.meta.url), "utf8"));
+const CDLC_RE = /\/\*__CDLC_EPIC__\*\/[\s\S]*?\/\*__END__\*\//;
+if (!CDLC_RE.test(fragment)) {
+  console.error("src/page.html is missing the /*__CDLC_EPIC__*/ placeholder — aborting rather than guessing.");
+  process.exit(1);
+}
+fragment = fragment.replace(CDLC_RE, "/*__CDLC_EPIC__*/" + JSON.stringify(cdlc) + "/*__END__*/");
 
 const pairs = await loadMap();
 if (REDACT) {

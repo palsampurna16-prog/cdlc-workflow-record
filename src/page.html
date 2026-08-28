@@ -149,6 +149,31 @@
                  text-transform:uppercase; letter-spacing:0.06em; }
   .chips { display:flex; flex-wrap:wrap; gap:var(--space-100); }
 
+
+  /* clickable subtask rows */
+  .rows button.row { width:100%; text-align:left; font:inherit; color:inherit;
+                     background:none; border:0; border-bottom:1px solid var(--c-border); cursor:pointer;
+                     transition:background-color var(--duration) var(--ease); }
+  .rows button.row:last-child { border-bottom:0; }
+  .rows button.row:nth-child(odd) { background:var(--c-surface-sunken); }
+  .rows button.row:hover { background:var(--c-surface-press); }
+  .row-go { flex:none; color:var(--c-text-subtlest); }
+
+  /* workflow graph */
+  .wf { display:flex; flex-direction:column; gap:var(--space-100);
+        padding:var(--space-200); background:var(--c-surface-sunken);
+        border:1px solid var(--c-border); border-radius:var(--radius-lg); }
+  .wf-row { display:flex; align-items:center; flex-wrap:wrap; gap:var(--space-100); }
+  .wf-from { font-size:11px; font-weight:700; letter-spacing:0.06em; text-transform:uppercase;
+             color:var(--c-text-subtlest); margin-right:var(--space-050); }
+  .wf-arrow { color:var(--c-text-subtlest); }
+  .wf-or { font-size:11px; color:var(--c-text-subtlest); }
+  .wf-label { font-size:12px; color:var(--c-text-subtle); font-style:italic; }
+  .terminal { margin-top:var(--space-300); padding:var(--space-150) var(--space-200);
+              background:var(--c-info-bg); border:1px solid var(--c-info-br);
+              border-radius:var(--radius); font-size:13px; }
+  .example { margin-top:var(--space-150); font-size:12px; color:var(--c-text-subtle); }
+
   @media (max-width:640px) {
     .page { padding:var(--space-300) var(--space-200) var(--space-400); }
     .search { display:none; }
@@ -193,7 +218,7 @@ const PROJECTS = [
 ];
 
 /* Canonical CDLC Epic shape. Generated from data/cdlc-epic.json — see scripts/embed-data.mjs. */
-const CDLC = /*__CDLC_EPIC__*/{"generated":"2026-08-28","evidence":"CDLC-8592 (live reference epic) and CDLC-8999 (completed epic, digitization stage)","epic":{"name":"CDLC Epic","type":"Epic","workflow":"CDLC: Epic","statuses":["Done","On Hold","To Do","Suspended","In Progress","Digitization"],"usage":{"ever":418,"recent":99},"transitions":[{"kind":"start","to":"To Do"},{"kind":"any","to":"To Do","label":"To Do"},{"kind":"any","to":"On Hold","label":"On Hold"},{"kind":"any","to":"Suspended","label":"Suspended"},{"kind":"edge","from":["To Do"],"to":"In Progress","label":"Work begun"},{"kind":"edge","from":["On Hold"],"to":"To Do","label":"Resume"},{"kind":"edge","from":["In Progress"],"to":"Digitization","label":"Send to Digitize"},{"kind":"edge","from":["Digitization"],"to":"Done","label":"Course complete"},{"kind":"edge","from":["Suspended"],"to":"To Do","label":"Reopen"}],"blurb":"One Epic is one course. Everything needed to take that course from a business brief to a published product hangs beneath it."},"stages":[{"id":"business-specs","name":"Business Specs & Outline","type":"Course: Specs","blurb":"Opens the course. Produces the Scope Doc and Research Doc that everything downstream is built against.","note":"Jira describes this type as “Use this to create: Scope Doc & Research Doc”. Note the type is Course: Specs, not the similarly-named CDLC: Course outline work type — that one is not used here.","workflow":"CDLC: Task/Subtask","statuses":["In Review","Done","On Hold","To Do","Suspended","In Progress"],"usage":{"ever":314,"recent":83},"transitions":[{"kind":"start","to":"To Do"},{"kind":"any","to":"Suspended","label":"Suspended"},{"kind":"any","to":"On Hold","label":"On Hold"},{"kind":"edge","from":["On Hold"],"to":"In Progress","label":"Progress"},{"kind":"edge","from":["On Hold"],"to":"In Review","label":"Review"},{"kind":"edge","from":["To Do"],"to":"In Progress","label":"Progress"},{"kind":"edge","from":["In Progress"],"to":"In Review","label":"Review"},{"kind":"edge","from":["In Review"],"to":"In Progress","label":"Review Fail"},{"kind":"edge","from":["In Review"],"to":"Done","label":"Completion"},{"kind":"edge","from":["Done"],"to":"To Do","label":"Start Over"},{"kind":"edge","from":["On Hold"],"to":"To Do","label":"Start Over"}],"subtasks":[]},{"id":"course-brief","name":"Course Brief","type":"CDLC: Course Brief","blurb":"The briefing between Instructional Designer and SME, with the Video Director and QA Specialist present.","note":"The newest stage in the lifecycle — all 66 of its tickets were created in the last year.","workflow":"CDLC: Course Brief","statuses":["Assigned","Done","To Do","In Progress"],"usage":{"ever":66,"recent":66},"transitions":[{"kind":"start","to":"To Do"},{"kind":"any","to":"To Do","label":"To Do"},{"kind":"edge","from":["To Do"],"to":"Assigned","label":"Assign to ID"},{"kind":"edge","from":["Assigned"],"to":"In Progress","label":"Progress"},{"kind":"edge","from":["In Progress"],"to":"Done","label":"Completion"}],"subtasks":[]},{"id":"topic","name":"Topic 1 … N","type":"CDLC: Topic","blurb":"The body of the course. One Topic per teaching unit, each carrying the same four production subtasks. The number of topics varies by course — the reference epic CDLC-8592 has four.","note":"A Topic's status names the production stage it is sitting in — the workflow doubles as a pipeline.","workflow":"CDLC: Topic","statuses":["In Review","Done","On Hold","Ready for Graphics","Uploading to AWS","Spanish Translations","To Do","Suspended","Final Slides","Graphics Creation"],"usage":{"ever":561,"recent":288},"transitions":[{"kind":"start","to":"To Do"},{"kind":"any","to":"To Do","label":"To Do"},{"kind":"any","to":"Suspended","label":"Suspended"},{"kind":"any","to":"On Hold","label":"On Hold"},{"kind":"edge","from":["Final Slides"],"to":"Ready for Graphics","label":"Final Slides ready"},{"kind":"edge","from":["Spanish Translations"],"to":"Uploading to AWS","label":"Upload to AWS"},{"kind":"edge","from":["In Review"],"to":"Uploading to AWS","label":"For Certification Course"},{"kind":"edge","from":["Uploading to AWS"],"to":"Done","label":"Done"},{"kind":"edge","from":["To Do"],"to":"Final Slides","label":"In Progress"},{"kind":"edge","from":["Ready for Graphics"],"to":"Graphics Creation","label":"Graphics in progress"},{"kind":"edge","from":["Graphics Creation"],"to":"In Review","label":"Review by Quality and SME"},{"kind":"edge","from":["In Review"],"to":"Spanish Translations","label":"Ready for Translations"}],"subtasks":[{"name":"Final Slides","type":"CDLC: Topic Final Slides","statuses":["Internal SME review","Done","Complete checklist","On Hold","To Do","Suspended","In Progress","Quality review"],"workflow":"CDLC: Topic Final Slides"},{"name":"Graphics","type":"CDLC: Topic Graphics","statuses":["In Review","Send to Instructional Designer","Done","Complete checklist","To Do","Suspended","In Progress"],"workflow":"CDLC: Topic Graphics"},{"name":"PPT generation","type":"CDLC: Topic PPT Generation","statuses":["In Review","Done","To Do","Suspended","In Progress"],"workflow":"PPT generation"},{"name":"Base Articulate file","type":"CDLC: Base Articulate file creation","statuses":["In Review","Assigned","Done","Rejected","On Hold","To Do","Checklist","In Progress"],"workflow":"CDLC: Base Articulate file creation"}]},{"id":"digitization","name":"Digitization Process","type":"Digitization - Data Sheet Creation","blurb":"Closes the course. One ticket holding every step that turns finished content into a live product on SkillCat.","note":"The container ticket is typed Digitization - Data Sheet Creation even though Data Sheet Creation is only one of the twelve steps inside it. The type name understates what the ticket holds.","workflow":"Digitization - Data Sheet Creation","statuses":["Assigned","In Review","Done","To Do","Suspended","In Progress"],"usage":{"ever":55,"recent":55},"transitions":[{"kind":"start","to":"To Do"},{"kind":"any","to":"Suspended","label":"Suspended"},{"kind":"edge","from":["To Do"],"to":"Assigned","label":"Progress"},{"kind":"edge","from":["In Progress"],"to":"In Review","label":"Completion"},{"kind":"edge","from":["Assigned"],"to":"In Progress","label":"Progress"},{"kind":"edge","from":["In Review"],"to":"Done","label":"Completion"}],"subtasks":[{"name":"Request Badge and Course Image","type":"Digitization - Badge Creation (Sub-task)","statuses":["In Review","Done","To Do","Suspended","In Progress"],"workflow":"Digitization - Badge Creation"},{"name":"Upload to AWS + Planning","type":"Digitization - Upload to AWS + Planning (sub-task)","statuses":["Assigned","Upload to AWS","In Review","Update Keywords","Update Question Bank on Planning","Done","Create Course on Planning","To Do","Suspended"],"workflow":"Digitization - Upload to AWS + Planning"},{"name":"Review","type":"Digitization - Review (sub-task)","statuses":["SME Review","Done","To Do","Suspended","Quality review"],"workflow":"Digitization - Review"},{"name":"Restore on SkillCat","type":"Digitization - Restore on SkillCat (sub-task)","statuses":["Create Deep Links","Done","QA Review","Restore on SkillCat","Update Learning Plan","To Do","Suspended","update spreadsheet"],"workflow":"Digitization - Restore on SkillCat"},{"name":"Create Data Sheet","type":"Digitization - Data Sheet Creation (sub-task)","statuses":["Assigned","In Review","Done","To Do","Suspended","In Progress"],"workflow":"Digitization - Data Sheet Creation"},{"name":"Course Metadata","type":"CDLC: Content Upkeep (sub-task)","statuses":["Assigned","In Review","Reproduced","Discard","Done","On Hold","To Do","In Progress"],"workflow":"SGP: Task"},{"name":"Create Course Introduction","type":"CDLC: Content Upkeep (sub-task)","statuses":["Assigned","In Review","Reproduced","Discard","Done","On Hold","To Do","In Progress"],"workflow":"SGP: Task"},{"name":"QA – Generate Performance Report","type":"CDLC: Generate Performance Report (sub-task)","statuses":["Done","To Do","Suspended","In Progress"],"workflow":"Generate Performance Report"},{"name":"Update Course Catalog","type":"Digitization - Course Catalog Updating (sub-task)","statuses":["Assigned","In Review","Done","To Do","Suspended","In Progress"],"workflow":"Digitization - Course Catalog Updating"},{"name":"Run Image Archiving","type":"CDLC: Run Image Archiving Automation (sub-task)","statuses":["In Review","Done","To Do","Suspended","In Progress"],"workflow":"CDLC: Run Image Archiving Automation"},{"name":"Move Source Files","type":"CDLC: Move Source Files (sub-task)","statuses":["In Review","Done","To Do","In Progress"],"workflow":"CDLC: Move Source Files"},{"name":"Restrict Course Folder","type":"CDLC: Restrict Course Folder (sub-task)","statuses":["Done","To Do","Suspended","In Progress"],"workflow":"CDLC: Restrict Course Folder"}]}]}/*__END__*/;
+const CDLC = /*__CDLC_EPIC__*/null/*__END__*/;
 
 const esc = s => String(s).replace(/[&<>"]/g, c => ({ "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;" }[c]));
 const view = document.getElementById("view");
@@ -208,11 +233,47 @@ const statusPill = s => `<span class="status ${statusCls(s)}">${esc(s)}</span>`;
 /* ---------- routing ---------- */
 function route() {
   const raw = decodeURIComponent(location.hash.replace(/^#\/?/, ""));
-  const [key, stage] = raw.split("/").filter(Boolean);
+  const [key, stage, sub] = raw.split("/").filter(Boolean);
   const k = (key||"").toUpperCase();
-  return { key: PROJECTS.some(p=>p.key===k) ? k : null, stage: stage||null };
+  return { key: PROJECTS.some(p=>p.key===k) ? k : null, stage: stage||null, sub: sub||null };
 }
 const go = path => { location.hash = path ? "/"+path : "/"; };
+
+
+const jiraLink = k =>
+  `<a href="https://skillcatapp.atlassian.net/browse/${encodeURIComponent(k)}"
+      target="_blank" rel="noopener noreferrer">${esc(k)}</a>`;
+
+/* Renders a workflow as its real transition graph rather than a flat list.
+   Kinds: start (initial status), edge (from -> to), any (reachable anywhere). */
+function workflowGraph(tr) {
+  if (!tr || !tr.length) return "";
+  const start   = tr.find(x => x.kind === "start");
+  const edges   = tr.filter(x => x.kind === "edge");
+  const globals = tr.filter(x => x.kind === "any");
+  return `<div class="wf">` +
+    (start ? `<div class="wf-row"><span class="wf-from">Starts at</span>${statusPill(start.to)}</div>` : "") +
+    edges.map(e =>
+      `<div class="wf-row">` +
+        (e.from||[]).map(statusPill).join(`<span class="wf-or">or</span>`) +
+        `<span class="wf-arrow">&rarr;</span>${statusPill(e.to)}` +
+        (e.label ? `<span class="wf-label">${esc(e.label)}</span>` : "") +
+      `</div>`).join("") +
+    (globals.length
+      ? `<div class="wf-row"><span class="wf-from">From any status</span>` +
+        globals.map(g => statusPill(g.to)).join("") + `</div>`
+      : "") +
+  `</div>`;
+}
+
+function facts(o) {
+  return `<dl class="facts">
+     <div class="fact"><dt>Work type</dt><dd>${esc(o.type)}</dd></div>
+     <div class="fact"><dt>Workflow</dt><dd>${esc(o.workflow)}</dd></div>
+     <div class="fact"><dt>Tickets ever</dt><dd>${o.usage ? o.usage.ever.toLocaleString() : "&mdash;"}</dd></div>
+     <div class="fact"><dt>Last 12 months</dt><dd>${o.usage ? o.usage.recent.toLocaleString() : "&mdash;"}</dd></div>
+   </dl>`;
+}
 
 /* ---------- projects ---------- */
 function viewProjects(filter="") {
@@ -312,25 +373,53 @@ function viewStage(key, id) {
        <p class="lede">${esc(s.blurb)}</p>
      </div>
 
-     <dl class="facts">
-       <div class="fact"><dt>Work type</dt><dd>${esc(s.type)}</dd></div>
-       <div class="fact"><dt>Workflow</dt><dd>${esc(s.workflow)}</dd></div>
-       <div class="fact"><dt>Tickets ever</dt><dd>${s.usage ? s.usage.ever.toLocaleString() : "&mdash;"}</dd></div>
-       <div class="fact"><dt>Last 12 months</dt><dd>${s.usage ? s.usage.recent.toLocaleString() : "&mdash;"}</dd></div>
-     </dl>
+     ${facts(s)}
 
-     <h2>Statuses in its workflow</h2>
-     <div class="chips">${s.statuses.map(statusPill).join("")}</div>` +
+     <h2>Its workflow</h2>
+     ${workflowGraph(s.transitions)}
+     <p class="example">All ${s.statuses.length} statuses:
+        ${s.statuses.map(x=>esc(x)).join(" &middot; ")}.
+        ${s.example ? "Live example: "+jiraLink(s.example)+"." : ""}</p>` +
 
     (s.subtasks.length
       ? `<h2>Subtasks beneath it</h2>
+         <p class="lede" style="margin-bottom:var(--space-200)">Open any one to see its own workflow.</p>
          <div class="rows">` + s.subtasks.map((t,i) =>
-           `<div class="row"><span class="row-n">${i+1}</span>
+           `<button class="row" data-sub="${esc(t.id)}"><span class="row-n">${i+1}</span>
               <span class="row-name">${esc(t.name)}</span>
-              <span class="row-type">${esc(t.type)}</span></div>`).join("") + `</div>`
-      : "") +
+              <span class="row-type">${esc(t.type)}</span>
+              <span class="row-go">&rsaquo;</span></button>`).join("") + `</div>`
+      : `<div class="terminal">This stage is a single ticket &mdash; it has no subtasks beneath it.</div>`) +
 
     (s.note ? `<div class="note"><strong>Worth knowing</strong>${esc(s.note)}</div>` : "");
+
+  wireCrumbs();
+  view.querySelectorAll(".rows button.row").forEach(el =>
+    el.addEventListener("click", () => go("CDLC/"+s.id+"/"+el.dataset.sub)));
+}
+
+/* ---------- a single subtask: the bottom of the tree ---------- */
+function viewSubtask(key, stageId, subId) {
+  const st = CDLC && CDLC.stages.find(x=>x.id===stageId);
+  const t  = st && st.subtasks.find(x=>x.id===subId);
+  if (!t) return viewStage(key, stageId);
+
+  view.innerHTML =
+    crumbs([{label:"Projects", to:""},{label:"CDLC", to:"CDLC"},
+            {label:st.name, to:"CDLC/"+st.id},{label:t.name}]) +
+    `<div class="page-head">
+       <p class="eyebrow">Subtask of ${esc(st.name)}</p>
+       <h1>${esc(t.name)}</h1>
+       <p class="lede">${esc(t.blurb)}</p>
+     </div>` +
+    facts(t) +
+    `<h2>Its workflow</h2>
+     ${workflowGraph(t.transitions)}
+     <p class="example">All ${t.statuses.length} statuses:
+        ${t.statuses.map(x=>esc(x)).join(" &middot; ")}.
+        ${t.example ? "Live example: "+jiraLink(t.example)+"." : ""}</p>
+     <div class="terminal">This is the bottom of the tree. Jira sub-tasks cannot have
+        children of their own, so nothing hangs beneath this.</div>`;
 
   wireCrumbs();
 }
@@ -351,9 +440,10 @@ function viewSpace(key) {
 
 /* ---------- render ---------- */
 function render() {
-  const { key, stage } = route();
+  const { key, stage, sub } = route();
   search.parentElement.style.visibility = key ? "hidden" : "";
-  if (key === "CDLC" && stage) viewStage(key, stage);
+  if (key === "CDLC" && stage && sub) viewSubtask(key, stage, sub);
+  else if (key === "CDLC" && stage) viewStage(key, stage);
   else if (key === "CDLC")     viewEpic(key);
   else if (key)                viewSpace(key);
   else                         viewProjects(search.value);
