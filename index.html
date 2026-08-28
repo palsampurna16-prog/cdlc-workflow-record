@@ -12,41 +12,24 @@
 </head>
 <body>
 <style>
-/* Atlassian / Jira design language.
-   Neutral + blue palette, 3px radii, status lozenges, underline tabs, system font stack. */
+/* Atlassian / Jira design language, drill-down navigation. */
 
 :root {
   color-scheme: light;
-
-  --paper:      #F7F8F9;   /* Jira page background   */
-  --surface:    #FFFFFF;   /* cards, rows            */
-  --surface-2:  #F1F2F4;   /* subtle fill            */
-  --surface-3:  #EBECF0;   /* hover                  */
-  --ink:        #172B4D;   /* primary text           */
-  --ink-2:      #44546F;   /* secondary text         */
-  --muted:      #626F86;   /* subtlest text          */
-  --line:       #DFE1E6;   /* borders                */
-  --line-soft:  #EBECF0;   /* row rules              */
-
-  --accent:      #0052CC;  /* Jira blue: links, primary */
-  --accent-hover:#0065FF;
-  --accent-soft: #E9F2FF;  /* selected background    */
-  --accent-ink:  #FFFFFF;
-
-  /* status-category lozenges — these are Jira's own */
-  --cat-new-fg:#44546F;  --cat-new-bg:#DFE1E6;  --cat-new-line:transparent;   /* To Do       */
-  --cat-ind-fg:#0052CC;  --cat-ind-bg:#DEEBFF;  --cat-ind-line:transparent;   /* In Progress */
-  --cat-done-fg:#006644; --cat-done-bg:#E3FCEF; --cat-done-line:transparent;  /* Done        */
-  --dead-fg:#626F86;     --dead-bg:#EBECF0;     --dead-line:transparent;      /* dropped     */
-  --warn-fg:#974F0C;     --warn-bg:#FFF0B3;                                   /* dormant     */
-  --err-fg:#BF2600;      --err-bg:#FFEBE6;                                    /* never used  */
-
+  --paper:#F7F8F9; --surface:#FFFFFF; --surface-2:#F1F2F4; --surface-3:#EBECF0;
+  --ink:#172B4D; --ink-2:#44546F; --muted:#626F86;
+  --line:#DFE1E6; --line-soft:#EBECF0;
+  --accent:#0052CC; --accent-hover:#0065FF; --accent-soft:#E9F2FF; --accent-ink:#FFFFFF;
+  --cat-new-fg:#44546F;  --cat-new-bg:#DFE1E6;
+  --cat-ind-fg:#0052CC;  --cat-ind-bg:#DEEBFF;
+  --cat-done-fg:#006644; --cat-done-bg:#E3FCEF;
+  --dead-fg:#626F86;     --dead-bg:#EBECF0;
+  --warn-fg:#974F0C;     --warn-bg:#FFF0B3;
+  --err-fg:#BF2600;      --err-bg:#FFEBE6;
   --shadow: 0 1px 1px rgba(9,30,66,.25), 0 0 1px 1px rgba(9,30,66,.13);
-
   --font: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu,
           "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif;
-  --mono: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas,
-          "Liberation Mono", monospace;
+  --mono: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, "Liberation Mono", monospace;
 }
 
 @media (prefers-color-scheme: dark) {
@@ -56,10 +39,10 @@
     --ink:#B6C2CF; --ink-2:#9FADBC; --muted:#8C9BAB;
     --line:#38414A; --line-soft:#2C333A;
     --accent:#579DFF; --accent-hover:#85B8FF; --accent-soft:#1C2B41; --accent-ink:#1D2125;
-    --cat-new-fg:#9FADBC;  --cat-new-bg:#2C333A;  --cat-new-line:transparent;
-    --cat-ind-fg:#85B8FF;  --cat-ind-bg:#09326C;  --cat-ind-line:transparent;
-    --cat-done-fg:#7EE2B8; --cat-done-bg:#164B35; --cat-done-line:transparent;
-    --dead-fg:#8C9BAB;     --dead-bg:#303940;     --dead-line:transparent;
+    --cat-new-fg:#9FADBC;  --cat-new-bg:#2C333A;
+    --cat-ind-fg:#85B8FF;  --cat-ind-bg:#09326C;
+    --cat-done-fg:#7EE2B8; --cat-done-bg:#164B35;
+    --dead-fg:#8C9BAB;     --dead-bg:#303940;
     --warn-fg:#F5CD47;     --warn-bg:#533F04;
     --err-fg:#FD9891;      --err-bg:#5D1F1A;
     --shadow: 0 1px 1px rgba(3,4,4,.5), 0 0 1px 1px rgba(3,4,4,.35);
@@ -72,10 +55,10 @@
   --ink:#B6C2CF; --ink-2:#9FADBC; --muted:#8C9BAB;
   --line:#38414A; --line-soft:#2C333A;
   --accent:#579DFF; --accent-hover:#85B8FF; --accent-soft:#1C2B41; --accent-ink:#1D2125;
-  --cat-new-fg:#9FADBC;  --cat-new-bg:#2C333A;  --cat-new-line:transparent;
-  --cat-ind-fg:#85B8FF;  --cat-ind-bg:#09326C;  --cat-ind-line:transparent;
-  --cat-done-fg:#7EE2B8; --cat-done-bg:#164B35; --cat-done-line:transparent;
-  --dead-fg:#8C9BAB;     --dead-bg:#303940;     --dead-line:transparent;
+  --cat-new-fg:#9FADBC;  --cat-new-bg:#2C333A;
+  --cat-ind-fg:#85B8FF;  --cat-ind-bg:#09326C;
+  --cat-done-fg:#7EE2B8; --cat-done-bg:#164B35;
+  --dead-fg:#8C9BAB;     --dead-bg:#303940;
   --warn-fg:#F5CD47;     --warn-bg:#533F04;
   --err-fg:#FD9891;      --err-bg:#5D1F1A;
   --shadow: 0 1px 1px rgba(3,4,4,.5), 0 0 1px 1px rgba(3,4,4,.35);
@@ -88,359 +71,166 @@ body {
   font-family: var(--font); font-size: 14px; line-height: 1.4286;
   -webkit-font-smoothing: antialiased;
 }
-
 a { color: var(--accent); }
 a:hover { color: var(--accent-hover); }
 
 .wrap {
-  max-width: 1120px; margin: 0 auto;
-  padding: 32px clamp(16px, 2vw, 40px) 80px;
-  display: flex; flex-direction: column; gap: 32px;
+  max-width: 860px; margin: 0 auto;
+  padding: 28px clamp(16px, 3vw, 32px) 96px;
 }
 
-/* ---------- masthead ---------- */
+/* ---------- breadcrumb ---------- */
 
-.masthead { display: flex; flex-direction: column; gap: 12px; }
+.crumbs {
+  display: flex; flex-wrap: wrap; align-items: center; gap: 4px;
+  font-size: 13px; margin-bottom: 20px; min-height: 26px;
+}
+.crumbs button {
+  font: inherit; border: 0; background: none; color: var(--accent);
+  cursor: pointer; padding: 3px 6px; margin-left: -6px; border-radius: 3px;
+}
+.crumbs button:hover { background: var(--surface-3); }
+.crumbs button:focus-visible { outline: 2px solid var(--accent); outline-offset: 1px; }
+.crumbs .sep { color: var(--muted); }
+.crumbs .here { color: var(--ink-2); padding: 3px 0; }
+
+/* ---------- headings ---------- */
 
 .eyebrow {
   font-size: 11px; font-weight: 600; letter-spacing: .08em;
-  text-transform: uppercase; color: var(--muted); margin: 0;
+  text-transform: uppercase; color: var(--muted); margin: 0 0 6px;
 }
-
 h1 {
-  font-size: 24px; font-weight: 600; line-height: 1.16;
-  letter-spacing: -.008em; margin: 0; color: var(--ink); text-wrap: balance;
+  font-size: 24px; font-weight: 600; line-height: 1.18; letter-spacing: -.008em;
+  margin: 0 0 6px; color: var(--ink); overflow-wrap: anywhere;
+}
+.lede { margin: 0 0 22px; color: var(--ink-2); max-width: 68ch; }
+
+h2 {
+  font-size: 13px; font-weight: 700; letter-spacing: .06em; text-transform: uppercase;
+  color: var(--muted); margin: 26px 0 10px;
 }
 
-.standfirst { margin: 0; max-width: 70ch; color: var(--ink-2); font-size: 14px; }
+/* ---------- branch cards (home) ---------- */
 
-.counts {
-  display: flex; flex-wrap: wrap;
-  border: 1px solid var(--line); border-radius: 3px;
-  background: var(--surface); overflow: hidden; box-shadow: var(--shadow);
-}
-.count {
-  flex: 1 1 120px; padding: 12px 16px;
-  border-right: 1px solid var(--line-soft);
-  display: flex; flex-direction: column; gap: 2px;
-}
-.count:last-child { border-right: 0; }
-.count b {
-  font-size: 24px; font-weight: 600; line-height: 1.1;
-  color: var(--ink); font-variant-numeric: tabular-nums;
-}
-.count span {
-  font-size: 11px; font-weight: 600; letter-spacing: .06em;
-  text-transform: uppercase; color: var(--muted);
-}
-
-/* ---------- headings + panels ---------- */
-
-h2 { font-size: 20px; font-weight: 600; letter-spacing: -.004em; margin: 0; color: var(--ink); }
-
-.section-head { display: flex; flex-direction: column; gap: 4px; margin-bottom: 16px; }
-.section-head p { margin: 0; color: var(--muted); max-width: 72ch; font-size: 13px; }
-
-/* provenance notes — collapsed by default, open on demand */
-.caveat { margin: -8px 0 -16px; }
-
-.caveat > summary {
-  display: inline-flex; align-items: center; gap: 6px;
-  list-style: none; cursor: pointer; width: fit-content;
-  font-size: 12px; font-weight: 600; color: var(--muted);
-  padding: 4px 6px; margin-left: -6px; border-radius: 3px;
-}
-.caveat > summary::-webkit-details-marker { display: none; }
-.caveat > summary::before {
-  content: ""; width: 0; height: 0;
-  border-left: 5px solid currentColor;
-  border-top: 4px solid transparent; border-bottom: 4px solid transparent;
-}
-.caveat[open] > summary::before { transform: rotate(90deg); }
-.caveat > summary:hover { color: var(--accent); background: var(--surface-2); }
-.caveat > summary:focus-visible { outline: 2px solid var(--accent); outline-offset: 1px; }
-
-.caveat-body {
-  margin-top: 8px; padding: 16px;
+.branches { display: grid; gap: 8px; }
+.branch {
+  display: flex; align-items: center; gap: 14px; width: 100%; text-align: left;
+  font: inherit; cursor: pointer; padding: 16px 18px;
   background: var(--surface); border: 1px solid var(--line);
-  border-radius: 3px; color: var(--ink-2); font-size: 13px; box-shadow: var(--shadow);
+  border-radius: 3px; box-shadow: var(--shadow); color: var(--ink);
 }
-.caveat-body p { margin: 0 0 8px; }
-.caveat-body p:last-child { margin-bottom: 0; }
-.caveat-body strong { color: var(--ink); font-weight: 600; }
-.caveat-body a { color: var(--accent); }
-
-/* ---------- tabs (Jira underline style) ---------- */
-
-.tabbar {
-  position: sticky; top: 0; z-index: 8;
-  display: flex; gap: 0; flex-wrap: wrap; align-items: stretch;
-  border-bottom: 2px solid var(--line);
-  background: var(--paper);
+.branch:hover { border-color: var(--accent); }
+.branch:focus-visible { outline: 2px solid var(--accent); outline-offset: 1px; }
+.branch .n {
+  font-size: 22px; font-weight: 600; color: var(--accent);
+  font-variant-numeric: tabular-nums; min-width: 46px;
 }
+.branch .t { flex: 1; min-width: 0; }
+.branch .t b { display: block; font-size: 15px; font-weight: 600; }
+.branch .t span { display: block; font-size: 13px; color: var(--muted); margin-top: 2px; }
+.branch .go { color: var(--muted); font-size: 18px; }
 
-.tabbtn {
-  font-family: var(--font); font-size: 14px; font-weight: 500;
-  padding: 10px 14px; border: 0; background: none; color: var(--ink-2);
-  cursor: pointer; display: flex; align-items: center; gap: 8px;
-  border-bottom: 2px solid transparent; margin-bottom: -2px;
+/* ---------- lists ---------- */
+
+.filter {
+  width: 100%; font-family: var(--font); font-size: 14px; color: var(--ink);
+  background: var(--surface-2); border: 2px solid var(--line);
+  border-radius: 3px; padding: 7px 10px; margin-bottom: 12px;
 }
-.tabbtn:hover { color: var(--accent); background: var(--surface-2); }
-.tabbtn:focus-visible { outline: 2px solid var(--accent); outline-offset: -2px; }
-.tabbtn em {
-  font-style: normal; font-size: 11px; font-weight: 600;
-  background: var(--surface-3); color: var(--ink-2);
-  padding: 1px 6px; border-radius: 10px; font-variant-numeric: tabular-nums;
-}
-.tabbtn[aria-selected="true"] {
-  color: var(--accent); font-weight: 600; border-bottom-color: var(--accent);
-}
-.tabbtn[aria-selected="true"] em { background: var(--accent-soft); color: var(--accent); }
+.filter:focus { background: var(--surface); border-color: var(--accent); outline: none; }
+.filter::placeholder { color: var(--muted); }
 
-.panel[hidden] { display: none; }
-.panel { display: flex; flex-direction: column; gap: 32px; }
-
-/* ---------- controls ---------- */
-
-.controls {
-  display: flex; flex-wrap: wrap; gap: 8px; align-items: center;
-  position: sticky; top: 43px; z-index: 6; padding: 12px 0;
-  background: var(--paper);
+.count-line {
+  font-size: 12px; color: var(--muted); margin: 0 0 10px;
+  font-variant-numeric: tabular-nums;
 }
 
-.controls input[type="search"] {
-  flex: 1 1 240px; min-width: 0; font-family: var(--font); font-size: 14px;
-  color: var(--ink); background: var(--surface-2);
-  border: 2px solid var(--line); border-radius: 3px; padding: 6px 8px;
+.items { display: flex; flex-direction: column; border-top: 1px solid var(--line-soft); }
+.item {
+  display: flex; align-items: baseline; gap: 12px; width: 100%; text-align: left;
+  font: inherit; cursor: pointer; padding: 11px 8px; margin: 0;
+  background: none; border: 0; border-bottom: 1px solid var(--line-soft); color: var(--ink);
 }
-.controls input[type="search"]::placeholder { color: var(--muted); }
-.controls input[type="search"]:focus {
-  background: var(--surface); border-color: var(--accent); outline: none;
+.item:hover { background: var(--surface-2); }
+.item:focus-visible { outline: 2px solid var(--accent); outline-offset: -2px; }
+.item .lbl { flex: 1; min-width: 0; font-size: 14px; font-weight: 500; overflow-wrap: anywhere; }
+.item .meta { font-size: 12px; color: var(--muted); text-align: right; white-space: nowrap; }
+
+.group-h {
+  font-size: 12px; font-weight: 700; letter-spacing: .05em; text-transform: uppercase;
+  color: var(--muted); padding: 18px 8px 6px; border-bottom: 2px solid var(--line);
 }
 
-.btnrow { display: flex; gap: 4px; flex-wrap: wrap; }
+/* ---------- detail ---------- */
 
-.fl {
-  font-family: var(--font); font-size: 13px; font-weight: 500;
-  padding: 5px 10px; border-radius: 3px; border: 0;
-  background: var(--surface-2); color: var(--ink-2); cursor: pointer;
+.facts {
+  display: grid; grid-template-columns: max-content 1fr; gap: 8px 16px;
+  padding: 14px 16px; background: var(--surface); border: 1px solid var(--line);
+  border-radius: 3px; box-shadow: var(--shadow); margin-bottom: 4px; font-size: 13px;
 }
-.fl:hover { background: var(--surface-3); }
-.fl:focus-visible { outline: 2px solid var(--accent); outline-offset: 1px; }
-.fl[aria-pressed="true"] { background: var(--accent-soft); color: var(--accent); font-weight: 600; }
-
-.lg {
+.facts dt {
   font-size: 11px; font-weight: 700; letter-spacing: .06em; text-transform: uppercase;
-  padding: 4px 8px; border-radius: 3px; border: 1px solid; cursor: pointer;
-  font-family: var(--font);
+  color: var(--muted); padding-top: 2px;
 }
-.lg:focus-visible { outline: 2px solid var(--accent); outline-offset: 1px; }
-.lg[aria-pressed="false"] { opacity: .35; }
-.lg.new  { color: var(--cat-new-fg);  background: var(--cat-new-bg);  border-color: var(--cat-new-line); }
-.lg.ind  { color: var(--cat-ind-fg);  background: var(--cat-ind-bg);  border-color: var(--cat-ind-line); }
-.lg.done { color: var(--cat-done-fg); background: var(--cat-done-bg); border-color: var(--cat-done-line); }
+.facts dd { margin: 0; color: var(--ink-2); overflow-wrap: anywhere; }
+.facts dd strong { color: var(--ink); font-weight: 600; }
 
-.hitcount {
-  font-size: 12px; color: var(--muted); margin-left: auto;
-  font-variant-numeric: tabular-nums;
+.prose { margin: 0 0 14px; color: var(--ink-2); max-width: 68ch; }
+.prose code, .facts code {
+  font-family: var(--mono); font-size: 12px; background: var(--surface-2);
+  border: 1px solid var(--line-soft); padding: 1px 4px; border-radius: 3px; color: var(--ink);
 }
-
-/* ---------- grouped tables ---------- */
-
-.fam { display: flex; flex-direction: column; }
-
-.fam-head, .stage-head {
-  display: flex; align-items: baseline; gap: 8px;
-  padding: 0 0 8px; border-bottom: 2px solid var(--line);
-}
-.fam-head h3, .stage-head h3 {
-  font-size: 16px; font-weight: 600; letter-spacing: -.003em; margin: 0; color: var(--ink);
-}
-.fam-head em, .stage-head em {
-  font-style: normal; font-size: 12px; color: var(--muted);
-  font-variant-numeric: tabular-nums;
-}
-.stage-head { flex-wrap: wrap; gap: 10px; }
-.stage-head em { margin-left: auto; }
-.stage-n {
-  font-family: var(--mono); font-size: 12px; font-weight: 700;
-  color: var(--accent); background: var(--accent-soft);
-  padding: 2px 6px; border-radius: 3px; font-variant-numeric: tabular-nums;
-}
-
-.row {
-  display: grid; grid-template-columns: minmax(190px, 300px) 1fr;
-  gap: 4px 24px; padding: 12px 8px; margin: 0 -8px;
-  border-bottom: 1px solid var(--line-soft); align-items: start;
-}
-.row:hover { background: var(--surface-2); }
-@media (max-width: 700px) { .row { grid-template-columns: 1fr; gap: 8px; } }
-
-.row-name { display: flex; flex-direction: column; gap: 4px; }
-.row-name b { font-weight: 600; font-size: 14px; line-height: 1.3; color: var(--ink); }
-.row-name .pill { align-self: flex-start; }
-.row-name .lvl a { color: var(--accent); text-decoration: none; }
-.row-name .lvl a:hover { text-decoration: underline; }
-
-.lvl { font-size: 12px; color: var(--muted); }
-
-.xrefs { display: flex; flex-wrap: wrap; gap: 4px; }
-.xref {
-  font-family: var(--mono); font-size: 11px; font-weight: 600;
-  color: var(--accent); background: var(--accent-soft);
-  border: 0; border-radius: 3px; padding: 2px 6px; cursor: pointer;
-}
-.xref:hover { background: var(--accent); color: var(--accent-ink); }
-.xref:focus-visible { outline: 2px solid var(--accent); outline-offset: 1px; }
-
-/* ---------- lozenges + labels ---------- */
 
 .chips { display: flex; flex-wrap: wrap; gap: 4px; }
-
-/* base = Jira label (normal case) */
 .chip {
-  display: inline-block; font-family: var(--font); font-size: 12px;
-  line-height: 1.34; padding: 2px 6px; border-radius: 3px;
-  border: 1px solid; white-space: nowrap;
+  display: inline-block; font-size: 11px; font-weight: 700; letter-spacing: .06em;
+  text-transform: uppercase; padding: 2px 6px; border-radius: 3px; white-space: nowrap;
 }
-
-/* status categories = Jira lozenge (uppercase, bold) */
-.chip.new, .chip.ind, .chip.done {
-  font-size: 11px; font-weight: 700; letter-spacing: .06em; text-transform: uppercase;
+.chip.new  { color: var(--cat-new-fg);  background: var(--cat-new-bg); }
+.chip.ind  { color: var(--cat-ind-fg);  background: var(--cat-ind-bg); }
+.chip.done { color: var(--cat-done-fg); background: var(--cat-done-bg); }
+.chip.plain {
+  text-transform: none; letter-spacing: 0; font-weight: 500; font-size: 12px;
+  color: var(--ink-2); background: var(--surface-2); border: 1px solid var(--line);
 }
-.chip.new  { color: var(--cat-new-fg);  background: var(--cat-new-bg);  border-color: var(--cat-new-line); }
-.chip.ind  { color: var(--cat-ind-fg);  background: var(--cat-ind-bg);  border-color: var(--cat-ind-line); }
-.chip.done { color: var(--cat-done-fg); background: var(--cat-done-bg); border-color: var(--cat-done-line); }
-.chip.dim  { opacity: .2; }
+.chip.b-active  { color: var(--cat-done-fg); background: var(--cat-done-bg); }
+.chip.b-dormant { color: var(--warn-fg);     background: var(--warn-bg); }
+.chip.b-never   { color: var(--err-fg);      background: var(--err-bg); }
+.chip.ok   { color: var(--cat-done-fg); background: var(--cat-done-bg); }
+.chip.open { color: var(--cat-ind-fg);  background: var(--cat-ind-bg); }
+.chip.dead { color: var(--dead-fg);     background: var(--dead-bg); }
 
-/* work-type labels, tinted by change state */
-.chip.s-ok   { color: var(--cat-done-fg); background: var(--cat-done-bg); border-color: var(--cat-done-line); }
-.chip.s-open { color: var(--cat-ind-fg);  background: var(--cat-ind-bg);  border-color: var(--cat-ind-line); }
-.chip.s-dead { color: var(--dead-fg);     background: var(--dead-bg);     border-color: var(--dead-line); }
-.chip.s-none { color: var(--ink-2);       background: var(--surface-2);   border-color: var(--line); }
-
-button.chip { cursor: pointer; text-align: left; font-family: var(--font); }
-button.chip:hover { box-shadow: inset 0 0 0 1px var(--accent); }
+button.chip { cursor: pointer; border: 1px solid transparent; font-family: var(--font); }
+button.chip:hover { border-color: var(--accent); }
 button.chip:focus-visible { outline: 2px solid var(--accent); outline-offset: 1px; }
 
-.pill {
+/* transitions */
+.flow { margin: 0; padding: 0; list-style: none; display: flex; flex-direction: column; gap: 6px; }
+.flow li {
+  display: flex; flex-wrap: wrap; align-items: center; gap: 6px;
+  font-size: 13px; padding: 7px 10px;
+  background: var(--surface); border: 1px solid var(--line-soft); border-radius: 3px;
+}
+.flow .arrow { color: var(--accent); font-weight: 700; }
+.flow .lab { color: var(--ink-2); font-size: 12px; margin-left: 2px; }
+.flow .from-any {
   font-size: 11px; font-weight: 700; letter-spacing: .06em; text-transform: uppercase;
-  padding: 2px 6px; border-radius: 3px; border: 1px solid; white-space: nowrap;
-}
-.pill.ok   { color: var(--cat-done-fg); background: var(--cat-done-bg); border-color: var(--cat-done-line); }
-.pill.open { color: var(--cat-ind-fg);  background: var(--cat-ind-bg);  border-color: var(--cat-ind-line); }
-.pill.dead { color: var(--dead-fg);     background: var(--dead-bg);     border-color: var(--dead-line); }
-
-.badge {
-  align-self: flex-start;
-  font-size: 11px; font-weight: 700; letter-spacing: .06em; text-transform: uppercase;
-  padding: 2px 6px; border-radius: 3px; white-space: nowrap;
-}
-.badge.b-active  { color: var(--cat-done-fg); background: var(--cat-done-bg); }
-.badge.b-dormant { color: var(--warn-fg);     background: var(--warn-bg); }
-.badge.b-never   { color: var(--err-fg);      background: var(--err-bg); }
-
-.ownernote {
-  margin: 8px 0 4px; font-size: 13px; color: var(--muted); max-width: 78ch;
+  color: var(--muted);
 }
 
-/* ---------- workflow transitions ---------- */
+.linklist { margin: 0; padding: 0; list-style: none; display: flex; flex-direction: column; gap: 3px; }
+.linklist li { font-size: 13px; color: var(--ink-2); display: flex; gap: 8px; }
+.linklist a, .linklist code { font-family: var(--mono); font-size: 12px; flex: 0 0 auto; }
+.linklist s { color: var(--dead-fg); }
 
-.flow { margin-top: 2px; }
-.flow > summary {
-  display: inline-flex; align-items: center; gap: 6px;
-  list-style: none; cursor: pointer; width: fit-content;
-  font-size: 12px; color: var(--muted);
-  padding: 3px 6px; margin-left: -6px; border-radius: 3px;
+.empty { padding: 26px 0; color: var(--muted); font-style: italic; }
+
+.note {
+  font-size: 12px; color: var(--muted); margin-top: 26px;
+  padding-top: 14px; border-top: 1px solid var(--line);
 }
-.flow > summary::-webkit-details-marker { display: none; }
-.flow > summary::before {
-  content: ""; width: 0; height: 0; flex: 0 0 auto;
-  border-left: 5px solid currentColor;
-  border-top: 4px solid transparent; border-bottom: 4px solid transparent;
-}
-.flow[open] > summary::before { transform: rotate(90deg); }
-.flow > summary:hover { color: var(--accent); background: var(--surface-2); }
-.flow > summary:focus-visible { outline: 2px solid var(--accent); outline-offset: 1px; }
-
-.flowlist {
-  margin: 6px 0 0; padding: 10px 12px; list-style: none;
-  display: flex; flex-direction: column; gap: 5px;
-  background: var(--surface-2); border: 1px solid var(--line); border-radius: 3px;
-}
-.flowlist li { display: flex; flex-wrap: wrap; align-items: center; gap: 5px; font-size: 12px; }
-.flowlist b {
-  font-size: 11px; font-weight: 700; letter-spacing: .06em; text-transform: uppercase;
-  color: var(--muted); margin-right: 2px;
-}
-.flowlist em {
-  font-style: normal; font-size: 12px; color: var(--ink-2);
-  margin-left: 2px; overflow-wrap: anywhere;
-}
-.flowlist .arrow { color: var(--accent); font-weight: 700; }
-
-/* ---------- entry bodies ---------- */
-
-.ebody { display: flex; flex-direction: column; gap: 8px; min-width: 0; }
-
-.what { margin: 0; color: var(--ink-2); font-size: 13px; }
-.what code, .trig code {
-  font-family: var(--mono); font-size: 12px;
-  background: var(--surface-2); border: 1px solid var(--line-soft);
-  padding: 1px 4px; border-radius: 3px; color: var(--ink);
-}
-
-.ba {
-  display: flex; flex-direction: column; gap: 4px;
-  background: var(--surface-2); border: 1px solid var(--line);
-  border-radius: 3px; padding: 8px 10px; font-size: 12px;
-}
-.ba div { display: flex; gap: 8px; align-items: baseline; }
-.ba b {
-  font-size: 11px; font-weight: 700; letter-spacing: .06em; text-transform: uppercase;
-  color: var(--muted); flex: 0 0 52px;
-}
-.ba span { font-family: var(--mono); font-size: 12px; color: var(--ink-2); min-width: 0; overflow-wrap: anywhere; }
-.ba .now span { color: var(--ink); }
-
-.subs, .trig, .mism { margin: 0; padding: 0; list-style: none; display: flex; flex-direction: column; gap: 4px; }
-.subs li { font-size: 13px; color: var(--muted); display: flex; gap: 8px; }
-.subs a { font-family: var(--mono); font-size: 12px; color: var(--accent); text-decoration: none; flex: 0 0 auto; }
-.subs a:hover { text-decoration: underline; }
-.subs s { color: var(--dead-fg); text-decoration-thickness: 1px; }
-
-.trig li { display: flex; gap: 6px; align-items: baseline; flex-wrap: wrap; font-size: 13px; color: var(--ink-2); }
-.trig .arrow { color: var(--accent); font-weight: 700; }
-
-.mism li { font-size: 13px; color: var(--ink-2); }
-.mism .doc {
-  font-family: var(--mono); font-size: 12px; color: var(--cat-ind-fg);
-  background: var(--cat-ind-bg); padding: 1px 4px; border-radius: 3px;
-}
-.mism .jira {
-  font-family: var(--mono); font-size: 12px; color: var(--cat-done-fg);
-  background: var(--cat-done-bg); padding: 1px 4px; border-radius: 3px;
-}
-
-.tags { display: flex; flex-wrap: wrap; gap: 4px; }
-.tag-c {
-  font-size: 11px; color: var(--muted); border: 1px solid var(--line);
-  background: var(--surface-2); padding: 1px 6px; border-radius: 3px;
-}
-
-/* ---------- roles ---------- */
-
-.roles { display: grid; grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)); gap: 8px; }
-.role {
-  background: var(--surface); border: 1px solid var(--line); border-radius: 3px;
-  padding: 12px 14px; display: flex; flex-direction: column; gap: 4px;
-  box-shadow: var(--shadow);
-}
-.role b { font-size: 14px; font-weight: 600; color: var(--ink); }
-.role span { font-size: 13px; color: var(--ink-2); }
-.role em { font-style: normal; font-size: 12px; color: var(--muted); margin-top: 2px; }
-
-/* ---------- misc ---------- */
+.note a { color: var(--accent); }
 
 mark { background: #FFF0B3; color: #172B4D; padding: 0 1px; border-radius: 2px; }
 :root[data-theme="dark"] mark { background: #533F04; color: #F8E6A0; }
@@ -448,210 +238,12 @@ mark { background: #FFF0B3; color: #172B4D; padding: 0 1px; border-radius: 2px; 
   :root:not([data-theme="light"]) mark { background: #533F04; color: #F8E6A0; }
 }
 
-.empty { padding: 32px 0; color: var(--muted); font-style: italic; }
-
-footer { border-top: 1px solid var(--line); padding-top: 16px; color: var(--muted); font-size: 12px; }
-
 @media (prefers-reduced-motion: reduce) { * { transition: none !important; animation: none !important; } }
 </style>
 
 <div class="wrap">
-
-  <header class="masthead">
-    <p class="eyebrow">Jira · Content Development Life Cycle</p>
-    <h1>The CDLC workflows, as they stand and as they got here</h1>
-    <p class="standfirst">
-      The seven stages of the content lifecycle and who owns each one, every work type with the
-      workflow that drives it and every transition in it, and the full trail of change tickets
-      that produced them. The three views cross-link, so any work type leads to its process
-      stage and its change history.
-    </p>
-    <div class="counts">
-      <div class="count"><b>69</b><span>Work types</span></div>
-      <div class="count"><b>47</b><span>Workflows</span></div>
-      <div class="count"><b>72</b><span>Statuses</span></div>
-      <div class="count"><b>376</b><span>Transitions</span></div>
-      <div class="count"><b>90</b><span>Change tickets</span></div>
-      <div class="count"><b>15</b><span>Dormant types</span></div>
-    </div>
-  </header>
-
-  <div class="tabbar" role="tablist" aria-label="Sections">
-    <button class="tabbtn" id="tab-now" role="tab" aria-selected="true" aria-controls="panel-now">
-      Current state <em>69</em>
-    </button>
-    <button class="tabbtn" id="tab-log" role="tab" aria-selected="false" aria-controls="panel-log">
-      Change history <em>40</em>
-    </button>
-    <button class="tabbtn" id="tab-proc" role="tab" aria-selected="false" aria-controls="panel-proc">
-      The process <em>7</em>
-    </button>
-    <button class="tabbtn" id="tab-fields" role="tab" aria-selected="false" aria-controls="panel-fields">
-      Fields <em>52</em>
-    </button>
-  </div>
-
-  <!-- ======================= CURRENT STATE ======================= -->
-  <div class="panel" id="panel-now" role="tabpanel" aria-labelledby="tab-now">
-
-    <details class="caveat">
-      <summary>Scope of this data</summary>
-      <div class="caveat-body">
-      <p><strong>What this is, and what it isn't.</strong> This comes from Jira's
-        <code>/project/CDLC/statuses</code> endpoint, which any user with Browse Projects
-        permission can read. It returns, for every work type, the full set of statuses in that
-        work type's workflow.</p>
-      <p><strong>Usage is measured, not assumed.</strong> Each row carries how many tickets that
-        work type has ever had and how many in the last twelve months. Anything with no ticket in
-        a year reads Dormant; one type has never been used at all. Counts were taken against all
-        7,951 CDLC issues on 27 August 2026 and are a snapshot, not a live feed.</p>
-      <p><strong>Transitions are now included.</strong> Each row carries the workflow that drives
-        it and every transition in that workflow, read from Jira's workflow configuration. The
-        status chips are still an unordered set; the transitions underneath are the actual
-        arrows, including the ones reachable from any status. 69 work types share 47 workflows,
-        so two rows naming the same workflow really are the same workflow.</p>
-      </div>
-    </details>
-
-    <section>
-      <div class="section-head">
-        <h2>The inventory</h2>
-        <p>Search by work type or status. Every row carries its ticket count and whether it is
-          still in use. Click a category to dim it, or a ticket key to jump to that change.</p>
-      </div>
-      <div class="controls">
-        <input id="q-now" type="search" placeholder="Search work types or statuses…" autocomplete="off" aria-label="Search work types or statuses">
-        <div class="btnrow" role="group" aria-label="Filter by status category">
-          <button class="lg new"  data-cat="new"  aria-pressed="true">To Do</button>
-          <button class="lg ind"  data-cat="ind"  aria-pressed="true">In Progress</button>
-          <button class="lg done" data-cat="done" aria-pressed="true">Done</button>
-        </div>
-        <div class="btnrow">
-          <button class="fl" id="hide-dormant" aria-pressed="false">Hide dormant</button>
-        </div>
-        <span class="hitcount" id="hits-now"></span>
-      </div>
-      <div id="out-now"></div>
-    </section>
-  </div>
-
-  <!-- ======================= CHANGE HISTORY ======================= -->
-  <div class="panel" id="panel-log" role="tabpanel" aria-labelledby="tab-log" hidden>
-
-    <details class="caveat">
-      <summary>Where this comes from</summary>
-      <div class="caveat-body">
-      <p><strong>Jira does not keep a readable history of workflow configuration.</strong>
-        There is no changelog for "this status was added on this date". What exists is the trail
-        of tickets that <em>asked</em> for each change, and almost all of them live under one
-        epic: <a href="https://skillcatapp.atlassian.net/browse/SGP-9551">SGP-9551 "CDLC
-        Changes"</a>, opened 13 April 2026 and described as "Changes for existing CDLC
-        workflows, automations, fields, etc." Its tree holds 83 tickets. Seven more sit outside it.</p>
-      <p><strong>So this is a log of intent, verified against current state where possible.</strong>
-        Shipped means the ticket was closed, and where the live status data confirms the change
-        landed, the before and after are shown. Anything before November 2025 was not recorded
-        in a way that survives.</p>
-      </div>
-    </details>
-
-    <section>
-      <div class="section-head">
-        <h2>The log</h2>
-        <p>Grouped by month, newest first. Chips are the work types each change touched — click one to see it in the inventory.</p>
-      </div>
-      <div class="controls">
-        <input id="q-log" type="search" placeholder="Search changes…" autocomplete="off" aria-label="Search changes">
-        <div class="btnrow" id="filters" role="group" aria-label="Filter by area"></div>
-        <span class="hitcount" id="hits-log"></span>
-      </div>
-      <div id="out-log"></div>
-    </section>
-  </div>
-
-  <!-- ======================= THE PROCESS ======================= -->
-  <div class="panel" id="panel-proc" role="tabpanel" aria-labelledby="tab-proc" hidden>
-
-    <details class="caveat">
-      <summary>Where this comes from</summary>
-      <div class="caveat-body">
-      <p><strong>This half is not from Jira.</strong> It comes from the CDLC Process
-        Documentation, the Content Team's SOP — version 1.0, effective 30 May 2026, owned by
-        the QA Specialist. Jira holds the statuses; the SOP holds the sequence, the ownership
-        and the automation chain, which is why the two are shown side by side.</p>
-      <p><strong>Six names in the SOP do not match Jira</strong>, and they are marked on the
-        stages below. The SOP's own workflow diagrams did not survive its export to Markdown —
-        all 34 came through as empty images — so the transitions still have to come from Jira
-        admin access.</p>
-      </div>
-    </details>
-
-    <section>
-      <div class="section-head">
-        <h2>Who does what</h2>
-        <p>The five contributor roles named in the SOP.</p>
-      </div>
-      <div class="roles" id="roles"></div>
-    </section>
-
-    <section>
-      <div class="section-head">
-        <h2>The seven stages</h2>
-        <p>In order. Work type chips link through to the inventory.</p>
-      </div>
-      <div id="out-proc"></div>
-    </section>
-  </div>
-
-  <!-- ======================= FIELDS ======================= -->
-  <div class="panel" id="panel-fields" role="tabpanel" aria-labelledby="tab-fields" hidden>
-
-    <details class="caveat">
-      <summary>Where this comes from</summary>
-      <div class="caveat-body">
-      <p><strong>The field list is from Jira; the ownership is not.</strong> Every field below is
-        read from the CDLC create metadata, so the names, types, scope and required flags are
-        live configuration. Who fills each one comes from the Content Team SOP and from the
-        change tickets that introduced the field, because Jira has no concept of an owner.</p>
-      <p><strong>Only five fields are required by Jira itself</strong>, and four of those are set
-        for you. Everything else is optional at creation, which means the discipline lives in
-        transition validators rather than in the field configuration. Where a validator does
-        enforce a field, it is named on the row.</p>
-      </div>
-    </details>
-
-    <section>
-      <div class="section-head">
-        <h2>The gap</h2>
-        <p>How much of the field set the SOP actually assigns an owner to.</p>
-      </div>
-      <div class="counts">
-        <div class="count"><b>52</b><span>Fields</span></div>
-        <div class="count"><b>24</b><span>With an owner</span></div>
-        <div class="count"><b>18</b><span>Undocumented</span></div>
-        <div class="count"><b>5</b><span>Required by Jira</span></div>
-        <div class="count"><b>9</b><span>Validator-enforced</span></div>
-      </div>
-    </section>
-
-    <section>
-      <div class="section-head">
-        <h2>Who fills what</h2>
-        <p>Grouped by the role responsible. Ticket keys link to the change that introduced the rule.</p>
-      </div>
-      <div class="controls">
-        <input id="q-fields" type="search" placeholder="Search fields…" autocomplete="off" aria-label="Search fields">
-        <span class="hitcount" id="hits-fields"></span>
-      </div>
-      <div id="out-fields"></div>
-    </section>
-  </div>
-
-  <footer>
-    <p>Compiled 26 August 2026. Status sets are live config from
-      <strong>skillcatapp.atlassian.net</strong>; the history is reconstructed from change
-      tickets; the process is from the Content Team SOP v1.0. Ticket keys link to Jira.</p>
-  </footer>
-
+  <nav class="crumbs" id="crumbs" aria-label="Breadcrumb"></nav>
+  <div id="view"></div>
 </div>
 
 <script>
@@ -778,8 +370,6 @@ const DATA = [
 ]]
 ];
 
-
-/* ============================ CHANGE LOG ============================ */
 const OK = "ok", OPEN = "open", DEAD = "dead";
 
 const LOG = [
@@ -1002,16 +592,6 @@ const LOG = [
  ["Review","Unknown"],null,null,[]]
 ];
 
-/* ============================ SHARED ============================ */
-const esc = s => String(s).replace(/[&<>"]/g, c => ({ "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;" }[c]));
-
-function hl(text, term) {
-  if (!term) return text;
-  const i = text.toLowerCase().indexOf(term);
-  if (i < 0) return text;
-  return text.slice(0, i) + "<mark>" + text.slice(i, i + term.length) + "</mark>" + text.slice(i + term.length);
-}
-
 /* Ticket counts per work type, measured against all 7,960 CDLC issues on 29 August 2026.
    [total ever, created in the last 365 days]. A type with no ticket in a year reads Dormant. */
 const USAGE = {
@@ -1086,19 +666,6 @@ const USAGE = {
 "Applied Layers: Video Creation":[2,2]
 };
 
-function usageOf(name) {
-  const u = USAGE[name.trim()] || [0, 0];
-  const state = u[0] === 0 ? "never" : (u[1] === 0 ? "dormant" : "active");
-  const label = state === "never" ? "Never used" : state === "dormant" ? "Dormant" : "Active";
-  const meta  = state === "never" ? "no tickets ever"
-              : state === "dormant" ? `${u[0]} tickets · none in 12 months`
-              : `${u[0]} tickets · ${u[1]} in 12 months`;
-  return { state, label, meta };
-}
-
-let hideDormant = false;
-
-
 const TRANSITIONS = {
 "Applied Layers: Content Finalization": [{"kind":"start","to":"Finalize as per SME Requirements"},{"kind":"edge","from":["Finalize as per SME Requirements"],"to":"Generate Graphic Definition","label":"Create Graphic Definition"},{"kind":"edge","from":["Generate Graphic Definition"],"to":"Referencing","label":"Referencing"}],
 "Applied Layers: Toolkit/Instructions": [{"kind":"start","to":"To Do"},{"kind":"any","to":"Suspended","label":"Suspended"},{"kind":"edge","from":["To Do"],"to":"Assigned","label":"Assigned to team member"},{"kind":"edge","from":["Assigned"],"to":"In Progress","label":"Progress"},{"kind":"edge","from":["In Progress"],"to":"In Review","label":"Review"},{"kind":"edge","from":["In Review"],"to":"In Progress","label":"Review Fail"},{"kind":"edge","from":["In Review"],"to":"Done","label":"Approved"}],
@@ -1149,233 +716,6 @@ const TRANSITIONS = {
 "SGP: Task": [{"kind":"start","to":"To Do"},{"kind":"any","to":"To Do","label":"To Do"},{"kind":"any","to":"On Hold","label":"On Hold"},{"kind":"any","to":"Discard","label":"Discard"},{"kind":"edge","from":["Assigned"],"to":"In Progress","label":"Work begun"},{"kind":"edge","from":["To Do"],"to":"Assigned","label":"Assign to team member"},{"kind":"edge","from":["Reproduced"],"to":"Done","label":"Fixed by Devs"},{"kind":"edge","from":["In Progress"],"to":"In Review","label":"Sent for Review"},{"kind":"edge","from":["In Review"],"to":"Reproduced","label":"Reproduced"},{"kind":"edge","from":["In Review"],"to":"Done","label":"Approved"},{"kind":"edge","from":["In Progress"],"to":"Reproduced","label":"Reproduced/ Isolated"},{"kind":"edge","from":["On Hold"],"to":"In Progress","label":"Work begun"},{"kind":"edge","from":["In Review"],"to":"In Progress","label":"Review Fail"}]
 };
 
-const LOG_KEYS = new Set(LOG.map(e => e[0]));
-
-const CHANGE_TO_TYPES = {};
-for (const [, types] of DATA)
-  for (const [name, , , refs] of types)
-    for (const k of (refs || []))
-      if (LOG_KEYS.has(k)) (CHANGE_TO_TYPES[k] = CHANGE_TO_TYPES[k] || []).push(name);
-
-/* ============================ TABS ============================ */
-const tabs = {
-  now: { btn: document.getElementById("tab-now"), panel: document.getElementById("panel-now") },
-  log: { btn: document.getElementById("tab-log"), panel: document.getElementById("panel-log") },
-  proc: { btn: document.getElementById("tab-proc"), panel: document.getElementById("panel-proc") },
-  fields: { btn: document.getElementById("tab-fields"), panel: document.getElementById("panel-fields") }
-};
-
-function showTab(which) {
-  for (const k of Object.keys(tabs)) {
-    const on = k === which;
-    tabs[k].btn.setAttribute("aria-selected", on ? "true" : "false");
-    tabs[k].panel.hidden = !on;
-  }
-}
-tabs.now.btn.addEventListener("click", () => showTab("now"));
-tabs.log.btn.addEventListener("click", () => showTab("log"));
-tabs.proc.btn.addEventListener("click", () => showTab("proc"));
-tabs.fields.btn.addEventListener("click", () => showTab("fields"));
-
-/* ============================ INVENTORY ============================ */
-const outNow = document.getElementById("out-now");
-const hitsNow = document.getElementById("hits-now");
-const qNow = document.getElementById("q-now");
-const dimmed = new Set();
-
-
-// Renders one workflow's transitions. Jira workflows are graphs rather than
-// straight lines, so the start state, the ordinary edges and the transitions
-// available from any status are shown as three separate groups.
-function flowHtml(wfName) {
-  if (!wfName) return "";
-  const edges = TRANSITIONS[wfName];
-  if (!edges || !edges.length) return "";
-
-  const start = edges.filter(e => e.kind === "start");
-  const any = edges.filter(e => e.kind === "any");
-  const norm = edges.filter(e => e.kind === "edge");
-  const chip = n => `<span class="chip ${CAT[n] || "ind"}">${esc(n)}</span>`;
-
-  let body = "";
-  if (start.length) {
-    body += `<li><b>Starts at</b>${start.map(e => chip(e.to)).join("")}</li>`;
-  }
-  for (const e of norm) {
-    body += `<li>${e.from.map(chip).join("")}<span class="arrow">&rarr;</span>` +
-            `${chip(e.to)}<em>${esc(e.label)}</em></li>`;
-  }
-  for (const e of any) {
-    body += `<li><b>From any</b><span class="arrow">&rarr;</span>${chip(e.to)}` +
-            `<em>${esc(e.label)}</em></li>`;
-  }
-
-  const n = norm.length + any.length;
-  return `<details class="flow"><summary>${esc(wfName)} &middot; ` +
-         `${n} transition${n === 1 ? "" : "s"}</summary><ul class="flowlist">${body}</ul></details>`;
-}
-
-function renderNow() {
-  const term = qNow.value.trim().toLowerCase();
-  let shown = 0, html = "";
-
-  for (const [family, types] of DATA) {
-    const rows = types.filter(([name, , sts]) => {
-      if (hideDormant && usageOf(name).state !== "active") return false;
-      return !term || name.toLowerCase().includes(term) || sts.some(s => s.toLowerCase().includes(term));
-    });
-    if (!rows.length) continue;
-    shown += rows.length;
-
-    html += `<div class="fam"><div class="fam-head"><h3>${esc(family)}</h3><em>${rows.length} of ${types.length}</em></div>`;
-    for (const [name, lvl, sts, refs, wfName] of rows) {
-      const known = (refs || []).filter(k => LOG_KEYS.has(k));
-      const u = usageOf(name);
-      html += `<div class="row"><div class="row-name"><b>${hl(esc(name), term)}</b>` +
-              `<span class="lvl">${lvl} · ${sts.length} statuses · ${u.meta}</span>` +
-              `<span class="badge b-${u.state}">${u.label}</span>`;
-      if (known.length) {
-        html += `<div class="xrefs">` + known.map(k =>
-          `<button class="xref" data-jump="${k}" title="Show this change">${k}</button>`).join("") + `</div>`;
-      }
-      html += `</div><div class="ebody"><div class="chips">`;
-      for (const s of sts) {
-        const c = CAT[s] || "ind";
-        html += `<span class="chip ${c}${dimmed.has(c) ? " dim" : ""}">${hl(esc(s), term)}</span>`;
-      }
-      html += `</div>` + flowHtml(wfName) + `</div></div>`;
-    }
-    html += `</div>`;
-  }
-
-  outNow.innerHTML = html || `<p class="empty">No work type or status matches “${esc(qNow.value.trim())}”.</p>`;
-  hitsNow.textContent = shown + " of 69 work types" + (hideDormant ? " · dormant hidden" : "");
-
-  for (const b of outNow.querySelectorAll(".xref")) {
-    b.addEventListener("click", () => {
-      qLog.value = b.dataset.jump;
-      renderLog();
-      showTab("log");
-      window.scrollTo({ top: 0, behavior: "smooth" });
-    });
-  }
-}
-
-qNow.addEventListener("input", renderNow);
-
-const hideBtn = document.getElementById("hide-dormant");
-hideBtn.addEventListener("click", () => {
-  hideDormant = !hideDormant;
-  hideBtn.setAttribute("aria-pressed", hideDormant ? "true" : "false");
-  hideBtn.textContent = hideDormant ? "Show dormant" : "Hide dormant";
-  renderNow();
-});
-for (const b of document.querySelectorAll(".lg")) {
-  b.addEventListener("click", () => {
-    const c = b.dataset.cat;
-    if (dimmed.has(c)) { dimmed.delete(c); b.setAttribute("aria-pressed", "true"); }
-    else { dimmed.add(c); b.setAttribute("aria-pressed", "false"); }
-    renderNow();
-  });
-}
-
-/* ============================ CHANGELOG ============================ */
-const outLog = document.getElementById("out-log");
-const hitsLog = document.getElementById("hits-log");
-const qLog = document.getElementById("q-log");
-const active = new Set();
-
-const ALL_TAGS = [...new Set(LOG.flatMap(e => e[6]))].sort();
-document.getElementById("filters").innerHTML =
-  ALL_TAGS.map(t => `<button class="fl" data-tag="${esc(t)}" aria-pressed="false">${esc(t)}</button>`).join("");
-
-const MONTHS = ["January","February","March","April","May","June","July","August","September","October","November","December"];
-const monthKey = d => { const [y, m] = d.split("-"); return MONTHS[+m - 1] + " " + y; };
-const dayLabel = d => { const [, m, dd] = d.split("-"); return dd + " " + MONTHS[+m - 1].slice(0, 3); };
-
-function renderLog() {
-  const term = qLog.value.trim().toLowerCase();
-  const rows = LOG.filter(e => {
-    if (active.size && !e[6].some(t => active.has(t))) return false;
-    if (!term) return true;
-    const hay = [e[0], e[4], e[5], e[7] || "", e[8] || "", e[6].join(" "),
-                 ...e[9].flatMap(s => [s[0], s[2]])].join(" ").toLowerCase();
-    return hay.includes(term);
-  });
-
-  let html = "", current = null;
-
-  for (const [key, date, state, label, title, what, tags, before, after, subs] of rows) {
-    const mk = monthKey(date);
-    if (mk !== current) {
-      if (current !== null) html += "</div>";
-      const n = rows.filter(r => monthKey(r[1]) === mk).length;
-      html += `<div class="fam"><div class="fam-head"><h3>${mk}</h3><em>${n} change${n === 1 ? "" : "s"}</em></div>`;
-      current = mk;
-    }
-
-    const wts = CHANGE_TO_TYPES[key] || [];
-    const chips = wts.length
-      ? wts.map(n => `<button class="chip s-${state}" data-wt="${esc(n)}" title="Show this work type in the inventory">${hl(esc(n), term)}</button>`).join("")
-      : tags.map(t => `<span class="chip s-none">${esc(t)}</span>`).join("");
-
-    html += `<div class="row">
-      <div class="row-name">
-        <b>${hl(esc(title), term)}</b>
-        <span class="lvl">${dayLabel(date)} · <a href="https://skillcatapp.atlassian.net/browse/${key}" target="_blank" rel="noopener">${hl(esc(key), term)}</a></span>
-        <span class="pill ${state}">${label}</span>
-      </div>
-      <div class="ebody">
-        <div class="chips">${chips}</div>
-        <p class="what">${what}</p>`;
-
-    if (before || after) {
-      html += `<div class="ba">`;
-      if (before) html += `<div><b>Was</b><span>${before}</span></div>`;
-      if (after)  html += `<div class="now"><b>Became</b><span>${after}</span></div>`;
-      html += `</div>`;
-    }
-
-    if (subs.length) {
-      html += `<ul class="subs">` + subs.map(([sk, ss, st]) =>
-        `<li><a href="https://skillcatapp.atlassian.net/browse/${sk}" target="_blank" rel="noopener">${sk}</a>` +
-        (ss === DEAD ? `<s>${st}</s>` : `<span>${st}</span>`) + `</li>`).join("") + `</ul>`;
-    }
-
-    html += `<div class="tags">${tags.map(t => `<span class="tag-c">${esc(t)}</span>`).join("")}</div>
-      </div></div>`;
-  }
-
-  if (current !== null) html += "</div>";
-
-  outLog.innerHTML = html || `<p class="empty">Nothing matches that.</p>`;
-  hitsLog.textContent = rows.length + " of " + LOG.length + " changes";
-
-  for (const b of outLog.querySelectorAll(".chip[data-wt]")) {
-    b.addEventListener("click", () => {
-      qNow.value = b.dataset.wt;
-      renderNow();
-      showTab("now");
-      window.scrollTo({ top: 0, behavior: "smooth" });
-    });
-  }
-}
-
-qLog.addEventListener("input", renderLog);
-for (const b of document.querySelectorAll(".fl")) {
-  b.addEventListener("click", () => {
-    const t = b.dataset.tag;
-    if (active.has(t)) { active.delete(t); b.setAttribute("aria-pressed", "false"); }
-    else { active.add(t); b.setAttribute("aria-pressed", "true"); }
-    renderLog();
-  });
-}
-
-renderNow();
-renderLog();
-
-/* ============================ THE PROCESS ============================ */
-/* Source: CDLC Process Documentation v1.0, Content Team SOP, 30 May 2026. */
 
 const ROLES = [
   ["Instructional Designer", "Drafting, editing and iterating content in line with the brief", "The ID Team Manager"],
@@ -1455,73 +795,6 @@ const PROCESS = [
   ["Translation path To Do → In Progress → In Review → Upload to AWS → Done", "CDLC: Topic Translations has no In Progress status. Its set includes Assigned, In Translation and Complete checklist, none of which the SOP mentions"]]]
 ];
 
-const LIVE_TYPES = new Set();
-for (const [, types] of DATA) for (const [name] of types) LIVE_TYPES.add(name);
-
-document.getElementById("roles").innerHTML = ROLES.map(([r, d, m]) =>
-  `<div class="role"><b>${esc(r)}</b><span>${esc(d)}</span><em>${esc(m)}</em></div>`).join("");
-
-const outProc = document.getElementById("out-proc");
-
-function renderProc() {
-  let html = "";
-  for (const [n, title, owner, summary, who, types, triggers, mismatches] of PROCESS) {
-    html += `<div class="fam" style="margin-bottom:1.6rem">
-      <div class="stage-head">
-        <span class="stage-n">${String(n).padStart(2, "0")}</span>
-        <h3>${esc(title)}</h3>
-        <em>${esc(owner)}</em>
-      </div>`;
-
-    html += `<div class="row"><div class="row-name"><b>What happens</b></div>
-      <div class="ebody"><p class="what">${esc(summary)}</p></div></div>`;
-
-    html += `<div class="row"><div class="row-name"><b>Who</b></div>
-      <div class="ebody"><div class="chips">` +
-      who.map(w => `<span class="chip s-none">${esc(w)}</span>`).join("") +
-      `</div></div></div>`;
-
-    html += `<div class="row"><div class="row-name"><b>Work types</b>` +
-      `<span class="lvl">${types.length} in this stage</span></div>
-      <div class="ebody"><div class="chips">` +
-      types.map(t => LIVE_TYPES.has(t)
-        ? `<button class="chip s-ok" data-wt="${esc(t)}" title="Show this work type in the inventory">${esc(t)}</button>`
-        : `<span class="chip s-none">${esc(t)}</span>`).join("") +
-      `</div></div></div>`;
-
-    html += `<div class="row"><div class="row-name"><b>Triggers next</b></div>
-      <div class="ebody"><ul class="trig">` +
-      triggers.map(([from, to]) =>
-        `<li><code>${esc(from)}</code><span class="arrow">→</span><span>${esc(to)}</span></li>`).join("") +
-      `</ul></div></div>`;
-
-    if (mismatches.length) {
-      html += `<div class="row"><div class="row-name"><b>SOP does not match Jira</b></div>
-        <div class="ebody"><ul class="mism">` +
-        mismatches.map(([d, j]) =>
-          `<li>SOP says <span class="doc">${esc(d)}</span> · Jira has <span class="jira">${esc(j)}</span></li>`).join("") +
-        `</ul></div></div>`;
-    }
-
-    html += `</div>`;
-  }
-  outProc.innerHTML = html;
-
-  for (const b of outProc.querySelectorAll(".chip[data-wt]")) {
-    b.addEventListener("click", () => {
-      qNow.value = b.dataset.wt;
-      renderNow();
-      showTab("now");
-      window.scrollTo({ top: 0, behavior: "smooth" });
-    });
-  }
-}
-
-renderProc();
-
-/* ============================ FIELDS ============================ */
-/* Field names, types, scope and required flags: Jira CDLC create metadata, 29 August 2026.
-   Ownership: Content Team SOP v1.0 plus the change tickets that introduced each field. */
 
 /* [name, type, scope, when it gets filled, enforcing ticket | null] */
 const FIELDS = [
@@ -1596,59 +869,365 @@ const FIELDS = [
   ["Feedback Reference Link", "string", "Feedback only", "Not mentioned. That work type is dormant", null]
 ]]
 ];
+/* ============================ NAVIGATION ============================ */
+/* One screen at a time. `path` drives everything:
+     []                          home
+     ["workflows"]               list
+     ["workflows", name]         detail
+   Same for worktypes, process, fields, changes. */
 
-const outFields = document.getElementById("out-fields");
-const hitsFields = document.getElementById("hits-fields");
-const qFields = document.getElementById("q-fields");
+const esc = s => String(s).replace(/[&<>"]/g, c => ({ "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;" }[c]));
+const hl = (t, q) => {
+  if (!q) return esc(t);
+  const i = t.toLowerCase().indexOf(q);
+  if (i < 0) return esc(t);
+  return esc(t.slice(0,i)) + "<mark>" + esc(t.slice(i,i+q.length)) + "</mark>" + esc(t.slice(i+q.length));
+};
 
-function renderFields() {
-  const term = qFields.value.trim().toLowerCase();
-  let shown = 0, html = "";
+// ---- derived indexes -------------------------------------------------
+const WORKTYPES = [];                       // flat [name, family, level, statuses, refs, workflow]
+for (const [family, rows] of DATA)
+  for (const [n, lvl, sts, refs, wf] of rows) WORKTYPES.push({ n, family, lvl, sts, refs: refs||[], wf });
 
-  for (const [owner, note, rows] of FIELDS) {
-    const hit = rows.filter(([n, t, scope, when, tk]) =>
-      !term || [n, t, scope, when, tk || "", owner].join(" ").toLowerCase().includes(term));
-    if (!hit.length) continue;
-    shown += hit.length;
+const BY_WF = {};                           // workflow -> work types using it
+for (const w of WORKTYPES) (BY_WF[w.wf] = BY_WF[w.wf] || []).push(w);
 
-    html += `<div class="fam"><div class="fam-head"><h3>${esc(owner)}</h3>` +
-            `<em>${hit.length} of ${rows.length}</em></div>` +
-            `<p class="ownernote">${esc(note)}</p>`;
+const LOG_BY_KEY = Object.fromEntries(LOG.map(e => [e[0], e]));
 
-    const CHIP = { val:  ["s-open", "Enforced by a validator"],
-                   auto: ["s-ok",   "Set by automation"],
-                   note: ["s-none", "See the change"] };
-    for (const [n, t, scope, when, tk, kind] of hit) {
-      html += `<div class="row"><div class="row-name">` +
-              `<b>${hl(esc(n), term)}</b>` +
-              `<span class="lvl">${esc(t)} · ${esc(scope)}</span>` +
-              (tk ? `<div class="xrefs"><button class="xref" data-jump="${tk}" ` +
-                    `title="Show the change that introduced this">${tk}</button></div>` : ``) +
-              `</div><div class="ebody"><p class="what">${hl(esc(when), term)}</p>` +
-              (tk ? `<div class="chips"><span class="chip ${(CHIP[kind]||CHIP.note)[0]}">` +
-                    `${(CHIP[kind]||CHIP.note)[1]}</span></div>` : ``) +
-              `</div></div>`;
-    }
-    html += `</div>`;
-  }
-
-  outFields.innerHTML = html || `<p class="empty">No field matches that.</p>`;
-  hitsFields.textContent = shown + " of 52 fields";
-
-  for (const b of outFields.querySelectorAll(".xref")) {
-    b.addEventListener("click", () => {
-      qLog.value = b.dataset.jump;
-      renderLog();
-      showTab("log");
-      window.scrollTo({ top: 0, behavior: "smooth" });
-    });
-  }
+function usageOf(name) {
+  const u = USAGE[name.trim()] || [0,0];
+  const state = u[0] === 0 ? "never" : (u[1] === 0 ? "dormant" : "active");
+  return { state, ever: u[0], y1: u[1],
+    label: state === "never" ? "Never used" : state === "dormant" ? "Dormant" : "Active" };
 }
 
-qFields.addEventListener("input", renderFields);
-renderFields();
+// a workflow is active if any work type using it is active
+function wfUsage(wf) {
+  const list = BY_WF[wf] || [];
+  const ever = list.reduce((a,w) => a + usageOf(w.n).ever, 0);
+  const y1   = list.reduce((a,w) => a + usageOf(w.n).y1, 0);
+  return { ever, y1, state: ever === 0 ? "never" : (y1 === 0 ? "dormant" : "active") };
+}
 
+// change tickets touching a workflow = union of refs of its work types
+function changesFor(wf) {
+  const s = new Set();
+  for (const w of BY_WF[wf] || []) for (const r of w.refs) if (LOG_BY_KEY[r]) s.add(r);
+  return [...s];
+}
 
+const BRANCHES = [
+  ["workflows", "Workflows",     () => Object.keys(TRANSITIONS).length,
+   "Every workflow in the project, with its statuses and the arrows between them."],
+  ["worktypes", "Work types",    () => WORKTYPES.length,
+   "Every work item type, which workflow drives it, and how much it is used."],
+  ["process",   "The process",   () => PROCESS.length,
+   "The seven stages of the content lifecycle, in order, and who owns each."],
+  ["fields",    "Fields",        () => FIELDS.reduce((a,g) => a + g[2].length, 0),
+   "Every field on a CDLC work item and the role responsible for filling it."],
+  ["changes",   "Change history",() => LOG.length,
+   "What has been changed in this project's Jira setup, newest first."]
+];
+
+let path = [];
+let query = "";
+
+const view = document.getElementById("view");
+const crumbs = document.getElementById("crumbs");
+
+function go(p) { path = p; query = ""; render(); window.scrollTo({ top: 0, behavior: "smooth" }); }
+
+// ---- breadcrumb ------------------------------------------------------
+function renderCrumbs() {
+  const b = BRANCHES.find(x => x[0] === path[0]);
+  const parts = [["CDLC", []]];
+  if (b) parts.push([b[1], [b[0]]]);
+  if (path.length > 1) parts.push([path[1], null]);
+
+  crumbs.innerHTML = parts.map(([label, target], i) => {
+    const last = i === parts.length - 1;
+    const sep = i ? `<span class="sep">/</span>` : "";
+    return sep + (last || !target
+      ? `<span class="here">${esc(label)}</span>`
+      : `<button data-go='${JSON.stringify(target)}'>${esc(label)}</button>`);
+  }).join("");
+
+  for (const btn of crumbs.querySelectorAll("button[data-go]"))
+    btn.addEventListener("click", () => go(JSON.parse(btn.dataset.go)));
+}
+
+// ---- shared pieces ---------------------------------------------------
+const chip = (n, cls) => `<span class="chip ${cls || (CAT[n] || "ind")}">${esc(n)}</span>`;
+
+function itemList(rows, onPick) {
+  // rows: [{ key, label, meta }]
+  const q = query.toLowerCase();
+  const hit = rows.filter(r => !q || (r.label + " " + (r.search || "")).toLowerCase().includes(q));
+  let html = `<input class="filter" id="filter" type="search" placeholder="Filter…" value="${esc(query)}" aria-label="Filter">`;
+  html += `<p class="count-line">${hit.length} of ${rows.length}</p>`;
+  if (!hit.length) return html + `<p class="empty">Nothing matches that.</p>`;
+
+  html += `<div class="items">`;
+  let group = null;
+  for (const r of hit) {
+    if (r.group && r.group !== group) { group = r.group; html += `<div class="group-h">${esc(group)}</div>`; }
+    html += `<button class="item" data-key="${esc(r.key)}">` +
+            `<span class="lbl">${hl(r.label, q)}</span>` +
+            `<span class="meta">${r.meta || ""}</span></button>`;
+  }
+  return html + `</div>`;
+}
+
+function wireList(onPick) {
+  const f = document.getElementById("filter");
+  if (f) {
+    f.addEventListener("input", () => {
+      query = f.value;
+      const at = f.selectionStart;
+      render(true);
+      const nf = document.getElementById("filter");
+      if (nf) { nf.focus(); nf.setSelectionRange(at, at); }
+    });
+  }
+  for (const b of view.querySelectorAll(".item[data-key]"))
+    b.addEventListener("click", () => onPick(b.dataset.key));
+}
+
+function jiraLink(k) {
+  return `<a href="https://skillcatapp.atlassian.net/browse/${k}" target="_blank" rel="noopener">${k}</a>`;
+}
+
+// ---- views -----------------------------------------------------------
+function viewHome() {
+  view.innerHTML =
+    `<p class="eyebrow">Jira project</p>
+     <h1>Content Development Life Cycle</h1>
+     <p class="lede">How this project is put together in Jira, and how it got that way.
+       Pick a branch to open it. Nothing else is shown until you do.</p>
+     <div class="branches">` +
+    BRANCHES.map(([key, label, n, desc]) =>
+      `<button class="branch" data-branch="${key}">
+         <span class="n">${n()}</span>
+         <span class="t"><b>${esc(label)}</b><span>${esc(desc)}</span></span>
+         <span class="go" aria-hidden="true">&rsaquo;</span>
+       </button>`).join("") +
+    `</div>
+     <p class="note">Workflows, statuses, transitions and fields are read from Jira
+       configuration. Usage counts are a snapshot taken on 29 August 2026 against 7,960 issues.
+       The change history is reconstructed from the tickets that requested each change, because
+       Jira keeps no audit trail of workflow configuration itself.</p>`;
+
+  for (const b of view.querySelectorAll(".branch[data-branch]"))
+    b.addEventListener("click", () => go([b.dataset.branch]));
+}
+
+function listWorkflows() {
+  const rows = Object.keys(TRANSITIONS).sort().map(w => {
+    const u = wfUsage(w), n = (BY_WF[w] || []).length;
+    return { key: w, label: w, search: (BY_WF[w] || []).map(x => x.n).join(" "),
+      meta: `${n} work type${n === 1 ? "" : "s"} · ${TRANSITIONS[w].filter(e => e.kind !== "start").length} transitions` +
+            (u.state === "active" ? "" : ` · <span class="chip b-${u.state}">${u.state}</span>`) };
+  });
+  view.innerHTML = `<h1>Workflows</h1><p class="lede">47 workflows drive the 69 work types.
+    Two work types naming the same workflow really are the same workflow.</p>` + itemList(rows);
+  wireList(k => go(["workflows", k]));
+}
+
+function detailWorkflow(name) {
+  const edges = TRANSITIONS[name];
+  if (!edges) return go(["workflows"]);
+  const users = BY_WF[name] || [];
+  const u = wfUsage(name);
+  const start = edges.filter(e => e.kind === "start");
+  const norm = edges.filter(e => e.kind === "edge");
+  const any = edges.filter(e => e.kind === "any");
+  const sts = [...new Set(users.flatMap(w => w.sts))];
+  const ch = changesFor(name);
+
+  view.innerHTML =
+    `<p class="eyebrow">Workflow</p><h1>${esc(name)}</h1>
+     <dl class="facts">
+       <dt>Statuses</dt><dd><div class="chips">${sts.map(s => chip(s)).join("")}</div></dd>
+       <dt>Used by</dt><dd>${users.length} work type${users.length === 1 ? "" : "s"}</dd>
+       <dt>Tickets</dt><dd>${u.ever.toLocaleString()} ever · ${u.y1.toLocaleString()} in the last 12 months
+         <span class="chip b-${u.state}">${u.state}</span></dd>
+     </dl>
+     <h2>Transitions</h2>
+     <ul class="flow">` +
+    start.map(e => `<li><span class="from-any">Starts at</span>${chip(e.to)}</li>`).join("") +
+    norm.map(e => `<li>${e.from.map(f => chip(f)).join("")}<span class="arrow">&rarr;</span>` +
+                  `${chip(e.to)}<span class="lab">${esc(e.label)}</span></li>`).join("") +
+    any.map(e => `<li><span class="from-any">From any</span><span class="arrow">&rarr;</span>` +
+                 `${chip(e.to)}<span class="lab">${esc(e.label)}</span></li>`).join("") +
+    `</ul>
+     <h2>Work types using it</h2><div class="chips">` +
+    users.map(w => `<button class="chip plain" data-wt="${esc(w.n)}">${esc(w.n)}</button>`).join("") +
+    `</div>` +
+    (ch.length ? `<h2>Changes that touched it</h2><div class="chips">` +
+      ch.map(k => `<button class="chip plain" data-ch="${k}">${k} · ${esc(LOG_BY_KEY[k][4])}</button>`).join("") +
+      `</div>` : "");
+
+  for (const b of view.querySelectorAll("[data-wt]")) b.addEventListener("click", () => go(["worktypes", b.dataset.wt]));
+  for (const b of view.querySelectorAll("[data-ch]")) b.addEventListener("click", () => go(["changes", b.dataset.ch]));
+}
+
+function listWorktypes() {
+  const rows = WORKTYPES.map(w => {
+    const u = usageOf(w.n);
+    return { key: w.n, label: w.n, group: w.family, search: w.sts.join(" ") + " " + w.wf,
+      meta: `${w.sts.length} statuses · ${u.ever} tickets` +
+            (u.state === "active" ? "" : ` · <span class="chip b-${u.state}">${u.state}</span>`) };
+  });
+  view.innerHTML = `<h1>Work types</h1><p class="lede">Every work item type in the project,
+    grouped the way the team talks about them.</p>` + itemList(rows);
+  wireList(k => go(["worktypes", k]));
+}
+
+function detailWorktype(name) {
+  const w = WORKTYPES.find(x => x.n === name);
+  if (!w) return go(["worktypes"]);
+  const u = usageOf(w.n);
+  const stage = PROCESS.find(p => p[5].includes(w.n));
+  const refs = w.refs.filter(r => LOG_BY_KEY[r]);
+
+  view.innerHTML =
+    `<p class="eyebrow">Work type</p><h1>${esc(w.n)}</h1>
+     <dl class="facts">
+       <dt>Family</dt><dd>${esc(w.family)}</dd>
+       <dt>Level</dt><dd>${esc(w.lvl)}</dd>
+       <dt>Workflow</dt><dd><button class="chip plain" data-wf="${esc(w.wf)}">${esc(w.wf)}</button></dd>
+       <dt>Statuses</dt><dd><div class="chips">${w.sts.map(s => chip(s)).join("")}</div></dd>
+       <dt>Usage</dt><dd>${u.ever.toLocaleString()} tickets ever · ${u.y1.toLocaleString()} in the last 12 months
+         <span class="chip b-${u.state}">${u.label}</span></dd>` +
+    (stage ? `<dt>Stage</dt><dd><button class="chip plain" data-st="${stage[0]}">${String(stage[0]).padStart(2,"0")} · ${esc(stage[1])}</button></dd>` : "") +
+    `</dl>` +
+    (refs.length ? `<h2>Changes that touched it</h2><div class="chips">` +
+      refs.map(k => `<button class="chip plain" data-ch="${k}">${k} · ${esc(LOG_BY_KEY[k][4])}</button>`).join("") +
+      `</div>` : "");
+
+  for (const b of view.querySelectorAll("[data-wf]")) b.addEventListener("click", () => go(["workflows", b.dataset.wf]));
+  for (const b of view.querySelectorAll("[data-ch]")) b.addEventListener("click", () => go(["changes", b.dataset.ch]));
+  for (const b of view.querySelectorAll("[data-st]")) b.addEventListener("click", () => go(["process", b.dataset.st]));
+}
+
+function listProcess() {
+  const rows = PROCESS.map(p => ({ key: String(p[0]), label: `${String(p[0]).padStart(2,"0")} · ${p[1]}`,
+    search: p[2] + " " + p[3], meta: esc(p[2]) }));
+  view.innerHTML = `<h1>The process</h1><p class="lede">Seven stages, in order, from the SOP.
+    Each names its owner, the work types involved, and what it sets off next.</p>` + itemList(rows);
+  wireList(k => go(["process", k]));
+}
+
+function detailProcess(n) {
+  const p = PROCESS.find(x => String(x[0]) === String(n));
+  if (!p) return go(["process"]);
+  const [num, title, owner, summary, who, types, triggers, mism] = p;
+
+  view.innerHTML =
+    `<p class="eyebrow">Stage ${String(num).padStart(2,"0")}</p><h1>${esc(title)}</h1>
+     <p class="prose">${esc(summary)}</p>
+     <dl class="facts">
+       <dt>Owner</dt><dd>${esc(owner)}</dd>
+       <dt>Who</dt><dd><div class="chips">${who.map(x => `<span class="chip plain">${esc(x)}</span>`).join("")}</div></dd>
+       <dt>Work types</dt><dd><div class="chips">${types.map(t =>
+         `<button class="chip plain" data-wt="${esc(t)}">${esc(t)}</button>`).join("")}</div></dd>
+     </dl>
+     <h2>Triggers next</h2>
+     <ul class="flow">` +
+    triggers.map(([f, t]) => `<li><code>${esc(f)}</code><span class="arrow">&rarr;</span><span>${esc(t)}</span></li>`).join("") +
+    `</ul>` +
+    (mism.length ? `<h2>Where the SOP disagrees with Jira</h2><ul class="linklist">` +
+      mism.map(([d, j]) => `<li><span>SOP says <code>${esc(d)}</code> — Jira has <strong>${esc(j)}</strong></span></li>`).join("") +
+      `</ul>` : "");
+
+  for (const b of view.querySelectorAll("[data-wt]")) b.addEventListener("click", () => go(["worktypes", b.dataset.wt]));
+}
+
+function listFields() {
+  const rows = [];
+  for (const [owner, note, fs] of FIELDS)
+    for (const f of fs) rows.push({ key: f[0], label: f[0], group: owner,
+      search: f[1] + " " + f[2] + " " + f[3], meta: esc(f[2]) });
+  view.innerHTML = `<h1>Fields</h1><p class="lede">Every field on a CDLC work item, grouped by
+    the role responsible for filling it. Eighteen have no documented owner.</p>` + itemList(rows);
+  wireList(k => go(["fields", k]));
+}
+
+function detailField(name) {
+  let owner = null, note = null, f = null;
+  for (const [o, nt, fs] of FIELDS) { const hit = fs.find(x => x[0] === name); if (hit) { owner = o; note = nt; f = hit; } }
+  if (!f) return go(["fields"]);
+  const [n, type, scope, when, tk, kind] = f;
+  const KIND = { val: "Enforced by a validator", auto: "Set by automation", note: "See the change" };
+
+  view.innerHTML =
+    `<p class="eyebrow">Field</p><h1>${esc(n)}</h1>
+     <dl class="facts">
+       <dt>Filled by</dt><dd><strong>${esc(owner)}</strong></dd>
+       <dt>Type</dt><dd><code>${esc(type)}</code></dd>
+       <dt>Scope</dt><dd>${esc(scope)}</dd>
+       <dt>When</dt><dd>${esc(when)}</dd>` +
+    (tk ? `<dt>Rule</dt><dd>${esc(KIND[kind] || KIND.note)} — <button class="chip plain" data-ch="${tk}">${tk}</button></dd>` : "") +
+    `</dl><p class="prose">${esc(note)}</p>`;
+
+  for (const b of view.querySelectorAll("[data-ch]")) b.addEventListener("click", () => go(["changes", b.dataset.ch]));
+}
+
+const MONTHS = ["January","February","March","April","May","June","July","August","September","October","November","December"];
+const monthOf = d => { const [y,m] = d.split("-"); return MONTHS[+m-1] + " " + y; };
+
+function listChanges() {
+  const rows = LOG.map(e => ({ key: e[0], label: e[4], group: monthOf(e[1]),
+    search: e[0] + " " + e[5] + " " + e[6].join(" "),
+    meta: `${e[0]} · <span class="chip ${e[2]}">${esc(e[3])}</span>` }));
+  view.innerHTML = `<h1>Change history</h1><p class="lede">Forty changes made to this project's
+    Jira setup between November 2025 and August 2026, newest first.</p>` + itemList(rows);
+  wireList(k => go(["changes", k]));
+}
+
+function detailChange(key) {
+  const e = LOG_BY_KEY[key];
+  if (!e) return go(["changes"]);
+  const [k, date, state, label, title, what, tags, before, after, subs] = e;
+  const affected = WORKTYPES.filter(w => w.refs.includes(k));
+
+  view.innerHTML =
+    `<p class="eyebrow">${esc(monthOf(date))}</p><h1>${esc(title)}</h1>
+     <dl class="facts">
+       <dt>Ticket</dt><dd>${jiraLink(k)}</dd>
+       <dt>State</dt><dd><span class="chip ${state}">${esc(label)}</span></dd>
+       <dt>Areas</dt><dd><div class="chips">${tags.map(t => `<span class="chip plain">${esc(t)}</span>`).join("")}</div></dd>
+     </dl>
+     <p class="prose">${what}</p>` +
+    (before || after
+      ? `<dl class="facts">` +
+        (before ? `<dt>Was</dt><dd>${esc(before)}</dd>` : "") +
+        (after  ? `<dt>Became</dt><dd><strong>${esc(after)}</strong></dd>` : "") + `</dl>`
+      : "") +
+    (affected.length ? `<h2>Work types affected</h2><div class="chips">` +
+      affected.map(w => `<button class="chip plain" data-wt="${esc(w.n)}">${esc(w.n)}</button>`).join("") + `</div>` : "") +
+    (subs.length ? `<h2>Sub-tickets</h2><ul class="linklist">` +
+      subs.map(([sk, ss, st]) => `<li>${jiraLink(sk)}${ss === DEAD ? `<s>${esc(st)}</s>` : `<span>${esc(st)}</span>`}</li>`).join("") +
+      `</ul>` : "");
+
+  for (const b of view.querySelectorAll("[data-wt]")) b.addEventListener("click", () => go(["worktypes", b.dataset.wt]));
+}
+
+// ---- router ----------------------------------------------------------
+function render(keepQuery) {
+  if (!keepQuery && false) query = "";
+  renderCrumbs();
+  const [branch, item] = path;
+  if (!branch) return viewHome();
+  if (branch === "workflows") return item ? detailWorkflow(item) : listWorkflows();
+  if (branch === "worktypes") return item ? detailWorktype(item) : listWorktypes();
+  if (branch === "process")   return item ? detailProcess(item)  : listProcess();
+  if (branch === "fields")    return item ? detailField(item)    : listFields();
+  if (branch === "changes")   return item ? detailChange(item)   : listChanges();
+  return viewHome();
+}
+
+render();
 </script>
 </body>
 </html>
