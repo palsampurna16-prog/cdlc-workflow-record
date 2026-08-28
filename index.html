@@ -294,6 +294,22 @@
   .filters .n { font-weight:400; opacity:.75; font-variant-numeric:tabular-nums; }
   .empty-filter { padding:var(--space-400); text-align:center; color:var(--c-text-subtle); }
 
+
+  /* fields by owner */
+  .fgroup { margin-top:var(--space-400); }
+  .fgroup h3 { margin:0 0 var(--space-050); font-size:15px; font-weight:600; }
+  .fgroup .blurb { margin:0 0 var(--space-150); max-width:70ch; font-size:13px;
+                   color:var(--c-text-subtle); }
+  .fgroup.orphan h3 { color:#974F0C; }
+  .fgroup.orphan .blurb { color:#974F0C; }
+  .frow { display:flex; align-items:baseline; gap:var(--space-150);
+          padding:var(--space-100) var(--space-200); border-bottom:1px solid var(--c-border); }
+  .frow:last-child { border-bottom:0; }
+  .frow:nth-child(odd) { background:var(--c-surface-sunken); }
+  .fname { flex:0 0 190px; font-weight:600; font-size:13px; }
+  .fhow { flex:1; font-size:13px; color:var(--c-text-subtle); }
+  .fmeta { flex:none; font-size:12px; color:var(--c-text-subtlest); text-align:right; white-space:nowrap; }
+
   @media (max-width:640px) {
     .page { padding:var(--space-300) var(--space-200) var(--space-400); }
     .search { display:none; }
@@ -427,9 +443,50 @@ function facts(o, extra) {
    `</dl>`;
 }
 
+/* ---------- fields, grouped by who fills them ---------- */
+const FIELDS = /*__FIELDS__*/[["Jira sets these","Nobody fills them. They arrive with the ticket or are written by automation.",[["Project","project","All 69 · required","Fixed when the work item is created",null],["Issue Type","issuetype","All 69 · required","Chosen at creation, or set by the automation that creates the item",null],["Reporter","user","All 69 · required","Whoever created the item, or the automation account",null],["Parent","issuelink","68 of 69 · required on sub-tasks","Set by the automation that creates the child",null],["Parent Link","any","62 of 69","Maintained by Jira for the hierarchy",null],["Epic Link","any","5 work types","Legacy hierarchy field, superseded by Parent",null],["Linked Issues","array","63 of 69","Only when someone links two items by hand",null],["Attachment","array","67 of 69","Whoever uploads a file",null],["Epic Percentage Complete","number","Epic only","Automation, recalculated as child items close","SGP-10441","auto"],["Epic Progress Bar","string","Epic only","Automation, alongside the percentage","SGP-10442","auto"]]],["Instructional Designers' Team Manager","Filled at epic creation. The SOP calls these the essential and crucial fields; everything downstream is copied from them, so an epic filled in badly propagates.",[["Summary","string","All 69 · required","At epic creation, then set by automation on children",null],["Description","string","All 69","At epic creation. Some work types arrive with it pre-filled as instructions",null],["Epic Name","string","Epic only","At epic creation",null],["Course type","option","64 of 69","At epic creation. Decides which child work types get created",null],["Assignee","user","All 69","At epic creation, then reassigned by hand as work changes hands",null],["Checklist","string","64 of 69","At epic creation, and again per sub-task before it can leave To Do","SGP-9998","val"],["Instructional Designer","array","64 of 69","At epic creation. Blocks the move to Digitization if empty","SGP-9998","val"],["Visual Designer(s)","array","64 of 69","At epic creation. Blocks the move to Digitization if empty","SGP-9998","val"],["Quality Specialists","array","64 of 69","At epic creation. Blocks the move to Digitization if empty","SGP-9998","val"],["Subject Matter Expert","array","64 of 69","At epic creation",null],["External Reviewer","array","64 of 69","At epic creation, where the course uses one",null],["Business Specs","string","64 of 69","At epic creation",null],["Course outline document","string","63 of 69","At epic creation",null],["Estimate sheet","string","Epic only","At epic creation",null],["Topic","string","64 of 69","Named by the ID when the topic is created; copied down after that",null],["Due date","date","All 69","At epic creation",null],["Course Folder Link","string","64 of 69","Added on the epic, then cascaded to every child item","SGP-9553","auto"]]],["Instructional Designer","Filled during the work itself rather than at setup.",[["Final Slides link","string","63 of 69","Added to the Topic once Final Slides exist, so it shows on everything created afterwards",null],["Target end","date","64 of 69","Required alongside the Checklist before a sub-task can leave To Do","SGP-9998","val"]]],["Visual Designer","Both of these are gates: the work type cannot move on until the link is there.",[["Articulate Review Link","string","63 of 69","Added at the Graphics stage. Blocks the move out of In Review if empty","SGP-9998","val"],["Final Storyline Link","string","64 of 69","Added after Articulate review. Blocks the move to Done if empty","SGP-10834","val"]]],["Digitization","Produced during digitization and copied back onto the parent items.",[["Planning Link","string","64 of 69","Added on Upload to AWS + Planning. Blocks the move to In Review if empty","SGP-9553","val"],["Production Link","string","64 of 69","Added on Restore on SkillCat. Blocks the move to In Review if empty","SGP-9553","val"],["Digitization Resource","array","64 of 69","Who is doing the digitization. Renamed from Data Entry Resource","SGP-9590","note"]]],["No documented owner","These exist in Jira but the SOP never says who fills them or when. Some may be dead; some may be quietly load-bearing. Worth a pass before v1.1 of the doc.",[["Priority","priority","All 69","Not mentioned in the SOP",null],["Start date","date","62 of 69","Not mentioned. An automation to set start and end dates was requested and never built","SGP-9745","note"],["Pod number","option","64 of 69","Not mentioned in the SOP",null],["Topic type","option","63 of 69","Not mentioned in the SOP",null],["Course Difficulty Level","option","5 work types","Not mentioned. Only on Simulation, Feedback and Improvement types",null],["Simulation Difficulty Level","option","3 work types","Not mentioned. Simulation work types only",null],["Course category","string","Epic only","Not mentioned in the SOP",null],["Course competency","string","Epic only","Not mentioned in the SOP",null],["Course keywords","string","Epic only","Not mentioned, though Update Keywords is a digitization status",null],["Learning plan","string","Epic only","Not mentioned, though Update Learning Plan is a digitization status",null],["Guroo Course Link","string","Course: Content Creation only","Not mentioned. That work type is dormant",null],["Staging Course Link","string","Course: Content Creation only","Not mentioned. That work type is dormant",null],["SkillCat Course Link","string","Course: Content Creation only","Not mentioned. That work type is dormant",null],["Articulate Story File Link","string","Course: Content Creation only","Not mentioned. Overlaps with Final Storyline Link",null],["Storyboard Doc","string","Simulation: Content Creation only","Not mentioned. That work type is dormant",null],["Learning Objective Doc","string","Simulation: Specs only","Not mentioned. That work type is dormant",null],["Feedback Source","array","Feedback only · required","Not mentioned. The only custom field Jira marks required anywhere in CDLC",null],["Feedback Reference Link","string","Feedback only","Not mentioned. That work type is dormant",null]]]]/*__ENDF__*/;
+
+/* Jira records that a field exists, not who is responsible for filling it. That is
+   process knowledge, so these groupings come from the SOP rather than from Jira, and
+   the last group is the fields the SOP never assigns to anyone. */
+function viewFields() {
+  const total = FIELDS.reduce((n,g) => n + g[2].length, 0);
+  const owned = FIELDS.filter(g => !/^No documented owner/i.test(g[0]))
+                      .reduce((n,g) => n + g[2].length, 0);
+
+  view.innerHTML =
+    crumbs([{label:"Projects", to:""},{label:"CDLC", to:"CDLC"},{label:"Fields"}]) +
+    `<div class="col">
+       <div class="page-head"><h1>CDLC Epic</h1></div>
+       ${tabs("fields")}
+       <p class="lede">Every field on a CDLC work item, and who fills it.</p>
+       <dl class="facts">
+         <div class="fact"><dt>Fields</dt><dd>${total}</dd></div>
+         <div class="fact"><dt>With an owner</dt><dd>${owned}</dd></div>
+         <div class="fact"><dt>Unassigned</dt><dd>${total-owned}</dd></div>
+       </dl>` +
+    FIELDS.map(([title, blurb, rows]) => {
+      const orphan = /^No documented owner/i.test(title);
+      return `<section class="fgroup${orphan?" orphan":""}">
+         <h3>${esc(title)}</h3>
+         <p class="blurb">${esc(blurb)}</p>
+         <div class="rows">` +
+           rows.map(([name, type, coverage, how]) =>
+             `<div class="frow">
+                <span class="fname">${esc(name)}</span>
+                <span class="fhow">${esc(how || "")}</span>
+                <span class="fmeta">${esc(type || "")}${coverage ? " &middot; "+esc(coverage) : ""}</span>
+              </div>`).join("") +
+      `  </div>
+       </section>`; }).join("") +
+    `</div>`;
+  wireCrumbs(); wireTabs();
+}
+
 /* ---------- CDLC section tabs ---------- */
 function tabs(active) {
-  const items = [["epic","The Epic",""],["history","Change history","history"]];
+  const items = [["epic","The Epic",""],["fields","Fields","fields"],
+                 ["history","Change history","history"]];
   return `<div class="tabs">` + items.map(([id,label,to]) =>
     `<button data-to="CDLC/${to}"${id===active?' aria-current="page"':""}>${label}</button>`).join("") + `</div>`;
 }
@@ -703,7 +760,8 @@ function viewSpace(key) {
 function render() {
   const { key, stage, sub } = route();
   search.parentElement.style.visibility = key ? "hidden" : "";
-  if (key === "CDLC" && stage === "history" && sub) viewChange(sub);
+  if (key === "CDLC" && stage === "fields") viewFields();
+  else if (key === "CDLC" && stage === "history" && sub) viewChange(sub);
   else if (key === "CDLC" && stage === "history") viewHistory();
   else if (key === "CDLC" && stage && sub) viewSubtask(key, stage, sub);
   else if (key === "CDLC" && stage) viewStage(key, stage);

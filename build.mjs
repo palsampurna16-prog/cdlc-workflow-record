@@ -38,6 +38,14 @@ if (!CH_RE.test(fragment)) {
 }
 fragment = fragment.replace(CH_RE, "/*__CHANGES__*/" + JSON.stringify(changes) + "/*__ENDC__*/");
 
+const fields = JSON.parse(await readFile(new URL("./data/fields.json", import.meta.url), "utf8"));
+const F_RE = /\/\*__FIELDS__\*\/[\s\S]*?\/\*__ENDF__\*\//;
+if (!F_RE.test(fragment)) {
+  console.error("src/page.html is missing the /*__FIELDS__*/ placeholder — aborting.");
+  process.exit(1);
+}
+fragment = fragment.replace(F_RE, "/*__FIELDS__*/" + JSON.stringify(fields) + "/*__ENDF__*/");
+
 const pairs = await loadMap();
 if (REDACT) {
   if (!pairs) {
