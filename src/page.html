@@ -328,6 +328,41 @@ button.chip:focus-visible { outline: 2px solid var(--accent); outline-offset: 1p
 .badge.b-dormant { color: var(--warn-fg);     background: var(--warn-bg); }
 .badge.b-never   { color: var(--err-fg);      background: var(--err-bg); }
 
+/* ---------- workflow transitions ---------- */
+
+.flow { margin-top: 2px; }
+.flow > summary {
+  display: inline-flex; align-items: center; gap: 6px;
+  list-style: none; cursor: pointer; width: fit-content;
+  font-size: 12px; color: var(--muted);
+  padding: 3px 6px; margin-left: -6px; border-radius: 3px;
+}
+.flow > summary::-webkit-details-marker { display: none; }
+.flow > summary::before {
+  content: ""; width: 0; height: 0; flex: 0 0 auto;
+  border-left: 5px solid currentColor;
+  border-top: 4px solid transparent; border-bottom: 4px solid transparent;
+}
+.flow[open] > summary::before { transform: rotate(90deg); }
+.flow > summary:hover { color: var(--accent); background: var(--surface-2); }
+.flow > summary:focus-visible { outline: 2px solid var(--accent); outline-offset: 1px; }
+
+.flowlist {
+  margin: 6px 0 0; padding: 10px 12px; list-style: none;
+  display: flex; flex-direction: column; gap: 5px;
+  background: var(--surface-2); border: 1px solid var(--line); border-radius: 3px;
+}
+.flowlist li { display: flex; flex-wrap: wrap; align-items: center; gap: 5px; font-size: 12px; }
+.flowlist b {
+  font-size: 11px; font-weight: 700; letter-spacing: .06em; text-transform: uppercase;
+  color: var(--muted); margin-right: 2px;
+}
+.flowlist em {
+  font-style: normal; font-size: 12px; color: var(--ink-2);
+  margin-left: 2px; overflow-wrap: anywhere;
+}
+.flowlist .arrow { color: var(--accent); font-weight: 700; }
+
 /* ---------- entry bodies ---------- */
 
 .ebody { display: flex; flex-direction: column; gap: 8px; min-width: 0; }
@@ -410,16 +445,17 @@ footer { border-top: 1px solid var(--line); padding-top: 16px; color: var(--mute
     <p class="eyebrow">Jira · Content Development Life Cycle</p>
     <h1>The CDLC workflows, as they stand and as they got here</h1>
     <p class="standfirst">
-      The seven stages of the content lifecycle and who owns each one, every work type with
-      the statuses its workflow can hold, and the full trail of change tickets that produced
-      them. The three views cross-link, so any work type leads to its process stage and its
-      change history.
+      The seven stages of the content lifecycle and who owns each one, every work type with the
+      workflow that drives it and every transition in it, and the full trail of change tickets
+      that produced them. The three views cross-link, so any work type leads to its process
+      stage and its change history.
     </p>
     <div class="counts">
       <div class="count"><b>69</b><span>Work types</span></div>
-      <div class="count"><b>76</b><span>Unique statuses</span></div>
+      <div class="count"><b>47</b><span>Workflows</span></div>
+      <div class="count"><b>72</b><span>Statuses</span></div>
+      <div class="count"><b>376</b><span>Transitions</span></div>
       <div class="count"><b>90</b><span>Change tickets</span></div>
-      <div class="count"><b>15</b><span>Still open</span></div>
       <div class="count"><b>15</b><span>Dormant types</span></div>
     </div>
   </header>
@@ -450,10 +486,11 @@ footer { border-top: 1px solid var(--line); padding-top: 16px; color: var(--mute
         work type has ever had and how many in the last twelve months. Anything with no ticket in
         a year reads Dormant; one type has never been used at all. Counts were taken against all
         7,951 CDLC issues on 27 August 2026 and are a snapshot, not a live feed.</p>
-      <p><strong>It does not return transitions or order.</strong> The arrows Jira draws in the
-        issue-view workflow diagram come from workflow configuration, which only a Jira
-        administrator can export. So the chips below are the complete status set for each work
-        type, but the sequence they appear in is not meaningful.</p>
+      <p><strong>Transitions are now included.</strong> Each row carries the workflow that drives
+        it and every transition in that workflow, read from Jira's workflow configuration. The
+        status chips are still an unordered set; the transitions underneath are the actual
+        arrows, including the ones reachable from any status. 69 work types share 47 workflows,
+        so two rows naming the same workflow really are the same workflow.</p>
       </div>
     </details>
 
@@ -588,93 +625,93 @@ const E = "Epic", S = "Standard", T = "Sub-task";
 /* [name, level, statuses[], relatedChangeKeys[]] */
 const DATA = [
 ["Course & epic level", [
-  ["Epic", E, ["To Do","In Progress","Digitization","In Review","On Hold","Suspended","Done"], ["SGP-10349","SGP-9553","SGP-10441","SGP-10442","SGP-10815"]],
-  ["Course: Specs", S, ["To Do","In Progress","Complete checklist","Run AI AGENT","CHECK REFERENCES","In Review","Approved","Dependency","Suspended","Done"], ["SGP-11280"]],
-  ["Course: Content Creation", S, ["To Do","Slide chunks in course sheet","Scope Rearrange","Course on Guroo","Assessment on Guroo","Course QA on Guroo","Uploading to AWS","Staging: Backup / Restore","SkillCat: Backup / Restore","Course QA on SkillCat","In Review","Suspended","Done"], []],
-  ["CDLC: Course Brief", S, ["To Do","Assigned","In Progress","Done"], ["SGP-9672"]],
-  ["CDLC: Course outline", S, ["To Do","Create course outline","Checklist","SME Validation","Suspended","Done"], ["SGP-10442"]],
-  ["CDLC: Research notes", S, ["To Do","In Progress","Suspended","Done"], []],
-  ["CDLC: Final Slides", S, ["To Do","In Progress","Complete checklist","Graphics definition","Internal SME review","Quality review","On Hold","Suspended","Done"], ["SGP-9762","SGP-10334"]],
-  ["CDLC: Corrections", S, ["To Do","Assigned","In Progress","In Review","Rejected","On Hold","Done"], ["SGP-10334"]],
-  ["CDLC: Content Review", T, ["In Progress","In Review","On Hold","Suspended","Done"], []],
-  ["CDLC: Content Upkeep", S, ["To Do","Assigned","In Progress","In Review","Reproduced","Discard","On Hold","Done"], ["SGP-10335"]],
-  ["CDLC: Content Upkeep (sub-task)", T, ["To Do","Assigned","In Progress","In Review","Reproduced","Discard","On Hold","Done"], ["SGP-10335"]],
-  ["CDLC: PPT generation", S, ["To Do","In Progress","In Review","Suspended","Done"], ["SGP-9695","SGP-9940"]],
-  ["CDLC: Stock image downloading", S, ["To Do","In Progress","In Review","Suspended","Done"], []],
-  ["CDLC: Translations", S, ["To Do","Assigned","In Translation","Complete checklist","In Review","Upload to AWS","On Hold","Suspended","Done"], ["SGP-10243","SGP-10411","SGP-9340"]],
-  ["CDLC: Badge and Course Image", T, ["To Do","In Progress","In Review","Suspended","Done"], []],
-  ["CDLC: Recording", T, ["Assigned","Scripting","In Progress","In Review","Done"], ["SGP-10978"]],
-  ["CDLC: Base Articulate file creation", T, ["To Do","Checklist","In Progress","Assigned","In Review","Rejected","On Hold","Done"], ["SGP-10334","SGP-9552"]],
-  ["CDLC: Articulate Review", T, ["To Do","In Progress","Internal SME review","Quality review","Suspended","Done"], ["SGP-10834","SGP-9762"]],
-  ["CDLC: Vyond video", T, ["To Do","In Progress","Complete checklist","Send to Instructional Designer","Internal SME review","External Review","In Review","Quality review","Suspended","Done"], []],
-  ["Graphics", S, ["To Do","In Progress","Complete checklist","Send to Instructional Designer","Internal SME review","External Review","In Review","Quality review","Suspended","Done"], ["SGP-9946"]],
-  ["Assessment", S, ["To Do","In Progress","Complete checklist","Internal SME review","Quality review","On Hold","Suspended","Done"], ["SGP-9946"]],
-  ["Instructional Design", S, ["To Do","In Progress","In Review","Suspended","Done"], []]
+  ["Epic", E, ["Done","On Hold","To Do","Suspended","In Progress","Digitization"], ["SGP-10349","SGP-9553","SGP-10441","SGP-10442","SGP-10815"], "CDLC: Epic"],
+  ["Course: Specs", S, ["In Review","Done","On Hold","To Do","Suspended","In Progress"], ["SGP-11280"], "CDLC: Task/Subtask"],
+  ["Course: Content Creation", S, ["In Review","Scope Rearrange","Course QA on SkillCat","SkillCat: Backup / Restore","Slide chunks in course sheet","Done","Assessment on Guroo","Uploading to AWS","Course on Guroo","Course QA on Guroo","Staging: Backup / Restore","To Do","Suspended"], [], "CDLC: Course Content Creation"],
+  ["CDLC: Course Brief", S, ["Assigned","Done","To Do","In Progress"], ["SGP-9672"], "CDLC: Course Brief"],
+  ["CDLC: Course outline", S, ["SME Validation","Done","To Do","Checklist","Suspended","Create course outline"], ["SGP-10442"], "CDLC: Course Outline"],
+  ["CDLC: Research notes", S, ["Done","To Do","Suspended","In Progress"], [], "CDLC: Content Feedback"],
+  ["CDLC: Final Slides", S, ["Graphics definition","Internal SME review","Done","Complete checklist","On Hold","To Do","Suspended","In Progress","Quality review"], ["SGP-9762","SGP-10334"], "CDLC: Final Slides"],
+  ["CDLC: Corrections", S, ["In Review","Assigned","Done","Rejected","On Hold","To Do","In Progress"], ["SGP-10334"], "CDLC: Corrections"],
+  ["CDLC: Content Review", T, ["In Review","Done","On Hold","Suspended","In Progress"], [], "CDLC: Reviews"],
+  ["CDLC: Content Upkeep", S, ["Assigned","In Review","Reproduced","Discard","Done","On Hold","To Do","In Progress"], ["SGP-10335"], "SGP: Task"],
+  ["CDLC: Content Upkeep (sub-task)", T, ["Assigned","In Review","Reproduced","Discard","Done","On Hold","To Do","In Progress"], ["SGP-10335"], "SGP: Task"],
+  ["CDLC: PPT generation", S, ["In Review","Done","To Do","Suspended","In Progress"], ["SGP-9695","SGP-9940"], "PPT generation"],
+  ["CDLC: Stock image downloading", S, ["In Review","Done","To Do","Suspended","In Progress"], [], "CDLC: Stock image downloading"],
+  ["CDLC: Translations", S, ["Assigned","Upload to AWS","In Review","Complete checklist","Done","In Translation","On Hold","To Do","Suspended"], ["SGP-10243","SGP-10411","SGP-9340"], "CDLC: Spanish Translations"],
+  ["CDLC: Badge and Course Image", T, ["In Review","Done","To Do","Suspended","In Progress"], [], "CDLC: Stock image downloading"],
+  ["CDLC: Recording", T, ["Assigned","In Review","Done","Scripting","In Progress"], ["SGP-10978"], "CDLC: Recording"],
+  ["CDLC: Base Articulate file creation", T, ["In Review","Assigned","Done","Rejected","On Hold","To Do","Checklist","In Progress"], ["SGP-10334","SGP-9552"], "CDLC: Base Articulate file creation"],
+  ["CDLC: Articulate Review", T, ["Internal SME review","In Review","Done","On Hold","Corrections","To Do","Suspended","Quality review"], ["SGP-10834","SGP-9762"], "CDLC: Articulate review"],
+  ["CDLC: Vyond video", T, ["In Review","Send to Instructional Designer","External Review","Internal SME review","Done","Complete checklist","To Do","Suspended","In Progress","Quality review"], [], "CDLC: Graphics"],
+  ["Graphics", S, ["In Review","Send to Instructional Designer","External Review","Internal SME review","Done","Complete checklist","To Do","Suspended","In Progress","Quality review"], ["SGP-9946"], "CDLC: Graphics"],
+  ["Assessment", S, ["Internal SME review","Done","Complete checklist","On Hold","To Do","Suspended","In Progress","Quality review"], ["SGP-9946"], "CDLC: Assessment"],
+  ["Instructional Design", S, ["In Review","Done","To Do","Suspended","In Progress"], [], "CDLC: Content Instructional Design"]
 ]],
 
 ["Topic level", [
-  ["CDLC: Topic", S, ["To Do","Graphics Creation","Ready for Graphics","Final Slides","Spanish Translations","Uploading to AWS","In Review","On Hold","Suspended","Done"], ["SGP-10343","SGP-10411","SGP-10361"]],
-  ["CDLC: Topic Final Slides", T, ["To Do","In Progress","Complete checklist","Graphics definition","Internal SME review","Quality review","On Hold","Suspended","Done"], ["SGP-9762","SGP-10334"]],
-  ["CDLC: Topic Graphics", T, ["To Do","In Progress","Complete checklist","Send to Instructional Designer","In Review","Suspended","Done"], ["SGP-9999","SGP-10334"]],
-  ["CDLC: Topic Assessment", T, ["To Do","In Progress","Complete checklist","In Review","On Hold","Suspended","Done"], ["SGP-9946","SGP-10334"]],
-  ["CDLC: Topic Corrections", T, ["To Do","Assigned","In Progress","In Review","Rejected","On Hold","Done"], ["SGP-10334"]],
-  ["CDLC: Topic PPT Generation", T, ["To Do","In Progress","In Review","Suspended","Done"], ["SGP-10284","SGP-10334"]],
-  ["CDLC: Topic Stock image downloading", T, ["To Do","In Progress","In Review","Suspended","Done"], []],
-  ["CDLC: Topic Translations", T, ["To Do","Assigned","In Translation","Complete checklist","In Review","Upload to AWS","On Hold","Suspended","Done"], ["SGP-10243","SGP-10334"]]
+  ["CDLC: Topic", S, ["In Review","Done","On Hold","Ready for Graphics","Uploading to AWS","Spanish Translations","To Do","Suspended","Final Slides","Graphics Creation"], ["SGP-10343","SGP-10411","SGP-10361"], "CDLC: Topic"],
+  ["CDLC: Topic Final Slides", T, ["Internal SME review","Done","Complete checklist","On Hold","To Do","Suspended","In Progress","Quality review"], ["SGP-9762","SGP-10334"], "CDLC: Topic Final Slides"],
+  ["CDLC: Topic Graphics", T, ["In Review","Send to Instructional Designer","Done","Complete checklist","To Do","Suspended","In Progress"], ["SGP-9999","SGP-10334"], "CDLC: Topic Graphics"],
+  ["CDLC: Topic Assessment", T, ["In Review","Complete checklist","Done","On Hold","To Do","Suspended","In Progress"], ["SGP-9946","SGP-10334"], "CDLC: Topic Assessment"],
+  ["CDLC: Topic Corrections", T, ["In Review","Assigned","Done","Rejected","On Hold","To Do","In Progress"], ["SGP-10334"], "CDLC: Corrections"],
+  ["CDLC: Topic PPT Generation", T, ["In Review","Done","To Do","Suspended","In Progress"], ["SGP-10284","SGP-10334"], "PPT generation"],
+  ["CDLC: Topic Stock image downloading", T, ["In Review","Done","To Do","Suspended","In Progress"], [], "CDLC: Stock image downloading"],
+  ["CDLC: Topic Translations", T, ["Assigned","Upload to AWS","In Review","Complete checklist","Done","In Translation","On Hold","To Do","Suspended"], ["SGP-10243","SGP-10334"], "CDLC: Spanish Translations"]
 ]],
 
 ["Digitization", [
-  ["Content: Digitization (Instructional)", S, ["To Do","Upload to AWS","Create Course on Planning","Update Keywords","Question Bank on Planning","update spreadsheet","Create Deep Links","Restore on SkillCat","Update Learning Plan","Request Badge Creation","Course Catalog","SME Review","In Review","On Hold","Suspended"], ["SGP-10335"]],
-  ["Content: Digitization (Informational)", S, ["To Do","Upload to AWS","Create Course on Planning","Update Keywords","Question Bank on Planning","update spreadsheet","Create Deep Links","Restore on SkillCat","Update Learning Plan","Request Badge Creation","Course Catalog","SME Review","In Review","On Hold","Suspended"], ["SGP-10335","SGP-10284"]],
-  ["Digitization - Upload to AWS + Planning", S, ["To Do","Assigned","Upload to AWS","Create Course on Planning","Update Keywords","Update Question Bank on Planning","In Review","Suspended","Done"], ["SGP-10335","SGP-9553"]],
-  ["Digitization - Upload to AWS + Planning (sub-task)", T, ["To Do","Assigned","Upload to AWS","Create Course on Planning","Update Keywords","Update Question Bank on Planning","In Review","Suspended","Done"], ["SGP-10335","SGP-9553"]],
-  ["Digitization - Restore on SkillCat", S, ["To Do","Restore on SkillCat","Create Deep Links","update spreadsheet","Update Learning Plan","QA Review","Suspended","Done"], ["SGP-9555","SGP-10418","SGP-7303","SGP-9553","SGP-9762"]],
-  ["Digitization - Restore on SkillCat (sub-task)", T, ["To Do","Restore on SkillCat","Create Deep Links","update spreadsheet","Update Learning Plan","QA Review","Suspended","Done"], ["SGP-9555","SGP-10418","SGP-7303","SGP-10335"]],
-  ["Digitization - Review", S, ["To Do","SME Review","Quality review","Suspended","Done"], ["SGP-9762"]],
-  ["Digitization - Review (sub-task)", T, ["To Do","SME Review","Quality review","Suspended","Done"], ["SGP-9762","SGP-10335"]],
-  ["Digitization - Badge Creation", S, ["To Do","In Progress","In Review","Suspended","Done"], []],
-  ["Digitization - Badge Creation (Sub-task)", T, ["To Do","In Progress","In Review","Suspended","Done"], ["SGP-10335"]],
-  ["Digitization - Data Sheet Creation", S, ["To Do","Assigned","In Progress","In Review","Suspended","Done"], ["SGP-10380"]],
-  ["Digitization - Data Sheet Creation (sub-task)", T, ["To Do","Assigned","In Progress","In Review","Suspended","Done"], ["SGP-10380","SGP-10335"]],
-  ["Digitization - Course Catalog Updating", S, ["To Do","Assigned","In Progress","In Review","Suspended","Done"], []],
-  ["Digitization - Course Catalog Updating (sub-task)", T, ["To Do","Assigned","In Progress","In Review","Suspended","Done"], ["SGP-10335"]]
+  ["Content: Digitization (Instructional)", S, ["Create Deep Links","In Review","SME Review","Update Keywords","Create Course on Planning","Update Learning Plan","Upload to AWS","On Hold","Restore on SkillCat","Course Catalog","To Do","Question Bank on Planning","Suspended","Request Badge Creation","update spreadsheet"], ["SGP-10335"], "CDLC: Course Digitization"],
+  ["Content: Digitization (Informational)", S, ["Create Deep Links","In Review","SME Review","Update Keywords","Create Course on Planning","Update Learning Plan","Upload to AWS","On Hold","Restore on SkillCat","Course Catalog","To Do","Question Bank on Planning","Suspended","Request Badge Creation","update spreadsheet"], ["SGP-10335","SGP-10284"], "CDLC: Course Digitization"],
+  ["Digitization - Upload to AWS + Planning", S, ["Assigned","Upload to AWS","In Review","Update Keywords","Update Question Bank on Planning","Done","Create Course on Planning","To Do","Suspended"], ["SGP-10335","SGP-9553"], "Digitization - Upload to AWS + Planning"],
+  ["Digitization - Upload to AWS + Planning (sub-task)", T, ["Assigned","Upload to AWS","In Review","Update Keywords","Update Question Bank on Planning","Done","Create Course on Planning","To Do","Suspended"], ["SGP-10335","SGP-9553"], "Digitization - Upload to AWS + Planning"],
+  ["Digitization - Restore on SkillCat", S, ["Create Deep Links","Done","QA Review","Restore on SkillCat","Update Learning Plan","To Do","Suspended","update spreadsheet"], ["SGP-9555","SGP-10418","SGP-7303","SGP-9553","SGP-9762"], "Digitization - Restore on SkillCat"],
+  ["Digitization - Restore on SkillCat (sub-task)", T, ["Create Deep Links","Done","QA Review","Restore on SkillCat","Update Learning Plan","To Do","Suspended","update spreadsheet"], ["SGP-9555","SGP-10418","SGP-7303","SGP-10335"], "Digitization - Restore on SkillCat"],
+  ["Digitization - Review", S, ["SME Review","Done","To Do","Suspended","Quality review"], ["SGP-9762"], "Digitization - Review"],
+  ["Digitization - Review (sub-task)", T, ["SME Review","Done","To Do","Suspended","Quality review"], ["SGP-9762","SGP-10335"], "Digitization - Review"],
+  ["Digitization - Badge Creation", S, ["In Review","Done","To Do","Suspended","In Progress"], [], "Digitization - Badge Creation"],
+  ["Digitization - Badge Creation (Sub-task)", T, ["In Review","Done","To Do","Suspended","In Progress"], ["SGP-10335"], "Digitization - Badge Creation"],
+  ["Digitization - Data Sheet Creation", S, ["Assigned","In Review","Done","To Do","Suspended","In Progress"], ["SGP-10380"], "Digitization - Data Sheet Creation"],
+  ["Digitization - Data Sheet Creation (sub-task)", T, ["Assigned","In Review","Done","To Do","Suspended","In Progress"], ["SGP-10380","SGP-10335"], "Digitization - Data Sheet Creation"],
+  ["Digitization - Course Catalog Updating", S, ["Assigned","In Review","Done","To Do","Suspended","In Progress"], [], "Digitization - Course Catalog Updating"],
+  ["Digitization - Course Catalog Updating (sub-task)", T, ["Assigned","In Review","Done","To Do","Suspended","In Progress"], ["SGP-10335"], "Digitization - Course Catalog Updating"]
 ]],
 
 ["Course operations", [
-  ["CDLC: Generate Performance Report", S, ["To Do","In Progress","Suspended","Done"], []],
-  ["CDLC: Generate Performance Report (sub-task)", T, ["To Do","In Progress","Suspended","Done"], ["SGP-10335"]],
-  ["CDLC: Move Source Files", S, ["To Do","In Progress","In Review","Done"], ["SGP-7310"]],
-  ["CDLC: Move Source Files (sub-task)", T, ["To Do","In Progress","In Review","Done"], ["SGP-7310","SGP-10335"]],
-  ["CDLC: Restrict Course Folder", S, ["To Do","In Progress","Suspended","Done"], []],
-  ["CDLC: Restrict Course Folder (sub-task)", T, ["To Do","In Progress","Suspended","Done"], ["SGP-10335"]],
-  ["CDLC: Run Image Archiving Automation", S, ["To Do","In Progress","In Review","Suspended","Done"], ["SGP-7310"]],
-  ["CDLC: Run Image Archiving Automation (sub-task)", T, ["To Do","In Progress","In Review","Suspended","Done"], ["SGP-7310","SGP-10335"]]
+  ["CDLC: Generate Performance Report", S, ["Done","To Do","Suspended","In Progress"], [], "Generate Performance Report"],
+  ["CDLC: Generate Performance Report (sub-task)", T, ["Done","To Do","Suspended","In Progress"], ["SGP-10335"], "Generate Performance Report"],
+  ["CDLC: Move Source Files", S, ["In Review","Done","To Do","In Progress"], ["SGP-7310"], "CDLC: Move Source Files"],
+  ["CDLC: Move Source Files (sub-task)", T, ["In Review","Done","To Do","In Progress"], ["SGP-7310","SGP-10335"], "CDLC: Move Source Files"],
+  ["CDLC: Restrict Course Folder", S, ["Done","To Do","Suspended","In Progress"], [], "CDLC: Restrict Course Folder"],
+  ["CDLC: Restrict Course Folder (sub-task)", T, ["Done","To Do","Suspended","In Progress"], ["SGP-10335"], "CDLC: Restrict Course Folder"],
+  ["CDLC: Run Image Archiving Automation", S, ["In Review","Done","To Do","Suspended","In Progress"], ["SGP-7310"], "CDLC: Run Image Archiving Automation"],
+  ["CDLC: Run Image Archiving Automation (sub-task)", T, ["In Review","Done","To Do","Suspended","In Progress"], ["SGP-7310","SGP-10335"], "CDLC: Run Image Archiving Automation"]
 ]],
 
 ["Certification", [
-  ["Certification: Template Generation", S, ["To Do","On Hold","Suspended","Done"], ["SGP-9940","SGP-10674"]],
-  ["Certification: Research Note", T, ["To Do","Inline Image Check","Manual Review","On Hold","Suspended","Done"], ["SGP-9940"]],
-  ["Certification: Slide Chunks", T, ["To Do","In Progress","Paraphrasing","In Review","On Hold","Suspended","Done"], ["SGP-9940"]],
-  ["Certification: Graphic Definitions", T, ["To Do","Generate Graphic Definition","Review & Revise Definition","Generate AI Visuals","Review & Revise Visuals","Review Final GD","On Hold","Suspended","Done"], ["SGP-9940"]],
-  ["Certification: Articulate Creation", T, ["To Do","Generate Articulate","ID Review","SME Review","Corrections","Quality review","On Hold","Suspended","Done"], ["SGP-9940","SGP-10355","SGP-10834"]]
+  ["Certification: Template Generation", S, ["Done","On Hold","To Do","Suspended"], ["SGP-9940","SGP-10674"], "Certification: Template Generation"],
+  ["Certification: Research Note", T, ["Inline Image Check","Done","On Hold","Manual Review","To Do","Suspended"], ["SGP-9940"], "Certification: Research Note"],
+  ["Certification: Slide Chunks", T, ["In Review","Paraphrasing","Done","On Hold","To Do","Suspended","In Progress"], ["SGP-9940"], "Certification: Slide Chunks"],
+  ["Certification: Graphic Definitions", T, ["Review & Revise Definition","Done","Review & Revise Visuals","On Hold","Generate Graphic Definition","To Do","Review Final GD","Suspended","Generate AI Visuals"], ["SGP-9940"], "Certification: Graphic Definitions"],
+  ["Certification: Articulate Creation", T, ["ID Review","SME Review","Done","On Hold","Generate Articulate","Corrections","To Do","Suspended","Quality review"], ["SGP-9940","SGP-10355","SGP-10834"], "Certification: Articulate Creation"]
 ]],
 
 ["Applied Layers", [
-  ["Applied Layers: Toolkit", S, ["To Do","Assigned","In Progress","In Review","Suspended","Done"], ["SGP-10766"]],
-  ["Applied Layers: Instructions", S, ["To Do","Assigned","In Progress","In Review","Suspended","Done"], ["SGP-10766"]],
-  ["Applied Layers: Content Finalization", S, ["Finalize as per SME Requirements","Generate Graphic Definition","Referencing"], ["SGP-10766"]],
-  ["Applied Layers: Video Recording", S, ["Video Recording","Manual Edit","Video Review"], ["SGP-10766"]],
-  ["Applied Layers: Video Creation", S, ["Storyboard","Video Creation","SME Review","In Review","On Hold","Suspended","Done"], ["SGP-10766","SGP-10978"]]
+  ["Applied Layers: Toolkit", S, ["Assigned","In Review","Done","To Do","Suspended","In Progress"], ["SGP-10766"], "Applied Layers: Toolkit/Instructions"],
+  ["Applied Layers: Instructions", S, ["Assigned","In Review","Done","To Do","Suspended","In Progress"], ["SGP-10766"], "Applied Layers: Toolkit/Instructions"],
+  ["Applied Layers: Content Finalization", S, ["Finalize as per SME Requirements","Generate Graphic Definition","Referencing"], ["SGP-10766"], "Applied Layers: Content Finalization"],
+  ["Applied Layers: Video Recording", S, ["Video Recording","Video Review","Manual Edit"], ["SGP-10766"], "Applied Layers: Video Recording"],
+  ["Applied Layers: Video Creation", S, ["In Review","SME Review","Done","On Hold","Suspended","Storyboard","Video Creation"], ["SGP-10766","SGP-10978"], "Applied Layers: Video Creation & Review"]
 ]],
 
 ["Simulation & generic", [
-  ["Simulation: Specs", S, ["To Do","Business Specs in Progress","Business Specs in Review","Learning Objectives in Progress","Learning Objective in Review","Suspended","Done"], []],
-  ["Simulation: Content Creation", S, ["To Do","In Progress","Scope Rearrange","Enhancement","Editorial review","SME Validation","In Review","Suspended","Done"], []],
-  ["Task", S, ["To Do","In Progress","In Review","Suspended","Done"], []],
-  ["Sub-task", T, ["To Do","In Progress","In Review","Suspended","Done"], []],
-  ["Bug", S, ["To Do","In Progress","In Review","Suspended","Done"], []],
-  ["Improvement", S, ["To Do","In Progress","In Review","Suspended","Done"], []],
-  ["Feedback", S, ["To Do","In Progress","Suspended","Done"], []]
+  ["Simulation: Specs", S, ["Business Specs in Progress","Learning Objectives in Progress","Business Specs in Review","Done","To Do","Suspended","Learning Objective in Review"], [], "CDLC: Simulation Specs"],
+  ["Simulation: Content Creation", S, ["In Review","SME Validation","Scope Rearrange","Enhancement","Done","Editorial review","To Do","Suspended","In Progress"], [], "CDLC: Content Creation"],
+  ["Task", S, ["In Review","Done","On Hold","To Do","Suspended","In Progress"], [], "CDLC: Task/Subtask"],
+  ["Sub-task", T, ["In Review","Done","On Hold","To Do","Suspended","In Progress"], [], "CDLC: Task/Subtask"],
+  ["Bug", S, ["In Review","Done","To Do","Suspended","In Progress"], [], "CDLC: Bug"],
+  ["Improvement", S, ["In Review","Done","To Do","Suspended","In Progress"], [], "CDLC: Improvement"],
+  ["Feedback", S, ["Done","To Do","Suspended","In Progress"], [], "CDLC: Content Feedback"]
 ]]
 ];
 
@@ -683,11 +720,11 @@ const DATA = [
 const OK = "ok", OPEN = "open", DEAD = "dead";
 
 const LOG = [
-["SGP-11280","2026-08-24",OPEN,"Assigned","Simplify the Course: Specs workflow",
- "Asks for <code>Complete checklist</code>, <code>Run AI AGENT</code>, <code>CHECK REFERENCES</code>, <code>Approved</code> and <code>Dependency</code> to be removed from the work type that creates Business Specs &amp; Outline, possibly by swapping in an existing basic workflow. Still live as of today.",
+["SGP-11280","2026-08-24",OK,"Shipped","Simplify the Course: Specs workflow",
+ "Asks for <code>Complete checklist</code>, <code>Run AI AGENT</code>, <code>CHECK REFERENCES</code>, <code>Approved</code> and <code>Dependency</code> to be removed from the work type that creates Business Specs &amp; Outline, possibly by swapping in an existing basic workflow. Done: the work type was moved onto the shared CDLC: Task/Subtask workflow, which Sub-task and Task also use.",
  ["Course: Specs"],
- "To Do · In Progress · Complete checklist · Run AI AGENT · CHECK REFERENCES · In Review · Approved · Dependency · Suspended · Done",
- "Not yet changed — all ten statuses still in place",[]],
+ "Its own workflow, 10 statuses: To Do · In Progress · Complete checklist · Run AI AGENT · CHECK REFERENCES · In Review · Approved · Dependency · Suspended · Done",
+ "The shared CDLC: Task/Subtask workflow, 6 statuses: To Do · In Progress · In Review · On Hold · Suspended · Done",[]],
 
 ["SGP-10978","2026-08-03",OPEN,"In Review","New work item type for video creation and recording",
  "Specifies a full workflow with two review gates and loop-backs on failure. Also meant to replace the video creation task inside the Applied Layers workflow.",
@@ -912,38 +949,78 @@ function hl(text, term) {
   return text.slice(0, i) + "<mark>" + text.slice(i, i + term.length) + "</mark>" + text.slice(i + term.length);
 }
 
-/* Ticket counts per work type, measured against all 7,951 CDLC issues on 27 August 2026.
+/* Ticket counts per work type, measured against all 7,960 CDLC issues on 29 August 2026.
    [total ever, created in the last 365 days]. A type with no ticket in a year reads Dormant. */
 const USAGE = {
-"Epic":[418,100],"CDLC: Topic":[561,290],"CDLC: Topic Final Slides":[524,247],
-"CDLC: Restrict Course Folder (sub-task)":[15,15],"CDLC: Move Source Files (sub-task)":[13,13],
-"CDLC: Generate Performance Report (sub-task)":[15,15],"CDLC: Topic Graphics":[446,245],
-"CDLC: Topic Assessment":[469,312],"CDLC: Topic Corrections":[284,226],
-"Digitization - Badge Creation (Sub-task)":[21,21],"Digitization - Review (sub-task)":[20,20],
-"Digitization - Upload to AWS + Planning (sub-task)":[20,20],"CDLC: Content Upkeep (sub-task)":[40,40],
-"Digitization - Data Sheet Creation (sub-task)":[20,20],"Digitization - Restore on SkillCat (sub-task)":[20,20],
-"CDLC: Topic PPT Generation":[458,272],"CDLC: Content Review":[518,518],
-"CDLC: Base Articulate file creation":[388,194],"CDLC: Vyond video":[0,0],
-"CDLC: Topic Stock image downloading":[15,0],"CDLC: Articulate Review":[413,229],
-"CDLC: Topic Translations":[389,266],"Digitization - Review":[36,36],"Graphics":[216,0],
-"Content: Digitization (Informational)":[158,3],"Content: Digitization (Instructional)":[50,8],
-"Digitization - Restore on SkillCat":[36,36],"Digitization - Upload to AWS + Planning":[36,36],
-"Simulation: Content Creation":[57,0],"Course: Specs":[314,84],"CDLC: Corrections":[60,0],
-"CDLC: Final Slides":[118,2],"Simulation: Specs":[56,0],"Improvement":[160,0],"Bug":[1,0],
-"Assessment":[150,0],"Instructional Design":[57,0],"CDLC: PPT generation":[91,0],
-"CDLC: Stock image downloading":[50,0],"Feedback":[1,0],"Course: Content Creation":[83,0],
-"CDLC: Content Upkeep":[102,86],"CDLC: Course outline":[94,2],"CDLC: Research notes":[85,0],
-"CDLC: Translations":[90,7],"Sub-task":[163,155],"CDLC: Badge and Course Image":[31,9],
-"Task":[99,90],"Digitization - Badge Creation":[34,34],"Digitization - Data Sheet Creation":[55,55],
-"Digitization - Course Catalog Updating":[32,32],"CDLC: Generate Performance Report":[19,19],
-"CDLC: Recording":[20,20],"CDLC: Run Image Archiving Automation":[13,13],
-"CDLC: Move Source Files":[13,13],"CDLC: Restrict Course Folder":[3,3],"CDLC: Course Brief":[66,66],
-"Certification: Template Generation":[27,27],"Certification: Research Note":[47,47],
-"Certification: Slide Chunks":[43,43],"Certification: Graphic Definitions":[41,41],
-"Certification: Articulate Creation":[41,41],"Digitization - Course Catalog Updating (sub-task)":[13,13],
-"CDLC: Run Image Archiving Automation (sub-task)":[13,13],"Applied Layers: Toolkit":[2,2],
-"Applied Layers: Instructions":[2,2],"Applied Layers: Content Finalization":[2,2],
-"Applied Layers: Video Recording":[2,2],"Applied Layers: Video Creation":[2,2]
+"Epic":[418,99],
+"CDLC: Topic":[561,288],
+"CDLC: Topic Final Slides":[524,245],
+"CDLC: Restrict Course Folder (sub-task)":[15,15],
+"CDLC: Move Source Files (sub-task)":[13,13],
+"CDLC: Generate Performance Report (sub-task)":[15,15],
+"CDLC: Topic Graphics":[447,242],
+"CDLC: Topic Assessment":[469,312],
+"CDLC: Topic Corrections":[284,222],
+"Digitization - Badge Creation (Sub-task)":[21,21],
+"Digitization - Review (sub-task)":[20,20],
+"Digitization - Upload to AWS + Planning (sub-task)":[20,20],
+"CDLC: Content Upkeep (sub-task)":[40,40],
+"Digitization - Data Sheet Creation (sub-task)":[20,20],
+"Digitization - Restore on SkillCat (sub-task)":[20,20],
+"CDLC: Topic PPT Generation":[459,269],
+"CDLC: Content Review":[518,518],
+"CDLC: Base Articulate file creation":[389,190],
+"CDLC: Vyond video":[0,0],
+"CDLC: Topic Stock image downloading":[15,0],
+"CDLC: Articulate Review":[413,225],
+"CDLC: Topic Translations":[389,266],
+"Digitization - Review":[36,36],
+"Graphics":[216,0],
+"Content: Digitization (Informational)":[158,3],
+"Content: Digitization (Instructional)":[50,7],
+"Digitization - Restore on SkillCat":[36,36],
+"Digitization - Upload to AWS + Planning":[36,36],
+"Simulation: Content Creation":[57,0],
+"Course: Specs":[314,83],
+"CDLC: Corrections":[60,0],
+"CDLC: Final Slides":[118,2],
+"Simulation: Specs":[56,0],
+"Improvement":[160,0],
+"Bug":[1,0],
+"Assessment":[150,0],
+"Instructional Design":[57,0],
+"CDLC: PPT generation":[91,0],
+"CDLC: Stock image downloading":[50,0],
+"Feedback":[1,0],
+"Course: Content Creation":[83,0],
+"CDLC: Content Upkeep":[102,84],
+"CDLC: Course outline":[94,2],
+"CDLC: Research notes":[85,0],
+"CDLC: Translations":[90,7],
+"Sub-task":[169,161],
+"CDLC: Badge and Course Image":[31,8],
+"Task":[99,90],
+"Digitization - Badge Creation":[34,34],
+"Digitization - Data Sheet Creation":[55,55],
+"Digitization - Course Catalog Updating":[32,32],
+"CDLC: Generate Performance Report":[19,19],
+"CDLC: Recording":[20,20],
+"CDLC: Run Image Archiving Automation":[13,13],
+"CDLC: Move Source Files":[13,13],
+"CDLC: Restrict Course Folder":[3,3],
+"CDLC: Course Brief":[66,66],
+"Certification: Template Generation":[27,27],
+"Certification: Research Note":[47,47],
+"Certification: Slide Chunks":[43,43],
+"Certification: Graphic Definitions":[41,41],
+"Certification: Articulate Creation":[41,41],
+"Digitization - Course Catalog Updating (sub-task)":[13,13],
+"CDLC: Run Image Archiving Automation (sub-task)":[13,13],
+"Applied Layers: Toolkit":[2,2],
+"Applied Layers: Instructions":[2,2],
+"Applied Layers: Content Finalization":[2,2],
+"Applied Layers: Video Recording":[2,2],
+"Applied Layers: Video Creation":[2,2]
 };
 
 function usageOf(name) {
@@ -957,6 +1034,57 @@ function usageOf(name) {
 }
 
 let hideDormant = false;
+
+
+const TRANSITIONS = {
+"Applied Layers: Content Finalization": [{"kind":"start","to":"Finalize as per SME Requirements"},{"kind":"edge","from":["Finalize as per SME Requirements"],"to":"Generate Graphic Definition","label":"Create Graphic Definition"},{"kind":"edge","from":["Generate Graphic Definition"],"to":"Referencing","label":"Referencing"}],
+"Applied Layers: Toolkit/Instructions": [{"kind":"start","to":"To Do"},{"kind":"any","to":"Suspended","label":"Suspended"},{"kind":"edge","from":["To Do"],"to":"Assigned","label":"Assigned to team member"},{"kind":"edge","from":["Assigned"],"to":"In Progress","label":"Progress"},{"kind":"edge","from":["In Progress"],"to":"In Review","label":"Review"},{"kind":"edge","from":["In Review"],"to":"In Progress","label":"Review Fail"},{"kind":"edge","from":["In Review"],"to":"Done","label":"Approved"}],
+"Applied Layers: Video Creation & Review": [{"kind":"start","to":"Storyboard"},{"kind":"any","to":"On Hold","label":"On Hold"},{"kind":"any","to":"Suspended","label":"Suspended"},{"kind":"edge","from":["Storyboard"],"to":"SME Review","label":"SME Review"},{"kind":"edge","from":["SME Review"],"to":"Storyboard","label":"Review Fail"},{"kind":"edge","from":["In Review"],"to":"Video Creation","label":"Review Fail"},{"kind":"edge","from":["Video Creation"],"to":"In Review","label":"In Review"},{"kind":"edge","from":["SME Review"],"to":"Video Creation","label":"Video Creation"},{"kind":"edge","from":["In Review"],"to":"Done","label":"Completion"}],
+"Applied Layers: Video Recording": [{"kind":"start","to":"Video Recording"},{"kind":"edge","from":["Video Recording"],"to":"Manual Edit","label":"Manual Edit"},{"kind":"edge","from":["Manual Edit"],"to":"Video Review","label":"ID/SME Video Review"}],
+"CDLC: Articulate review": [{"kind":"start","to":"To Do"},{"kind":"any","to":"Suspended","label":"Suspended"},{"kind":"any","to":"On Hold","label":"On Hold"},{"kind":"edge","from":["On Hold"],"to":"Internal SME review","label":"SME Review"},{"kind":"edge","from":["On Hold"],"to":"In Review","label":"ID Review"},{"kind":"edge","from":["On Hold"],"to":"Corrections","label":"VD Corrections"},{"kind":"edge","from":["Quality review"],"to":"Internal SME review","label":"SME Review"},{"kind":"edge","from":["In Review"],"to":"Corrections","label":"VD Corrections"},{"kind":"edge","from":["Internal SME review"],"to":"In Review","label":"ID Review"},{"kind":"edge","from":["To Do"],"to":"Quality review","label":"QA Review"},{"kind":"edge","from":["Corrections"],"to":"Done","label":"Completion"},{"kind":"edge","from":["Suspended"],"to":"To Do","label":"Reopen"},{"kind":"edge","from":["In Review"],"to":"Quality review","label":"QA Review"},{"kind":"edge","from":["On Hold"],"to":"Quality review","label":"QA Review"}],
+"CDLC: Assessment": [{"kind":"start","to":"To Do"},{"kind":"any","to":"Suspended","label":"Suspended"},{"kind":"any","to":"On Hold","label":"On Hold"},{"kind":"edge","from":["To Do"],"to":"In Progress","label":"Work begun"},{"kind":"edge","from":["Complete checklist"],"to":"Quality review","label":"Send to Quality for review"},{"kind":"edge","from":["Quality review"],"to":"In Progress","label":"Review rejected"},{"kind":"edge","from":["Quality review"],"to":"Internal SME review","label":"SME Review"},{"kind":"edge","from":["Internal SME review"],"to":"In Progress","label":"Corrections"},{"kind":"edge","from":["In Progress"],"to":"Complete checklist","label":"Checklist"},{"kind":"edge","from":["On Hold"],"to":"To Do","label":"Resume"},{"kind":"edge","from":["Internal SME review"],"to":"Done","label":"Done"}],
+"CDLC: Base Articulate file creation": [{"kind":"start","to":"To Do"},{"kind":"any","to":"To Do","label":"To Do"},{"kind":"edge","from":["Assigned"],"to":"In Progress","label":"Work begun"},{"kind":"edge","from":["To Do"],"to":"Assigned","label":"Assign to team member"},{"kind":"edge","from":["Checklist"],"to":"Done","label":"Done"},{"kind":"edge","from":["In Review"],"to":"Checklist","label":"Check for issues"},{"kind":"edge","from":["In Progress"],"to":"In Review","label":"Sent for Review"},{"kind":"edge","from":["To Do"],"to":"On Hold","label":"Need more info"},{"kind":"edge","from":["To Do"],"to":"Rejected","label":"Rejected"},{"kind":"edge","from":["On Hold"],"to":"Rejected","label":"Rejected"},{"kind":"edge","from":["On Hold"],"to":"In Progress","label":"Work begun"},{"kind":"edge","from":["Checklist"],"to":"In Progress","label":"Review Fail"},{"kind":"edge","from":["In Progress"],"to":"Rejected","label":"Task archived"}],
+"CDLC: Bug": [{"kind":"start","to":"To Do"},{"kind":"any","to":"Suspended","label":"Suspended"},{"kind":"edge","from":["To Do"],"to":"In Progress","label":"Work begun"},{"kind":"edge","from":["In Progress"],"to":"In Review","label":"Sent for Review"},{"kind":"edge","from":["In Review"],"to":"Done","label":"Fixed & Closed"},{"kind":"edge","from":["In Review"],"to":"In Progress","label":"Review Fail"}],
+"CDLC: Content Creation": [{"kind":"start","to":"To Do"},{"kind":"any","to":"Suspended","label":"Closed"},{"kind":"any","to":"To Do","label":"To Do"},{"kind":"edge","from":["Editorial review"],"to":"In Progress","label":"Review Fail"},{"kind":"edge","from":["To Do"],"to":"In Progress","label":"Work begun"},{"kind":"edge","from":["In Review"],"to":"In Progress","label":"Final Review failed"},{"kind":"edge","from":["Enhancement"],"to":"In Review","label":"Final Review"},{"kind":"edge","from":["Editorial review"],"to":"Enhancement","label":"Editorial review pass"},{"kind":"edge","from":["In Progress"],"to":"SME Validation","label":"Review"},{"kind":"edge","from":["SME Validation"],"to":"In Progress","label":"Review Fail"},{"kind":"edge","from":["Editorial review"],"to":"Scope Rearrange","label":"Review Pass"},{"kind":"edge","from":["Scope Rearrange"],"to":"Enhancement","label":"Add additional questions"},{"kind":"edge","from":["In Review"],"to":"Done","label":"Approved"},{"kind":"edge","from":["SME Validation"],"to":"Editorial review","label":"Review Pass"}],
+"CDLC: Content Feedback": [{"kind":"start","to":"To Do"},{"kind":"any","to":"Suspended","label":"Suspended"},{"kind":"edge","from":["To Do"],"to":"In Progress","label":"Work begun"},{"kind":"edge","from":["In Progress"],"to":"Done","label":"Approved"},{"kind":"edge","from":["Suspended"],"to":"To Do","label":"Reopen"}],
+"CDLC: Content Instructional Design": [{"kind":"start","to":"To Do"},{"kind":"any","to":"Suspended","label":"Suspended"},{"kind":"edge","from":["To Do"],"to":"In Progress","label":"Work begun"},{"kind":"edge","from":["In Progress"],"to":"In Review","label":"Send to Review"},{"kind":"edge","from":["In Review"],"to":"Done","label":"Approved"},{"kind":"edge","from":["In Review"],"to":"In Progress","label":"Review Instructional Design"},{"kind":"edge","from":["Suspended"],"to":"To Do","label":"Reopen"}],
+"CDLC: Corrections": [{"kind":"start","to":"To Do"},{"kind":"any","to":"To Do","label":"To Do"},{"kind":"edge","from":["Assigned"],"to":"In Progress","label":"Work begun"},{"kind":"edge","from":["To Do"],"to":"Assigned","label":"Assign to team member"},{"kind":"edge","from":["In Progress"],"to":"In Review","label":"Sent for Review"},{"kind":"edge","from":["In Review"],"to":"Done","label":"Approved"},{"kind":"edge","from":["To Do"],"to":"On Hold","label":"Need more info"},{"kind":"edge","from":["To Do"],"to":"Rejected","label":"Rejected"},{"kind":"edge","from":["On Hold"],"to":"Rejected","label":"Rejected"},{"kind":"edge","from":["On Hold"],"to":"In Progress","label":"Work begun"},{"kind":"edge","from":["In Review"],"to":"In Progress","label":"Review Fail"},{"kind":"edge","from":["In Progress"],"to":"Rejected","label":"Task archived"}],
+"CDLC: Course Brief": [{"kind":"start","to":"To Do"},{"kind":"any","to":"To Do","label":"To Do"},{"kind":"edge","from":["To Do"],"to":"Assigned","label":"Assign to ID"},{"kind":"edge","from":["Assigned"],"to":"In Progress","label":"Progress"},{"kind":"edge","from":["In Progress"],"to":"Done","label":"Completion"}],
+"CDLC: Course Content Creation": [{"kind":"start","to":"To Do"},{"kind":"any","to":"Suspended","label":"Suspended"},{"kind":"edge","from":["SkillCat: Backup / Restore"],"to":"Course QA on SkillCat","label":"Review course on SkillCat"},{"kind":"edge","from":["To Do"],"to":"Slide chunks in course sheet","label":"Work begun"},{"kind":"edge","from":["In Review"],"to":"Slide chunks in course sheet","label":"Revise Articulate"},{"kind":"edge","from":["Course QA on Guroo"],"to":"Course on Guroo","label":"Failed QA"},{"kind":"edge","from":["Course QA on SkillCat"],"to":"Staging: Backup / Restore","label":"Failed QA"},{"kind":"edge","from":["Suspended"],"to":"To Do","label":"Reopen"},{"kind":"edge","from":["In Review"],"to":"Done","label":"Approved"},{"kind":"edge","from":["Slide chunks in course sheet"],"to":"In Review","label":"Review / Verify"},{"kind":"edge","from":["Uploading to AWS"],"to":"Course on Guroo","label":"Host on Guroo"},{"kind":"edge","from":["Course on Guroo"],"to":"Assessment on Guroo","label":"Add assessments to Moodle"},{"kind":"edge","from":["Assessment on Guroo"],"to":"Course QA on Guroo","label":"Review course on Guroo"},{"kind":"edge","from":["Course QA on Guroo"],"to":"Staging: Backup / Restore","label":"Approved"},{"kind":"edge","from":["Staging: Backup / Restore"],"to":"SkillCat: Backup / Restore","label":"Host on SkillCat"}],
+"CDLC: Course Digitization": [{"kind":"start","to":"To Do"},{"kind":"any","to":"Suspended","label":"Suspended"},{"kind":"any","to":"On Hold","label":"On Hold"},{"kind":"edge","from":["Suspended","On Hold"],"to":"To Do","label":"Reopen"},{"kind":"edge","from":["Update Keywords"],"to":"SME Review","label":"In Review"},{"kind":"edge","from":["In Review"],"to":"Restore on SkillCat","label":"Restore on SkillCat"},{"kind":"edge","from":["SME Review"],"to":"Create Course on Planning","label":"Review Fail"},{"kind":"edge","from":["update spreadsheet"],"to":"Course Catalog","label":"Email Marketing Team"},{"kind":"edge","from":["Restore on SkillCat"],"to":"Update Learning Plan","label":"Update Learning Plan"},{"kind":"edge","from":["Request Badge Creation"],"to":"Upload to AWS","label":"Upload to AWS"},{"kind":"edge","from":["To Do"],"to":"Request Badge Creation","label":"Request badge creation"},{"kind":"edge","from":["Update Learning Plan"],"to":"Create Deep Links","label":"Update Keywords"},{"kind":"edge","from":["SME Review"],"to":"In Review","label":"Review"},{"kind":"edge","from":["Create Deep Links"],"to":"update spreadsheet","label":"update spreadsheet"},{"kind":"edge","from":["Upload to AWS"],"to":"Create Course on Planning","label":"Upload successful"},{"kind":"edge","from":["Create Course on Planning"],"to":"Question Bank on Planning","label":"Create"},{"kind":"edge","from":["In Review"],"to":"Create Course on Planning","label":"Review Fail"},{"kind":"edge","from":["Question Bank on Planning"],"to":"Update Keywords","label":"Planning Tasks"}],
+"CDLC: Course Outline": [{"kind":"start","to":"To Do"},{"kind":"any","to":"To Do","label":"To Do"},{"kind":"any","to":"Suspended","label":"Suspended"},{"kind":"edge","from":["Create course outline"],"to":"SME Validation","label":"SME Validation"},{"kind":"edge","from":["To Do"],"to":"Create course outline","label":"Create course outline"},{"kind":"edge","from":["SME Validation"],"to":"Checklist","label":"Complete Checklist"},{"kind":"edge","from":["Checklist"],"to":"Done","label":"Done"}],
+"CDLC: Epic": [{"kind":"start","to":"To Do"},{"kind":"any","to":"To Do","label":"To Do"},{"kind":"any","to":"On Hold","label":"On Hold"},{"kind":"any","to":"Suspended","label":"Suspended"},{"kind":"edge","from":["To Do"],"to":"In Progress","label":"Work begun"},{"kind":"edge","from":["On Hold"],"to":"To Do","label":"Resume"},{"kind":"edge","from":["In Progress"],"to":"Digitization","label":"Send to Digitize"},{"kind":"edge","from":["Digitization"],"to":"Done","label":"Course complete"},{"kind":"edge","from":["Suspended"],"to":"To Do","label":"Reopen"}],
+"CDLC: Final Slides": [{"kind":"start","to":"To Do"},{"kind":"any","to":"Suspended","label":"Suspended"},{"kind":"any","to":"On Hold","label":"On Hold"},{"kind":"edge","from":["To Do"],"to":"In Progress","label":"Run automation and edit manually"},{"kind":"edge","from":["Internal SME review"],"to":"Graphics definition","label":"Approve"},{"kind":"edge","from":["Internal SME review"],"to":"In Progress","label":"Review rejected"},{"kind":"edge","from":["Complete checklist"],"to":"Quality review","label":"Quality Review"},{"kind":"edge","from":["Graphics definition"],"to":"Done","label":"Done"},{"kind":"edge","from":["Quality review"],"to":"Internal SME review","label":"Internal SME Review"},{"kind":"edge","from":["Quality review"],"to":"In Progress","label":"Review Rejected"},{"kind":"edge","from":["In Progress"],"to":"Complete checklist","label":"Complete checklist"},{"kind":"edge","from":["On Hold"],"to":"To Do","label":"Resume"}],
+"CDLC: Graphics": [{"kind":"start","to":"To Do"},{"kind":"any","to":"Suspended","label":"Suspended"},{"kind":"edge","from":["To Do"],"to":"In Progress","label":"Graphic work begun"},{"kind":"edge","from":["In Progress"],"to":"Complete checklist","label":"Complete checklist"},{"kind":"edge","from":["In Review"],"to":"Send to Instructional Designer","label":"Send to Instructional Designer"},{"kind":"edge","from":["Send to Instructional Designer"],"to":"In Progress","label":"Corrections"},{"kind":"edge","from":["Send to Instructional Designer"],"to":"Quality review","label":"Send for review"},{"kind":"edge","from":["Quality review"],"to":"In Progress","label":"Corrections"},{"kind":"edge","from":["External Review"],"to":"Done","label":"Done"},{"kind":"edge","from":["Internal SME review"],"to":"External Review","label":"Sent to external resource for review"},{"kind":"edge","from":["External Review"],"to":"In Progress","label":"Make corrections"},{"kind":"edge","from":["Quality review"],"to":"Internal SME review","label":"Assign to Internal SME"},{"kind":"edge","from":["Complete checklist"],"to":"In Review","label":"Sent to Manager for Review"},{"kind":"edge","from":["Internal SME review"],"to":"In Progress","label":"Corrections"},{"kind":"edge","from":["Send to Instructional Designer"],"to":"External Review","label":"External review"},{"kind":"edge","from":["Send to Instructional Designer"],"to":"Internal SME review","label":"SME Review"},{"kind":"edge","from":["In Review"],"to":"In Progress","label":"Revise Graphic"},{"kind":"edge","from":["Suspended"],"to":"To Do","label":"Reopen"}],
+"CDLC: Improvement": [{"kind":"start","to":"To Do"},{"kind":"any","to":"Suspended","label":"Suspended"},{"kind":"edge","from":["To Do"],"to":"In Progress","label":"Improvement Begun"},{"kind":"edge","from":["In Progress"],"to":"In Review","label":"Sent for Review"},{"kind":"edge","from":["In Review"],"to":"Done","label":"Approved"},{"kind":"edge","from":["In Review"],"to":"In Progress","label":"Modify"},{"kind":"edge","from":["Suspended"],"to":"To Do","label":"Reopen"}],
+"CDLC: Move Source Files": [{"kind":"start","to":"To Do"},{"kind":"edge","from":["To Do"],"to":"In Progress","label":"Progress"},{"kind":"edge","from":["In Progress"],"to":"In Review","label":"Send for Review"},{"kind":"edge","from":["In Review"],"to":"Done","label":"Review Approved"},{"kind":"edge","from":["In Review"],"to":"In Progress","label":"Review Failed"},{"kind":"edge","from":["Done"],"to":"To Do","label":"Start Over"}],
+"CDLC: Recording": [{"kind":"start","to":"Scripting"},{"kind":"edge","from":["Scripting"],"to":"Assigned","label":"Assigned"},{"kind":"edge","from":["Assigned"],"to":"In Progress","label":"Progress"},{"kind":"edge","from":["In Progress"],"to":"In Review","label":"Review"},{"kind":"edge","from":["In Review"],"to":"Done","label":"Approved"},{"kind":"edge","from":["In Review"],"to":"In Progress","label":"Review Fail"}],
+"CDLC: Restrict Course Folder": [{"kind":"start","to":"To Do"},{"kind":"any","to":"Suspended","label":"Suspended"},{"kind":"edge","from":["To Do"],"to":"In Progress","label":"Progress"},{"kind":"edge","from":["In Progress"],"to":"Done","label":"Completion"}],
+"CDLC: Reviews": [{"kind":"start","to":"In Review"},{"kind":"any","to":"In Review","label":"In Review"},{"kind":"any","to":"Suspended","label":"Suspended"},{"kind":"any","to":"On Hold","label":"On Hold"},{"kind":"edge","from":["In Progress"],"to":"In Review","label":"Sent for Review"},{"kind":"edge","from":["In Review"],"to":"Done","label":"Approved"},{"kind":"edge","from":["In Review"],"to":"In Progress","label":"Review Fail"}],
+"CDLC: Run Image Archiving Automation": [{"kind":"start","to":"To Do"},{"kind":"any","to":"Suspended","label":"Suspended"},{"kind":"edge","from":["To Do"],"to":"In Progress","label":"Progress"},{"kind":"edge","from":["In Progress"],"to":"In Review","label":"Review"},{"kind":"edge","from":["In Review"],"to":"Done","label":"Review Approved"},{"kind":"edge","from":["In Review"],"to":"In Progress","label":"Review Failed"},{"kind":"edge","from":["Done"],"to":"To Do","label":"Start Over"}],
+"CDLC: Simulation Specs": [{"kind":"start","to":"To Do"},{"kind":"any","to":"Suspended","label":"Suspended"},{"kind":"edge","from":["To Do"],"to":"Business Specs in Progress","label":"Write Business Specs"},{"kind":"edge","from":["Business Specs in Progress"],"to":"Business Specs in Review","label":"Sent for Review"},{"kind":"edge","from":["Business Specs in Review"],"to":"Business Specs in Progress","label":"Review Fail"},{"kind":"edge","from":["Business Specs in Review"],"to":"Learning Objectives in Progress","label":"Business Specs Approved"},{"kind":"edge","from":["Learning Objectives in Progress"],"to":"Learning Objective in Review","label":"Sent for Review"},{"kind":"edge","from":["Learning Objective in Review"],"to":"Learning Objectives in Progress","label":"Review Fail"},{"kind":"edge","from":["Learning Objective in Review"],"to":"Done","label":"Specs are Ready"},{"kind":"edge","from":["Suspended"],"to":"To Do","label":"Reopen"}],
+"CDLC: Spanish Translations": [{"kind":"start","to":"To Do"},{"kind":"any","to":"On Hold","label":"On Hold"},{"kind":"any","to":"Suspended","label":"Suspended"},{"kind":"any","to":"To Do","label":"To Do"},{"kind":"edge","from":["To Do"],"to":"Assigned","label":"Assign to team member"},{"kind":"edge","from":["Upload to AWS"],"to":"Done","label":"Done"},{"kind":"edge","from":["In Translation"],"to":"Complete checklist","label":"Complete checklist"},{"kind":"edge","from":["Complete checklist"],"to":"In Review","label":"Sent for Review"},{"kind":"edge","from":["In Review"],"to":"Upload to AWS","label":"Approved"},{"kind":"edge","from":["On Hold","Assigned"],"to":"In Translation","label":"Work begun"},{"kind":"edge","from":["In Review"],"to":"In Translation","label":"Review Fail"}],
+"CDLC: Stock image downloading": [{"kind":"start","to":"To Do"},{"kind":"any","to":"To Do","label":"To Do"},{"kind":"any","to":"Suspended","label":"Suspended"},{"kind":"edge","from":["To Do"],"to":"In Progress","label":"In Progress"},{"kind":"edge","from":["In Review"],"to":"Done","label":"Done"},{"kind":"edge","from":["In Progress"],"to":"In Review","label":"Send for review"},{"kind":"edge","from":["In Review"],"to":"In Progress","label":"Review rejected"}],
+"CDLC: Task/Subtask": [{"kind":"start","to":"To Do"},{"kind":"any","to":"Suspended","label":"Suspended"},{"kind":"any","to":"On Hold","label":"On Hold"},{"kind":"edge","from":["On Hold"],"to":"In Progress","label":"Progress"},{"kind":"edge","from":["On Hold"],"to":"In Review","label":"Review"},{"kind":"edge","from":["To Do"],"to":"In Progress","label":"Progress"},{"kind":"edge","from":["In Progress"],"to":"In Review","label":"Review"},{"kind":"edge","from":["In Review"],"to":"In Progress","label":"Review Fail"},{"kind":"edge","from":["In Review"],"to":"Done","label":"Completion"},{"kind":"edge","from":["Done"],"to":"To Do","label":"Start Over"},{"kind":"edge","from":["On Hold"],"to":"To Do","label":"Start Over"}],
+"CDLC: Topic": [{"kind":"start","to":"To Do"},{"kind":"any","to":"To Do","label":"To Do"},{"kind":"any","to":"Suspended","label":"Suspended"},{"kind":"any","to":"On Hold","label":"On Hold"},{"kind":"edge","from":["Final Slides"],"to":"Ready for Graphics","label":"Final Slides ready"},{"kind":"edge","from":["Spanish Translations"],"to":"Uploading to AWS","label":"Upload to AWS"},{"kind":"edge","from":["In Review"],"to":"Uploading to AWS","label":"For Certification Course"},{"kind":"edge","from":["Uploading to AWS"],"to":"Done","label":"Done"},{"kind":"edge","from":["To Do"],"to":"Final Slides","label":"In Progress"},{"kind":"edge","from":["Ready for Graphics"],"to":"Graphics Creation","label":"Graphics in progress"},{"kind":"edge","from":["Graphics Creation"],"to":"In Review","label":"Review by Quality and SME"},{"kind":"edge","from":["In Review"],"to":"Spanish Translations","label":"Ready for Translations"}],
+"CDLC: Topic Assessment": [{"kind":"start","to":"To Do"},{"kind":"any","to":"To Do","label":"To Do"},{"kind":"any","to":"Suspended","label":"Suspended"},{"kind":"any","to":"On Hold","label":"On Hold"},{"kind":"edge","from":["To Do"],"to":"In Progress","label":"Work begun"},{"kind":"edge","from":["In Review"],"to":"In Progress","label":"Corrections"},{"kind":"edge","from":["Complete checklist"],"to":"In Review","label":"SME Review"},{"kind":"edge","from":["In Progress"],"to":"Complete checklist","label":"Checklist"},{"kind":"edge","from":["In Review"],"to":"Done","label":"Done"}],
+"CDLC: Topic Final Slides": [{"kind":"start","to":"To Do"},{"kind":"any","to":"Suspended","label":"Suspended"},{"kind":"any","to":"On Hold","label":"On Hold"},{"kind":"edge","from":["To Do"],"to":"In Progress","label":"Run automation and edit manually"},{"kind":"edge","from":["Internal SME review"],"to":"Done","label":"Approve"},{"kind":"edge","from":["Internal SME review"],"to":"In Progress","label":"Review rejected"},{"kind":"edge","from":["Complete checklist"],"to":"Quality review","label":"Quality Team review"},{"kind":"edge","from":["Quality review"],"to":"In Progress","label":"Review rejected"},{"kind":"edge","from":["Quality review"],"to":"Internal SME review","label":"SME Review"},{"kind":"edge","from":["In Progress"],"to":"Complete checklist","label":"Complete checklist"},{"kind":"edge","from":["On Hold"],"to":"To Do","label":"Resume"}],
+"CDLC: Topic Graphics": [{"kind":"start","to":"To Do"},{"kind":"any","to":"Suspended","label":"Suspended"},{"kind":"edge","from":["To Do"],"to":"In Progress","label":"Graphic work begun"},{"kind":"edge","from":["In Progress"],"to":"Complete checklist","label":"Complete checklist"},{"kind":"edge","from":["In Review"],"to":"Send to Instructional Designer","label":"Send to Instructional Designer"},{"kind":"edge","from":["Send to Instructional Designer"],"to":"In Progress","label":"Corrections"},{"kind":"edge","from":["Send to Instructional Designer"],"to":"Done","label":"Done"},{"kind":"edge","from":["Complete checklist"],"to":"In Review","label":"Sent to Manager for Review"},{"kind":"edge","from":["In Review"],"to":"In Progress","label":"Revise Graphic"},{"kind":"edge","from":["Suspended"],"to":"To Do","label":"Reopen"}],
+"Certification: Articulate Creation": [{"kind":"start","to":"To Do"},{"kind":"any","to":"On Hold","label":"On Hold"},{"kind":"any","to":"Suspended","label":"Suspended"},{"kind":"any","to":"To Do","label":"To Do"},{"kind":"edge","from":["ID Review"],"to":"SME Review","label":"SME Review"},{"kind":"edge","from":["SME Review"],"to":"Quality review","label":"QA Review"},{"kind":"edge","from":["Quality review"],"to":"ID Review","label":"ID Corrections"},{"kind":"edge","from":["SME Review"],"to":"ID Review","label":"ID Corrections"},{"kind":"edge","from":["Quality review"],"to":"Done","label":"Completion"},{"kind":"edge","from":["To Do"],"to":"Generate Articulate","label":"Articulate Generation"},{"kind":"edge","from":["Generate Articulate"],"to":"ID Review","label":"ID Review"},{"kind":"edge","from":["ID Review"],"to":"Corrections","label":"VD Corrections"},{"kind":"edge","from":["Corrections"],"to":"ID Review","label":"ID Review"},{"kind":"edge","from":["Corrections"],"to":"SME Review","label":"SME Review"}],
+"Certification: Graphic Definitions": [{"kind":"start","to":"To Do"},{"kind":"any","to":"To Do","label":"To Do"},{"kind":"any","to":"On Hold","label":"On Hold"},{"kind":"any","to":"Suspended","label":"Suspended"},{"kind":"edge","from":["Review & Revise Visuals"],"to":"Review & Revise Definition","label":"Revise"},{"kind":"edge","from":["Generate AI Visuals"],"to":"Review & Revise Visuals","label":"Revise"},{"kind":"edge","from":["To Do"],"to":"Generate Graphic Definition","label":"Generation"},{"kind":"edge","from":["Generate Graphic Definition"],"to":"Review & Revise Definition","label":"GD Review"},{"kind":"edge","from":["Review & Revise Definition"],"to":"Review & Revise Visuals","label":"Visuals' Review"},{"kind":"edge","from":["Review & Revise Visuals"],"to":"Generate AI Visuals","label":"Generate Visuals"},{"kind":"edge","from":["Generate AI Visuals"],"to":"Review Final GD","label":"Final GD Review"},{"kind":"edge","from":["Review Final GD"],"to":"Done","label":"Completion"}],
+"Certification: Research Note": [{"kind":"start","to":"To Do"},{"kind":"any","to":"On Hold","label":"On Hold"},{"kind":"any","to":"Suspended","label":"Suspended"},{"kind":"any","to":"To Do","label":"To Do"},{"kind":"edge","from":["To Do"],"to":"Manual Review","label":"Manual Review"},{"kind":"edge","from":["Manual Review"],"to":"Inline Image Check","label":"Inline Image Check"},{"kind":"edge","from":["Inline Image Check"],"to":"Done","label":"Completion"}],
+"Certification: Slide Chunks": [{"kind":"start","to":"To Do"},{"kind":"any","to":"On Hold","label":"On Hold"},{"kind":"any","to":"Suspended","label":"Suspended"},{"kind":"any","to":"To Do","label":"To Do"},{"kind":"edge","from":["To Do"],"to":"In Progress","label":"Progress"},{"kind":"edge","from":["In Progress"],"to":"Paraphrasing","label":"Paraphrasing"},{"kind":"edge","from":["Paraphrasing"],"to":"In Review","label":"Review"},{"kind":"edge","from":["In Review"],"to":"Done","label":"Completion"},{"kind":"edge","from":["In Review"],"to":"Paraphrasing","label":"Review Fail"}],
+"Certification: Template Generation": [{"kind":"start","to":"To Do"},{"kind":"any","to":"On Hold","label":"On Hold"},{"kind":"any","to":"Suspended","label":"Suspended"},{"kind":"edge","from":["To Do"],"to":"Done","label":"Completion"},{"kind":"edge","from":["Done"],"to":"To Do","label":"Start Over"}],
+"Digitization - Badge Creation": [{"kind":"start","to":"To Do"},{"kind":"any","to":"Suspended","label":"Suspended"},{"kind":"edge","from":["In Progress"],"to":"In Review","label":"Review"},{"kind":"edge","from":["To Do"],"to":"In Progress","label":"Progress"},{"kind":"edge","from":["In Review"],"to":"In Progress","label":"Review Fail"},{"kind":"edge","from":["In Review"],"to":"Done","label":"Completion"},{"kind":"edge","from":["Done"],"to":"To Do","label":"Reopen Task"}],
+"Digitization - Course Catalog Updating": [{"kind":"start","to":"To Do"},{"kind":"any","to":"Suspended","label":"Suspended"},{"kind":"edge","from":["To Do"],"to":"Assigned","label":"Progress"},{"kind":"edge","from":["In Progress"],"to":"In Review","label":"Completion"},{"kind":"edge","from":["Assigned"],"to":"In Progress","label":"Progress"},{"kind":"edge","from":["In Review"],"to":"Done","label":"Completion"}],
+"Digitization - Data Sheet Creation": [{"kind":"start","to":"To Do"},{"kind":"any","to":"Suspended","label":"Suspended"},{"kind":"edge","from":["To Do"],"to":"Assigned","label":"Progress"},{"kind":"edge","from":["In Progress"],"to":"In Review","label":"Completion"},{"kind":"edge","from":["Assigned"],"to":"In Progress","label":"Progress"},{"kind":"edge","from":["In Review"],"to":"Done","label":"Completion"}],
+"Digitization - Restore on SkillCat": [{"kind":"start","to":"To Do"},{"kind":"any","to":"Suspended","label":"Suspended"},{"kind":"edge","from":["QA Review"],"to":"Done","label":"Review Approved"},{"kind":"edge","from":["Done"],"to":"To Do","label":"Start Over"},{"kind":"edge","from":["Restore on SkillCat"],"to":"Update Learning Plan","label":"On SkillCat"},{"kind":"edge","from":["Update Learning Plan"],"to":"Create Deep Links","label":"Production"},{"kind":"edge","from":["Create Deep Links"],"to":"update spreadsheet","label":"Production"},{"kind":"edge","from":["update spreadsheet"],"to":"QA Review","label":"Review"},{"kind":"edge","from":["To Do"],"to":"Restore on SkillCat","label":"In Progress"}],
+"Digitization - Review": [{"kind":"start","to":"To Do"},{"kind":"any","to":"To Do","label":"To Do"},{"kind":"any","to":"Suspended","label":"Suspended"},{"kind":"edge","from":["To Do"],"to":"Quality review","label":"In Progress"},{"kind":"edge","from":["SME Review"],"to":"Done","label":"Completion"},{"kind":"edge","from":["Quality review"],"to":"SME Review","label":"Internal SME Review"}],
+"Digitization - Upload to AWS + Planning": [{"kind":"start","to":"To Do"},{"kind":"any","to":"Assigned","label":"Assigned"},{"kind":"any","to":"Suspended","label":"Suspended"},{"kind":"edge","from":["In Review"],"to":"Create Course on Planning","label":"Review Fail"},{"kind":"edge","from":["Create Course on Planning"],"to":"Update Question Bank on Planning","label":"Planning"},{"kind":"edge","from":["Upload to AWS"],"to":"Create Course on Planning","label":"Create on Planning"},{"kind":"edge","from":["Update Question Bank on Planning"],"to":"Update Keywords","label":"Planning"},{"kind":"edge","from":["In Review"],"to":"Done","label":"Completion"},{"kind":"edge","from":["To Do"],"to":"Assigned","label":"In Progress"},{"kind":"edge","from":["Assigned"],"to":"Upload to AWS","label":"Progress"},{"kind":"edge","from":["Update Keywords"],"to":"In Review","label":"Review"}],
+"Generate Performance Report": [{"kind":"start","to":"To Do"},{"kind":"any","to":"Suspended","label":"Suspended"},{"kind":"edge","from":["To Do"],"to":"In Progress","label":"Progress"},{"kind":"edge","from":["In Progress"],"to":"Done","label":"Completion"},{"kind":"edge","from":["Suspended"],"to":"To Do","label":"To Do"}],
+"PPT generation": [{"kind":"start","to":"To Do"},{"kind":"any","to":"Suspended","label":"Suspended"},{"kind":"any","to":"To Do","label":"To Do"},{"kind":"edge","from":["To Do"],"to":"In Progress","label":"In Progress"},{"kind":"edge","from":["In Review"],"to":"Done","label":"Completion"},{"kind":"edge","from":["In Progress"],"to":"In Review","label":"Send to manager for review"},{"kind":"edge","from":["In Review"],"to":"In Progress","label":"Rejected. Update course."}],
+"SGP: Task": [{"kind":"start","to":"To Do"},{"kind":"any","to":"To Do","label":"To Do"},{"kind":"any","to":"On Hold","label":"On Hold"},{"kind":"any","to":"Discard","label":"Discard"},{"kind":"edge","from":["Assigned"],"to":"In Progress","label":"Work begun"},{"kind":"edge","from":["To Do"],"to":"Assigned","label":"Assign to team member"},{"kind":"edge","from":["Reproduced"],"to":"Done","label":"Fixed by Devs"},{"kind":"edge","from":["In Progress"],"to":"In Review","label":"Sent for Review"},{"kind":"edge","from":["In Review"],"to":"Reproduced","label":"Reproduced"},{"kind":"edge","from":["In Review"],"to":"Done","label":"Approved"},{"kind":"edge","from":["In Progress"],"to":"Reproduced","label":"Reproduced/ Isolated"},{"kind":"edge","from":["On Hold"],"to":"In Progress","label":"Work begun"},{"kind":"edge","from":["In Review"],"to":"In Progress","label":"Review Fail"}]
+};
 
 const LOG_KEYS = new Set(LOG.map(e => e[0]));
 
@@ -991,6 +1119,37 @@ const qNow = document.getElementById("q-now");
 const dimmed = new Set();
 
 
+// Renders one workflow's transitions. Jira workflows are graphs rather than
+// straight lines, so the start state, the ordinary edges and the transitions
+// available from any status are shown as three separate groups.
+function flowHtml(wfName) {
+  if (!wfName) return "";
+  const edges = TRANSITIONS[wfName];
+  if (!edges || !edges.length) return "";
+
+  const start = edges.filter(e => e.kind === "start");
+  const any = edges.filter(e => e.kind === "any");
+  const norm = edges.filter(e => e.kind === "edge");
+  const chip = n => `<span class="chip ${CAT[n] || "ind"}">${esc(n)}</span>`;
+
+  let body = "";
+  if (start.length) {
+    body += `<li><b>Starts at</b>${start.map(e => chip(e.to)).join("")}</li>`;
+  }
+  for (const e of norm) {
+    body += `<li>${e.from.map(chip).join("")}<span class="arrow">&rarr;</span>` +
+            `${chip(e.to)}<em>${esc(e.label)}</em></li>`;
+  }
+  for (const e of any) {
+    body += `<li><b>From any</b><span class="arrow">&rarr;</span>${chip(e.to)}` +
+            `<em>${esc(e.label)}</em></li>`;
+  }
+
+  const n = norm.length + any.length;
+  return `<details class="flow"><summary>${esc(wfName)} &middot; ` +
+         `${n} transition${n === 1 ? "" : "s"}</summary><ul class="flowlist">${body}</ul></details>`;
+}
+
 function renderNow() {
   const term = qNow.value.trim().toLowerCase();
   let shown = 0, html = "";
@@ -1004,7 +1163,7 @@ function renderNow() {
     shown += rows.length;
 
     html += `<div class="fam"><div class="fam-head"><h3>${esc(family)}</h3><em>${rows.length} of ${types.length}</em></div>`;
-    for (const [name, lvl, sts, refs] of rows) {
+    for (const [name, lvl, sts, refs, wfName] of rows) {
       const known = (refs || []).filter(k => LOG_KEYS.has(k));
       const u = usageOf(name);
       html += `<div class="row"><div class="row-name"><b>${hl(esc(name), term)}</b>` +
@@ -1014,12 +1173,12 @@ function renderNow() {
         html += `<div class="xrefs">` + known.map(k =>
           `<button class="xref" data-jump="${k}" title="Show this change">${k}</button>`).join("") + `</div>`;
       }
-      html += `</div><div class="chips">`;
+      html += `</div><div class="ebody"><div class="chips">`;
       for (const s of sts) {
         const c = CAT[s] || "ind";
         html += `<span class="chip ${c}${dimmed.has(c) ? " dim" : ""}">${hl(esc(s), term)}</span>`;
       }
-      html += `</div></div>`;
+      html += `</div>` + flowHtml(wfName) + `</div></div>`;
     }
     html += `</div>`;
   }
