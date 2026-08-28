@@ -95,7 +95,7 @@
         "topicCreates": [
           "CDLC: Topic Final Slides"
         ],
-        "then": "Final Slides → Graphics + PPT Generation → Base Articulate File"
+        "then": "Final Slides → PPT generation → Base Articulate file → Graphics → Articulate Review"
       },
       {
         "type": "Certification",
@@ -105,7 +105,7 @@
         "topicCreates": [
           "Certification: Research Note"
         ],
-        "then": "Research Note → Slide Chunks → Graphic Definitions → PPT Generation → Articulate Creation"
+        "then": "Research Note → Slide Chunks → Graphic Definitions → PPT generation → Articulate Creation"
       }
     ]
   },
