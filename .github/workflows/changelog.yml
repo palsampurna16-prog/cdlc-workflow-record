@@ -1,0 +1,41 @@
+name: Update the change log
+
+# Runs after every push to main and rewrites change-log.csv from the repository's
+# own history. Pushes that only touched the log itself are ignored, so this
+# cannot trigger itself in a loop.
+on:
+  push:
+    branches: [main]
+    paths-ignore:
+      - "change-log.csv"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: changelog
+  cancel-in-progress: false
+
+jobs:
+  log:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0          # the whole history, not just the last commit
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+      - run: node scripts/make-changelog.mjs
+      - name: Commit if it changed
+        run: |
+          if git diff --quiet change-log.csv; then
+            echo "No change."
+            exit 0
+          fi
+          git config user.name  "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add change-log.csv
+          git commit -m "chore: update the change log [skip ci]"
+          git push
