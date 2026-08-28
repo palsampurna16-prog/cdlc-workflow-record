@@ -410,7 +410,6 @@ function viewStage(key, id) {
     `<div class="page-head">
        <p class="eyebrow">Child of CDLC Epic</p>
        <h1>${esc(s.name)}</h1>
-       <p class="lede">${esc(s.blurb)}</p>
      </div>
 
      ${facts(s)}
@@ -429,9 +428,7 @@ function viewStage(key, id) {
               <span class="row-name">${esc(t.name)}</span>
               <span class="row-type">${esc(t.type)}</span>
               <span class="row-go">&rsaquo;</span></button>`).join("") + `</div>`
-      : `<div class="terminal">This stage is a single ticket &mdash; it has no subtasks beneath it.</div>`) +
-
-    (s.note ? `<div class="note"><strong>Worth knowing</strong>${esc(s.note)}</div>` : "");
+      : `<div class="terminal">This stage is a single ticket &mdash; it has no subtasks beneath it.</div>`);
 
   wireCrumbs();
   view.querySelectorAll(".rows button.row").forEach(el =>
@@ -450,7 +447,6 @@ function viewSubtask(key, stageId, subId) {
     `<div class="page-head">
        <p class="eyebrow">Subtask of ${esc(st.name)}</p>
        <h1>${esc(t.name)}</h1>
-       <p class="lede">${esc(t.blurb)}</p>
      </div>` +
     facts(t) +
     `<h2>Its workflow</h2>
