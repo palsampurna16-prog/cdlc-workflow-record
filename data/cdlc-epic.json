@@ -356,13 +356,13 @@
       "type": "CDLC: Topic",
       "example": "CDLC-9313",
       "blurb": "The body of the course. One Topic per teaching unit, each carrying the same four production subtasks. The number of topics varies by course — the reference epic CDLC-8592 has four.",
-      "note": "A Topic's status names the production stage it is sitting in, so the workflow doubles as a pipeline. The subtasks are created by automation, not by hand: marking one Done creates the next. Final Slides → Done creates Graphics and PPT Generation; PPT Generation → Done creates the Base Articulate file. That is why the four topics in CDLC-8592 carry six, four, three and one subtask — they are at different points in the same cascade.",
+      "note": "A Topic's status names the production stage it is sitting in, so the workflow doubles as a pipeline. The subtasks are created by automation, not by hand: marking one Done creates the next. Final Slides → Done creates Graphics and PPT Generation; PPT Generation → Done creates the Base Articulate file; Graphics → Done creates Articulate Review and Corrections; Articulate Review → Done creates Translations and Assessment. Topics therefore carry different numbers of subtasks depending how far along they are, not because practice varies.",
       "subtasks": [
         {
           "id": "final-slides",
           "name": "Final Slides",
           "example": "CDLC-9314",
-          "blurb": "The teaching content itself, written out as finished slides.",
+          "blurb": "The teaching content itself, written out as finished slides. First subtask created under a Topic.",
           "type": "CDLC: Topic Final Slides",
           "workflow": "CDLC: Topic Final Slides",
           "statuses": [
@@ -464,7 +464,7 @@
           "id": "graphics",
           "name": "Graphics",
           "example": "CDLC-9594",
-          "blurb": "Artwork for the topic, produced against the graphic definitions.",
+          "blurb": "Artwork for the topic. Created when Final Slides is marked Done.",
           "type": "CDLC: Topic Graphics",
           "workflow": "CDLC: Topic Graphics",
           "statuses": [
@@ -560,7 +560,7 @@
           "id": "ppt-generation",
           "name": "PPT generation",
           "example": "CDLC-9595",
-          "blurb": "Automated build of the PowerPoint deck, so the topic can be handed to digitization.",
+          "blurb": "Automated build of the PowerPoint deck. Created when Final Slides is marked Done.",
           "type": "CDLC: Topic PPT Generation",
           "workflow": "PPT generation",
           "statuses": [
@@ -627,7 +627,7 @@
           "id": "base-articulate-file",
           "name": "Base Articulate file",
           "example": "CDLC-9596",
-          "blurb": "The Articulate source file the published course is assembled from.",
+          "blurb": "The Articulate source file the published course is assembled from. Created when PPT generation is marked Done.",
           "type": "CDLC: Base Articulate file creation",
           "workflow": "CDLC: Base Articulate file creation",
           "statuses": [
@@ -741,6 +741,427 @@
               ],
               "to": "Rejected",
               "label": "Task archived"
+            }
+          ]
+        },
+        {
+          "id": "articulate-review",
+          "name": "Articulate Review",
+          "example": null,
+          "blurb": "Review of the assembled Articulate file by QA and SME. Created when Graphics is marked Done.",
+          "type": "CDLC: Articulate Review",
+          "workflow": "CDLC: Articulate review",
+          "statuses": [
+            "Internal SME review",
+            "In Review",
+            "Done",
+            "On Hold",
+            "Corrections",
+            "To Do",
+            "Suspended",
+            "Quality review"
+          ],
+          "usage": {
+            "ever": 413,
+            "recent": 225
+          },
+          "transitions": [
+            {
+              "kind": "start",
+              "to": "To Do"
+            },
+            {
+              "kind": "any",
+              "to": "Suspended",
+              "label": "Suspended"
+            },
+            {
+              "kind": "any",
+              "to": "On Hold",
+              "label": "On Hold"
+            },
+            {
+              "kind": "edge",
+              "from": [
+                "On Hold"
+              ],
+              "to": "Internal SME review",
+              "label": "SME Review"
+            },
+            {
+              "kind": "edge",
+              "from": [
+                "On Hold"
+              ],
+              "to": "In Review",
+              "label": "ID Review"
+            },
+            {
+              "kind": "edge",
+              "from": [
+                "On Hold"
+              ],
+              "to": "Corrections",
+              "label": "VD Corrections"
+            },
+            {
+              "kind": "edge",
+              "from": [
+                "Quality review"
+              ],
+              "to": "Internal SME review",
+              "label": "SME Review"
+            },
+            {
+              "kind": "edge",
+              "from": [
+                "In Review"
+              ],
+              "to": "Corrections",
+              "label": "VD Corrections"
+            },
+            {
+              "kind": "edge",
+              "from": [
+                "Internal SME review"
+              ],
+              "to": "In Review",
+              "label": "ID Review"
+            },
+            {
+              "kind": "edge",
+              "from": [
+                "To Do"
+              ],
+              "to": "Quality review",
+              "label": "QA Review"
+            },
+            {
+              "kind": "edge",
+              "from": [
+                "Corrections"
+              ],
+              "to": "Done",
+              "label": "Completion"
+            },
+            {
+              "kind": "edge",
+              "from": [
+                "Suspended"
+              ],
+              "to": "To Do",
+              "label": "Reopen"
+            },
+            {
+              "kind": "edge",
+              "from": [
+                "In Review"
+              ],
+              "to": "Quality review",
+              "label": "QA Review"
+            },
+            {
+              "kind": "edge",
+              "from": [
+                "On Hold"
+              ],
+              "to": "Quality review",
+              "label": "QA Review"
+            }
+          ]
+        },
+        {
+          "id": "topic-corrections",
+          "name": "Topic Corrections",
+          "example": null,
+          "blurb": "Anything the Instructional Designer wants changed after review. Created alongside Articulate Review.",
+          "type": "CDLC: Topic Corrections",
+          "workflow": "CDLC: Corrections",
+          "statuses": [
+            "In Review",
+            "Assigned",
+            "Done",
+            "Rejected",
+            "On Hold",
+            "To Do",
+            "In Progress"
+          ],
+          "usage": {
+            "ever": 284,
+            "recent": 222
+          },
+          "transitions": [
+            {
+              "kind": "start",
+              "to": "To Do"
+            },
+            {
+              "kind": "any",
+              "to": "To Do",
+              "label": "To Do"
+            },
+            {
+              "kind": "edge",
+              "from": [
+                "Assigned"
+              ],
+              "to": "In Progress",
+              "label": "Work begun"
+            },
+            {
+              "kind": "edge",
+              "from": [
+                "To Do"
+              ],
+              "to": "Assigned",
+              "label": "Assign to team member"
+            },
+            {
+              "kind": "edge",
+              "from": [
+                "In Progress"
+              ],
+              "to": "In Review",
+              "label": "Sent for Review"
+            },
+            {
+              "kind": "edge",
+              "from": [
+                "In Review"
+              ],
+              "to": "Done",
+              "label": "Approved"
+            },
+            {
+              "kind": "edge",
+              "from": [
+                "To Do"
+              ],
+              "to": "On Hold",
+              "label": "Need more info"
+            },
+            {
+              "kind": "edge",
+              "from": [
+                "To Do"
+              ],
+              "to": "Rejected",
+              "label": "Rejected"
+            },
+            {
+              "kind": "edge",
+              "from": [
+                "On Hold"
+              ],
+              "to": "Rejected",
+              "label": "Rejected"
+            },
+            {
+              "kind": "edge",
+              "from": [
+                "On Hold"
+              ],
+              "to": "In Progress",
+              "label": "Work begun"
+            },
+            {
+              "kind": "edge",
+              "from": [
+                "In Review"
+              ],
+              "to": "In Progress",
+              "label": "Review Fail"
+            },
+            {
+              "kind": "edge",
+              "from": [
+                "In Progress"
+              ],
+              "to": "Rejected",
+              "label": "Task archived"
+            }
+          ]
+        },
+        {
+          "id": "topic-translations",
+          "name": "Topic Translations",
+          "example": null,
+          "blurb": "Spanish translation of the reviewed file. Created when Articulate Review is marked Done.",
+          "type": "CDLC: Topic Translations",
+          "workflow": "CDLC: Spanish Translations",
+          "statuses": [
+            "Assigned",
+            "Upload to AWS",
+            "In Review",
+            "Complete checklist",
+            "Done",
+            "In Translation",
+            "On Hold",
+            "To Do",
+            "Suspended"
+          ],
+          "usage": {
+            "ever": 389,
+            "recent": 266
+          },
+          "transitions": [
+            {
+              "kind": "start",
+              "to": "To Do"
+            },
+            {
+              "kind": "any",
+              "to": "On Hold",
+              "label": "On Hold"
+            },
+            {
+              "kind": "any",
+              "to": "Suspended",
+              "label": "Suspended"
+            },
+            {
+              "kind": "any",
+              "to": "To Do",
+              "label": "To Do"
+            },
+            {
+              "kind": "edge",
+              "from": [
+                "To Do"
+              ],
+              "to": "Assigned",
+              "label": "Assign to team member"
+            },
+            {
+              "kind": "edge",
+              "from": [
+                "Upload to AWS"
+              ],
+              "to": "Done",
+              "label": "Done"
+            },
+            {
+              "kind": "edge",
+              "from": [
+                "In Translation"
+              ],
+              "to": "Complete checklist",
+              "label": "Complete checklist"
+            },
+            {
+              "kind": "edge",
+              "from": [
+                "Complete checklist"
+              ],
+              "to": "In Review",
+              "label": "Sent for Review"
+            },
+            {
+              "kind": "edge",
+              "from": [
+                "In Review"
+              ],
+              "to": "Upload to AWS",
+              "label": "Approved"
+            },
+            {
+              "kind": "edge",
+              "from": [
+                "On Hold",
+                "Assigned"
+              ],
+              "to": "In Translation",
+              "label": "Work begun"
+            },
+            {
+              "kind": "edge",
+              "from": [
+                "In Review"
+              ],
+              "to": "In Translation",
+              "label": "Review Fail"
+            }
+          ]
+        },
+        {
+          "id": "topic-assessment",
+          "name": "Topic Assessment",
+          "example": "CDLC-9276",
+          "blurb": "The topic's assessment questions. Created when Articulate Review is marked Done.",
+          "type": "CDLC: Topic Assessment",
+          "workflow": "CDLC: Topic Assessment",
+          "statuses": [
+            "In Review",
+            "Complete checklist",
+            "Done",
+            "On Hold",
+            "To Do",
+            "Suspended",
+            "In Progress"
+          ],
+          "usage": {
+            "ever": 469,
+            "recent": 312
+          },
+          "transitions": [
+            {
+              "kind": "start",
+              "to": "To Do"
+            },
+            {
+              "kind": "any",
+              "to": "To Do",
+              "label": "To Do"
+            },
+            {
+              "kind": "any",
+              "to": "Suspended",
+              "label": "Suspended"
+            },
+            {
+              "kind": "any",
+              "to": "On Hold",
+              "label": "On Hold"
+            },
+            {
+              "kind": "edge",
+              "from": [
+                "To Do"
+              ],
+              "to": "In Progress",
+              "label": "Work begun"
+            },
+            {
+              "kind": "edge",
+              "from": [
+                "In Review"
+              ],
+              "to": "In Progress",
+              "label": "Corrections"
+            },
+            {
+              "kind": "edge",
+              "from": [
+                "Complete checklist"
+              ],
+              "to": "In Review",
+              "label": "SME Review"
+            },
+            {
+              "kind": "edge",
+              "from": [
+                "In Progress"
+              ],
+              "to": "Complete checklist",
+              "label": "Checklist"
+            },
+            {
+              "kind": "edge",
+              "from": [
+                "In Review"
+              ],
+              "to": "Done",
+              "label": "Done"
             }
           ]
         }
