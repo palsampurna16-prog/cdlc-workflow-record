@@ -253,6 +253,8 @@
   .box.aside { background:var(--c-surface); border-color:var(--c-border-strong);
                border-style:dashed; color:var(--c-text-subtle); font-weight:500; }
   .flow2 .arrow { color:var(--c-text-subtlest); }
+  .wf-example { margin-left:var(--space-400); font-size:12px; color:var(--c-text-subtlest);
+                white-space:nowrap; }
   .aside-row { display:flex; align-items:center; flex-wrap:wrap; gap:var(--space-100);
                margin-top:var(--space-150); padding-top:var(--space-150);
                border-top:1px solid var(--c-border); }
@@ -362,7 +364,7 @@ const jiraLink = k =>
    off that line — dead ends, and statuses reachable from anywhere — is set apart, so
    the main line stays readable. Colour follows position: start grey, middle blue,
    final green. */
-function workflowGraph(tr) {
+function workflowGraph(tr, example) {
   if (!tr || !tr.length) return "";
   const start = (tr.find(t => t.kind === "start") || {}).to;
   const edges = tr.filter(t => t.kind === "edge");
@@ -394,6 +396,7 @@ function workflowGraph(tr) {
   return `<div class="flow2">` +
     main.map((s, i) => (i ? `<span class="arrow">&rarr;</span>` : "") +
       `<span class="box ${tone(s)}">${esc(s)}</span>`).join("") +
+    (example ? `<span class="wf-example">Live example: ${jiraLink(example)}</span>` : "") +
     (aside.length
       ? `<div class="aside-row" style="flex-basis:100%">
            <span class="aside-k">Also</span>` +
@@ -639,10 +642,7 @@ function viewStage(key, id) {
      ${facts(s)}
 
      <h2>Its workflow</h2>
-     ${workflowGraph(s.transitions)}
-     <p class="example">All ${s.statuses.length} statuses:
-        ${s.statuses.map(x=>esc(x)).join(" &middot; ")}.
-        ${s.example ? "Live example: "+jiraLink(s.example)+"." : ""}</p>` +
+     ${workflowGraph(s.transitions, s.example)}` +
 
     (s.subtasks.length
       ? `<h2>Subtasks beneath it</h2>
@@ -674,10 +674,7 @@ function viewSubtask(key, stageId, subId) {
      </div>` +
     facts(t, t.blurb) +
     `<h2>Its workflow</h2>
-     ${workflowGraph(t.transitions)}
-     <p class="example">All ${t.statuses.length} statuses:
-        ${t.statuses.map(x=>esc(x)).join(" &middot; ")}.
-        ${t.example ? "Live example: "+jiraLink(t.example)+"." : ""}</p>
+     ${workflowGraph(t.transitions, t.example)}
      <div class="terminal">This is the bottom of the tree. Jira sub-tasks cannot have
         children of their own, so nothing hangs beneath this.</div>`;
 
