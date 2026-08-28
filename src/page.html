@@ -363,16 +363,21 @@ function workflowGraph(tr) {
   `</div>`;
 }
 
-function facts(o, extra) {
-  return `<dl class="facts">` +
-     (extra ? `<div class="fact"><dt>Created</dt><dd style="font-weight:400">${esc(extra)}</dd></div>` : "") + `
-     <div class="fact"><dt>Work type</dt><dd>${esc(o.type)}</dd></div>
-     <div class="fact"><dt>Workflow</dt><dd>${esc(o.workflow)}</dd></div>
-     <div class="fact"><dt>Tickets ever</dt><dd>${o.usage ? o.usage.ever.toLocaleString() : "&mdash;"}</dd></div>
-     <div class="fact"><dt>Last 12 months</dt><dd>${o.usage ? o.usage.recent.toLocaleString() : "&mdash;"}</dd></div>
-   </dl>`;
-}
+/* Work type and workflow usually carry the same name, differing only by a
+   "(sub-task)" suffix or capitalisation. Showing both every time is noise, so the
+   workflow appears only where it is genuinely a different thing — Course: Specs
+   running on CDLC: Task/Subtask, Course Metadata on SGP: Task, and so on. */
+const norm = s => String(s).toLowerCase()
+  .replace(/\(sub-?task\)/g, "").replace(/^cdlc:\s*/, "").replace(/[^a-z0-9]+/g, " ").trim();
 
+function facts(o, extra) {
+  const showWf = o.workflow && norm(o.workflow) !== norm(o.type);
+  return `<dl class="facts">` +
+     (extra ? `<div class="fact"><dt>Created</dt><dd style="font-weight:400">${esc(extra)}</dd></div>` : "") +
+     `<div class="fact"><dt>Work type</dt><dd>${esc(o.type)}</dd></div>` +
+     (showWf ? `<div class="fact"><dt>Runs on workflow</dt><dd>${esc(o.workflow)}</dd></div>` : "") +
+   `</dl>`;
+}
 
 /* ---------- change history ---------- */
 const CHANGES = /*__CHANGES__*/[]/*__ENDC__*/;
