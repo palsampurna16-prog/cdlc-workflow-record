@@ -1,7 +1,6 @@
 {
   "generated": "2026-09-01",
   "SGP": {
-    "note": "Read off the create screen for each of the three work types on 1 September 2026. Twenty-eight fields across the space. Eighteen of them appear on all three types; the other ten appear on some and not others, and where that matters it is called out.",
     "groups": [
       [
         "Every ticket has these",
@@ -13,12 +12,12 @@
           ],
           [
             "Issue Type",
-            "Epic, Task or Sub-task. Nothing here is created automatically, so whoever opens the ticket picks it.",
+            "Epic, Task or Sub-task.",
             "required"
           ],
           [
             "Summary",
-            "The one-line title. In SGP this is doing a lot of work, because there is no other field that says what the ticket is.",
+            "The one-line title.",
             "required"
           ],
           [
@@ -33,8 +32,8 @@
         [
           [
             "Team",
-            "Content, Business, Product, QA, Innovation, Marketing or Community. Required on the Epic and the Task, and it defaults to Business Team, so check it. The Sub-task form does not ask for it, yet every Sub-task has a value, so something else is filling it in.",
-            "required"
+            "Content, Business, Product, QA, Innovation, Marketing or Community. Defaults to Business Team.",
+            "required: Epic, Task"
           ]
         ]
       ],
@@ -43,7 +42,7 @@
         [
           [
             "Assignee",
-            "One person. The one to change if the ticket is stuck.",
+            "One person.",
             ""
           ],
           [
@@ -63,7 +62,7 @@
           ],
           [
             "Digitization Resource",
-            "A fixed list of named people rather than a user picker, so it has to be edited in Jira settings when the team changes.",
+            "A fixed list of named people, not a user picker.",
             ""
           ]
         ]
@@ -73,13 +72,13 @@
         [
           [
             "Description",
-            "The detail. Optional on every type, and often empty.",
+            "The detail.",
             ""
           ],
           [
             "Component (Software)",
-            "Worker side (App), Company side (Web), Moodle, Plugin, Data, Environment, Course Content. On the Epic and the Task only.",
-            ""
+            "Worker side (App), Company side (Web), Moodle, Plugin, Data, Environment, Course Content.",
+            "Epic, Task only"
           ],
           [
             "Software/ Platform",
@@ -88,8 +87,8 @@
           ],
           [
             "Customer Details",
-            "Free text. On the Task only.",
-            ""
+            "Free text.",
+            "Task only"
           ],
           [
             "Labels",
@@ -104,42 +103,42 @@
         ]
       ],
       [
-        "Where it sits in the tree",
+        "Where it sits",
         [
           [
             "Parent",
-            "The ticket above this one. Required on the Sub-task, optional on the Task. That is why 5,960 of the 9,107 Tasks in SGP sit under no Epic at all.",
-            ""
+            "The ticket above this one.",
+            "required: Sub-task"
           ],
           [
             "Epic Link",
-            "The older way of pointing at an Epic, superseded by Parent but still on the form for the Task and the Sub-task.",
+            "The older way of pointing at an Epic, superseded by Parent.",
             ""
           ],
           [
             "Epic Name",
-            "A short name for the Epic, separate from its Summary. On the Epic only.",
-            ""
+            "A short name separate from the Summary.",
+            "Epic only"
           ],
           [
             "Linked Issues",
-            "Only when someone links two tickets by hand. On the Sub-task only.",
-            ""
+            "Set by hand.",
+            "Sub-task only"
           ],
           [
             "Components",
-            "Jira's own components list, which is empty for this project. On the Sub-task only.",
-            ""
+            "Empty for this project.",
+            "Sub-task only"
           ],
           [
             "Fix versions",
-            "Empty for this project. On the Sub-task only.",
-            ""
+            "Empty for this project.",
+            "Sub-task only"
           ],
           [
             "Sprint",
-            "Jira's sprint field. It is on the Sub-task form only, and nothing in the space sets it.",
-            ""
+            "Nothing in the space sets it.",
+            "Sub-task only"
           ]
         ]
       ],
@@ -158,17 +157,17 @@
           ],
           [
             "Target end",
-            "A second date field alongside Due date. Two fields for the same idea.",
+            "A second date field alongside Due date.",
             ""
           ],
           [
             "Priority",
-            "Critical, High, Medium, Low, Lowest. Defaults to Low, so a Low priority usually means nobody set one.",
+            "Critical, High, Medium, Low, Lowest. Defaults to Low.",
             ""
           ],
           [
             "Security Level",
-            "All users, or Managers - Content team. The second one hides the ticket from everyone outside that group.",
+            "All users, or Managers - Content team.",
             ""
           ]
         ]
@@ -176,7 +175,6 @@
     ]
   },
   "CIP": {
-    "note": "Read off the create screen for each of the three work types on 1 September 2026. The Epic carries 24 fields and the Task 25. The Sub-task carries 17 of them, and only Parent, Project and Summary are required on it.",
     "groups": [
       [
         "Every ticket has these",
@@ -203,12 +201,12 @@
         [
           [
             "Type",
-            "MVP, Feedback Action Items, or Process Improvements. Required on the Epic and the Task. Thirty-three tickets were created before it became required and still have nothing in it.",
-            "required"
+            "MVP, Feedback Action Items, or Process Improvements.",
+            "required: Epic, Task"
           ],
           [
             "Impact On",
-            "Learner, Compliance, Brand, or Software Changes. Who or what gets better if this is done.",
+            "Learner, Compliance, Brand, or Software Changes.",
             ""
           ]
         ]
@@ -218,17 +216,17 @@
         [
           [
             "Source",
-            "Where the suggestion arrived from. The form pre-fills the prompt \"NPS/Stakeholder Feedback/Survey/Other - Specify Others\" as a reminder of the options. Required on the Task, optional on the Epic.",
-            "required"
+            "Where the suggestion arrived from: NPS, stakeholder feedback, a survey, or other.",
+            "required: Task"
           ],
           [
             "Input Owner",
-            "The person whose input this is. Required on the Task, optional on the Epic.",
-            "required"
+            "The person whose input this is.",
+            "required: Task"
           ],
           [
             "Evidence Link",
-            "A link to the survey, the ticket or the recording the idea came from.",
+            "A link to the survey, ticket or recording it came from.",
             ""
           ],
           [
@@ -243,12 +241,12 @@
         [
           [
             "Action to be Taken",
-            "The plan. Required on the Task, optional on the Epic.",
-            "required"
+            "The plan.",
+            "required: Task"
           ],
           [
             "Action Taken",
-            "What was actually done. Filled in later.",
+            "What was actually done.",
             ""
           ],
           [
@@ -258,7 +256,7 @@
           ],
           [
             "Stakeholder Feedback",
-            "What stakeholders said when the small version was shown to them. There are two separate fields with this name, one on the Epic and a different one on the Task, so a search for one will not find the other.",
+            "What stakeholders said when the small version was shown to them.",
             ""
           ],
           [
@@ -269,16 +267,16 @@
         ]
       ],
       [
-        "Where it sits, and attachments",
+        "Where it sits",
         [
           [
             "Parent",
-            "The ticket above this one. Required on the Sub-task.",
-            ""
+            "The ticket above this one.",
+            "required: Sub-task"
           ],
           [
             "Linked Issues",
-            "Only when someone links two tickets by hand.",
+            "Set by hand.",
             ""
           ],
           [
@@ -308,18 +306,18 @@
           ],
           [
             "MVP Release Date",
-            "When the small version went out. Only meaningful once the idea reaches Ready.",
+            "When the small version went out.",
             ""
           ],
           [
             "Due date",
-            "Jira's own due date, alongside Target End Date. Two fields for the same idea.",
+            "Jira's own due date, alongside Target End Date.",
             ""
           ]
         ]
       ],
       [
-        "Jira's own plumbing",
+        "Jira's plumbing",
         [
           [
             "Rank",
@@ -328,12 +326,12 @@
           ],
           [
             "Development",
-            "Filled in by Jira if code is linked. Nothing links code to CIP.",
+            "Filled in by Jira if code is linked.",
             ""
           ],
           [
             "Design",
-            "Filled in by Jira if a design tool is linked. Nothing is linked.",
+            "Filled in by Jira if a design tool is linked.",
             ""
           ]
         ]

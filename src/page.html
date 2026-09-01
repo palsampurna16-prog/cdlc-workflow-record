@@ -82,7 +82,7 @@
   .card-meta { display:flex; margin-top:auto; align-items:center; gap:var(--space-100);
                padding-top:var(--space-150); border-top:1px solid var(--c-border);
                font-size:12px; color:var(--c-text-subtle); }
-  .lozenge { display:inline-block; padding:0 var(--space-050); font-size:11px; font-weight:700;
+  .lozenge { display:inline-block; white-space:nowrap; padding:0 var(--space-050); font-size:11px; font-weight:700;
              text-transform:uppercase; letter-spacing:0.06em; line-height:16px;
              border-radius:var(--radius-sm); background:var(--c-surface-press); color:var(--c-text-subtle); }
   .count { font-variant-numeric:tabular-nums; }
@@ -282,20 +282,6 @@
       color:var(--c-text-inverse); }
   .filters .n, .ftoolbar .n { font-weight:400; opacity:.75; font-variant-numeric:tabular-nums; }
   .empty-filter { padding:var(--space-400); text-align:center; color:var(--c-text-subtle); }
-
-  /* how a space divides: label, proportional bar, count */
-  .split { display:flex; flex-direction:column; gap:var(--space-100);
-           padding:var(--space-200); background:var(--c-surface-sunken);
-           border:1px solid var(--c-border); border-radius:var(--radius-lg); }
-  .split-row { display:flex; align-items:center; gap:var(--space-150); }
-  .split-label { flex:0 0 168px; font-size:13px; }
-  .split-bar { flex:1; height:10px; background:var(--c-surface); border-radius:5px;
-               border:1px solid var(--c-border); overflow:hidden; }
-  .split-bar i { display:block; height:100%; background:var(--sc, var(--c-brand)); border-radius:5px; }
-  .split-n { flex:0 0 60px; text-align:right; font-size:12px; font-variant-numeric:tabular-nums;
-             color:var(--c-text-subtle); }
-  .fgroup.plain { --rc:var(--c-border-strong); }
-
   /* fields filter bar */
   .ftoolbar { display:flex; flex-wrap:wrap; align-items:center; gap:var(--space-100) var(--space-150);
       margin-top:var(--space-300); padding:var(--space-150) var(--space-200);
@@ -349,7 +335,6 @@
     .req { display:none; }
     .stages:not(.vertical) .seq-arrow { display:none; }
     .frow { flex-direction:column; gap:var(--space-050); }
-    .split-label { flex:0 0 110px; }
     .frow .fname { flex:none; }
     .fdiv { display:none; }   /* would strand at the end of a wrapped row */
   }
@@ -862,27 +847,11 @@ function viewSubtask(key, stageId, subId) {
 }
 
 /* ---------- SGP and CIP ---------- */
+/* Both spaces use only Epic, Task and Sub-task, so there is no tree to draw.
+   These pages follow the CDLC pages: name, tabs, one line of lede, then the
+   thing itself. No summary boxes, no counts, no prose explaining the diagram. */
 const spaceData = key => (SPACES && SPACES.spaces && SPACES.spaces[key]) || null;
-
-function spaceHead(key, sp) {
-  const p = PROJECTS.find(x => x.key === key);
-  return `<div class="space-head">${avatar(p,"lg")}
-       <div><h1>${esc(p.name)}</h1>
-         <p class="lede">${esc(p.key)} &middot; ${esc(p.style)} ${p.type.toLowerCase()} project
-            &middot; ${(sp && sp.totals ? sp.totals.issues : p.issues).toLocaleString()} tickets</p></div></div>`;
-}
-
-/* A row of bars showing how the space divides. Widths are relative to the
-   largest slice, so the shape reads at a glance rather than the exact number. */
-function splitChart(rows, tone) {
-  const top = Math.max(...rows.map(r => r[1])) || 1;
-  return `<div class="split" style="--sc:var(--c-${tone || "blue"})">` + rows.map(([label, n]) =>
-    `<div class="split-row">
-       <span class="split-label">${esc(label)}</span>
-       <span class="split-bar"><i style="width:${Math.max(1.5, n / top * 100)}%"></i></span>
-       <span class="split-n">${n.toLocaleString()}</span>
-     </div>`).join("") + `</div>`;
-}
+const spaceName = key => (PROJECTS.find(x => x.key === key) || {}).name || key;
 
 function viewSpaceWork(key) {
   const sp = spaceData(key);
@@ -891,13 +860,9 @@ function viewSpaceWork(key) {
   view.innerHTML =
     crumbs([{label:"Projects", to:""},{label:key}]) +
     `<div class="col">
-       ${spaceHead(key, sp)}
+       <div class="page-head"><h1>${esc(spaceName(key))}</h1></div>
        ${tabs("epic", key)}
        <p class="lede">${esc(sp.lede)}</p>
-       <p class="lede">${esc(sp.blurb)}</p>
-
-       <h2>How the work is shaped</h2>
-       <div class="terminal">${esc(sp.shape)}</div>
 
        <h2>The three work types</h2>
        <p class="lede" style="margin-bottom:var(--space-200)">Open any one to see its own workflow.</p>
@@ -905,22 +870,10 @@ function viewSpaceWork(key) {
          sp.worktypes.map((w,i) =>
            (i ? `<span class="seq-arrow">&darr;</span>` : "") +
            `<button class="stage" data-t="${esc(w.id)}">
-              <span class="stage-head">
-                <span class="stage-n">${esc(w.level)}</span>
-                <span class="stage-name">${esc(w.name)}</span>
-              </span>
-              <span class="stage-row">
-                <span class="stage-type">${esc(w.blurb)}</span>
-                <span class="stage-type">${w.usage.ever.toLocaleString()} tickets</span>
-              </span>
+              <span class="stage-head"><span class="stage-name">${esc(w.name)}</span></span>
+              <span class="stage-row"><span class="stage-type">${esc(w.blurb)}</span></span>
             </button>`).join("") +
     `  </div>
-
-       <h2>${esc(sp.splitTitle)}</h2>
-       ${splitChart(sp.split, (PROJECTS.find(x=>x.key===key)||{}).tone)}
-       <p class="caption">${esc(sp.splitNote)}</p>
-
-       <div class="note"><strong>Where this comes from</strong>${esc(sp.evidence)}</div>
      </div>`;
 
   wireCrumbs(); wireTabs();
@@ -938,18 +891,16 @@ function viewSpaceType(key, id) {
     `<div class="page-head">
        <p class="eyebrow">Work type in ${esc(key)}</p>
        <h1>${esc(w.name)}</h1>
-       <p class="lede">${esc(w.blurb)}</p>
      </div>
 
      <dl class="facts">
        <div class="fact"><dt>Level</dt><dd>${esc(w.level)}</dd></div>
        <div class="fact"><dt>Runs on</dt><dd>${esc(w.workflow)}</dd></div>
-       <div class="fact"><dt>Tickets</dt><dd style="font-weight:400">${w.usage.ever.toLocaleString()} ever, ${w.usage.recent.toLocaleString()} in the last year</dd></div>
      </dl>
 
      <h2>Its workflow</h2>
-     ${workflowGraph(w.transitions, w.example, w.main)}
-     ${w.note ? `<div class="note"><strong>Worth knowing</strong>${esc(w.note)}</div>` : ""}` +
+     ${workflowGraph(w.transitions, w.example, w.main)}` +
+     (w.caveat ? `<p class="caption">${esc(w.caveat)}</p>` : "") +
      (w.level === "Sub-task"
        ? `<div class="terminal">This is the bottom of the tree. Jira sub-tasks cannot have
             children of their own, so nothing hangs beneath this.</div>`
@@ -958,19 +909,40 @@ function viewSpaceType(key, id) {
   wireCrumbs();
 }
 
+/* Fields, filtered by what the field is for. Same chip pattern as the CDLC
+   Fields tab, with the group standing in for the role. */
+const GROUP_ACCENT = ["#626F86","#6E5DC6","#1868DB","#227D9B","#AE4787","#1F845A","#974F0C"];
+let fieldGroupSel = new Set();
+
 function viewSpaceFields(key) {
   const sp = spaceData(key), f = SPACE_FIELDS && SPACE_FIELDS[key];
   if (!sp || !f) return viewSpaceEmpty(key);
 
+  const titles = f.groups.map(g => g[0]);
+  const pick = t => !fieldGroupSel.size || fieldGroupSel.has(t);
+  const shown = f.groups.filter(g => pick(g[0])).reduce((n,g) => n + g[1].length, 0);
+
+  const chip = (val,label,n,on,c) =>
+    `<button data-g="${esc(val)}" aria-pressed="${on}"${c ? ` style="--chipc:${c}"` : ""}>` +
+    (c ? `<span class="rdot"></span>` : "") +
+    `${esc(label)} <span class="n">${n}</span></button>`;
+
   view.innerHTML =
     crumbs([{label:"Projects", to:""},{label:key, to:key},{label:"Fields"}]) +
     `<div class="col">
-       ${spaceHead(key, sp)}
+       <div class="page-head"><h1>${esc(spaceName(key))}</h1></div>
        ${tabs("fields", key)}
-       <p class="lede">What each ticket in ${esc(key)} asks for.</p>
-       <div class="note"><strong>Where this comes from</strong>${esc(f.note)}</div>` +
-       f.groups.map(([title, rows]) =>
-         `<section class="fgroup plain">
+       <p class="lede">Pick what you are after to narrow the list.</p>
+       <div class="ftoolbar">
+         <span class="ftoolbar-label">Filter by</span>
+         <div class="filters">` +
+           chip("", "All fields", shown, !fieldGroupSel.size, "") +
+           titles.map((t,i) => chip(t, t, f.groups[i][1].length, fieldGroupSel.has(t),
+                                    GROUP_ACCENT[i % GROUP_ACCENT.length])).join("") +
+        `</div>
+      </div>` +
+       f.groups.map(([title, rows], i) => !pick(title) ? "" :
+         `<section class="fgroup" style="--rc:${GROUP_ACCENT[i % GROUP_ACCENT.length]}">
             <h3>${esc(title)} <span class="lozenge">${rows.length}</span></h3>
             <div class="rows">` + rows.map(([name, note, tag]) =>
               `<div class="frow">
@@ -982,6 +954,13 @@ function viewSpaceFields(key) {
     `</div>`;
 
   wireCrumbs(); wireTabs();
+  view.querySelectorAll('.filters button[data-g]').forEach(el =>
+    el.addEventListener("click", () => {
+      const g = el.dataset.g;
+      if (!g) fieldGroupSel.clear();
+      else fieldGroupSel.has(g) ? fieldGroupSel.delete(g) : fieldGroupSel.add(g);
+      viewSpaceFields(key); window.scrollTo({ top: 0 });
+    }));
 }
 
 function viewSpaceHistory(key) {
@@ -992,16 +971,15 @@ function viewSpaceHistory(key) {
   view.innerHTML =
     crumbs([{label:"Projects", to:""},{label:key, to:key},{label:"Change history"}]) +
     `<div class="col">
-       ${spaceHead(key, sp)}
-       ${tabs("history", key)}
-       <p class="lede">Changes made to how ${esc(key)} itself works, as opposed to the work inside it.</p>` +
+       <div class="page-head"><h1>${esc(spaceName(key))}</h1></div>
+       ${tabs("history", key)}` +
        (rows.length
          ? `<div class="hist">` + rows.map(c =>
              `<div class="row"><span class="row-name">${esc(c.title)}</span>
                 <span class="row-type">${esc(c.date)}</span>
                 <span class="row-type">${jiraLink(c.key)}</span></div>`).join("") + `</div>`
          : `<div class="empty"><h2>Nothing logged yet</h2>
-              <p>${esc(sp.historyNote)}</p></div>`) +
+              <p>No change to ${esc(key)} itself has been recorded. Use Request a change to log one.</p></div>`) +
     `</div>`;
 
   wireCrumbs(); wireTabs();

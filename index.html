@@ -94,7 +94,7 @@
   .card-meta { display:flex; margin-top:auto; align-items:center; gap:var(--space-100);
                padding-top:var(--space-150); border-top:1px solid var(--c-border);
                font-size:12px; color:var(--c-text-subtle); }
-  .lozenge { display:inline-block; padding:0 var(--space-050); font-size:11px; font-weight:700;
+  .lozenge { display:inline-block; white-space:nowrap; padding:0 var(--space-050); font-size:11px; font-weight:700;
              text-transform:uppercase; letter-spacing:0.06em; line-height:16px;
              border-radius:var(--radius-sm); background:var(--c-surface-press); color:var(--c-text-subtle); }
   .count { font-variant-numeric:tabular-nums; }
@@ -294,20 +294,6 @@
       color:var(--c-text-inverse); }
   .filters .n, .ftoolbar .n { font-weight:400; opacity:.75; font-variant-numeric:tabular-nums; }
   .empty-filter { padding:var(--space-400); text-align:center; color:var(--c-text-subtle); }
-
-  /* how a space divides: label, proportional bar, count */
-  .split { display:flex; flex-direction:column; gap:var(--space-100);
-           padding:var(--space-200); background:var(--c-surface-sunken);
-           border:1px solid var(--c-border); border-radius:var(--radius-lg); }
-  .split-row { display:flex; align-items:center; gap:var(--space-150); }
-  .split-label { flex:0 0 168px; font-size:13px; }
-  .split-bar { flex:1; height:10px; background:var(--c-surface); border-radius:5px;
-               border:1px solid var(--c-border); overflow:hidden; }
-  .split-bar i { display:block; height:100%; background:var(--sc, var(--c-brand)); border-radius:5px; }
-  .split-n { flex:0 0 60px; text-align:right; font-size:12px; font-variant-numeric:tabular-nums;
-             color:var(--c-text-subtle); }
-  .fgroup.plain { --rc:var(--c-border-strong); }
-
   /* fields filter bar */
   .ftoolbar { display:flex; flex-wrap:wrap; align-items:center; gap:var(--space-100) var(--space-150);
       margin-top:var(--space-300); padding:var(--space-150) var(--space-200);
@@ -361,7 +347,6 @@
     .req { display:none; }
     .stages:not(.vertical) .seq-arrow { display:none; }
     .frow { flex-direction:column; gap:var(--space-050); }
-    .split-label { flex:0 0 110px; }
     .frow .fname { flex:none; }
     .fdiv { display:none; }   /* would strand at the end of a wrapped row */
   }
@@ -409,8 +394,8 @@ const CDLC = /*__CDLC_EPIC__*/{"generated":"2026-08-28","evidence":"CDLC-8592 (i
 
 /* SGP and CIP, the two spaces that are not a course build. Generated from
    data/spaces.json and data/space-fields.json, injected by build.mjs. */
-const SPACES = /*__SPACES__*/{"generated":"2026-09-01","spaces":{"SGP":{"lede":"Everything that is not a course build.","blurb":"SGP is the catch-all. If a piece of work does not belong to a course being built in CDLC, an improvement idea in CIP, or a quiz problem in QFT, it goes here.","evidence":"Jira's own work type and field configuration for SGP, the workflow transitions read back from live tickets in every status in use, and ticket counts taken on 1 September 2026.","shape":"Three levels, and no fixed template. An Epic is one initiative someone has taken on, Tasks hang beneath it, Sub-tasks beneath those. Nothing is created automatically: every ticket here is made by a person. And the tree is loose. Parent is optional on the Task, so 5,960 of the 9,107 Tasks sit under no Epic at all.","totals":{"issues":10897,"epics":277},"splitTitle":"Which team the work belongs to","splitNote":"Team is required on the Epic and the Task. The Sub-task form does not ask for it, yet not one ticket in SGP is missing a value, so this is the one split that covers the whole space.","split":[["Content Team",5140],["Business Team",2848],["Product Team",1722],["QA Task",904],["Innovation Team",254],["Marketing Team",24],["Community Team",5]],"worktypes":[{"id":"epic","name":"Epic","level":"Epic","workflow":"The Epic and Sub-task workflow","blurb":"One initiative. A project, a piece of research, a tool being built, a course review, an onboarding.","note":"Epics here are one-off. There is no standard set of children, and no automation creates them. Two thirds of the 277 are already Done or Discarded.","example":"SGP-11342","usage":{"ever":277,"recent":149},"statuses":["To Do","In Progress","In Review","Done","Reproduced","On Hold","Discard"],"transitions":[{"kind":"start","to":"To Do"},{"kind":"any","to":"To Do","label":"To Do"},{"kind":"any","to":"On Hold","label":"On Hold"},{"kind":"any","to":"Discard","label":"Discard"},{"kind":"any","to":"Reproduced","label":"Reproduced"},{"kind":"edge","from":["To Do"],"to":"In Progress","label":"Work begun"},{"kind":"edge","from":["In Progress"],"to":"In Review","label":"Sent for Review"},{"kind":"edge","from":["In Progress","In Review"],"to":"Reproduced","label":"Reproduced / Isolated"},{"kind":"edge","from":["In Review"],"to":"Done","label":"Approved"},{"kind":"edge","from":["In Review"],"to":"In Progress","label":"Review Fail"},{"kind":"edge","from":["Reproduced"],"to":"Done","label":"Fixed"}],"main":["To Do","In Progress","In Review","Done"]},{"id":"task","name":"Task","level":"Task","workflow":"The Task workflow","blurb":"The workhorse. Nine in every ten tickets in SGP are Tasks.","note":"The Task runs on a different workflow from the Epic and the Sub-task. It has one extra status, Assigned, which sits between To Do and In Progress, and it has no Reproduced shortcut.","example":"SGP-11345","usage":{"ever":9107,"recent":6096},"statuses":["To Do","Assigned","In Progress","In Review","Done","Reproduced","On Hold","Discard"],"transitions":[{"kind":"start","to":"To Do"},{"kind":"any","to":"To Do","label":"To Do"},{"kind":"any","to":"On Hold","label":"On Hold"},{"kind":"any","to":"Discard","label":"Discard"},{"kind":"edge","from":["To Do"],"to":"Assigned","label":"Assign to team member"},{"kind":"edge","from":["Assigned","On Hold"],"to":"In Progress","label":"Work begun"},{"kind":"edge","from":["In Progress"],"to":"In Review","label":"Sent for Review"},{"kind":"edge","from":["In Progress"],"to":"Reproduced","label":"Reproduced / Isolated"},{"kind":"edge","from":["In Review"],"to":"Reproduced","label":"Reproduced"},{"kind":"edge","from":["In Review"],"to":"Done","label":"Approved"},{"kind":"edge","from":["In Review"],"to":"In Progress","label":"Review Fail"},{"kind":"edge","from":["Reproduced"],"to":"Done","label":"Fixed by Devs"}],"main":["To Do","Assigned","In Progress","In Review","Done"]},{"id":"subtask","name":"Sub-task","level":"Sub-task","workflow":"The Epic and Sub-task workflow","blurb":"A piece of a Task. This is the bottom of the tree.","note":"The Sub-task runs on the same workflow as the Epic, not the same one as its own parent Task. Jira cannot nest anything beneath a Sub-task.","example":"SGP-11305","usage":{"ever":1513,"recent":1398},"statuses":["To Do","In Progress","In Review","Done","Reproduced","On Hold","Discard"],"transitions":[{"kind":"start","to":"To Do"},{"kind":"any","to":"To Do","label":"To Do"},{"kind":"any","to":"On Hold","label":"On Hold"},{"kind":"any","to":"Discard","label":"Discard"},{"kind":"any","to":"Reproduced","label":"Reproduced"},{"kind":"edge","from":["To Do"],"to":"In Progress","label":"Work begun"},{"kind":"edge","from":["In Progress"],"to":"In Review","label":"Sent for Review"},{"kind":"edge","from":["In Progress","In Review"],"to":"Reproduced","label":"Reproduced / Isolated"},{"kind":"edge","from":["In Review"],"to":"Done","label":"Approved"},{"kind":"edge","from":["In Review"],"to":"In Progress","label":"Review Fail"},{"kind":"edge","from":["Reproduced"],"to":"Done","label":"Fixed"}],"main":["To Do","In Progress","In Review","Done"]}],"changes":[],"historyNote":"SGP has an epic called Changes in SGP Space, but only one ticket sits under it and it does not record what changed. Use Request a change at the top of the page to log one properly."},"CIP":{"lede":"One Epic is one idea for making a course better.","blurb":"CIP holds improvement ideas: things learners asked for, things the team spotted, things a survey turned up. An idea is proved out as a small version first, shown to stakeholders, and only then built for real.","evidence":"Jira's own work type and field configuration for CIP, the workflow transitions read back from live tickets in every status in use, and all 140 tickets read on 1 September 2026.","shape":"Three levels. The Epic is the idea. Tasks are the pieces of proving it out. Sub-tasks sit beneath a Task. Most ideas are still just the Epic: 56 of the 69 have no children at all, and nothing creates children automatically.","totals":{"issues":140,"epics":69},"splitTitle":"What kind of idea it is","splitNote":"Type is the field that sorts the space. It is required now, but 33 tickets were created before it became required and still have nothing in it.","split":[["MVP",53],["Feedback Action Items",28],["Process Improvements",26],["Not set",33]],"worktypes":[{"id":"epic","name":"Epic","level":"Epic","workflow":"The Epic and Task workflow","blurb":"One improvement idea, carried from first suggestion to shipped change.","note":"This is the only workflow across the four spaces whose statuses are named after the work itself: prove a small version, show it to stakeholders, then build it properly. Two Epics break that into five Tasks named Problem Specifics, Solution, Demos, Implementation and Measuring Success; the rest do not.","example":"CIP-155","usage":{"ever":69,"recent":69},"statuses":["To Do","In Progress","Stakeholder Feedback","Ready","Implementation in Progress","Done","Rejected","On Hold","Suspended"],"transitions":[{"kind":"start","to":"To Do"},{"kind":"any","to":"On Hold","label":"On Hold"},{"kind":"any","to":"Suspended","label":"Suspended"},{"kind":"edge","from":["To Do"],"to":"In Progress","label":"MVP Started"},{"kind":"edge","from":["In Progress"],"to":"Stakeholder Feedback","label":"Send for Review"},{"kind":"edge","from":["Stakeholder Feedback"],"to":"Ready","label":"MVP Complete"},{"kind":"edge","from":["Stakeholder Feedback"],"to":"In Progress","label":"Corrections"},{"kind":"edge","from":["Stakeholder Feedback"],"to":"Rejected","label":"Rejected"},{"kind":"edge","from":["Ready"],"to":"Implementation in Progress","label":"Implementation"},{"kind":"edge","from":["Implementation in Progress"],"to":"Done","label":"Completion"},{"kind":"edge","from":["On Hold"],"to":"To Do","label":"Start Over"}],"main":["To Do","In Progress","Stakeholder Feedback","Ready","Implementation in Progress","Done"]},{"id":"task","name":"Task","level":"Task","workflow":"The Epic and Task workflow","blurb":"A piece of proving an idea out. Named after what it produces, not after a stage.","note":"The Task runs on the same workflow as the Epic, so it can in principle reach Stakeholder Feedback and Ready. In practice no Task has ever gone past In Progress: all 58 sit in To Do, In Progress, Suspended or Done.","example":"CIP-158","usage":{"ever":58,"recent":58},"statuses":["To Do","In Progress","Stakeholder Feedback","Ready","Implementation in Progress","Done","Rejected","On Hold","Suspended"],"transitions":[{"kind":"start","to":"To Do"},{"kind":"any","to":"On Hold","label":"On Hold"},{"kind":"any","to":"Suspended","label":"Suspended"},{"kind":"edge","from":["To Do"],"to":"In Progress","label":"MVP Started"},{"kind":"edge","from":["In Progress"],"to":"Stakeholder Feedback","label":"Send for Review"},{"kind":"edge","from":["Stakeholder Feedback"],"to":"Ready","label":"MVP Complete"},{"kind":"edge","from":["Stakeholder Feedback"],"to":"In Progress","label":"Corrections"},{"kind":"edge","from":["Stakeholder Feedback"],"to":"Rejected","label":"Rejected"},{"kind":"edge","from":["Ready"],"to":"Implementation in Progress","label":"Implementation"},{"kind":"edge","from":["Implementation in Progress"],"to":"Done","label":"Completion"},{"kind":"edge","from":["On Hold"],"to":"To Do","label":"Start Over"}],"main":["To Do","In Progress","Stakeholder Feedback","Ready","Implementation in Progress","Done"]},{"id":"subtask","name":"Sub-task","level":"Sub-task","workflow":"The Sub-task workflow","blurb":"A piece of a Task. The bottom of the tree, and barely used: 13 tickets in all.","note":"Its first status is spelled To-Do with a hyphen, which is a different status from the To Do the Epic and Task start in. The two look alike on a board and sort apart in a filter. One caveat on the line above: every step here was read back from a live ticket except the last one. No Sub-task is sitting In Progress right now, so the step from In Progress to Done is the one part of this workflow that has not been confirmed against Jira directly.","example":"CIP-29","usage":{"ever":13,"recent":13},"statuses":["To-Do","In Progress","Done","On Hold","Suspended"],"transitions":[{"kind":"start","to":"To-Do"},{"kind":"any","to":"On Hold","label":"On Hold"},{"kind":"any","to":"Suspended","label":"Suspended"},{"kind":"edge","from":["To-Do"],"to":"In Progress","label":"Progress"},{"kind":"edge","from":["In Progress"],"to":"Done","label":"Done"}],"main":["To-Do","In Progress","Done"]}],"changes":[],"historyNote":"No ticket tracks a change to how CIP itself works. The space was set up in September 2025 and has run the same way since. Use Request a change at the top of the page to log one."}}}/*__ENDS__*/;
-const SPACE_FIELDS = /*__SPACEFIELDS__*/{"generated":"2026-09-01","SGP":{"note":"Read off the create screen for each of the three work types on 1 September 2026. Twenty-eight fields across the space. Eighteen of them appear on all three types; the other ten appear on some and not others, and where that matters it is called out.","groups":[["Every ticket has these",[["Project","Fixed when the ticket is created.","required"],["Issue Type","Epic, Task or Sub-task. Nothing here is created automatically, so whoever opens the ticket picks it.","required"],["Summary","The one-line title. In SGP this is doing a lot of work, because there is no other field that says what the ticket is.","required"],["Reporter","Whoever created the ticket.","required"]]],["Which team owns it",[["Team","Content, Business, Product, QA, Innovation, Marketing or Community. Required on the Epic and the Task, and it defaults to Business Team, so check it. The Sub-task form does not ask for it, yet every Sub-task has a value, so something else is filling it in.","required"]]],["Who is doing the work",[["Assignee","One person. The one to change if the ticket is stuck.",""],["Instructional Designer","Several people can be named.",""],["Visual Designer(s)","Several people can be named.",""],["Quality Specialists","Several people can be named.",""],["Digitization Resource","A fixed list of named people rather than a user picker, so it has to be edited in Jira settings when the team changes.",""]]],["What it is about",[["Description","The detail. Optional on every type, and often empty.",""],["Component (Software)","Worker side (App), Company side (Web), Moodle, Plugin, Data, Environment, Course Content. On the Epic and the Task only.",""],["Software/ Platform","Mobile App, or Web (Moodle, Custom Plugins or Blocks).",""],["Customer Details","Free text. On the Task only.",""],["Labels","Free text, no controlled list.",""],["Attachment","Files.",""]]],["Where it sits in the tree",[["Parent","The ticket above this one. Required on the Sub-task, optional on the Task. That is why 5,960 of the 9,107 Tasks in SGP sit under no Epic at all.",""],["Epic Link","The older way of pointing at an Epic, superseded by Parent but still on the form for the Task and the Sub-task.",""],["Epic Name","A short name for the Epic, separate from its Summary. On the Epic only.",""],["Linked Issues","Only when someone links two tickets by hand. On the Sub-task only.",""],["Components","Jira's own components list, which is empty for this project. On the Sub-task only.",""],["Fix versions","Empty for this project. On the Sub-task only.",""],["Sprint","Jira's sprint field. It is on the Sub-task form only, and nothing in the space sets it.",""]]],["Dates and handling",[["Start date","",""],["Due date","",""],["Target end","A second date field alongside Due date. Two fields for the same idea.",""],["Priority","Critical, High, Medium, Low, Lowest. Defaults to Low, so a Low priority usually means nobody set one.",""],["Security Level","All users, or Managers - Content team. The second one hides the ticket from everyone outside that group.",""]]]]},"CIP":{"note":"Read off the create screen for each of the three work types on 1 September 2026. The Epic carries 24 fields and the Task 25. The Sub-task carries 17 of them, and only Parent, Project and Summary are required on it.","groups":[["Every ticket has these",[["Project","Fixed when the ticket is created.","required"],["Issue Type","Epic, Task or Sub-task.","required"],["Summary","The one-line title.","required"]]],["What kind of idea it is",[["Type","MVP, Feedback Action Items, or Process Improvements. Required on the Epic and the Task. Thirty-three tickets were created before it became required and still have nothing in it.","required"],["Impact On","Learner, Compliance, Brand, or Software Changes. Who or what gets better if this is done.",""]]],["Where the idea came from",[["Source","Where the suggestion arrived from. The form pre-fills the prompt \"NPS/Stakeholder Feedback/Survey/Other - Specify Others\" as a reminder of the options. Required on the Task, optional on the Epic.","required"],["Input Owner","The person whose input this is. Required on the Task, optional on the Epic.","required"],["Evidence Link","A link to the survey, the ticket or the recording the idea came from.",""],["Applicable to Course/Asset","Which course or asset the idea is about.",""]]],["What is being done about it",[["Action to be Taken","The plan. Required on the Task, optional on the Epic.","required"],["Action Taken","What was actually done. Filled in later.",""],["Output Generated","What came out of it.",""],["Stakeholder Feedback","What stakeholders said when the small version was shown to them. There are two separate fields with this name, one on the Epic and a different one on the Task, so a search for one will not find the other.",""],["Description","The detail.",""]]],["Where it sits, and attachments",[["Parent","The ticket above this one. Required on the Sub-task.",""],["Linked Issues","Only when someone links two tickets by hand.",""],["Assignee","One person.",""],["Attachment","Files.",""]]],["Dates",[["Start date","",""],["Target End Date","When the idea is meant to be finished.",""],["MVP Release Date","When the small version went out. Only meaningful once the idea reaches Ready.",""],["Due date","Jira's own due date, alongside Target End Date. Two fields for the same idea.",""]]],["Jira's own plumbing",[["Rank","Where the ticket sits in a board's order.",""],["Development","Filled in by Jira if code is linked. Nothing links code to CIP.",""],["Design","Filled in by Jira if a design tool is linked. Nothing is linked.",""]]]]}}/*__ENDSF__*/;
+const SPACES = /*__SPACES__*/{"generated":"2026-09-01","spaces":{"SGP":{"lede":"Everything that is not a course build.","worktypes":[{"id":"epic","name":"Epic","level":"Epic","workflow":"The Epic and Sub-task workflow","blurb":"One initiative someone has taken on.","example":"SGP-11342","transitions":[{"kind":"start","to":"To Do"},{"kind":"any","to":"To Do","label":"To Do"},{"kind":"any","to":"On Hold","label":"On Hold"},{"kind":"any","to":"Discard","label":"Discard"},{"kind":"any","to":"Reproduced","label":"Reproduced"},{"kind":"edge","from":["To Do"],"to":"In Progress","label":"Work begun"},{"kind":"edge","from":["In Progress"],"to":"In Review","label":"Sent for Review"},{"kind":"edge","from":["In Progress","In Review"],"to":"Reproduced","label":"Reproduced / Isolated"},{"kind":"edge","from":["In Review"],"to":"Done","label":"Approved"},{"kind":"edge","from":["In Review"],"to":"In Progress","label":"Review Fail"},{"kind":"edge","from":["Reproduced"],"to":"Done","label":"Fixed"}],"main":["To Do","In Progress","In Review","Done"]},{"id":"task","name":"Task","level":"Task","workflow":"The Task workflow","blurb":"The workhorse. Most tickets in SGP are Tasks.","example":"SGP-11345","transitions":[{"kind":"start","to":"To Do"},{"kind":"any","to":"To Do","label":"To Do"},{"kind":"any","to":"On Hold","label":"On Hold"},{"kind":"any","to":"Discard","label":"Discard"},{"kind":"edge","from":["To Do"],"to":"Assigned","label":"Assign to team member"},{"kind":"edge","from":["Assigned","On Hold"],"to":"In Progress","label":"Work begun"},{"kind":"edge","from":["In Progress"],"to":"In Review","label":"Sent for Review"},{"kind":"edge","from":["In Progress"],"to":"Reproduced","label":"Reproduced / Isolated"},{"kind":"edge","from":["In Review"],"to":"Reproduced","label":"Reproduced"},{"kind":"edge","from":["In Review"],"to":"Done","label":"Approved"},{"kind":"edge","from":["In Review"],"to":"In Progress","label":"Review Fail"},{"kind":"edge","from":["Reproduced"],"to":"Done","label":"Fixed by Devs"}],"main":["To Do","Assigned","In Progress","In Review","Done"]},{"id":"subtask","name":"Sub-task","level":"Sub-task","workflow":"The Epic and Sub-task workflow","blurb":"A piece of a Task.","example":"SGP-11305","transitions":[{"kind":"start","to":"To Do"},{"kind":"any","to":"To Do","label":"To Do"},{"kind":"any","to":"On Hold","label":"On Hold"},{"kind":"any","to":"Discard","label":"Discard"},{"kind":"any","to":"Reproduced","label":"Reproduced"},{"kind":"edge","from":["To Do"],"to":"In Progress","label":"Work begun"},{"kind":"edge","from":["In Progress"],"to":"In Review","label":"Sent for Review"},{"kind":"edge","from":["In Progress","In Review"],"to":"Reproduced","label":"Reproduced / Isolated"},{"kind":"edge","from":["In Review"],"to":"Done","label":"Approved"},{"kind":"edge","from":["In Review"],"to":"In Progress","label":"Review Fail"},{"kind":"edge","from":["Reproduced"],"to":"Done","label":"Fixed"}],"main":["To Do","In Progress","In Review","Done"]}],"changes":[]},"CIP":{"lede":"One Epic is one idea for making a course better.","worktypes":[{"id":"epic","name":"Epic","level":"Epic","workflow":"The Epic and Task workflow","blurb":"One improvement idea, from first suggestion to shipped change.","example":"CIP-155","transitions":[{"kind":"start","to":"To Do"},{"kind":"any","to":"On Hold","label":"On Hold"},{"kind":"any","to":"Suspended","label":"Suspended"},{"kind":"edge","from":["To Do"],"to":"In Progress","label":"MVP Started"},{"kind":"edge","from":["In Progress"],"to":"Stakeholder Feedback","label":"Send for Review"},{"kind":"edge","from":["Stakeholder Feedback"],"to":"Ready","label":"MVP Complete"},{"kind":"edge","from":["Stakeholder Feedback"],"to":"In Progress","label":"Corrections"},{"kind":"edge","from":["Stakeholder Feedback"],"to":"Rejected","label":"Rejected"},{"kind":"edge","from":["Ready"],"to":"Implementation in Progress","label":"Implementation"},{"kind":"edge","from":["Implementation in Progress"],"to":"Done","label":"Completion"},{"kind":"edge","from":["On Hold"],"to":"To Do","label":"Start Over"}],"main":["To Do","In Progress","Stakeholder Feedback","Ready","Implementation in Progress","Done"]},{"id":"task","name":"Task","level":"Task","workflow":"The Epic and Task workflow","blurb":"A piece of proving an idea out.","example":"CIP-158","transitions":[{"kind":"start","to":"To Do"},{"kind":"any","to":"On Hold","label":"On Hold"},{"kind":"any","to":"Suspended","label":"Suspended"},{"kind":"edge","from":["To Do"],"to":"In Progress","label":"MVP Started"},{"kind":"edge","from":["In Progress"],"to":"Stakeholder Feedback","label":"Send for Review"},{"kind":"edge","from":["Stakeholder Feedback"],"to":"Ready","label":"MVP Complete"},{"kind":"edge","from":["Stakeholder Feedback"],"to":"In Progress","label":"Corrections"},{"kind":"edge","from":["Stakeholder Feedback"],"to":"Rejected","label":"Rejected"},{"kind":"edge","from":["Ready"],"to":"Implementation in Progress","label":"Implementation"},{"kind":"edge","from":["Implementation in Progress"],"to":"Done","label":"Completion"},{"kind":"edge","from":["On Hold"],"to":"To Do","label":"Start Over"}],"main":["To Do","In Progress","Stakeholder Feedback","Ready","Implementation in Progress","Done"]},{"id":"subtask","name":"Sub-task","level":"Sub-task","workflow":"The Sub-task workflow","blurb":"A piece of a Task.","example":"CIP-29","transitions":[{"kind":"start","to":"To-Do"},{"kind":"any","to":"On Hold","label":"On Hold"},{"kind":"any","to":"Suspended","label":"Suspended"},{"kind":"edge","from":["To-Do"],"to":"In Progress","label":"Progress"},{"kind":"edge","from":["In Progress"],"to":"Done","label":"Done"}],"main":["To-Do","In Progress","Done"],"caveat":"Every step here was read back from a live ticket except the last. No Sub-task is sitting In Progress, so In Progress to Done is unconfirmed."}],"changes":[]}}}/*__ENDS__*/;
+const SPACE_FIELDS = /*__SPACEFIELDS__*/{"generated":"2026-09-01","SGP":{"groups":[["Every ticket has these",[["Project","Fixed when the ticket is created.","required"],["Issue Type","Epic, Task or Sub-task.","required"],["Summary","The one-line title.","required"],["Reporter","Whoever created the ticket.","required"]]],["Which team owns it",[["Team","Content, Business, Product, QA, Innovation, Marketing or Community. Defaults to Business Team.","required: Epic, Task"]]],["Who is doing the work",[["Assignee","One person.",""],["Instructional Designer","Several people can be named.",""],["Visual Designer(s)","Several people can be named.",""],["Quality Specialists","Several people can be named.",""],["Digitization Resource","A fixed list of named people, not a user picker.",""]]],["What it is about",[["Description","The detail.",""],["Component (Software)","Worker side (App), Company side (Web), Moodle, Plugin, Data, Environment, Course Content.","Epic, Task only"],["Software/ Platform","Mobile App, or Web (Moodle, Custom Plugins or Blocks).",""],["Customer Details","Free text.","Task only"],["Labels","Free text, no controlled list.",""],["Attachment","Files.",""]]],["Where it sits",[["Parent","The ticket above this one.","required: Sub-task"],["Epic Link","The older way of pointing at an Epic, superseded by Parent.",""],["Epic Name","A short name separate from the Summary.","Epic only"],["Linked Issues","Set by hand.","Sub-task only"],["Components","Empty for this project.","Sub-task only"],["Fix versions","Empty for this project.","Sub-task only"],["Sprint","Nothing in the space sets it.","Sub-task only"]]],["Dates and handling",[["Start date","",""],["Due date","",""],["Target end","A second date field alongside Due date.",""],["Priority","Critical, High, Medium, Low, Lowest. Defaults to Low.",""],["Security Level","All users, or Managers - Content team.",""]]]]},"CIP":{"groups":[["Every ticket has these",[["Project","Fixed when the ticket is created.","required"],["Issue Type","Epic, Task or Sub-task.","required"],["Summary","The one-line title.","required"]]],["What kind of idea it is",[["Type","MVP, Feedback Action Items, or Process Improvements.","required: Epic, Task"],["Impact On","Learner, Compliance, Brand, or Software Changes.",""]]],["Where the idea came from",[["Source","Where the suggestion arrived from: NPS, stakeholder feedback, a survey, or other.","required: Task"],["Input Owner","The person whose input this is.","required: Task"],["Evidence Link","A link to the survey, ticket or recording it came from.",""],["Applicable to Course/Asset","Which course or asset the idea is about.",""]]],["What is being done about it",[["Action to be Taken","The plan.","required: Task"],["Action Taken","What was actually done.",""],["Output Generated","What came out of it.",""],["Stakeholder Feedback","What stakeholders said when the small version was shown to them.",""],["Description","The detail.",""]]],["Where it sits",[["Parent","The ticket above this one.","required: Sub-task"],["Linked Issues","Set by hand.",""],["Assignee","One person.",""],["Attachment","Files.",""]]],["Dates",[["Start date","",""],["Target End Date","When the idea is meant to be finished.",""],["MVP Release Date","When the small version went out.",""],["Due date","Jira's own due date, alongside Target End Date.",""]]],["Jira's plumbing",[["Rank","Where the ticket sits in a board's order.",""],["Development","Filled in by Jira if code is linked.",""],["Design","Filled in by Jira if a design tool is linked.",""]]]]}}/*__ENDSF__*/;
 
 const esc = s => String(s).replace(/[&<>"]/g, c => ({ "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;" }[c]));
 const view = document.getElementById("view");
@@ -874,27 +859,11 @@ function viewSubtask(key, stageId, subId) {
 }
 
 /* ---------- SGP and CIP ---------- */
+/* Both spaces use only Epic, Task and Sub-task, so there is no tree to draw.
+   These pages follow the CDLC pages: name, tabs, one line of lede, then the
+   thing itself. No summary boxes, no counts, no prose explaining the diagram. */
 const spaceData = key => (SPACES && SPACES.spaces && SPACES.spaces[key]) || null;
-
-function spaceHead(key, sp) {
-  const p = PROJECTS.find(x => x.key === key);
-  return `<div class="space-head">${avatar(p,"lg")}
-       <div><h1>${esc(p.name)}</h1>
-         <p class="lede">${esc(p.key)} &middot; ${esc(p.style)} ${p.type.toLowerCase()} project
-            &middot; ${(sp && sp.totals ? sp.totals.issues : p.issues).toLocaleString()} tickets</p></div></div>`;
-}
-
-/* A row of bars showing how the space divides. Widths are relative to the
-   largest slice, so the shape reads at a glance rather than the exact number. */
-function splitChart(rows, tone) {
-  const top = Math.max(...rows.map(r => r[1])) || 1;
-  return `<div class="split" style="--sc:var(--c-${tone || "blue"})">` + rows.map(([label, n]) =>
-    `<div class="split-row">
-       <span class="split-label">${esc(label)}</span>
-       <span class="split-bar"><i style="width:${Math.max(1.5, n / top * 100)}%"></i></span>
-       <span class="split-n">${n.toLocaleString()}</span>
-     </div>`).join("") + `</div>`;
-}
+const spaceName = key => (PROJECTS.find(x => x.key === key) || {}).name || key;
 
 function viewSpaceWork(key) {
   const sp = spaceData(key);
@@ -903,13 +872,9 @@ function viewSpaceWork(key) {
   view.innerHTML =
     crumbs([{label:"Projects", to:""},{label:key}]) +
     `<div class="col">
-       ${spaceHead(key, sp)}
+       <div class="page-head"><h1>${esc(spaceName(key))}</h1></div>
        ${tabs("epic", key)}
        <p class="lede">${esc(sp.lede)}</p>
-       <p class="lede">${esc(sp.blurb)}</p>
-
-       <h2>How the work is shaped</h2>
-       <div class="terminal">${esc(sp.shape)}</div>
 
        <h2>The three work types</h2>
        <p class="lede" style="margin-bottom:var(--space-200)">Open any one to see its own workflow.</p>
@@ -917,22 +882,10 @@ function viewSpaceWork(key) {
          sp.worktypes.map((w,i) =>
            (i ? `<span class="seq-arrow">&darr;</span>` : "") +
            `<button class="stage" data-t="${esc(w.id)}">
-              <span class="stage-head">
-                <span class="stage-n">${esc(w.level)}</span>
-                <span class="stage-name">${esc(w.name)}</span>
-              </span>
-              <span class="stage-row">
-                <span class="stage-type">${esc(w.blurb)}</span>
-                <span class="stage-type">${w.usage.ever.toLocaleString()} tickets</span>
-              </span>
+              <span class="stage-head"><span class="stage-name">${esc(w.name)}</span></span>
+              <span class="stage-row"><span class="stage-type">${esc(w.blurb)}</span></span>
             </button>`).join("") +
     `  </div>
-
-       <h2>${esc(sp.splitTitle)}</h2>
-       ${splitChart(sp.split, (PROJECTS.find(x=>x.key===key)||{}).tone)}
-       <p class="caption">${esc(sp.splitNote)}</p>
-
-       <div class="note"><strong>Where this comes from</strong>${esc(sp.evidence)}</div>
      </div>`;
 
   wireCrumbs(); wireTabs();
@@ -950,18 +903,16 @@ function viewSpaceType(key, id) {
     `<div class="page-head">
        <p class="eyebrow">Work type in ${esc(key)}</p>
        <h1>${esc(w.name)}</h1>
-       <p class="lede">${esc(w.blurb)}</p>
      </div>
 
      <dl class="facts">
        <div class="fact"><dt>Level</dt><dd>${esc(w.level)}</dd></div>
        <div class="fact"><dt>Runs on</dt><dd>${esc(w.workflow)}</dd></div>
-       <div class="fact"><dt>Tickets</dt><dd style="font-weight:400">${w.usage.ever.toLocaleString()} ever, ${w.usage.recent.toLocaleString()} in the last year</dd></div>
      </dl>
 
      <h2>Its workflow</h2>
-     ${workflowGraph(w.transitions, w.example, w.main)}
-     ${w.note ? `<div class="note"><strong>Worth knowing</strong>${esc(w.note)}</div>` : ""}` +
+     ${workflowGraph(w.transitions, w.example, w.main)}` +
+     (w.caveat ? `<p class="caption">${esc(w.caveat)}</p>` : "") +
      (w.level === "Sub-task"
        ? `<div class="terminal">This is the bottom of the tree. Jira sub-tasks cannot have
             children of their own, so nothing hangs beneath this.</div>`
@@ -970,19 +921,40 @@ function viewSpaceType(key, id) {
   wireCrumbs();
 }
 
+/* Fields, filtered by what the field is for. Same chip pattern as the CDLC
+   Fields tab, with the group standing in for the role. */
+const GROUP_ACCENT = ["#626F86","#6E5DC6","#1868DB","#227D9B","#AE4787","#1F845A","#974F0C"];
+let fieldGroupSel = new Set();
+
 function viewSpaceFields(key) {
   const sp = spaceData(key), f = SPACE_FIELDS && SPACE_FIELDS[key];
   if (!sp || !f) return viewSpaceEmpty(key);
 
+  const titles = f.groups.map(g => g[0]);
+  const pick = t => !fieldGroupSel.size || fieldGroupSel.has(t);
+  const shown = f.groups.filter(g => pick(g[0])).reduce((n,g) => n + g[1].length, 0);
+
+  const chip = (val,label,n,on,c) =>
+    `<button data-g="${esc(val)}" aria-pressed="${on}"${c ? ` style="--chipc:${c}"` : ""}>` +
+    (c ? `<span class="rdot"></span>` : "") +
+    `${esc(label)} <span class="n">${n}</span></button>`;
+
   view.innerHTML =
     crumbs([{label:"Projects", to:""},{label:key, to:key},{label:"Fields"}]) +
     `<div class="col">
-       ${spaceHead(key, sp)}
+       <div class="page-head"><h1>${esc(spaceName(key))}</h1></div>
        ${tabs("fields", key)}
-       <p class="lede">What each ticket in ${esc(key)} asks for.</p>
-       <div class="note"><strong>Where this comes from</strong>${esc(f.note)}</div>` +
-       f.groups.map(([title, rows]) =>
-         `<section class="fgroup plain">
+       <p class="lede">Pick what you are after to narrow the list.</p>
+       <div class="ftoolbar">
+         <span class="ftoolbar-label">Filter by</span>
+         <div class="filters">` +
+           chip("", "All fields", shown, !fieldGroupSel.size, "") +
+           titles.map((t,i) => chip(t, t, f.groups[i][1].length, fieldGroupSel.has(t),
+                                    GROUP_ACCENT[i % GROUP_ACCENT.length])).join("") +
+        `</div>
+      </div>` +
+       f.groups.map(([title, rows], i) => !pick(title) ? "" :
+         `<section class="fgroup" style="--rc:${GROUP_ACCENT[i % GROUP_ACCENT.length]}">
             <h3>${esc(title)} <span class="lozenge">${rows.length}</span></h3>
             <div class="rows">` + rows.map(([name, note, tag]) =>
               `<div class="frow">
@@ -994,6 +966,13 @@ function viewSpaceFields(key) {
     `</div>`;
 
   wireCrumbs(); wireTabs();
+  view.querySelectorAll('.filters button[data-g]').forEach(el =>
+    el.addEventListener("click", () => {
+      const g = el.dataset.g;
+      if (!g) fieldGroupSel.clear();
+      else fieldGroupSel.has(g) ? fieldGroupSel.delete(g) : fieldGroupSel.add(g);
+      viewSpaceFields(key); window.scrollTo({ top: 0 });
+    }));
 }
 
 function viewSpaceHistory(key) {
@@ -1004,16 +983,15 @@ function viewSpaceHistory(key) {
   view.innerHTML =
     crumbs([{label:"Projects", to:""},{label:key, to:key},{label:"Change history"}]) +
     `<div class="col">
-       ${spaceHead(key, sp)}
-       ${tabs("history", key)}
-       <p class="lede">Changes made to how ${esc(key)} itself works, as opposed to the work inside it.</p>` +
+       <div class="page-head"><h1>${esc(spaceName(key))}</h1></div>
+       ${tabs("history", key)}` +
        (rows.length
          ? `<div class="hist">` + rows.map(c =>
              `<div class="row"><span class="row-name">${esc(c.title)}</span>
                 <span class="row-type">${esc(c.date)}</span>
                 <span class="row-type">${jiraLink(c.key)}</span></div>`).join("") + `</div>`
          : `<div class="empty"><h2>Nothing logged yet</h2>
-              <p>${esc(sp.historyNote)}</p></div>`) +
+              <p>No change to ${esc(key)} itself has been recorded. Use Request a change to log one.</p></div>`) +
     `</div>`;
 
   wireCrumbs(); wireTabs();

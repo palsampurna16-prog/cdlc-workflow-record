@@ -25,21 +25,21 @@ The tree bottoms out at sub-task level. Jira cannot nest beneath `hierarchyLevel
 and both leaf stages were confirmed childless, so every leaf page says so rather than
 just ending.
 
-**SGP and CIP** each get the same three tabs, shaped to what they actually are. Both
-use only Epic, Task and Sub-task, so there is no deep tree to draw. Instead each space
-opens on what it holds, the three work types with their real workflows, and the one
-field that genuinely divides the space: `Team` for SGP, `Type` for CIP.
+**SGP and CIP** each get the same three tabs, kept as bare as the CDLC pages. Both
+use only Epic, Task and Sub-task, so there is no deep tree to draw. Each space opens on
+one line saying what it holds and the three work types; open any one for its workflow
+drawn the same way CDLC's are.
 
-SGP is the catch-all, 10,897 tickets, and its tree is loose: `Parent` is optional on
-the Task, so 5,960 of the 9,107 Tasks sit under no Epic. It runs two workflows, one
-shared by the Epic and the Sub-task and a different one for the Task, which has an
-extra `Assigned` status.
-
-CIP is one improvement idea per Epic, and carries the clearest workflow on the site:
+CIP carries the clearest workflow on the site, the only one whose statuses are named
+after the work rather than after a state:
 
 ```
 To Do → In Progress → Stakeholder Feedback → Ready → Implementation in Progress → Done
 ```
+
+SGP runs two workflows, one shared by the Epic and the Sub-task and a different one for
+the Task, which has an extra `Assigned` status. The Fields tab for both spaces works
+like CDLC's, filtered by chips, with the group standing in for the role.
 
 **QFT** still shows an honest empty state. It has a single work type and no hierarchy
 at all, so it needs its own treatment rather than a copy of any of these.
