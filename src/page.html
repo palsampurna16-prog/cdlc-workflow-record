@@ -283,6 +283,19 @@
   .filters .n, .ftoolbar .n { font-weight:400; opacity:.75; font-variant-numeric:tabular-nums; }
   .empty-filter { padding:var(--space-400); text-align:center; color:var(--c-text-subtle); }
 
+  /* how a space divides: label, proportional bar, count */
+  .split { display:flex; flex-direction:column; gap:var(--space-100);
+           padding:var(--space-200); background:var(--c-surface-sunken);
+           border:1px solid var(--c-border); border-radius:var(--radius-lg); }
+  .split-row { display:flex; align-items:center; gap:var(--space-150); }
+  .split-label { flex:0 0 168px; font-size:13px; }
+  .split-bar { flex:1; height:10px; background:var(--c-surface); border-radius:5px;
+               border:1px solid var(--c-border); overflow:hidden; }
+  .split-bar i { display:block; height:100%; background:var(--sc, var(--c-brand)); border-radius:5px; }
+  .split-n { flex:0 0 60px; text-align:right; font-size:12px; font-variant-numeric:tabular-nums;
+             color:var(--c-text-subtle); }
+  .fgroup.plain { --rc:var(--c-border-strong); }
+
   /* fields filter bar */
   .ftoolbar { display:flex; flex-wrap:wrap; align-items:center; gap:var(--space-100) var(--space-150);
       margin-top:var(--space-300); padding:var(--space-150) var(--space-200);
@@ -336,6 +349,7 @@
     .req { display:none; }
     .stages:not(.vertical) .seq-arrow { display:none; }
     .frow { flex-direction:column; gap:var(--space-050); }
+    .split-label { flex:0 0 110px; }
     .frow .fname { flex:none; }
     .fdiv { display:none; }   /* would strand at the end of a wrapped row */
   }
@@ -370,16 +384,21 @@
 <main class="page" id="view"></main>
 
 <script>
-/* Four spaces, from the live skillcatapp.atlassian.net site. Counts 28 August 2026. */
+/* Four spaces, from the live skillcatapp.atlassian.net site. Counts 1 September 2026. */
 const PROJECTS = [
-  { key:"CDLC", name:"Content Development Life Cycle", type:"Software", style:"Company-managed", issues:7961,  tone:"blue"   },
-  { key:"SGP",  name:"SkillCat General Project",       type:"Software", style:"Company-managed", issues:10880, tone:"purple" },
+  { key:"CDLC", name:"Content Development Life Cycle", type:"Software", style:"Company-managed", issues:7982,  tone:"blue"   },
+  { key:"SGP",  name:"SkillCat General Project",       type:"Software", style:"Company-managed", issues:10897, tone:"purple" },
   { key:"CIP",  name:"Course Improvement Project",     type:"Business", style:"Team-managed",    issues:140,   tone:"green"  },
-  { key:"QFT",  name:"Quiz Feedback Tracker",          type:"Software", style:"Company-managed", issues:3721,  tone:"orange" },
+  { key:"QFT",  name:"Quiz Feedback Tracker",          type:"Software", style:"Company-managed", issues:3742,  tone:"orange" },
 ];
 
 /* Canonical CDLC Epic shape. Generated from data/cdlc-epic.json, see scripts/embed-data.mjs. */
 const CDLC = /*__CDLC_EPIC__*/null/*__END__*/;
+
+/* SGP and CIP, the two spaces that are not a course build. Generated from
+   data/spaces.json and data/space-fields.json, injected by build.mjs. */
+const SPACES = /*__SPACES__*/null/*__ENDS__*/;
+const SPACE_FIELDS = /*__SPACEFIELDS__*/null/*__ENDSF__*/;
 
 const esc = s => String(s).replace(/[&<>"]/g, c => ({ "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;" }[c]));
 const view = document.getElementById("view");
@@ -411,7 +430,7 @@ const jiraLink = k =>
    off that line, dead ends, and statuses reachable from anywhere, is set apart, so
    the main line stays readable. Colour follows position: start grey, middle blue,
    final green. */
-function workflowGraph(tr, example) {
+function workflowGraph(tr, example, mainPath) {
   if (!tr || !tr.length) return "";
   const start = (tr.find(t => t.kind === "start") || {}).to;
   const edges = tr.filter(t => t.kind === "edge");
@@ -433,7 +452,10 @@ function workflowGraph(tr, example) {
     return win;
   };
 
-  const main = [start, ...best(start, new Set([start]))];
+  /* Where the data names the normal route, use it. The longest run is a good
+     guess but it happily wanders down a detour, and on a reference page the
+     line people read first has to be the one work actually takes. */
+  const main = (mainPath && mainPath.length) ? mainPath : [start, ...best(start, new Set([start]))];
   const all = [...new Set(
     edges.flatMap(e => [...(e.from || []), e.to])
          .concat(tr.filter(t => t.kind === "any").map(t => t.to)))];
@@ -579,11 +601,13 @@ function viewFields() {
 }
 
 /* ---------- CDLC section tabs ---------- */
-function tabs(active) {
-  const items = [["epic","The Epic",""],["fields","Fields","fields"],
+function tabs(active, key) {
+  const k = key || "CDLC";
+  const items = [["epic", k === "CDLC" ? "The Epic" : "The work", ""],
+                 ["fields","Fields","fields"],
                  ["history","Change history","history"]];
   return `<div class="tabs">` + items.map(([id,label,to]) =>
-    `<button data-to="CDLC/${to}"${id===active?' aria-current="page"':""}>${label}</button>`).join("") + `</div>`;
+    `<button data-to="${k}/${to}"${id===active?' aria-current="page"':""}>${label}</button>`).join("") + `</div>`;
 }
 function wireTabs() {
   view.querySelectorAll(".tabs button").forEach(el =>
@@ -837,8 +861,154 @@ function viewSubtask(key, stageId, subId) {
   wireCrumbs();
 }
 
-/* ---------- other spaces ---------- */
-function viewSpace(key) {
+/* ---------- SGP and CIP ---------- */
+const spaceData = key => (SPACES && SPACES.spaces && SPACES.spaces[key]) || null;
+
+function spaceHead(key, sp) {
+  const p = PROJECTS.find(x => x.key === key);
+  return `<div class="space-head">${avatar(p,"lg")}
+       <div><h1>${esc(p.name)}</h1>
+         <p class="lede">${esc(p.key)} &middot; ${esc(p.style)} ${p.type.toLowerCase()} project
+            &middot; ${(sp && sp.totals ? sp.totals.issues : p.issues).toLocaleString()} tickets</p></div></div>`;
+}
+
+/* A row of bars showing how the space divides. Widths are relative to the
+   largest slice, so the shape reads at a glance rather than the exact number. */
+function splitChart(rows, tone) {
+  const top = Math.max(...rows.map(r => r[1])) || 1;
+  return `<div class="split" style="--sc:var(--c-${tone || "blue"})">` + rows.map(([label, n]) =>
+    `<div class="split-row">
+       <span class="split-label">${esc(label)}</span>
+       <span class="split-bar"><i style="width:${Math.max(1.5, n / top * 100)}%"></i></span>
+       <span class="split-n">${n.toLocaleString()}</span>
+     </div>`).join("") + `</div>`;
+}
+
+function viewSpaceWork(key) {
+  const sp = spaceData(key);
+  if (!sp) return viewSpaceEmpty(key);
+
+  view.innerHTML =
+    crumbs([{label:"Projects", to:""},{label:key}]) +
+    `<div class="col">
+       ${spaceHead(key, sp)}
+       ${tabs("epic", key)}
+       <p class="lede">${esc(sp.lede)}</p>
+       <p class="lede">${esc(sp.blurb)}</p>
+
+       <h2>How the work is shaped</h2>
+       <div class="terminal">${esc(sp.shape)}</div>
+
+       <h2>The three work types</h2>
+       <p class="lede" style="margin-bottom:var(--space-200)">Open any one to see its own workflow.</p>
+       <div class="stages vertical">` +
+         sp.worktypes.map((w,i) =>
+           (i ? `<span class="seq-arrow">&darr;</span>` : "") +
+           `<button class="stage" data-t="${esc(w.id)}">
+              <span class="stage-head">
+                <span class="stage-n">${esc(w.level)}</span>
+                <span class="stage-name">${esc(w.name)}</span>
+              </span>
+              <span class="stage-row">
+                <span class="stage-type">${esc(w.blurb)}</span>
+                <span class="stage-type">${w.usage.ever.toLocaleString()} tickets</span>
+              </span>
+            </button>`).join("") +
+    `  </div>
+
+       <h2>${esc(sp.splitTitle)}</h2>
+       ${splitChart(sp.split, (PROJECTS.find(x=>x.key===key)||{}).tone)}
+       <p class="caption">${esc(sp.splitNote)}</p>
+
+       <div class="note"><strong>Where this comes from</strong>${esc(sp.evidence)}</div>
+     </div>`;
+
+  wireCrumbs(); wireTabs();
+  view.querySelectorAll(".stage").forEach(el =>
+    el.addEventListener("click", () => go(key + "/" + el.dataset.t)));
+}
+
+function viewSpaceType(key, id) {
+  const sp = spaceData(key);
+  const w = sp && sp.worktypes.find(x => x.id === id);
+  if (!w) return viewSpaceWork(key);
+
+  view.innerHTML =
+    crumbs([{label:"Projects", to:""},{label:key, to:key},{label:w.name}]) +
+    `<div class="page-head">
+       <p class="eyebrow">Work type in ${esc(key)}</p>
+       <h1>${esc(w.name)}</h1>
+       <p class="lede">${esc(w.blurb)}</p>
+     </div>
+
+     <dl class="facts">
+       <div class="fact"><dt>Level</dt><dd>${esc(w.level)}</dd></div>
+       <div class="fact"><dt>Runs on</dt><dd>${esc(w.workflow)}</dd></div>
+       <div class="fact"><dt>Tickets</dt><dd style="font-weight:400">${w.usage.ever.toLocaleString()} ever, ${w.usage.recent.toLocaleString()} in the last year</dd></div>
+     </dl>
+
+     <h2>Its workflow</h2>
+     ${workflowGraph(w.transitions, w.example, w.main)}
+     ${w.note ? `<div class="note"><strong>Worth knowing</strong>${esc(w.note)}</div>` : ""}` +
+     (w.level === "Sub-task"
+       ? `<div class="terminal">This is the bottom of the tree. Jira sub-tasks cannot have
+            children of their own, so nothing hangs beneath this.</div>`
+       : "");
+
+  wireCrumbs();
+}
+
+function viewSpaceFields(key) {
+  const sp = spaceData(key), f = SPACE_FIELDS && SPACE_FIELDS[key];
+  if (!sp || !f) return viewSpaceEmpty(key);
+
+  view.innerHTML =
+    crumbs([{label:"Projects", to:""},{label:key, to:key},{label:"Fields"}]) +
+    `<div class="col">
+       ${spaceHead(key, sp)}
+       ${tabs("fields", key)}
+       <p class="lede">What each ticket in ${esc(key)} asks for.</p>
+       <div class="note"><strong>Where this comes from</strong>${esc(f.note)}</div>` +
+       f.groups.map(([title, rows]) =>
+         `<section class="fgroup plain">
+            <h3>${esc(title)} <span class="lozenge">${rows.length}</span></h3>
+            <div class="rows">` + rows.map(([name, note, tag]) =>
+              `<div class="frow">
+                 <span class="fname">${esc(name)}${tag ? ` <span class="lozenge muted">${esc(tag)}</span>` : ""}</span>
+                 <span class="fhow">${esc(note || "")}</span>
+               </div>`).join("") +
+       `    </div>
+          </section>`).join("") +
+    `</div>`;
+
+  wireCrumbs(); wireTabs();
+}
+
+function viewSpaceHistory(key) {
+  const sp = spaceData(key);
+  if (!sp) return viewSpaceEmpty(key);
+  const rows = sp.changes || [];
+
+  view.innerHTML =
+    crumbs([{label:"Projects", to:""},{label:key, to:key},{label:"Change history"}]) +
+    `<div class="col">
+       ${spaceHead(key, sp)}
+       ${tabs("history", key)}
+       <p class="lede">Changes made to how ${esc(key)} itself works, as opposed to the work inside it.</p>` +
+       (rows.length
+         ? `<div class="hist">` + rows.map(c =>
+             `<div class="row"><span class="row-name">${esc(c.title)}</span>
+                <span class="row-type">${esc(c.date)}</span>
+                <span class="row-type">${jiraLink(c.key)}</span></div>`).join("") + `</div>`
+         : `<div class="empty"><h2>Nothing logged yet</h2>
+              <p>${esc(sp.historyNote)}</p></div>`) +
+    `</div>`;
+
+  wireCrumbs(); wireTabs();
+}
+
+/* ---------- a space with nothing built for it yet ---------- */
+function viewSpaceEmpty(key) {
   const p = PROJECTS.find(x=>x.key===key);
   view.innerHTML =
     crumbs([{label:"Projects", to:""},{label:p.key}]) +
@@ -850,6 +1020,7 @@ function viewSpace(key) {
        <p>This is where ${esc(p.key)}&rsquo;s contents will go. Nothing has been added for it so far.</p></div>`;
   wireCrumbs();
 }
+const viewSpace = viewSpaceEmpty;
 
 /* ---------- render ---------- */
 function render() {
@@ -861,7 +1032,11 @@ function render() {
   else if (key === "CDLC" && stage && sub) viewSubtask(key, stage, sub);
   else if (key === "CDLC" && stage) viewStage(key, stage);
   else if (key === "CDLC")     viewEpic(key);
-  else if (key)                viewSpace(key);
+  else if (key && spaceData(key) && stage === "fields")  viewSpaceFields(key);
+  else if (key && spaceData(key) && stage === "history") viewSpaceHistory(key);
+  else if (key && spaceData(key) && stage)               viewSpaceType(key, stage);
+  else if (key && spaceData(key))                        viewSpaceWork(key);
+  else if (key)                viewSpaceEmpty(key);
   else                         viewProjects(search.value);
   refreshRequestLink();
   window.scrollTo({ top:0 });

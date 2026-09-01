@@ -1,0 +1,688 @@
+{
+  "generated": "2026-09-01",
+  "spaces": {
+    "SGP": {
+      "lede": "Everything that is not a course build.",
+      "blurb": "SGP is the catch-all. If a piece of work does not belong to a course being built in CDLC, an improvement idea in CIP, or a quiz problem in QFT, it goes here.",
+      "evidence": "Jira's own work type and field configuration for SGP, the workflow transitions read back from live tickets in every status in use, and ticket counts taken on 1 September 2026.",
+      "shape": "Three levels, and no fixed template. An Epic is one initiative someone has taken on, Tasks hang beneath it, Sub-tasks beneath those. Nothing is created automatically: every ticket here is made by a person. And the tree is loose. Parent is optional on the Task, so 5,960 of the 9,107 Tasks sit under no Epic at all.",
+      "totals": {
+        "issues": 10897,
+        "epics": 277
+      },
+      "splitTitle": "Which team the work belongs to",
+      "splitNote": "Team is required on the Epic and the Task. The Sub-task form does not ask for it, yet not one ticket in SGP is missing a value, so this is the one split that covers the whole space.",
+      "split": [
+        [
+          "Content Team",
+          5140
+        ],
+        [
+          "Business Team",
+          2848
+        ],
+        [
+          "Product Team",
+          1722
+        ],
+        [
+          "QA Task",
+          904
+        ],
+        [
+          "Innovation Team",
+          254
+        ],
+        [
+          "Marketing Team",
+          24
+        ],
+        [
+          "Community Team",
+          5
+        ]
+      ],
+      "worktypes": [
+        {
+          "id": "epic",
+          "name": "Epic",
+          "level": "Epic",
+          "workflow": "The Epic and Sub-task workflow",
+          "blurb": "One initiative. A project, a piece of research, a tool being built, a course review, an onboarding.",
+          "note": "Epics here are one-off. There is no standard set of children, and no automation creates them. Two thirds of the 277 are already Done or Discarded.",
+          "example": "SGP-11342",
+          "usage": {
+            "ever": 277,
+            "recent": 149
+          },
+          "statuses": [
+            "To Do",
+            "In Progress",
+            "In Review",
+            "Done",
+            "Reproduced",
+            "On Hold",
+            "Discard"
+          ],
+          "transitions": [
+            {
+              "kind": "start",
+              "to": "To Do"
+            },
+            {
+              "kind": "any",
+              "to": "To Do",
+              "label": "To Do"
+            },
+            {
+              "kind": "any",
+              "to": "On Hold",
+              "label": "On Hold"
+            },
+            {
+              "kind": "any",
+              "to": "Discard",
+              "label": "Discard"
+            },
+            {
+              "kind": "any",
+              "to": "Reproduced",
+              "label": "Reproduced"
+            },
+            {
+              "kind": "edge",
+              "from": [
+                "To Do"
+              ],
+              "to": "In Progress",
+              "label": "Work begun"
+            },
+            {
+              "kind": "edge",
+              "from": [
+                "In Progress"
+              ],
+              "to": "In Review",
+              "label": "Sent for Review"
+            },
+            {
+              "kind": "edge",
+              "from": [
+                "In Progress",
+                "In Review"
+              ],
+              "to": "Reproduced",
+              "label": "Reproduced / Isolated"
+            },
+            {
+              "kind": "edge",
+              "from": [
+                "In Review"
+              ],
+              "to": "Done",
+              "label": "Approved"
+            },
+            {
+              "kind": "edge",
+              "from": [
+                "In Review"
+              ],
+              "to": "In Progress",
+              "label": "Review Fail"
+            },
+            {
+              "kind": "edge",
+              "from": [
+                "Reproduced"
+              ],
+              "to": "Done",
+              "label": "Fixed"
+            }
+          ],
+          "main": [
+            "To Do",
+            "In Progress",
+            "In Review",
+            "Done"
+          ]
+        },
+        {
+          "id": "task",
+          "name": "Task",
+          "level": "Task",
+          "workflow": "The Task workflow",
+          "blurb": "The workhorse. Nine in every ten tickets in SGP are Tasks.",
+          "note": "The Task runs on a different workflow from the Epic and the Sub-task. It has one extra status, Assigned, which sits between To Do and In Progress, and it has no Reproduced shortcut.",
+          "example": "SGP-11345",
+          "usage": {
+            "ever": 9107,
+            "recent": 6096
+          },
+          "statuses": [
+            "To Do",
+            "Assigned",
+            "In Progress",
+            "In Review",
+            "Done",
+            "Reproduced",
+            "On Hold",
+            "Discard"
+          ],
+          "transitions": [
+            {
+              "kind": "start",
+              "to": "To Do"
+            },
+            {
+              "kind": "any",
+              "to": "To Do",
+              "label": "To Do"
+            },
+            {
+              "kind": "any",
+              "to": "On Hold",
+              "label": "On Hold"
+            },
+            {
+              "kind": "any",
+              "to": "Discard",
+              "label": "Discard"
+            },
+            {
+              "kind": "edge",
+              "from": [
+                "To Do"
+              ],
+              "to": "Assigned",
+              "label": "Assign to team member"
+            },
+            {
+              "kind": "edge",
+              "from": [
+                "Assigned",
+                "On Hold"
+              ],
+              "to": "In Progress",
+              "label": "Work begun"
+            },
+            {
+              "kind": "edge",
+              "from": [
+                "In Progress"
+              ],
+              "to": "In Review",
+              "label": "Sent for Review"
+            },
+            {
+              "kind": "edge",
+              "from": [
+                "In Progress"
+              ],
+              "to": "Reproduced",
+              "label": "Reproduced / Isolated"
+            },
+            {
+              "kind": "edge",
+              "from": [
+                "In Review"
+              ],
+              "to": "Reproduced",
+              "label": "Reproduced"
+            },
+            {
+              "kind": "edge",
+              "from": [
+                "In Review"
+              ],
+              "to": "Done",
+              "label": "Approved"
+            },
+            {
+              "kind": "edge",
+              "from": [
+                "In Review"
+              ],
+              "to": "In Progress",
+              "label": "Review Fail"
+            },
+            {
+              "kind": "edge",
+              "from": [
+                "Reproduced"
+              ],
+              "to": "Done",
+              "label": "Fixed by Devs"
+            }
+          ],
+          "main": [
+            "To Do",
+            "Assigned",
+            "In Progress",
+            "In Review",
+            "Done"
+          ]
+        },
+        {
+          "id": "subtask",
+          "name": "Sub-task",
+          "level": "Sub-task",
+          "workflow": "The Epic and Sub-task workflow",
+          "blurb": "A piece of a Task. This is the bottom of the tree.",
+          "note": "The Sub-task runs on the same workflow as the Epic, not the same one as its own parent Task. Jira cannot nest anything beneath a Sub-task.",
+          "example": "SGP-11305",
+          "usage": {
+            "ever": 1513,
+            "recent": 1398
+          },
+          "statuses": [
+            "To Do",
+            "In Progress",
+            "In Review",
+            "Done",
+            "Reproduced",
+            "On Hold",
+            "Discard"
+          ],
+          "transitions": [
+            {
+              "kind": "start",
+              "to": "To Do"
+            },
+            {
+              "kind": "any",
+              "to": "To Do",
+              "label": "To Do"
+            },
+            {
+              "kind": "any",
+              "to": "On Hold",
+              "label": "On Hold"
+            },
+            {
+              "kind": "any",
+              "to": "Discard",
+              "label": "Discard"
+            },
+            {
+              "kind": "any",
+              "to": "Reproduced",
+              "label": "Reproduced"
+            },
+            {
+              "kind": "edge",
+              "from": [
+                "To Do"
+              ],
+              "to": "In Progress",
+              "label": "Work begun"
+            },
+            {
+              "kind": "edge",
+              "from": [
+                "In Progress"
+              ],
+              "to": "In Review",
+              "label": "Sent for Review"
+            },
+            {
+              "kind": "edge",
+              "from": [
+                "In Progress",
+                "In Review"
+              ],
+              "to": "Reproduced",
+              "label": "Reproduced / Isolated"
+            },
+            {
+              "kind": "edge",
+              "from": [
+                "In Review"
+              ],
+              "to": "Done",
+              "label": "Approved"
+            },
+            {
+              "kind": "edge",
+              "from": [
+                "In Review"
+              ],
+              "to": "In Progress",
+              "label": "Review Fail"
+            },
+            {
+              "kind": "edge",
+              "from": [
+                "Reproduced"
+              ],
+              "to": "Done",
+              "label": "Fixed"
+            }
+          ],
+          "main": [
+            "To Do",
+            "In Progress",
+            "In Review",
+            "Done"
+          ]
+        }
+      ],
+      "changes": [],
+      "historyNote": "SGP has an epic called Changes in SGP Space, but only one ticket sits under it and it does not record what changed. Use Request a change at the top of the page to log one properly."
+    },
+    "CIP": {
+      "lede": "One Epic is one idea for making a course better.",
+      "blurb": "CIP holds improvement ideas: things learners asked for, things the team spotted, things a survey turned up. An idea is proved out as a small version first, shown to stakeholders, and only then built for real.",
+      "evidence": "Jira's own work type and field configuration for CIP, the workflow transitions read back from live tickets in every status in use, and all 140 tickets read on 1 September 2026.",
+      "shape": "Three levels. The Epic is the idea. Tasks are the pieces of proving it out. Sub-tasks sit beneath a Task. Most ideas are still just the Epic: 56 of the 69 have no children at all, and nothing creates children automatically.",
+      "totals": {
+        "issues": 140,
+        "epics": 69
+      },
+      "splitTitle": "What kind of idea it is",
+      "splitNote": "Type is the field that sorts the space. It is required now, but 33 tickets were created before it became required and still have nothing in it.",
+      "split": [
+        [
+          "MVP",
+          53
+        ],
+        [
+          "Feedback Action Items",
+          28
+        ],
+        [
+          "Process Improvements",
+          26
+        ],
+        [
+          "Not set",
+          33
+        ]
+      ],
+      "worktypes": [
+        {
+          "id": "epic",
+          "name": "Epic",
+          "level": "Epic",
+          "workflow": "The Epic and Task workflow",
+          "blurb": "One improvement idea, carried from first suggestion to shipped change.",
+          "note": "This is the only workflow across the four spaces whose statuses are named after the work itself: prove a small version, show it to stakeholders, then build it properly. Two Epics break that into five Tasks named Problem Specifics, Solution, Demos, Implementation and Measuring Success; the rest do not.",
+          "example": "CIP-155",
+          "usage": {
+            "ever": 69,
+            "recent": 69
+          },
+          "statuses": [
+            "To Do",
+            "In Progress",
+            "Stakeholder Feedback",
+            "Ready",
+            "Implementation in Progress",
+            "Done",
+            "Rejected",
+            "On Hold",
+            "Suspended"
+          ],
+          "transitions": [
+            {
+              "kind": "start",
+              "to": "To Do"
+            },
+            {
+              "kind": "any",
+              "to": "On Hold",
+              "label": "On Hold"
+            },
+            {
+              "kind": "any",
+              "to": "Suspended",
+              "label": "Suspended"
+            },
+            {
+              "kind": "edge",
+              "from": [
+                "To Do"
+              ],
+              "to": "In Progress",
+              "label": "MVP Started"
+            },
+            {
+              "kind": "edge",
+              "from": [
+                "In Progress"
+              ],
+              "to": "Stakeholder Feedback",
+              "label": "Send for Review"
+            },
+            {
+              "kind": "edge",
+              "from": [
+                "Stakeholder Feedback"
+              ],
+              "to": "Ready",
+              "label": "MVP Complete"
+            },
+            {
+              "kind": "edge",
+              "from": [
+                "Stakeholder Feedback"
+              ],
+              "to": "In Progress",
+              "label": "Corrections"
+            },
+            {
+              "kind": "edge",
+              "from": [
+                "Stakeholder Feedback"
+              ],
+              "to": "Rejected",
+              "label": "Rejected"
+            },
+            {
+              "kind": "edge",
+              "from": [
+                "Ready"
+              ],
+              "to": "Implementation in Progress",
+              "label": "Implementation"
+            },
+            {
+              "kind": "edge",
+              "from": [
+                "Implementation in Progress"
+              ],
+              "to": "Done",
+              "label": "Completion"
+            },
+            {
+              "kind": "edge",
+              "from": [
+                "On Hold"
+              ],
+              "to": "To Do",
+              "label": "Start Over"
+            }
+          ],
+          "main": [
+            "To Do",
+            "In Progress",
+            "Stakeholder Feedback",
+            "Ready",
+            "Implementation in Progress",
+            "Done"
+          ]
+        },
+        {
+          "id": "task",
+          "name": "Task",
+          "level": "Task",
+          "workflow": "The Epic and Task workflow",
+          "blurb": "A piece of proving an idea out. Named after what it produces, not after a stage.",
+          "note": "The Task runs on the same workflow as the Epic, so it can in principle reach Stakeholder Feedback and Ready. In practice no Task has ever gone past In Progress: all 58 sit in To Do, In Progress, Suspended or Done.",
+          "example": "CIP-158",
+          "usage": {
+            "ever": 58,
+            "recent": 58
+          },
+          "statuses": [
+            "To Do",
+            "In Progress",
+            "Stakeholder Feedback",
+            "Ready",
+            "Implementation in Progress",
+            "Done",
+            "Rejected",
+            "On Hold",
+            "Suspended"
+          ],
+          "transitions": [
+            {
+              "kind": "start",
+              "to": "To Do"
+            },
+            {
+              "kind": "any",
+              "to": "On Hold",
+              "label": "On Hold"
+            },
+            {
+              "kind": "any",
+              "to": "Suspended",
+              "label": "Suspended"
+            },
+            {
+              "kind": "edge",
+              "from": [
+                "To Do"
+              ],
+              "to": "In Progress",
+              "label": "MVP Started"
+            },
+            {
+              "kind": "edge",
+              "from": [
+                "In Progress"
+              ],
+              "to": "Stakeholder Feedback",
+              "label": "Send for Review"
+            },
+            {
+              "kind": "edge",
+              "from": [
+                "Stakeholder Feedback"
+              ],
+              "to": "Ready",
+              "label": "MVP Complete"
+            },
+            {
+              "kind": "edge",
+              "from": [
+                "Stakeholder Feedback"
+              ],
+              "to": "In Progress",
+              "label": "Corrections"
+            },
+            {
+              "kind": "edge",
+              "from": [
+                "Stakeholder Feedback"
+              ],
+              "to": "Rejected",
+              "label": "Rejected"
+            },
+            {
+              "kind": "edge",
+              "from": [
+                "Ready"
+              ],
+              "to": "Implementation in Progress",
+              "label": "Implementation"
+            },
+            {
+              "kind": "edge",
+              "from": [
+                "Implementation in Progress"
+              ],
+              "to": "Done",
+              "label": "Completion"
+            },
+            {
+              "kind": "edge",
+              "from": [
+                "On Hold"
+              ],
+              "to": "To Do",
+              "label": "Start Over"
+            }
+          ],
+          "main": [
+            "To Do",
+            "In Progress",
+            "Stakeholder Feedback",
+            "Ready",
+            "Implementation in Progress",
+            "Done"
+          ]
+        },
+        {
+          "id": "subtask",
+          "name": "Sub-task",
+          "level": "Sub-task",
+          "workflow": "The Sub-task workflow",
+          "blurb": "A piece of a Task. The bottom of the tree, and barely used: 13 tickets in all.",
+          "note": "Its first status is spelled To-Do with a hyphen, which is a different status from the To Do the Epic and Task start in. The two look alike on a board and sort apart in a filter. One caveat on the line above: every step here was read back from a live ticket except the last one. No Sub-task is sitting In Progress right now, so the step from In Progress to Done is the one part of this workflow that has not been confirmed against Jira directly.",
+          "example": "CIP-29",
+          "usage": {
+            "ever": 13,
+            "recent": 13
+          },
+          "statuses": [
+            "To-Do",
+            "In Progress",
+            "Done",
+            "On Hold",
+            "Suspended"
+          ],
+          "transitions": [
+            {
+              "kind": "start",
+              "to": "To-Do"
+            },
+            {
+              "kind": "any",
+              "to": "On Hold",
+              "label": "On Hold"
+            },
+            {
+              "kind": "any",
+              "to": "Suspended",
+              "label": "Suspended"
+            },
+            {
+              "kind": "edge",
+              "from": [
+                "To-Do"
+              ],
+              "to": "In Progress",
+              "label": "Progress"
+            },
+            {
+              "kind": "edge",
+              "from": [
+                "In Progress"
+              ],
+              "to": "Done",
+              "label": "Done"
+            }
+          ],
+          "main": [
+            "To-Do",
+            "In Progress",
+            "Done"
+          ]
+        }
+      ],
+      "changes": [],
+      "historyNote": "No ticket tracks a change to how CIP itself works. The space was set up in September 2025 and has run the same way since. Use Request a change at the top of the page to log one."
+    }
+  }
+}

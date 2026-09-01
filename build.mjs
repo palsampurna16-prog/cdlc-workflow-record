@@ -80,6 +80,23 @@ if (!O_RE.test(fragment)) {
 }
 fragment = fragment.replace(O_RE, "/*__OWNERS__*/" + JSON.stringify(owners) + "/*__ENDO__*/");
 
+// SGP and CIP: the space model and the field tables, same placeholder pattern.
+const spaces = JSON.parse(await readFile(new URL("./data/spaces.json", import.meta.url), "utf8"));
+const SP_RE = /\/\*__SPACES__\*\/[\s\S]*?\/\*__ENDS__\*\//;
+if (!SP_RE.test(fragment)) {
+  console.error("src/page.html is missing the /*__SPACES__*/ placeholder, aborting.");
+  process.exit(1);
+}
+fragment = fragment.replace(SP_RE, "/*__SPACES__*/" + JSON.stringify(spaces) + "/*__ENDS__*/");
+
+const spaceFields = JSON.parse(await readFile(new URL("./data/space-fields.json", import.meta.url), "utf8"));
+const SF_RE = /\/\*__SPACEFIELDS__\*\/[\s\S]*?\/\*__ENDSF__\*\//;
+if (!SF_RE.test(fragment)) {
+  console.error("src/page.html is missing the /*__SPACEFIELDS__*/ placeholder, aborting.");
+  process.exit(1);
+}
+fragment = fragment.replace(SF_RE, "/*__SPACEFIELDS__*/" + JSON.stringify(spaceFields) + "/*__ENDSF__*/");
+
 const pairs = await loadMap();
 if (REDACT) {
   if (!pairs) {

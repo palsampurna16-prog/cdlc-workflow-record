@@ -25,8 +25,24 @@ The tree bottoms out at sub-task level. Jira cannot nest beneath `hierarchyLevel
 and both leaf stages were confirmed childless, so every leaf page says so rather than
 just ending.
 
-**SGP, CIP and QFT** show honest empty states. They are structurally unlike CDLC, SGP and CIP use plain Epic/Task/Sub-task, and QFT has a single work type with no
-hierarchy at all, so they need their own treatment rather than a copy of the CDLC page.
+**SGP and CIP** each get the same three tabs, shaped to what they actually are. Both
+use only Epic, Task and Sub-task, so there is no deep tree to draw. Instead each space
+opens on what it holds, the three work types with their real workflows, and the one
+field that genuinely divides the space: `Team` for SGP, `Type` for CIP.
+
+SGP is the catch-all, 10,897 tickets, and its tree is loose: `Parent` is optional on
+the Task, so 5,960 of the 9,107 Tasks sit under no Epic. It runs two workflows, one
+shared by the Epic and the Sub-task and a different one for the Task, which has an
+extra `Assigned` status.
+
+CIP is one improvement idea per Epic, and carries the clearest workflow on the site:
+
+```
+To Do → In Progress → Stakeholder Feedback → Ready → Implementation in Progress → Done
+```
+
+**QFT** still shows an honest empty state. It has a single work type and no hierarchy
+at all, so it needs its own treatment rather than a copy of any of these.
 
 ## Where the structure came from
 
@@ -46,6 +62,8 @@ data/                  the content, and the single source of truth
   process.json           7 SOP stages and 5 roles
   fields.json            6 field groups
   epic-reference.json    CDLC-8592 captured as-found
+  spaces.json            SGP and CIP: work types, workflows, how each space divides
+  space-fields.json      SGP and CIP: what each work type asks for
 scripts/
   build-cdlc.mjs         rebuilds data/cdlc-epic.json from worktypes + transitions
   refresh-usage.mjs      re-measures usage counts against live Jira
