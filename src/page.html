@@ -559,8 +559,8 @@ function viewFields() {
         `</div>` +
         (unused ? `<div class="filters at-end"><button data-x="1" aria-pressed="${hideUnused}">Hide items not in use <span class="n">${unused}</span></button></div>` : "") +
       `</div>` +
-       (fieldGroups ? `<h2 class="fsub">Fields</h2>${fieldGroups}` : "") +
-       (typeGroups ? `<h2 class="fsub">Work types</h2>${typeGroups}` : "") +
+       (fieldGroups ? `<h2 class="fsub">Who fills each field</h2>${fieldGroups}` : "") +
+       (typeGroups ? `<h2 class="fsub">Who owns each work type</h2>${typeGroups}` : "") +
        (!fieldGroups && !typeGroups ? `<p class="empty-filter">Nothing to show for that.</p>` : "") +
     `</div>`;
 
