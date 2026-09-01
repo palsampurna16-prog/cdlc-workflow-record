@@ -2,6 +2,7 @@
   {
     "name": "Epic",
     "family": "Course & epic level",
+    "owner": "Instructional Designers' Team Manager",
     "level": "Epic",
     "statuses": [
       "To Do",
@@ -27,6 +28,7 @@
   {
     "name": "Course: Specs",
     "family": "Course & epic level",
+    "owner": null,
     "level": "Standard",
     "statuses": [
       "To Do",
@@ -48,6 +50,7 @@
   {
     "name": "Course: Content Creation",
     "family": "Course & epic level",
+    "owner": null,
     "level": "Standard",
     "statuses": [
       "To Do",
@@ -73,6 +76,7 @@
   {
     "name": "CDLC: Course Brief",
     "family": "Course & epic level",
+    "owner": "Instructional Designer",
     "level": "Standard",
     "statuses": [
       "To Do",
@@ -92,6 +96,7 @@
   {
     "name": "CDLC: Course outline",
     "family": "Course & epic level",
+    "owner": "Instructional Designer",
     "level": "Standard",
     "statuses": [
       "To Do",
@@ -113,6 +118,7 @@
   {
     "name": "CDLC: Research notes",
     "family": "Course & epic level",
+    "owner": "Instructional Designer",
     "level": "Standard",
     "statuses": [
       "To Do",
@@ -130,6 +136,7 @@
   {
     "name": "CDLC: Final Slides",
     "family": "Course & epic level",
+    "owner": "Instructional Designer",
     "level": "Standard",
     "statuses": [
       "To Do",
@@ -155,6 +162,7 @@
   {
     "name": "CDLC: Corrections",
     "family": "Course & epic level",
+    "owner": "Instructional Designer",
     "level": "Standard",
     "statuses": [
       "To Do",
@@ -177,6 +185,7 @@
   {
     "name": "CDLC: Content Review",
     "family": "Course & epic level",
+    "owner": null,
     "level": "Sub-task",
     "statuses": [
       "In Review",
@@ -195,6 +204,7 @@
   {
     "name": "CDLC: Content Upkeep",
     "family": "Course & epic level",
+    "owner": null,
     "level": "Standard",
     "statuses": [
       "To Do",
@@ -218,6 +228,7 @@
   {
     "name": "CDLC: Content Upkeep (sub-task)",
     "family": "Course & epic level",
+    "owner": null,
     "level": "Sub-task",
     "statuses": [
       "To Do",
@@ -241,6 +252,7 @@
   {
     "name": "CDLC: PPT generation",
     "family": "Course & epic level",
+    "owner": "Instructional Designer",
     "level": "Standard",
     "statuses": [
       "To Do",
@@ -262,6 +274,7 @@
   {
     "name": "CDLC: Stock image downloading",
     "family": "Course & epic level",
+    "owner": null,
     "level": "Standard",
     "statuses": [
       "To Do",
@@ -280,6 +293,7 @@
   {
     "name": "CDLC: Translations",
     "family": "Course & epic level",
+    "owner": "Digitization",
     "level": "Standard",
     "statuses": [
       "To Do",
@@ -306,6 +320,7 @@
   {
     "name": "CDLC: Badge and Course Image",
     "family": "Course & epic level",
+    "owner": "Visual Designer",
     "level": "Sub-task",
     "statuses": [
       "To Do",
@@ -324,6 +339,7 @@
   {
     "name": "CDLC: Recording",
     "family": "Course & epic level",
+    "owner": "Instructional Designer",
     "level": "Sub-task",
     "statuses": [
       "Scripting",
@@ -344,6 +360,7 @@
   {
     "name": "CDLC: Base Articulate file creation",
     "family": "Course & epic level",
+    "owner": null,
     "level": "Sub-task",
     "statuses": [
       "To Do",
@@ -368,6 +385,7 @@
   {
     "name": "CDLC: Articulate Review",
     "family": "Course & epic level",
+    "owner": "Instructional Designer",
     "level": "Sub-task",
     "statuses": [
       "To Do",
@@ -392,6 +410,7 @@
   {
     "name": "CDLC: Vyond video",
     "family": "Course & epic level",
+    "owner": null,
     "level": "Sub-task",
     "statuses": [
       "To Do",
@@ -415,6 +434,7 @@
   {
     "name": "Graphics",
     "family": "Course & epic level",
+    "owner": "Visual Designer",
     "level": "Standard",
     "statuses": [
       "To Do",
@@ -440,6 +460,7 @@
   {
     "name": "Assessment",
     "family": "Course & epic level",
+    "owner": "Instructional Designer",
     "level": "Standard",
     "statuses": [
       "To Do",
@@ -463,6 +484,7 @@
   {
     "name": "Instructional Design",
     "family": "Course & epic level",
+    "owner": "Instructional Designers' Team Manager",
     "level": "Standard",
     "statuses": [
       "To Do",
@@ -481,6 +503,7 @@
   {
     "name": "CDLC: Topic",
     "family": "Topic level",
+    "owner": "Instructional Designer",
     "level": "Standard",
     "statuses": [
       "To Do",
@@ -508,6 +531,7 @@
   {
     "name": "CDLC: Topic Final Slides",
     "family": "Topic level",
+    "owner": "Instructional Designer",
     "level": "Sub-task",
     "statuses": [
       "To Do",
@@ -532,6 +556,7 @@
   {
     "name": "CDLC: Topic Graphics",
     "family": "Topic level",
+    "owner": "Visual Designer",
     "level": "Sub-task",
     "statuses": [
       "To Do",
@@ -555,6 +580,7 @@
   {
     "name": "CDLC: Topic Assessment",
     "family": "Topic level",
+    "owner": "Instructional Designer",
     "level": "Sub-task",
     "statuses": [
       "To Do",
@@ -578,6 +604,7 @@
   {
     "name": "CDLC: Topic Corrections",
     "family": "Topic level",
+    "owner": "Instructional Designer",
     "level": "Sub-task",
     "statuses": [
       "To Do",
@@ -600,6 +627,7 @@
   {
     "name": "CDLC: Topic PPT Generation",
     "family": "Topic level",
+    "owner": "Instructional Designer",
     "level": "Sub-task",
     "statuses": [
       "To Do",
@@ -621,6 +649,7 @@
   {
     "name": "CDLC: Topic Stock image downloading",
     "family": "Topic level",
+    "owner": null,
     "level": "Sub-task",
     "statuses": [
       "To Do",
@@ -639,6 +668,7 @@
   {
     "name": "CDLC: Topic Translations",
     "family": "Topic level",
+    "owner": "Digitization",
     "level": "Sub-task",
     "statuses": [
       "To Do",
@@ -664,6 +694,7 @@
   {
     "name": "Content: Digitization (Instructional)",
     "family": "Digitization",
+    "owner": "Digitization Manager",
     "level": "Standard",
     "statuses": [
       "To Do",
@@ -694,6 +725,7 @@
   {
     "name": "Content: Digitization (Informational)",
     "family": "Digitization",
+    "owner": "Digitization Manager",
     "level": "Standard",
     "statuses": [
       "To Do",
@@ -725,6 +757,7 @@
   {
     "name": "Digitization - Upload to AWS + Planning",
     "family": "Digitization",
+    "owner": null,
     "level": "Standard",
     "statuses": [
       "To Do",
@@ -750,6 +783,7 @@
   {
     "name": "Digitization - Upload to AWS + Planning (sub-task)",
     "family": "Digitization",
+    "owner": "Digitization Manager",
     "level": "Sub-task",
     "statuses": [
       "To Do",
@@ -775,6 +809,7 @@
   {
     "name": "Digitization - Restore on SkillCat",
     "family": "Digitization",
+    "owner": null,
     "level": "Standard",
     "statuses": [
       "To Do",
@@ -802,6 +837,7 @@
   {
     "name": "Digitization - Restore on SkillCat (sub-task)",
     "family": "Digitization",
+    "owner": "Digitization Manager",
     "level": "Sub-task",
     "statuses": [
       "To Do",
@@ -828,6 +864,7 @@
   {
     "name": "Digitization - Review",
     "family": "Digitization",
+    "owner": null,
     "level": "Standard",
     "statuses": [
       "To Do",
@@ -848,6 +885,7 @@
   {
     "name": "Digitization - Review (sub-task)",
     "family": "Digitization",
+    "owner": "Digitization Manager",
     "level": "Sub-task",
     "statuses": [
       "To Do",
@@ -869,6 +907,7 @@
   {
     "name": "Digitization - Badge Creation",
     "family": "Digitization",
+    "owner": null,
     "level": "Standard",
     "statuses": [
       "To Do",
@@ -887,6 +926,7 @@
   {
     "name": "Digitization - Badge Creation (Sub-task)",
     "family": "Digitization",
+    "owner": null,
     "level": "Sub-task",
     "statuses": [
       "To Do",
@@ -907,6 +947,7 @@
   {
     "name": "Digitization - Data Sheet Creation",
     "family": "Digitization",
+    "owner": null,
     "level": "Standard",
     "statuses": [
       "To Do",
@@ -928,6 +969,7 @@
   {
     "name": "Digitization - Data Sheet Creation (sub-task)",
     "family": "Digitization",
+    "owner": "Digitization Manager",
     "level": "Sub-task",
     "statuses": [
       "To Do",
@@ -950,6 +992,7 @@
   {
     "name": "Digitization - Course Catalog Updating",
     "family": "Digitization",
+    "owner": null,
     "level": "Standard",
     "statuses": [
       "To Do",
@@ -969,6 +1012,7 @@
   {
     "name": "Digitization - Course Catalog Updating (sub-task)",
     "family": "Digitization",
+    "owner": "Digitization Manager",
     "level": "Sub-task",
     "statuses": [
       "To Do",
@@ -990,6 +1034,7 @@
   {
     "name": "CDLC: Generate Performance Report",
     "family": "Course operations",
+    "owner": null,
     "level": "Standard",
     "statuses": [
       "To Do",
@@ -1007,6 +1052,7 @@
   {
     "name": "CDLC: Generate Performance Report (sub-task)",
     "family": "Course operations",
+    "owner": null,
     "level": "Sub-task",
     "statuses": [
       "To Do",
@@ -1026,6 +1072,7 @@
   {
     "name": "CDLC: Move Source Files",
     "family": "Course operations",
+    "owner": null,
     "level": "Standard",
     "statuses": [
       "To Do",
@@ -1045,6 +1092,7 @@
   {
     "name": "CDLC: Move Source Files (sub-task)",
     "family": "Course operations",
+    "owner": null,
     "level": "Sub-task",
     "statuses": [
       "To Do",
@@ -1065,6 +1113,7 @@
   {
     "name": "CDLC: Restrict Course Folder",
     "family": "Course operations",
+    "owner": null,
     "level": "Standard",
     "statuses": [
       "To Do",
@@ -1082,6 +1131,7 @@
   {
     "name": "CDLC: Restrict Course Folder (sub-task)",
     "family": "Course operations",
+    "owner": "Digitization Manager",
     "level": "Sub-task",
     "statuses": [
       "To Do",
@@ -1101,6 +1151,7 @@
   {
     "name": "CDLC: Run Image Archiving Automation",
     "family": "Course operations",
+    "owner": null,
     "level": "Standard",
     "statuses": [
       "To Do",
@@ -1121,6 +1172,7 @@
   {
     "name": "CDLC: Run Image Archiving Automation (sub-task)",
     "family": "Course operations",
+    "owner": "Digitization Manager",
     "level": "Sub-task",
     "statuses": [
       "To Do",
@@ -1142,6 +1194,7 @@
   {
     "name": "Certification: Template Generation",
     "family": "Certification",
+    "owner": "Instructional Designer",
     "level": "Standard",
     "statuses": [
       "To Do",
@@ -1162,6 +1215,7 @@
   {
     "name": "Certification: Research Note",
     "family": "Certification",
+    "owner": "Instructional Designer",
     "level": "Sub-task",
     "statuses": [
       "To Do",
@@ -1183,6 +1237,7 @@
   {
     "name": "Certification: Slide Chunks",
     "family": "Certification",
+    "owner": "Instructional Designer",
     "level": "Sub-task",
     "statuses": [
       "To Do",
@@ -1205,6 +1260,7 @@
   {
     "name": "Certification: Graphic Definitions",
     "family": "Certification",
+    "owner": "Instructional Designer",
     "level": "Sub-task",
     "statuses": [
       "To Do",
@@ -1229,6 +1285,7 @@
   {
     "name": "Certification: Articulate Creation",
     "family": "Certification",
+    "owner": "Instructional Designer",
     "level": "Sub-task",
     "statuses": [
       "To Do",
@@ -1255,6 +1312,7 @@
   {
     "name": "Applied Layers: Toolkit",
     "family": "Applied Layers",
+    "owner": null,
     "level": "Standard",
     "statuses": [
       "To Do",
@@ -1276,6 +1334,7 @@
   {
     "name": "Applied Layers: Instructions",
     "family": "Applied Layers",
+    "owner": null,
     "level": "Standard",
     "statuses": [
       "To Do",
@@ -1297,6 +1356,7 @@
   {
     "name": "Applied Layers: Content Finalization",
     "family": "Applied Layers",
+    "owner": "Subject Matter Expert and Instructional Designer",
     "level": "Standard",
     "statuses": [
       "Finalize as per SME Requirements",
@@ -1315,6 +1375,7 @@
   {
     "name": "Applied Layers: Video Recording",
     "family": "Applied Layers",
+    "owner": "Subject Matter Expert",
     "level": "Standard",
     "statuses": [
       "Video Recording",
@@ -1333,6 +1394,7 @@
   {
     "name": "Applied Layers: Video Creation",
     "family": "Applied Layers",
+    "owner": "Visual Designer",
     "level": "Standard",
     "statuses": [
       "Storyboard",
@@ -1356,6 +1418,7 @@
   {
     "name": "Simulation: Specs",
     "family": "Simulation & generic",
+    "owner": null,
     "level": "Standard",
     "statuses": [
       "To Do",
@@ -1376,6 +1439,7 @@
   {
     "name": "Simulation: Content Creation",
     "family": "Simulation & generic",
+    "owner": null,
     "level": "Standard",
     "statuses": [
       "To Do",
@@ -1398,6 +1462,7 @@
   {
     "name": "Task",
     "family": "Simulation & generic",
+    "owner": null,
     "level": "Standard",
     "statuses": [
       "To Do",
@@ -1417,6 +1482,7 @@
   {
     "name": "Sub-task",
     "family": "Simulation & generic",
+    "owner": null,
     "level": "Sub-task",
     "statuses": [
       "To Do",
@@ -1436,6 +1502,7 @@
   {
     "name": "Bug",
     "family": "Simulation & generic",
+    "owner": null,
     "level": "Standard",
     "statuses": [
       "To Do",
@@ -1454,6 +1521,7 @@
   {
     "name": "Improvement",
     "family": "Simulation & generic",
+    "owner": null,
     "level": "Standard",
     "statuses": [
       "To Do",
@@ -1472,6 +1540,7 @@
   {
     "name": "Feedback",
     "family": "Simulation & generic",
+    "owner": null,
     "level": "Standard",
     "statuses": [
       "To Do",

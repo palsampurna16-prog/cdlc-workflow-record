@@ -46,6 +46,40 @@ if (!F_RE.test(fragment)) {
 }
 fragment = fragment.replace(F_RE, "/*__FIELDS__*/" + JSON.stringify(fields) + "/*__ENDF__*/");
 
+// Work types grouped by who owns them, derived from the owner field in
+// data/worktypes.json. Shape: [label, "", [[name, dormant], ...]] where dormant is 1
+// when the type had no ticket in the last year. A type owned jointly (e.g. "Subject
+// Matter Expert and Instructional Designer") is listed under each of those roles.
+const worktypes = JSON.parse(await readFile(new URL("./data/worktypes.json", import.meta.url), "utf8"));
+const OWNER_ORDER = [
+  "Instructional Designers' Team Manager",
+  "Instructional Designer",
+  "Visual Designer",
+  "Subject Matter Expert",
+  "Digitization",
+  "Digitization Manager",
+];
+const UNOWNED = "Nobody assigned yet";
+const splitOwner = o => o ? o.split(" and ") : [UNOWNED];
+const byOwner = new Map([...OWNER_ORDER, UNOWNED].map(o => [o, []]));
+for (const w of worktypes) {
+  const dormant = (w.usage?.recent ?? 0) === 0 ? 1 : 0;
+  for (const label of splitOwner(w.owner)) {
+    if (!byOwner.has(label)) byOwner.set(label, []);
+    byOwner.get(label).push([w.name, dormant]);
+  }
+}
+const owners = [...byOwner]
+  .filter(([, rows]) => rows.length)
+  .map(([label, rows]) => [label, "",
+    rows.sort((a, b) => a[0].localeCompare(b[0])).map(([n, d]) => d ? [n, 1] : [n])]);
+const O_RE = /\/\*__OWNERS__\*\/[\s\S]*?\/\*__ENDO__\*\//;
+if (!O_RE.test(fragment)) {
+  console.error("src/page.html is missing the /*__OWNERS__*/ placeholder, aborting.");
+  process.exit(1);
+}
+fragment = fragment.replace(O_RE, "/*__OWNERS__*/" + JSON.stringify(owners) + "/*__ENDO__*/");
+
 const pairs = await loadMap();
 if (REDACT) {
   if (!pairs) {

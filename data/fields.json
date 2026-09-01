@@ -14,7 +14,7 @@
         "Issue Type",
         "issuetype",
         "All 69 · required",
-        "Chosen at creation, or set by the automation that creates the item",
+        "Set by automation for most items. The ID Manager creates Epics, the ID creates Topics",
         null
       ],
       [
@@ -56,7 +56,7 @@
         "Attachment",
         "array",
         "67 of 69",
-        "Whoever uploads a file",
+        "Whoever creates a file attaches or links it. Digitization shares the Planning and Production links; the ID adds the Checklist, Final Slides and Articulate links",
         null
       ],
       [
@@ -117,14 +117,6 @@
         null
       ],
       [
-        "Checklist",
-        "string",
-        "64 of 69",
-        "At epic creation, and again per sub-task before it can leave To Do",
-        "SGP-9998",
-        "val"
-      ],
-      [
         "Instructional Designer",
         "array",
         "64 of 69",
@@ -138,7 +130,8 @@
         "64 of 69",
         "At epic creation. Blocks the move to Digitization if empty",
         "SGP-9998",
-        "val"
+        "val",
+        "The ID Manager fills this when the visual designer is known early; otherwise the ID adds it later"
       ],
       [
         "Quality Specialists",
@@ -167,7 +160,10 @@
         "string",
         "64 of 69",
         "At epic creation",
-        null
+        null,
+        null,
+        "Present in Jira but the team does not currently use it",
+        "dormant"
       ],
       [
         "Course outline document",
@@ -181,29 +177,27 @@
         "string",
         "Epic only",
         "At epic creation",
-        null
-      ],
-      [
-        "Topic",
-        "string",
-        "64 of 69",
-        "Named by the ID when the topic is created; copied down after that",
-        null
+        null,
+        null,
+        "Not currently used in Jira",
+        "dormant"
       ],
       [
         "Due date",
         "date",
         "All 69",
         "At epic creation",
-        null
+        null,
+        null,
+        "The team believes an automation now sets this"
       ],
       [
-        "Course Folder Link",
-        "string",
+        "Target end",
+        "date",
         "64 of 69",
-        "Added on the epic, then cascaded to every child item",
-        "SGP-9553",
-        "auto"
+        "Filled by the ID Manager on the Epic and on Jira tasks, except the Graphic Creation task. For digitization the ID Manager gives one overall estimate at the Epic level rather than per ticket",
+        "SGP-9998",
+        "val"
       ]
     ]
   ],
@@ -212,6 +206,29 @@
     "",
     [
       [
+        "Checklist",
+        "string",
+        "64 of 69",
+        "Filled by the ID, either at the start of the course or before Topic 1 goes to QA review",
+        "SGP-9998",
+        "val"
+      ],
+      [
+        "Topic",
+        "string",
+        "64 of 69",
+        "The ID names the Topic when it is created, then it is copied down. Not set by automation",
+        null
+      ],
+      [
+        "Course Folder Link",
+        "string",
+        "64 of 69",
+        "Filled by the ID on the epic, then cascaded to every child item",
+        "SGP-9553",
+        "auto"
+      ],
+      [
         "Final Slides link",
         "string",
         "63 of 69",
@@ -219,10 +236,10 @@
         null
       ],
       [
-        "Target end",
-        "date",
-        "64 of 69",
-        "Required alongside the Checklist before a sub-task can leave To Do",
+        "Articulate Review Link",
+        "string",
+        "63 of 69",
+        "Usually added by the ID. An automation now copies it across once it is set on one task. Digitization also fills it after running the base file",
         "SGP-9998",
         "val"
       ]
@@ -232,14 +249,6 @@
     "Visual Designer",
     "",
     [
-      [
-        "Articulate Review Link",
-        "string",
-        "63 of 69",
-        "Added at the Graphics stage. Blocks the move out of In Review if empty",
-        "SGP-9998",
-        "val"
-      ],
       [
         "Final Storyline Link",
         "string",
@@ -281,6 +290,19 @@
     ]
   ],
   [
+    "Subject Matter Expert",
+    "",
+    [
+      [
+        "Course keywords",
+        "string",
+        "Epic only",
+        "The Subject Matter Expert fills this. Not covered by any written instruction",
+        null
+      ]
+    ]
+  ],
+  [
     "Nobody assigned yet",
     "",
     [
@@ -297,14 +319,18 @@
         "62 of 69",
         "Not mentioned. An automation to set start and end dates was requested and never built",
         "SGP-9745",
-        "note"
+        "note",
+        "In practice, whoever works on the ticket enters this"
       ],
       [
         "Pod number",
         "option",
         "64 of 69",
         "No instructions written for this",
-        null
+        null,
+        null,
+        "Not currently used",
+        "dormant"
       ],
       [
         "Topic type",
@@ -342,13 +368,6 @@
         null
       ],
       [
-        "Course keywords",
-        "string",
-        "Epic only",
-        "Not mentioned, though Update Keywords is a digitization status",
-        null
-      ],
-      [
         "Learning plan",
         "string",
         "Epic only",
@@ -360,42 +379,60 @@
         "string",
         "Course: Content Creation only",
         "Not mentioned. That work type is dormant",
-        null
+        null,
+        null,
+        "Same as Planning Link. Could be removed",
+        "duplicate"
       ],
       [
         "Staging Course Link",
         "string",
         "Course: Content Creation only",
         "Not mentioned. That work type is dormant",
-        null
+        null,
+        null,
+        "Not currently used",
+        "dormant"
       ],
       [
         "SkillCat Course Link",
         "string",
         "Course: Content Creation only",
         "Not mentioned. That work type is dormant",
-        null
+        null,
+        null,
+        "Same as Production Link. Could be removed",
+        "duplicate"
       ],
       [
         "Articulate Story File Link",
         "string",
         "Course: Content Creation only",
         "Not mentioned. Overlaps with Final Storyline Link",
-        null
+        null,
+        null,
+        null,
+        "dormant"
       ],
       [
         "Storyboard Doc",
         "string",
         "Simulation: Content Creation only",
         "Not mentioned. That work type is dormant",
-        null
+        null,
+        null,
+        null,
+        "dormant"
       ],
       [
         "Learning Objective Doc",
         "string",
         "Simulation: Specs only",
         "Not mentioned. That work type is dormant",
-        null
+        null,
+        null,
+        null,
+        "dormant"
       ],
       [
         "Feedback Source",
@@ -409,7 +446,10 @@
         "string",
         "Feedback only",
         "Not mentioned. That work type is dormant",
-        null
+        null,
+        null,
+        null,
+        "dormant"
       ]
     ]
   ]

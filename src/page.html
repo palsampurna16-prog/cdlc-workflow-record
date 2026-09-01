@@ -283,8 +283,11 @@
   .empty-filter { padding:var(--space-400); text-align:center; color:var(--c-text-subtle); }
 
 
-  /* fields by owner */
-  .fgroup { margin-top:var(--space-400); }
+  /* fields and work types, by role */
+  .fsub { margin:var(--space-500) 0 var(--space-100); font-size:11px; font-weight:700;
+          letter-spacing:.06em; text-transform:uppercase; color:var(--c-text-subtlest); }
+  .fgroup { margin-top:var(--space-300); padding-left:var(--space-200);
+            border-left:3px solid var(--rc, var(--c-border-strong)); }
   .fgroup h3 { margin:0 0 var(--space-150); font-size:15px; font-weight:600; }
   .fgroup.orphan h3 { color:#974F0C; }
   .frow { display:flex; align-items:baseline; gap:var(--space-150);
@@ -292,8 +295,14 @@
   .frow:last-child { border-bottom:0; }
   .frow:nth-child(odd) { background:var(--c-surface-sunken); }
   .fname { flex:0 0 190px; font-weight:600; font-size:13px; }
+  .fname.wide { flex:1 1 auto; }
   .fhow { flex:1; font-size:13px; color:var(--c-text-subtle); }
-  .fmeta { flex:none; font-size:12px; color:var(--c-text-subtlest); text-align:right; white-space:nowrap; }
+  .fnote { display:block; margin-top:var(--space-050); font-style:normal; font-size:12px;
+           color:var(--c-text-subtlest); padding-left:var(--space-100);
+           border-left:2px solid var(--c-border-strong); }
+  .ftag { display:inline-block; margin-left:var(--space-050); padding:0 var(--space-050);
+          font-size:10px; font-weight:700; letter-spacing:.03em; text-transform:uppercase;
+          color:#974F0C; background:#974F0C1a; border-radius:var(--radius-sm); vertical-align:1px; }
 
 
   /* request a change */
@@ -310,6 +319,8 @@
     .search { display:none; }
     .req { display:none; }
     .stages:not(.vertical) .seq-arrow { display:none; }
+    .frow { flex-direction:column; gap:var(--space-050); }
+    .frow .fname { flex:none; }
   }
 </style>
 
@@ -440,44 +451,104 @@ function facts(o, extra) {
    `</dl>`;
 }
 
-/* ---------- fields, grouped by who fills them ---------- */
+/* ---------- fields and work types, seen by role ---------- */
+/* Jira records that a field exists, not who fills it, and it records a work type but
+   not who owns it. Both mappings come from the team's process document and a review
+   the team filled in, so they are maintained by hand rather than read from Jira. A
+   note under a field is what the team said when we checked. Pick a role at the top to
+   narrow the page to that one role. */
 const FIELDS = /*__FIELDS__*/[]/*__ENDF__*/;
+const OWNERS = /*__OWNERS__*/[]/*__ENDO__*/;
 
-/* Jira records that a field exists, not who is responsible for filling it. Who fills
-   what comes from the team's own process document, so these groupings are maintained
-   by hand rather than read from Jira. The last group is the fields nobody has been
-   assigned to yet. */
+const TAG = { dormant:"not in use", duplicate:"duplicate" };
+
+/* One accent per role for the bar down the left of its group. Literal values so they
+   read the same in light and dark, the way the orphan colour already does. */
+const ROLE_ACCENT = {
+  "Jira sets these":                       "#6B7280",
+  "Instructional Designers' Team Manager":  "#7C3AED",
+  "Instructional Designer":                 "#2563EB",
+  "Visual Designer":                        "#0D9488",
+  "Subject Matter Expert":                  "#DB2777",
+  "Digitization":                           "#4F46E5",
+  "Digitization Manager":                   "#0891B2",
+  "Nobody assigned yet":                    "#974F0C",
+};
+const ROLES = Object.keys(ROLE_ACCENT);
+const fieldUnused = r => r.length > 7 && r[7];   /* fields: flag at index 7 */
+const typeUnused  = r => r.length > 1 && r[1];   /* work types: dormant at index 1 */
+
+let fieldRole = new Set();
+let hideUnused = false;
+
 function viewFields() {
-  const total = FIELDS.reduce((n,g) => n + g[2].length, 0);
-  const owned = FIELDS.filter(g => !/^Nobody assigned/i.test(g[0]))
-                      .reduce((n,g) => n + g[2].length, 0);
+  const pick = t => !fieldRole.size || fieldRole.has(t);
+  /* rows a role has after the not-in-use filter only; the role chips ignore each other */
+  const rowsOf = (SET, dead) => t => {
+    const g = SET.find(x => x[0] === t);
+    return g ? g[2].filter(r => !(hideUnused && dead(r))) : [];
+  };
+  const allFieldRows = rowsOf(FIELDS, fieldUnused);
+  const allTypeRows = rowsOf(OWNERS, typeUnused);
+  const fieldRows = t => pick(t) ? allFieldRows(t) : [];
+  const typeRows = t => pick(t) ? allTypeRows(t) : [];
+  const count = t => allFieldRows(t).length + allTypeRows(t).length;
+  const shown = ROLES.filter(pick).reduce((n,t) => n + count(t), 0);
+  const unused = FIELDS.reduce((n,g) => n + g[2].filter(fieldUnused).length, 0)
+               + OWNERS.reduce((n,g) => n + g[2].filter(typeUnused).length, 0);
+
+  const chip = (val,label,n,on) =>
+    `<button data-r="${esc(val)}" aria-pressed="${on}">${esc(label)} <span class="n">${n}</span></button>`;
+
+  const group = (t, rows, body) => {
+    const orphan = /^Nobody assigned/i.test(t);
+    return `<section class="fgroup${orphan?" orphan":""}" style="--rc:${ROLE_ACCENT[t]}">
+       <h3>${esc(t)}</h3>
+       <div class="rows">${body}</div>
+     </section>`;
+  };
+
+  const fieldGroups = ROLES.map(t => {
+    const rows = fieldRows(t);
+    return rows.length ? group(t, rows, rows.map(([name, , , how, , , note, flag]) =>
+      `<div class="frow">
+         <span class="fname">${esc(name)}${flag ? ` <span class="ftag">${esc(TAG[flag]||flag)}</span>` : ""}</span>
+         <span class="fhow">${esc(how || "")}${note ? `<em class="fnote">${esc(note)}</em>` : ""}</span>
+       </div>`).join("")) : "";
+  }).join("");
+
+  const typeGroups = ROLES.map(t => {
+    const rows = typeRows(t);
+    return rows.length ? group(t, rows, rows.map(([name]) =>
+      `<div class="frow"><span class="fname wide">${esc(name)}</span></div>`).join("")) : "";
+  }).join("");
 
   view.innerHTML =
     crumbs([{label:"Projects", to:""},{label:"CDLC", to:"CDLC"},{label:"Fields"}]) +
     `<div class="col">
        <div class="page-head"><h1>CDLC Epic</h1></div>
        ${tabs("fields")}
-       <p class="lede">Every field on a CDLC work item, and who fills it.</p>
-       <dl class="facts">
-         <div class="fact"><dt>Fields</dt><dd>${total}</dd></div>
-         <div class="fact"><dt>With an owner</dt><dd>${owned}</dd></div>
-         <div class="fact"><dt>Unassigned</dt><dd>${total-owned}</dd></div>
-       </dl>` +
-    FIELDS.map(([title, , rows]) => {
-      const orphan = /^Nobody assigned/i.test(title);
-      return `<section class="fgroup${orphan?" orphan":""}">
-         <h3>${esc(title)}</h3>
-         <div class="rows">` +
-           rows.map(([name, type, coverage, how]) =>
-             `<div class="frow">
-                <span class="fname">${esc(name)}</span>
-                <span class="fhow">${esc(how || "")}</span>
-                <span class="fmeta">${esc(type || "")}${coverage ? " &middot; "+esc(coverage) : ""}</span>
-              </div>`).join("") +
-      `  </div>
-       </section>`; }).join("") +
+       <p class="lede">Pick a role to see the fields it fills and the work types it owns.</p>
+       <div class="filters">` +
+         chip("", "All roles", shown, !fieldRole.size) +
+         ROLES.map(t => chip(t, t, count(t), fieldRole.has(t))).join("") +
+       `</div>` +
+       (unused ? `<div class="filters"><button data-x="1" aria-pressed="${hideUnused}">Hide fields and types not in use <span class="n">${unused}</span></button></div>` : "") +
+       (fieldGroups ? `<h2 class="fsub">Fields</h2>${fieldGroups}` : "") +
+       (typeGroups ? `<h2 class="fsub">Work types</h2>${typeGroups}` : "") +
+       (!fieldGroups && !typeGroups ? `<p class="empty-filter">Nothing to show for that.</p>` : "") +
     `</div>`;
+
   wireCrumbs(); wireTabs();
+  view.querySelectorAll('.filters button[data-r]').forEach(el =>
+    el.addEventListener("click", () => {
+      const r = el.dataset.r;
+      if (!r) fieldRole.clear();
+      else fieldRole.has(r) ? fieldRole.delete(r) : fieldRole.add(r);
+      viewFields(); window.scrollTo({ top: 0 });
+    }));
+  const x = view.querySelector('.filters button[data-x]');
+  if (x) x.addEventListener("click", () => { hideUnused = !hideUnused; viewFields(); window.scrollTo({ top: 0 }); });
 }
 
 /* ---------- CDLC section tabs ---------- */

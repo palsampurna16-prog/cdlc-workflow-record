@@ -295,8 +295,11 @@
   .empty-filter { padding:var(--space-400); text-align:center; color:var(--c-text-subtle); }
 
 
-  /* fields by owner */
-  .fgroup { margin-top:var(--space-400); }
+  /* fields and work types, by role */
+  .fsub { margin:var(--space-500) 0 var(--space-100); font-size:11px; font-weight:700;
+          letter-spacing:.06em; text-transform:uppercase; color:var(--c-text-subtlest); }
+  .fgroup { margin-top:var(--space-300); padding-left:var(--space-200);
+            border-left:3px solid var(--rc, var(--c-border-strong)); }
   .fgroup h3 { margin:0 0 var(--space-150); font-size:15px; font-weight:600; }
   .fgroup.orphan h3 { color:#974F0C; }
   .frow { display:flex; align-items:baseline; gap:var(--space-150);
@@ -304,8 +307,14 @@
   .frow:last-child { border-bottom:0; }
   .frow:nth-child(odd) { background:var(--c-surface-sunken); }
   .fname { flex:0 0 190px; font-weight:600; font-size:13px; }
+  .fname.wide { flex:1 1 auto; }
   .fhow { flex:1; font-size:13px; color:var(--c-text-subtle); }
-  .fmeta { flex:none; font-size:12px; color:var(--c-text-subtlest); text-align:right; white-space:nowrap; }
+  .fnote { display:block; margin-top:var(--space-050); font-style:normal; font-size:12px;
+           color:var(--c-text-subtlest); padding-left:var(--space-100);
+           border-left:2px solid var(--c-border-strong); }
+  .ftag { display:inline-block; margin-left:var(--space-050); padding:0 var(--space-050);
+          font-size:10px; font-weight:700; letter-spacing:.03em; text-transform:uppercase;
+          color:#974F0C; background:#974F0C1a; border-radius:var(--radius-sm); vertical-align:1px; }
 
 
   /* request a change */
@@ -322,6 +331,8 @@
     .search { display:none; }
     .req { display:none; }
     .stages:not(.vertical) .seq-arrow { display:none; }
+    .frow { flex-direction:column; gap:var(--space-050); }
+    .frow .fname { flex:none; }
   }
 </style>
 
@@ -452,44 +463,104 @@ function facts(o, extra) {
    `</dl>`;
 }
 
-/* ---------- fields, grouped by who fills them ---------- */
-const FIELDS = /*__FIELDS__*/[["Jira sets these","",[["Project","project","All 69 · required","Fixed when the work item is created",null],["Issue Type","issuetype","All 69 · required","Chosen at creation, or set by the automation that creates the item",null],["Reporter","user","All 69 · required","Whoever created the item, or the automation account",null],["Parent","issuelink","68 of 69 · required on sub-tasks","Set by the automation that creates the child",null],["Parent Link","any","62 of 69","Maintained by Jira for the hierarchy",null],["Epic Link","any","5 work types","Legacy hierarchy field, superseded by Parent",null],["Linked Issues","array","63 of 69","Only when someone links two items by hand",null],["Attachment","array","67 of 69","Whoever uploads a file",null],["Epic Percentage Complete","number","Epic only","Automation, recalculated as child items close","SGP-10441","auto"],["Epic Progress Bar","string","Epic only","Automation, alongside the percentage","SGP-10442","auto"]]],["Instructional Designers' Team Manager","",[["Summary","string","All 69 · required","At epic creation, then set by automation on children",null],["Description","string","All 69","At epic creation. Some work types arrive with it pre-filled as instructions",null],["Epic Name","string","Epic only","At epic creation",null],["Course type","option","64 of 69","At epic creation. Decides which child work types get created",null],["Assignee","user","All 69","At epic creation, then reassigned by hand as work changes hands",null],["Checklist","string","64 of 69","At epic creation, and again per sub-task before it can leave To Do","SGP-9998","val"],["Instructional Designer","array","64 of 69","At epic creation. Blocks the move to Digitization if empty","SGP-9998","val"],["Visual Designer(s)","array","64 of 69","At epic creation. Blocks the move to Digitization if empty","SGP-9998","val"],["Quality Specialists","array","64 of 69","At epic creation. Blocks the move to Digitization if empty","SGP-9998","val"],["Subject Matter Expert","array","64 of 69","At epic creation",null],["External Reviewer","array","64 of 69","At epic creation, where the course uses one",null],["Business Specs","string","64 of 69","At epic creation",null],["Course outline document","string","63 of 69","At epic creation",null],["Estimate sheet","string","Epic only","At epic creation",null],["Topic","string","64 of 69","Named by the ID when the topic is created; copied down after that",null],["Due date","date","All 69","At epic creation",null],["Course Folder Link","string","64 of 69","Added on the epic, then cascaded to every child item","SGP-9553","auto"]]],["Instructional Designer","",[["Final Slides link","string","63 of 69","Added to the Topic once Final Slides exist, so it shows on everything created afterwards",null],["Target end","date","64 of 69","Required alongside the Checklist before a sub-task can leave To Do","SGP-9998","val"]]],["Visual Designer","",[["Articulate Review Link","string","63 of 69","Added at the Graphics stage. Blocks the move out of In Review if empty","SGP-9998","val"],["Final Storyline Link","string","64 of 69","Added after Articulate review. Blocks the move to Done if empty","SGP-10834","val"]]],["Digitization","",[["Planning Link","string","64 of 69","Added on Upload to AWS + Planning. Blocks the move to In Review if empty","SGP-9553","val"],["Production Link","string","64 of 69","Added on Restore on SkillCat. Blocks the move to In Review if empty","SGP-9553","val"],["Digitization Resource","array","64 of 69","Who is doing the digitization. Renamed from Data Entry Resource","SGP-9590","note"]]],["Nobody assigned yet","",[["Priority","priority","All 69","No instructions written for this",null],["Start date","date","62 of 69","Not mentioned. An automation to set start and end dates was requested and never built","SGP-9745","note"],["Pod number","option","64 of 69","No instructions written for this",null],["Topic type","option","63 of 69","No instructions written for this",null],["Course Difficulty Level","option","5 work types","Not mentioned. Only on Simulation, Feedback and Improvement types",null],["Simulation Difficulty Level","option","3 work types","Not mentioned. Simulation work types only",null],["Course category","string","Epic only","No instructions written for this",null],["Course competency","string","Epic only","No instructions written for this",null],["Course keywords","string","Epic only","Not mentioned, though Update Keywords is a digitization status",null],["Learning plan","string","Epic only","Not mentioned, though Update Learning Plan is a digitization status",null],["Guroo Course Link","string","Course: Content Creation only","Not mentioned. That work type is dormant",null],["Staging Course Link","string","Course: Content Creation only","Not mentioned. That work type is dormant",null],["SkillCat Course Link","string","Course: Content Creation only","Not mentioned. That work type is dormant",null],["Articulate Story File Link","string","Course: Content Creation only","Not mentioned. Overlaps with Final Storyline Link",null],["Storyboard Doc","string","Simulation: Content Creation only","Not mentioned. That work type is dormant",null],["Learning Objective Doc","string","Simulation: Specs only","Not mentioned. That work type is dormant",null],["Feedback Source","array","Feedback only · required","Not mentioned. The only custom field Jira marks required anywhere in CDLC",null],["Feedback Reference Link","string","Feedback only","Not mentioned. That work type is dormant",null]]]]/*__ENDF__*/;
+/* ---------- fields and work types, seen by role ---------- */
+/* Jira records that a field exists, not who fills it, and it records a work type but
+   not who owns it. Both mappings come from the team's process document and a review
+   the team filled in, so they are maintained by hand rather than read from Jira. A
+   note under a field is what the team said when we checked. Pick a role at the top to
+   narrow the page to that one role. */
+const FIELDS = /*__FIELDS__*/[["Jira sets these","",[["Project","project","All 69 · required","Fixed when the work item is created",null],["Issue Type","issuetype","All 69 · required","Set by automation for most items. The ID Manager creates Epics, the ID creates Topics",null],["Reporter","user","All 69 · required","Whoever created the item, or the automation account",null],["Parent","issuelink","68 of 69 · required on sub-tasks","Set by the automation that creates the child",null],["Parent Link","any","62 of 69","Maintained by Jira for the hierarchy",null],["Epic Link","any","5 work types","Legacy hierarchy field, superseded by Parent",null],["Linked Issues","array","63 of 69","Only when someone links two items by hand",null],["Attachment","array","67 of 69","Whoever creates a file attaches or links it. Digitization shares the Planning and Production links; the ID adds the Checklist, Final Slides and Articulate links",null],["Epic Percentage Complete","number","Epic only","Automation, recalculated as child items close","SGP-10441","auto"],["Epic Progress Bar","string","Epic only","Automation, alongside the percentage","SGP-10442","auto"]]],["Instructional Designers' Team Manager","",[["Summary","string","All 69 · required","At epic creation, then set by automation on children",null],["Description","string","All 69","At epic creation. Some work types arrive with it pre-filled as instructions",null],["Epic Name","string","Epic only","At epic creation",null],["Course type","option","64 of 69","At epic creation. Decides which child work types get created",null],["Assignee","user","All 69","At epic creation, then reassigned by hand as work changes hands",null],["Instructional Designer","array","64 of 69","At epic creation. Blocks the move to Digitization if empty","SGP-9998","val"],["Visual Designer(s)","array","64 of 69","At epic creation. Blocks the move to Digitization if empty","SGP-9998","val","The ID Manager fills this when the visual designer is known early; otherwise the ID adds it later"],["Quality Specialists","array","64 of 69","At epic creation. Blocks the move to Digitization if empty","SGP-9998","val"],["Subject Matter Expert","array","64 of 69","At epic creation",null],["External Reviewer","array","64 of 69","At epic creation, where the course uses one",null],["Business Specs","string","64 of 69","At epic creation",null,null,"Present in Jira but the team does not currently use it","dormant"],["Course outline document","string","63 of 69","At epic creation",null],["Estimate sheet","string","Epic only","At epic creation",null,null,"Not currently used in Jira","dormant"],["Due date","date","All 69","At epic creation",null,null,"The team believes an automation now sets this"],["Target end","date","64 of 69","Filled by the ID Manager on the Epic and on Jira tasks, except the Graphic Creation task. For digitization the ID Manager gives one overall estimate at the Epic level rather than per ticket","SGP-9998","val"]]],["Instructional Designer","",[["Checklist","string","64 of 69","Filled by the ID, either at the start of the course or before Topic 1 goes to QA review","SGP-9998","val"],["Topic","string","64 of 69","The ID names the Topic when it is created, then it is copied down. Not set by automation",null],["Course Folder Link","string","64 of 69","Filled by the ID on the epic, then cascaded to every child item","SGP-9553","auto"],["Final Slides link","string","63 of 69","Added to the Topic once Final Slides exist, so it shows on everything created afterwards",null],["Articulate Review Link","string","63 of 69","Usually added by the ID. An automation now copies it across once it is set on one task. Digitization also fills it after running the base file","SGP-9998","val"]]],["Visual Designer","",[["Final Storyline Link","string","64 of 69","Added after Articulate review. Blocks the move to Done if empty","SGP-10834","val"]]],["Digitization","",[["Planning Link","string","64 of 69","Added on Upload to AWS + Planning. Blocks the move to In Review if empty","SGP-9553","val"],["Production Link","string","64 of 69","Added on Restore on SkillCat. Blocks the move to In Review if empty","SGP-9553","val"],["Digitization Resource","array","64 of 69","Who is doing the digitization. Renamed from Data Entry Resource","SGP-9590","note"]]],["Subject Matter Expert","",[["Course keywords","string","Epic only","The Subject Matter Expert fills this. Not covered by any written instruction",null]]],["Nobody assigned yet","",[["Priority","priority","All 69","No instructions written for this",null],["Start date","date","62 of 69","Not mentioned. An automation to set start and end dates was requested and never built","SGP-9745","note","In practice, whoever works on the ticket enters this"],["Pod number","option","64 of 69","No instructions written for this",null,null,"Not currently used","dormant"],["Topic type","option","63 of 69","No instructions written for this",null],["Course Difficulty Level","option","5 work types","Not mentioned. Only on Simulation, Feedback and Improvement types",null],["Simulation Difficulty Level","option","3 work types","Not mentioned. Simulation work types only",null],["Course category","string","Epic only","No instructions written for this",null],["Course competency","string","Epic only","No instructions written for this",null],["Learning plan","string","Epic only","Not mentioned, though Update Learning Plan is a digitization status",null],["Guroo Course Link","string","Course: Content Creation only","Not mentioned. That work type is dormant",null,null,"Same as Planning Link. Could be removed","duplicate"],["Staging Course Link","string","Course: Content Creation only","Not mentioned. That work type is dormant",null,null,"Not currently used","dormant"],["SkillCat Course Link","string","Course: Content Creation only","Not mentioned. That work type is dormant",null,null,"Same as Production Link. Could be removed","duplicate"],["Articulate Story File Link","string","Course: Content Creation only","Not mentioned. Overlaps with Final Storyline Link",null,null,null,"dormant"],["Storyboard Doc","string","Simulation: Content Creation only","Not mentioned. That work type is dormant",null,null,null,"dormant"],["Learning Objective Doc","string","Simulation: Specs only","Not mentioned. That work type is dormant",null,null,null,"dormant"],["Feedback Source","array","Feedback only · required","Not mentioned. The only custom field Jira marks required anywhere in CDLC",null],["Feedback Reference Link","string","Feedback only","Not mentioned. That work type is dormant",null,null,null,"dormant"]]]]/*__ENDF__*/;
+const OWNERS = /*__OWNERS__*/[["Instructional Designers' Team Manager","",[["Epic"],["Instructional Design",1]]],["Instructional Designer","",[["Applied Layers: Content Finalization"],["Assessment",1],["CDLC: Articulate Review"],["CDLC: Corrections",1],["CDLC: Course Brief"],["CDLC: Course outline"],["CDLC: Final Slides"],["CDLC: PPT generation",1],["CDLC: Recording"],["CDLC: Research notes",1],["CDLC: Topic"],["CDLC: Topic Assessment"],["CDLC: Topic Corrections"],["CDLC: Topic Final Slides"],["CDLC: Topic PPT Generation"],["Certification: Articulate Creation"],["Certification: Graphic Definitions"],["Certification: Research Note"],["Certification: Slide Chunks"],["Certification: Template Generation"]]],["Visual Designer","",[["Applied Layers: Video Creation"],["CDLC: Badge and Course Image"],["CDLC: Topic Graphics"],["Graphics",1]]],["Subject Matter Expert","",[["Applied Layers: Content Finalization"],["Applied Layers: Video Recording"]]],["Digitization","",[["CDLC: Topic Translations"],["CDLC: Translations"]]],["Digitization Manager","",[["CDLC: Restrict Course Folder (sub-task)"],["CDLC: Run Image Archiving Automation (sub-task)"],["Content: Digitization (Informational)"],["Content: Digitization (Instructional)"],["Digitization - Course Catalog Updating (sub-task)"],["Digitization - Data Sheet Creation (sub-task)"],["Digitization - Restore on SkillCat (sub-task)"],["Digitization - Review (sub-task)"],["Digitization - Upload to AWS + Planning (sub-task)"]]],["Nobody assigned yet","",[["Applied Layers: Instructions"],["Applied Layers: Toolkit"],["Bug",1],["CDLC: Base Articulate file creation"],["CDLC: Content Review"],["CDLC: Content Upkeep"],["CDLC: Content Upkeep (sub-task)"],["CDLC: Generate Performance Report"],["CDLC: Generate Performance Report (sub-task)"],["CDLC: Move Source Files"],["CDLC: Move Source Files (sub-task)"],["CDLC: Restrict Course Folder"],["CDLC: Run Image Archiving Automation"],["CDLC: Stock image downloading",1],["CDLC: Topic Stock image downloading",1],["CDLC: Vyond video",1],["Course: Content Creation",1],["Course: Specs"],["Digitization - Badge Creation"],["Digitization - Badge Creation (Sub-task)"],["Digitization - Course Catalog Updating"],["Digitization - Data Sheet Creation"],["Digitization - Restore on SkillCat"],["Digitization - Review"],["Digitization - Upload to AWS + Planning"],["Feedback",1],["Improvement",1],["Simulation: Content Creation",1],["Simulation: Specs",1],["Sub-task"],["Task"]]]]/*__ENDO__*/;
 
-/* Jira records that a field exists, not who is responsible for filling it. Who fills
-   what comes from the team's own process document, so these groupings are maintained
-   by hand rather than read from Jira. The last group is the fields nobody has been
-   assigned to yet. */
+const TAG = { dormant:"not in use", duplicate:"duplicate" };
+
+/* One accent per role for the bar down the left of its group. Literal values so they
+   read the same in light and dark, the way the orphan colour already does. */
+const ROLE_ACCENT = {
+  "Jira sets these":                       "#6B7280",
+  "Instructional Designers' Team Manager":  "#7C3AED",
+  "Instructional Designer":                 "#2563EB",
+  "Visual Designer":                        "#0D9488",
+  "Subject Matter Expert":                  "#DB2777",
+  "Digitization":                           "#4F46E5",
+  "Digitization Manager":                   "#0891B2",
+  "Nobody assigned yet":                    "#974F0C",
+};
+const ROLES = Object.keys(ROLE_ACCENT);
+const fieldUnused = r => r.length > 7 && r[7];   /* fields: flag at index 7 */
+const typeUnused  = r => r.length > 1 && r[1];   /* work types: dormant at index 1 */
+
+let fieldRole = new Set();
+let hideUnused = false;
+
 function viewFields() {
-  const total = FIELDS.reduce((n,g) => n + g[2].length, 0);
-  const owned = FIELDS.filter(g => !/^Nobody assigned/i.test(g[0]))
-                      .reduce((n,g) => n + g[2].length, 0);
+  const pick = t => !fieldRole.size || fieldRole.has(t);
+  /* rows a role has after the not-in-use filter only; the role chips ignore each other */
+  const rowsOf = (SET, dead) => t => {
+    const g = SET.find(x => x[0] === t);
+    return g ? g[2].filter(r => !(hideUnused && dead(r))) : [];
+  };
+  const allFieldRows = rowsOf(FIELDS, fieldUnused);
+  const allTypeRows = rowsOf(OWNERS, typeUnused);
+  const fieldRows = t => pick(t) ? allFieldRows(t) : [];
+  const typeRows = t => pick(t) ? allTypeRows(t) : [];
+  const count = t => allFieldRows(t).length + allTypeRows(t).length;
+  const shown = ROLES.filter(pick).reduce((n,t) => n + count(t), 0);
+  const unused = FIELDS.reduce((n,g) => n + g[2].filter(fieldUnused).length, 0)
+               + OWNERS.reduce((n,g) => n + g[2].filter(typeUnused).length, 0);
+
+  const chip = (val,label,n,on) =>
+    `<button data-r="${esc(val)}" aria-pressed="${on}">${esc(label)} <span class="n">${n}</span></button>`;
+
+  const group = (t, rows, body) => {
+    const orphan = /^Nobody assigned/i.test(t);
+    return `<section class="fgroup${orphan?" orphan":""}" style="--rc:${ROLE_ACCENT[t]}">
+       <h3>${esc(t)}</h3>
+       <div class="rows">${body}</div>
+     </section>`;
+  };
+
+  const fieldGroups = ROLES.map(t => {
+    const rows = fieldRows(t);
+    return rows.length ? group(t, rows, rows.map(([name, , , how, , , note, flag]) =>
+      `<div class="frow">
+         <span class="fname">${esc(name)}${flag ? ` <span class="ftag">${esc(TAG[flag]||flag)}</span>` : ""}</span>
+         <span class="fhow">${esc(how || "")}${note ? `<em class="fnote">${esc(note)}</em>` : ""}</span>
+       </div>`).join("")) : "";
+  }).join("");
+
+  const typeGroups = ROLES.map(t => {
+    const rows = typeRows(t);
+    return rows.length ? group(t, rows, rows.map(([name]) =>
+      `<div class="frow"><span class="fname wide">${esc(name)}</span></div>`).join("")) : "";
+  }).join("");
 
   view.innerHTML =
     crumbs([{label:"Projects", to:""},{label:"CDLC", to:"CDLC"},{label:"Fields"}]) +
     `<div class="col">
        <div class="page-head"><h1>CDLC Epic</h1></div>
        ${tabs("fields")}
-       <p class="lede">Every field on a CDLC work item, and who fills it.</p>
-       <dl class="facts">
-         <div class="fact"><dt>Fields</dt><dd>${total}</dd></div>
-         <div class="fact"><dt>With an owner</dt><dd>${owned}</dd></div>
-         <div class="fact"><dt>Unassigned</dt><dd>${total-owned}</dd></div>
-       </dl>` +
-    FIELDS.map(([title, , rows]) => {
-      const orphan = /^Nobody assigned/i.test(title);
-      return `<section class="fgroup${orphan?" orphan":""}">
-         <h3>${esc(title)}</h3>
-         <div class="rows">` +
-           rows.map(([name, type, coverage, how]) =>
-             `<div class="frow">
-                <span class="fname">${esc(name)}</span>
-                <span class="fhow">${esc(how || "")}</span>
-                <span class="fmeta">${esc(type || "")}${coverage ? " &middot; "+esc(coverage) : ""}</span>
-              </div>`).join("") +
-      `  </div>
-       </section>`; }).join("") +
+       <p class="lede">Pick a role to see the fields it fills and the work types it owns.</p>
+       <div class="filters">` +
+         chip("", "All roles", shown, !fieldRole.size) +
+         ROLES.map(t => chip(t, t, count(t), fieldRole.has(t))).join("") +
+       `</div>` +
+       (unused ? `<div class="filters"><button data-x="1" aria-pressed="${hideUnused}">Hide fields and types not in use <span class="n">${unused}</span></button></div>` : "") +
+       (fieldGroups ? `<h2 class="fsub">Fields</h2>${fieldGroups}` : "") +
+       (typeGroups ? `<h2 class="fsub">Work types</h2>${typeGroups}` : "") +
+       (!fieldGroups && !typeGroups ? `<p class="empty-filter">Nothing to show for that.</p>` : "") +
     `</div>`;
+
   wireCrumbs(); wireTabs();
+  view.querySelectorAll('.filters button[data-r]').forEach(el =>
+    el.addEventListener("click", () => {
+      const r = el.dataset.r;
+      if (!r) fieldRole.clear();
+      else fieldRole.has(r) ? fieldRole.delete(r) : fieldRole.add(r);
+      viewFields(); window.scrollTo({ top: 0 });
+    }));
+  const x = view.querySelector('.filters button[data-x]');
+  if (x) x.addEventListener("click", () => { hideUnused = !hideUnused; viewFields(); window.scrollTo({ top: 0 }); });
 }
 
 /* ---------- CDLC section tabs ---------- */
