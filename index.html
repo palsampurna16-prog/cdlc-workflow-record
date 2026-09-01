@@ -282,39 +282,54 @@
 
   /* history filter toggles */
   .filters { display:flex; flex-wrap:wrap; gap:var(--space-100); margin-bottom:var(--space-200); }
-  .filters button { display:inline-flex; align-items:center; gap:var(--space-050);
+  .filters button, .ftoolbar button { display:inline-flex; align-items:center; gap:var(--space-050);
       padding:var(--space-050) var(--space-150); font:inherit; font-size:13px; font-weight:600;
       color:var(--c-text-subtle); background:var(--c-surface); cursor:pointer;
       border:1px solid var(--c-border-strong); border-radius:999px;
       transition:background-color var(--duration) var(--ease), color var(--duration) var(--ease),
                  border-color var(--duration) var(--ease); }
-  .filters button:hover { background:var(--c-surface-hover); }
-  .filters button[aria-pressed="true"] { background:var(--c-brand); border-color:var(--c-brand);
+  .filters button:hover, .ftoolbar button:hover { background:var(--c-surface-hover); }
+  .filters button[aria-pressed="true"], .ftoolbar button[aria-pressed="true"] {
+      background:var(--chipc, var(--c-brand)); border-color:var(--chipc, var(--c-brand));
       color:var(--c-text-inverse); }
-  .filters .n { font-weight:400; opacity:.75; font-variant-numeric:tabular-nums; }
+  .filters .n, .ftoolbar .n { font-weight:400; opacity:.75; font-variant-numeric:tabular-nums; }
   .empty-filter { padding:var(--space-400); text-align:center; color:var(--c-text-subtle); }
+
+  /* fields filter bar */
+  .ftoolbar { display:flex; flex-wrap:wrap; align-items:center; gap:var(--space-100) var(--space-150);
+      margin-top:var(--space-300); padding:var(--space-150) var(--space-200);
+      background:var(--c-surface-sunken); border:1px solid var(--c-border); border-radius:var(--radius-lg); }
+  .ftoolbar .filters { margin:0; }
+  .ftoolbar .filters.at-end { margin-left:auto; }
+  .ftoolbar-label { font-size:11px; font-weight:700; letter-spacing:.06em; text-transform:uppercase;
+      color:var(--c-text-subtlest); }
+  .rdot { width:8px; height:8px; border-radius:2px; background:var(--chipc, currentColor); flex:none; }
+  .ftoolbar button[aria-pressed="true"] .rdot { background:var(--c-text-inverse); }
 
 
   /* fields and work types, by role */
-  .fsub { margin:var(--space-500) 0 var(--space-100); font-size:11px; font-weight:700;
-          letter-spacing:.06em; text-transform:uppercase; color:var(--c-text-subtlest); }
+  .fsub { display:flex; align-items:center; gap:var(--space-150);
+          margin:var(--space-600) 0 var(--space-150); font-size:11px; font-weight:700;
+          letter-spacing:.08em; text-transform:uppercase; color:var(--c-text-subtlest); }
+  .fsub::after { content:""; flex:1; height:1px; background:var(--c-border); }
   .fgroup { margin-top:var(--space-300); padding-left:var(--space-200);
             border-left:3px solid var(--rc, var(--c-border-strong)); }
-  .fgroup h3 { margin:0 0 var(--space-150); font-size:15px; font-weight:600; }
+  .fgroup h3 { display:flex; align-items:center; gap:var(--space-100);
+               margin:0 0 var(--space-150); font-size:15px; font-weight:600; }
   .fgroup.orphan h3 { color:#974F0C; }
+  .fgroup h3 .lozenge { font-weight:700; }
   .frow { display:flex; align-items:baseline; gap:var(--space-150);
           padding:var(--space-100) var(--space-200); border-bottom:1px solid var(--c-border); }
   .frow:last-child { border-bottom:0; }
   .frow:nth-child(odd) { background:var(--c-surface-sunken); }
-  .fname { flex:0 0 190px; font-weight:600; font-size:13px; }
+  .fname { flex:0 0 190px; font-weight:600; font-size:13px; display:flex; flex-wrap:wrap;
+           align-items:baseline; gap:var(--space-050); }
   .fname.wide { flex:1 1 auto; }
   .fhow { flex:1; font-size:13px; color:var(--c-text-subtle); }
   .fnote { display:block; margin-top:var(--space-050); font-style:normal; font-size:12px;
            color:var(--c-text-subtlest); padding-left:var(--space-100);
-           border-left:2px solid var(--c-border-strong); }
-  .ftag { display:inline-block; margin-left:var(--space-050); padding:0 var(--space-050);
-          font-size:10px; font-weight:700; letter-spacing:.03em; text-transform:uppercase;
-          color:#974F0C; background:#974F0C1a; border-radius:var(--radius-sm); vertical-align:1px; }
+           border-left:2px solid var(--c-info-br); }
+  .lozenge.warn { background:var(--c-warn-bg); color:#7A5D00; }
 
 
   /* request a change */
@@ -333,6 +348,7 @@
     .stages:not(.vertical) .seq-arrow { display:none; }
     .frow { flex-direction:column; gap:var(--space-050); }
     .frow .fname { flex:none; }
+    .ftoolbar .filters.at-end { margin-left:0; }
   }
 </style>
 
@@ -474,16 +490,16 @@ const OWNERS = /*__OWNERS__*/[["Instructional Designers' Team Manager","",[["Epi
 
 const TAG = { dormant:"not in use", duplicate:"duplicate" };
 
-/* One accent per role for the bar down the left of its group. Literal values so they
-   read the same in light and dark, the way the orphan colour already does. */
+/* One accent per role, from the Atlassian palette this page already uses. Drives the
+   bar down the left of a group, the dot on its chip, and the chip's pressed colour. */
 const ROLE_ACCENT = {
-  "Jira sets these":                       "#6B7280",
-  "Instructional Designers' Team Manager":  "#7C3AED",
-  "Instructional Designer":                 "#2563EB",
-  "Visual Designer":                        "#0D9488",
-  "Subject Matter Expert":                  "#DB2777",
-  "Digitization":                           "#4F46E5",
-  "Digitization Manager":                   "#0891B2",
+  "Jira sets these":                       "#626F86",
+  "Instructional Designers' Team Manager":  "#6E5DC6",
+  "Instructional Designer":                 "#1868DB",
+  "Visual Designer":                        "#227D9B",
+  "Subject Matter Expert":                  "#AE4787",
+  "Digitization":                           "#1F845A",
+  "Digitization Manager":                   "#4C9A2A",
   "Nobody assigned yet":                    "#974F0C",
 };
 const ROLES = Object.keys(ROLE_ACCENT);
@@ -509,13 +525,19 @@ function viewFields() {
   const unused = FIELDS.reduce((n,g) => n + g[2].filter(fieldUnused).length, 0)
                + OWNERS.reduce((n,g) => n + g[2].filter(typeUnused).length, 0);
 
-  const chip = (val,label,n,on) =>
-    `<button data-r="${esc(val)}" aria-pressed="${on}">${esc(label)} <span class="n">${n}</span></button>`;
+  const chip = (val,label,n,on) => {
+    const c = ROLE_ACCENT[label];
+    return `<button data-r="${esc(val)}" aria-pressed="${on}"${c ? ` style="--chipc:${c}"` : ""}>` +
+      (c ? `<span class="rdot"></span>` : "") +
+      `${esc(label)} <span class="n">${n}</span></button>`;
+  };
+  const tag = flag =>
+    ` <span class="lozenge ${flag === "dormant" ? "warn" : "muted"}">${esc(TAG[flag] || flag)}</span>`;
 
   const group = (t, rows, body) => {
     const orphan = /^Nobody assigned/i.test(t);
     return `<section class="fgroup${orphan?" orphan":""}" style="--rc:${ROLE_ACCENT[t]}">
-       <h3>${esc(t)}</h3>
+       <h3>${esc(t)} <span class="lozenge">${rows.length}</span></h3>
        <div class="rows">${body}</div>
      </section>`;
   };
@@ -524,7 +546,7 @@ function viewFields() {
     const rows = fieldRows(t);
     return rows.length ? group(t, rows, rows.map(([name, , , how, , , note, flag]) =>
       `<div class="frow">
-         <span class="fname">${esc(name)}${flag ? ` <span class="ftag">${esc(TAG[flag]||flag)}</span>` : ""}</span>
+         <span class="fname">${esc(name)}${flag ? tag(flag) : ""}</span>
          <span class="fhow">${esc(how || "")}${note ? `<em class="fnote">${esc(note)}</em>` : ""}</span>
        </div>`).join("")) : "";
   }).join("");
@@ -541,11 +563,14 @@ function viewFields() {
        <div class="page-head"><h1>CDLC Epic</h1></div>
        ${tabs("fields")}
        <p class="lede">Pick a role to see the fields it fills and the work types it owns.</p>
-       <div class="filters">` +
-         chip("", "All roles", shown, !fieldRole.size) +
-         ROLES.map(t => chip(t, t, count(t), fieldRole.has(t))).join("") +
-       `</div>` +
-       (unused ? `<div class="filters"><button data-x="1" aria-pressed="${hideUnused}">Hide fields and types not in use <span class="n">${unused}</span></button></div>` : "") +
+       <div class="ftoolbar">
+         <span class="ftoolbar-label">Filter by role</span>
+         <div class="filters">` +
+           chip("", "All roles", shown, !fieldRole.size) +
+           ROLES.map(t => chip(t, t, count(t), fieldRole.has(t))).join("") +
+        `</div>` +
+        (unused ? `<div class="filters at-end"><button data-x="1" aria-pressed="${hideUnused}">Hide items not in use <span class="n">${unused}</span></button></div>` : "") +
+      `</div>` +
        (fieldGroups ? `<h2 class="fsub">Fields</h2>${fieldGroups}` : "") +
        (typeGroups ? `<h2 class="fsub">Work types</h2>${typeGroups}` : "") +
        (!fieldGroups && !typeGroups ? `<p class="empty-filter">Nothing to show for that.</p>` : "") +
