@@ -288,7 +288,8 @@
       margin-top:var(--space-300); padding:var(--space-150) var(--space-200);
       background:var(--c-surface-sunken); border:1px solid var(--c-border); border-radius:var(--radius-lg); }
   .ftoolbar .filters { margin:0; }
-  .ftoolbar .filters.at-end { margin-left:auto; }
+  .fdiv { align-self:stretch; width:1px; margin:0 var(--space-050);
+          background:var(--c-border-strong); opacity:.5; }
   .ftoolbar-label { font-size:11px; font-weight:700; letter-spacing:.06em; text-transform:uppercase;
       color:var(--c-text-subtlest); }
   .rdot { width:8px; height:8px; border-radius:2px; background:var(--chipc, currentColor); flex:none; }
@@ -336,7 +337,7 @@
     .stages:not(.vertical) .seq-arrow { display:none; }
     .frow { flex-direction:column; gap:var(--space-050); }
     .frow .fname { flex:none; }
-    .ftoolbar .filters.at-end { margin-left:0; }
+    .fdiv { display:none; }   /* would strand at the end of a wrapped row */
   }
 </style>
 
@@ -556,9 +557,10 @@ function viewFields() {
          <div class="filters">` +
            chip("", "All roles", shown, !fieldRole.size) +
            ROLES.map(t => chip(t, t, count(t), fieldRole.has(t))).join("") +
-        `</div>` +
-        (unused ? `<div class="filters at-end"><button data-x="1" aria-pressed="${hideUnused}">Hide items not in use <span class="n">${unused}</span></button></div>` : "") +
-      `</div>` +
+           (unused ? `<span class="fdiv"></span>
+             <button data-x="1" aria-pressed="${hideUnused}">Hide items not in use <span class="n">${unused}</span></button>` : "") +
+        `</div>
+      </div>` +
        (fieldGroups ? `<h2 class="fsub">Who fills each field</h2>${fieldGroups}` : "") +
        (typeGroups ? `<h2 class="fsub">Who owns each work type</h2>${typeGroups}` : "") +
        (!fieldGroups && !typeGroups ? `<p class="empty-filter">Nothing to show for that.</p>` : "") +
