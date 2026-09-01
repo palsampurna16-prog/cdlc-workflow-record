@@ -1,4 +1,6 @@
 ﻿"Date","Time","Changed by","What changed","Files touched","Files","Reference"
+"2026-09-01","17:08","Sampurna Pal","style: give the Fields tab filter bar a proper frame and colour-coded chips","2","index.html, src/page.html","c027561"
+"2026-09-01","13:44","github-actions[bot]","chore: update the change log [skip ci]","1","change-log.csv","738c4f1"
 "2026-09-01","16:43","Sampurna Pal","feat: fold in the team field review, add work type owners, filter the Fields tab by role","5","build.mjs, data/fields.json, data/worktypes.json, index.html, src/page.html","6c51103"
 "2026-08-28","21:51","github-actions[bot]","chore: update the change log [skip ci]","1","change-log.csv","8d0b1aa"
 "2026-08-29","00:51","Sampurna Pal","feat: let people request changes from the page, and log them to a sheet","7",".github/ISSUE_TEMPLATE/change-request.md, .github/workflows/requests.yml, change-log.csv, index.html, requests.csv, scripts/make-requests.mjs, src/page.html","fcfaa0b"
