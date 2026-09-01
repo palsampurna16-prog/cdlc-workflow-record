@@ -1,4 +1,6 @@
 ﻿"Date","Time","Changed by","What changed","Files touched","Files","Reference"
+"2026-09-01","19:41","Sampurna Pal","refactor: strip the SGP and CIP pages back to what CDLC shows","5","README.md, data/space-fields.json, data/spaces.json, index.html, src/page.html","31aa95c"
+"2026-09-01","15:37","github-actions[bot]","chore: update the change log [skip ci]","1","change-log.csv","af2a0da"
 "2026-09-01","18:36","Sampurna Pal","feat: build out the SGP and CIP spaces","6","README.md, build.mjs, data/space-fields.json, data/spaces.json, index.html, src/page.html","d00acd4"
 "2026-09-01","14:59","github-actions[bot]","chore: update the change log [skip ci]","1","change-log.csv","5b96ad9"
 "2026-09-01","17:59","Sampurna Pal","style: keep the hide toggle in the same row as the role chips","2","index.html, src/page.html","967080c"
